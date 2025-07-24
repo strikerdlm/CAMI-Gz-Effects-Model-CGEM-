@@ -1,0 +1,45 @@
+{
+  "patient_info": {
+    "first_name": "Jane",
+    "last_name": "Smith",
+    "date_of_birth": "03/15/1985",
+    "gender": "F",
+    "phone": "555-987-6543",
+    "email": "jane.smith@email.com",
+    "emergency_contact": "John Smith",
+    "emergency_phone": "555-987-6544"
+  },
+  "vital_signs": {
+    "blood_pressure": "118/75",
+    "temperature": "98.4",
+    "weight": "140",
+    "height": "65 inches (5'5\")",
+    "heart_rate": "72"
+  },
+  "symptoms": [
+    "Persistent cough for 3 days",
+    "Mild fever",
+    "Fatigue"
+  ],
+  "pain_level": "3",
+  "medical_history": {
+    "surgeries": [
+      "Appendectomy (2010)"
+    ],
+    "chronic_conditions": [
+      "Seasonal allergies"
+    ],
+    "family_history": "Diabetes (mother), Heart disease (father)",
+    "smoking_status": "Never",
+    "alcohol_use": "Occasional"
+  },
+  "medications": [
+    "Birth control pill (daily)",
+    "Claritin 10mg (as needed)"
+  ],
+  "allergies": [
+    "Shellfish",
+    "Latex"
+  ],
+  "timestamp": "2025-07-24T10:34:58.118296"
+}

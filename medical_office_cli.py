@@ -5,10 +5,8 @@ A simple command-line interface for collecting basic medical office data.
 """
 
 import json
-import os
 import re
 from datetime import datetime
-from typing import Dict, List, Optional
 
 
 class MedicalOfficeData:
@@ -327,26 +325,31 @@ class MedicalOfficeData:
         print(f"Phone: {self.data['patient_info']['phone']}")
         
         # Vital Signs
-        print(f"\nVital Signs:")
+        print("\nVital Signs:")
         for key, value in self.data['vital_signs'].items():
             if value and value != "Not recorded":
                 print(f"  {key.replace('_', ' ').title()}: {value}")
         
         # Symptoms
         if self.data['symptoms']:
-            print(f"\nSymptoms:")
+            print("\nSymptoms:")
             for symptom in self.data['symptoms']:
                 print(f"  - {symptom}")
         
+        # Pain Level
+        pain_level = self.data.get("pain_level")
+        if pain_level:
+            print(f"\nPain Level: {pain_level}/10")
+
         # Medications
         if self.data['medications']:
-            print(f"\nCurrent Medications:")
+            print("\nCurrent Medications:")
             for med in self.data['medications']:
                 print(f"  - {med}")
         
         # Allergies
         if self.data['allergies']:
-            print(f"\nAllergies:")
+            print("\nAllergies:")
             for allergy in self.data['allergies']:
                 print(f"  - {allergy}")
     
@@ -361,7 +364,7 @@ class MedicalOfficeData:
         
         self.data["timestamp"] = datetime.now().isoformat()
         
-        with open(filename, 'w') as f:
+        with open(filename, "w", encoding="utf-8") as f:
             json.dump(self.data, f, indent=2)
         
         print(f"\nData saved to: {filename}")
@@ -393,7 +396,7 @@ def main():
         print("\n" + "="*50)
         save_choice = input("Save this data? (y/N): ").strip().lower()
         if save_choice in ['y', 'yes']:
-            filename = medical_data.save_data()
+            medical_data.save_data()
             print("Data collection complete!")
         else:
             print("Data not saved. Session complete!")
