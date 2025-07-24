@@ -171,8 +171,8 @@ def load_profile(identifier: str, profile_dir: Path | None = None) -> List[Sampl
             continue
         try:
             nz_str, dur_str = raw.split(",")
-            nz = float(nz_str)
-            duration_ms = int(dur_str)
+            nz = float(nz_str.strip())
+            duration_ms = int(dur_str.strip())
         except Exception as exc:
             raise ValueError(
                 f"Malformed line {idx+1} in {filepath}: '{raw}'. Expected 'float, int'"
