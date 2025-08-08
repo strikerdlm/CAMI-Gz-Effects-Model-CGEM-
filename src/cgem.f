@@ -1638,8 +1638,8 @@
         MSP=187 !95th percentile from FRIEND Cohort Age 20-40
         MDP=93
 
-      Elseif (I.eq.5) then
-         ! 5. midrange female
+             Elseif (I.eq.5) then
+       ! 5. midrange female
 
         fnorm = 49.5 !normal blood flow rate through brain in dl/min (45-54)
         fmax = fnorm/0.4  !maximum blood flow rate through brain (about 110)
@@ -1649,7 +1649,7 @@
         beta = 2.5 !time constant in seconds for heart rate response function
  !      (This should be about 1/7 the time to ramp up to full response.)
         bankcon = 7.1 !seconds of consciousness if oxygen/blood flow stops (5-15).
-        bank2life = 180!seconds of life if oxygen/blood flow stops.
+        banklife = 180!seconds of life if oxygen/blood flow stops.
         male = 0 ! 0=female 1=male
         howtall = 179.0 ! in cm 162.5-195.6 cm
         BSP=120

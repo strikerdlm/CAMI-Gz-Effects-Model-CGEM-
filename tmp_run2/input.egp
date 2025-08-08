@@ -1,0 +1,17 @@
+  CGEM v.1.1.0.1, 15 MAR 2023 
+  Subject Parameters:
+  Brain-heart dist, G0, min flow, no-flow awake(sec)
+   30.3732986       1.00000000       19.0000000       7.09999990    
+  max G,         F0,    max flow, Eye-heart dist
+   9.00000000       49.5000000       123.750000       33.0176086    
+  Subject height, male, no-flow alive(sec)
+   179.000000               1   180.000000    
+  Units for distances are cm
+  Units for flows are dl/min
+  Units for acceleration are G
+  Units for times are seconds
+  Flow needed to avoid eventual death   9.00000000      s
+  USING these BPs   120.000000       80.0000000       177.000000       80.0000000    
+  Heart response time constant (ms):   2500.00000    
+  -------------------- Results -------------------
+        Time      G   Geff   C_Bank F_Con   F_Vis   F_BO    BO_Bank  HMAP    C   V   B 
