@@ -25,6 +25,14 @@ class CGEMResult:
     last_g: Optional[float] = None
     last_geff: Optional[float] = None
 
+    # Full time-series from CGEM output for plotting and analysis
+    times_s: Optional[List[float]] = None
+    g_values: Optional[List[float]] = None
+    geff_values: Optional[List[float]] = None
+    flags_n2: Optional[List[int]] = None  # consciousness flag
+    flags_ne2: Optional[List[int]] = None  # vision flag (greyout)
+    flags_non2: Optional[List[int]] = None  # blackout flag
+
 
 def _profile_to_egp_lines(samples: List[Sample], g0: float = 1.0) -> List[Tuple[float, int]]:
     """Convert Nz/duration_ms samples to CGEM EGP entries (dgdt[G/s], ms).
@@ -110,6 +118,14 @@ def _parse_cgem_output(out_path: Path) -> CGEMResult:
 
     prev_flags: Optional[Tuple[int, int, int]] = None
 
+    # Full series
+    times_s: List[float] = []
+    g_values: List[float] = []
+    geff_values: List[float] = []
+    flags_n2: List[int] = []
+    flags_ne2: List[int] = []
+    flags_non2: List[int] = []
+
     with out_path.open("r", encoding="utf-8", errors="ignore") as f:
         for line in f:
             parts = line.strip().split()
@@ -117,7 +133,7 @@ def _parse_cgem_output(out_path: Path) -> CGEMResult:
             if len(parts) >= 12:
                 try:
                     # First field could be seconds (ttot) or ms (totalt) depending on context
-                    t = float(parts[0])
+                    t_raw = float(parts[0])
                     g = float(parts[1])
                     geff = float(parts[2])
                     # Last 3 integers are flags
@@ -127,9 +143,20 @@ def _parse_cgem_output(out_path: Path) -> CGEMResult:
                 except Exception:
                     continue
 
+                # Normalize time to seconds (heuristic)
+                t_sec = t_raw / 1000.0 if t_raw > 100.0 else t_raw
+
+                # Append series
+                times_s.append(t_sec)
+                g_values.append(g)
+                geff_values.append(geff)
+                flags_n2.append(n2)
+                flags_ne2.append(ne2)
+                flags_non2.append(non2)
+
                 # Keep last snapshot (prefer larger time)
-                last_time_s = t if t > (last_time_s or -1.0) else last_time_s
-                if last_time_s == t:
+                last_time_s = t_sec if t_sec > (last_time_s or -1.0) else last_time_s
+                if last_time_s == t_sec:
                     last_g = g
                     last_geff = geff
 
@@ -138,11 +165,11 @@ def _parse_cgem_output(out_path: Path) -> CGEMResult:
                 else:
                     pn2, pne2, pnon2 = prev_flags
                     if t_gloc is None and pn2 == 0 and n2 == 1:
-                        t_gloc = t / 1000.0 if t > 100.0 else t  # ms vs s heuristic
+                        t_gloc = t_sec
                     if t_grey is None and pne2 == 0 and ne2 == 1:
-                        t_grey = t / 1000.0 if t > 100.0 else t
+                        t_grey = t_sec
                     if t_black is None and pnon2 == 0 and non2 == 1:
-                        t_black = t / 1000.0 if t > 100.0 else t
+                        t_black = t_sec
                     prev_flags = (n2, ne2, non2)
 
     return CGEMResult(
@@ -152,6 +179,12 @@ def _parse_cgem_output(out_path: Path) -> CGEMResult:
         last_time_s=last_time_s,
         last_g=last_g,
         last_geff=last_geff,
+        times_s=times_s,
+        g_values=g_values,
+        geff_values=geff_values,
+        flags_n2=flags_n2,
+        flags_ne2=flags_ne2,
+        flags_non2=flags_non2,
     )
 
 
@@ -199,5 +232,6 @@ if __name__ == "__main__":
         "time_to_gloc_s": res.time_to_gloc_s,
         "last_g": res.last_g,
         "last_geff": res.last_geff,
+        "num_points": len(res.times_s or []),
     }, indent=2))
     print(f"Temporary files in: {tmp}")
