@@ -1,83 +1,90 @@
-# Medical Office CLI - Basic Data Entry System
+# CGEM-based G-LOC Modeling and Visualization Suite
 
-A simple command-line interface for collecting basic medical office data during patient visits.
+[![Python](https://img.shields.io/badge/Python-3.9%2B-3776AB?logo=python&logoColor=white)](https://www.python.org)
+[![Platform](https://img.shields.io/badge/Platform-Linux%20%7C%20macOS%20%7C%20Windows-lightgrey)](https://en.wikipedia.org/wiki/Cross-platform)
+[![Streamlit](https://img.shields.io/badge/UI-Streamlit-FF4B4B?logo=streamlit&logoColor=white)](https://streamlit.io)
+[![Status](https://img.shields.io/badge/Status-Research-blueviolet)](https://en.wikipedia.org/wiki/Research)
 
-## Features
+A modern, researcher-friendly toolkit for modeling G-induced loss of consciousness (G-LOC) and visualizing aerospace physiology using the FAA’s CGEM foundations. This repository brings together computational models, simulations, and interactive visualizations to support training, safety analysis, and research in aerospace medicine.
 
-This CLI tool collects the following basic medical information:
+Developed by **Dr. Diego Malpica**.
 
-- **Patient Information**: Name, date of birth, contact details, emergency contact
-- **Vital Signs**: Blood pressure, temperature, weight, height, heart rate
-- **Symptoms**: Chief complaint, additional symptoms, pain level assessment
-- **Medical History**: Previous surgeries, chronic conditions, family history, lifestyle factors
-- **Medications & Allergies**: Current medications and known allergies
+### Highlights
+- **Physiology-aware modeling**: CGEM-based computations for greyout, blackout, and G-LOC risk.
+- **Interactive visualizations**: Streamlit dashboards for scenarios, thresholds, timelines, and maneuver profiles.
+- **Reproducible workflows**: Notebooks and scripts for demos and experiments.
+- **Extensible**: Modular code to customize models, parameters, and data pipelines.
 
-## Requirements
+---
 
-- Python 3.6 or higher
-- No external dependencies required (uses only Python standard library)
+## Quick Start
 
-## Usage
-
-1. Make the script executable (optional):
-   ```bash
-   chmod +x medical_office_cli.py
-   ```
-
-2. Run the application:
-   ```bash
-   python3 medical_office_cli.py
-   ```
-
-3. Follow the interactive prompts to enter patient data
-
-4. Review the summary and choose to save the data as a JSON file
-
-## Data Validation
-
-The tool includes validation for:
-- Email format
-- Phone number format (minimum 10 digits)
-- Date of birth format (MM/DD/YYYY)
-- Vital sign ranges (reasonable medical values)
-- Pain scale (0-10)
-
-## Data Storage
-
-- Data is saved as JSON files with timestamps
-- Files are named: `medical_data_{FirstName}_{LastName}_{timestamp}.json`
-- All entered information is preserved in structured format
-
-## Navigation
-
-- Press `Enter` on empty fields to skip optional information
-- Press `Ctrl+C` at any time to exit the application
-- Most fields allow empty input except required patient identification
-
-## Sample Data Structure
-
-```json
-{
-  "patient_info": {
-    "first_name": "John",
-    "last_name": "Doe",
-    "date_of_birth": "01/15/1980",
-    "gender": "M",
-    "phone": "555-123-4567",
-    "email": "john.doe@email.com"
-  },
-  "vital_signs": {
-    "blood_pressure": "120/80",
-    "temperature": "98.6",
-    "weight": "175",
-    "height": "70 inches (5'10\")"
-  },
-  "symptoms": ["Headache", "Fatigue"],
-  "medications": ["Ibuprofen 200mg"],
-  "allergies": ["Penicillin"]
-}
+1) Set up the environment
+```bash
+python -m venv .venv
+source .venv/bin/activate  # Windows: .venv\Scripts\activate
+pip install -r requirements.txt
 ```
 
-## Security Note
+2) Launch the interactive visualization app
+```bash
+streamlit run enhanced_app.py
+```
 
-This tool is designed for basic data collection and does not include encryption or HIPAA compliance features. For production medical use, additional security measures would be required.
+3) Run the aerobatic profiles demo (optional)
+```bash
+python demo_example.py
+```
+
+4) Explore notebooks
+- Open `aerobatic_profiles_demo.ipynb` or `aerobatic_maneuvers_simulation.ipynb` in your favorite environment.
+
+---
+
+## Features
+- Risk timelines and threshold overlays for greyout, blackout, and G-LOC.
+- Maneuver libraries and sample inputs for scenario exploration.
+- Exportable figures for training and reporting.
+- Example inputs in `Aerobatics_sample_inputs/` and data files for model runs.
+
+---
+
+## Acknowledgments
+This work is built upon and inspired by foundational research conducted within the **Federal Aviation Administration (FAA)** Office of Aerospace Medicine and decades of operational physiology experience. We gratefully acknowledge the contributions of the **U.S. Military** community—aviators, aircrew, and allied professionals—who served both as scientists and as research participants in the studies underpinning this modeling approach. Their service and commitment to safety and science made this work possible.
+
+Special recognition is due to the FAA researchers and collaborators whose efforts developed, validated, and documented the CGEM approach and related physiology insights.
+
+---
+
+## How to Cite
+If you use this repository in academic or technical work, please cite the foundational FAA report:
+
+Malpica, D. (Developer). (2025). CGEM-based G-LOC Modeling and Visualization Suite [Computer software].
+
+And include the original research reference (APA format):
+
+Copeland, K., & Whinnery, J. E. (2023). Cerebral blood flow-based computer modeling of Gz-induced effects (DOT/FAA/AM-23/6). Office of Aerospace Medicine, Federal Aviation Administration, Washington, DC.
+
+---
+
+## Disclaimer
+- This toolkit is intended for research, education, and training support. It does not substitute for operational aeromedical guidance or certification processes.
+- This project is not an official product of the FAA or the U.S. Department of Defense. All views expressed are those of the contributors.
+
+---
+
+## Repository Guide
+- `enhanced_app.py`: Streamlit UI for interactive modeling and visualization
+- `app.py`, `demo_example.py`: Additional demos and app entry points
+- `src/`: Core model code (e.g., CGEM implementation and related utilities)
+- `Aerobatics_sample_inputs/`: Example input profiles for scenarios
+- `docs/`: Guides and related documents
+- `notebooks/`: Research and demo notebooks
+
+---
+
+## Contact
+Questions, collaborations, or feedback are welcome.
+
+- Lead developer: **Dr. Diego Malpica**
+- Please open an issue or pull request to start the conversation.
