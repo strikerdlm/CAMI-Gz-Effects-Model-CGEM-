@@ -30,3 +30,25 @@
 *.exe
 *.out
 *.app
+
+# Python caches and environments
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+.env
+
+# Streamlit artifacts
+.streamlit/**
+
+# Notebooks
+*.ipynb_checkpoints/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Docker
+*.pid
+*.log
+**/.pytest_cache/
