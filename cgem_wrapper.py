@@ -196,8 +196,9 @@ def run_cgem_for_profile(profile_id: str) -> Tuple[CGEMResult, Path]:
     samples = load_profile(profile_id)
     egp_lines = _profile_to_egp_lines(samples)
 
-    temp_dir_obj = tempfile.TemporaryDirectory(prefix="cgem_run_")
-    temp_dir = Path(temp_dir_obj.name)
+    # Use a persistent temp directory so that callers can inspect outputs
+    temp_dir_path = tempfile.mkdtemp(prefix="cgem_run_")
+    temp_dir = Path(temp_dir_path)
 
     try:
         # Prepare files
@@ -213,8 +214,8 @@ def run_cgem_for_profile(profile_id: str) -> Tuple[CGEMResult, Path]:
         result = _parse_cgem_output(out_path)
         return result, temp_dir
     except Exception:
-        # On failure, clean temp dir and re-raise
-        temp_dir_obj.cleanup()
+        # On failure, clean the temp dir and re-raise
+        shutil.rmtree(temp_dir, ignore_errors=True)
         raise
 
 
