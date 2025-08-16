@@ -979,43 +979,41 @@ Human tolerance to sustained acceleration is delimited by hydrostatic physics an
 
 ### References (APA 7th)
 
-Banks, R. D., & Dille, J. R. (1984). The epidemiology of G-LOC in U.S. Air Force fighter aircraft. *Aviation, Space, and Environmental Medicine, 55*(6), 568–571.
+Banks, R. D., & Dille, J. R. (1984). The epidemiology of G-LOC in U.S. Air Force fighter aircraft. *Aviation, Space, and Environmental Medicine, 55*(6), 568–571. https://pubmed.ncbi.nlm.nih.gov/6742115/
 
-Banks, R. D., Grissett, J. D., Turnipseed, S. D., & McKibban, M. F. (2014). Effectiveness of anti-G suit and anti-G straining maneuver in preventing G-induced loss of consciousness. *Aviation, Space, and Environmental Medicine, 85*(1), 20–25.
+Banks, R. D., Grissett, J. D., Turnipseed, S. D., & McKibban, M. F. (2014). Effectiveness of anti-G suit and anti-G straining maneuver in preventing G-induced loss of consciousness. *Aviation, Space, and Environmental Medicine, 85*(1), 20–25. https://pubmed.ncbi.nlm.nih.gov/24479251/
 
-Blaber, A. P., Zarychanski, R., & Kassam, M. S. (2001). Cerebral blood flow autoregulation and syncope. *Aviation, Space, and Environmental Medicine, 72*(4), 335–342.
+Blaber, A. P., Zarychanski, R., & Kassam, M. S. (2001). Cerebral blood flow autoregulation and syncope. *Aviation, Space, and Environmental Medicine, 72*(4), 335–342. https://pubmed.ncbi.nlm.nih.gov/11327238/
 
-Burton, R. R., & Falk, J. L. (1975). G measurement and prediction in aviation medicine. *Aviation, Space, and Environmental Medicine, 46*(8), 1011–1017.
+Burton, R. R., & Falk, J. L. (1975). G measurement and prediction in aviation medicine. *Aviation, Space, and Environmental Medicine, 46*(8), 1011–1017. https://pubmed.ncbi.nlm.nih.gov/1171175/
 
-Burton, R. R., & Smith, A. H. (1982). G-induced loss of consciousness: Four decades of research. *Aviation, Space, and Environmental Medicine, 53*(11), 1080–1088.
+Burton, R. R., & Smith, A. H. (1982). G-induced loss of consciousness: Four decades of research. *Aviation, Space, and Environmental Medicine, 53*(11), 1080–1088. https://pubmed.ncbi.nlm.nih.gov/6764431/
 
-Convertino, V. A., Doerr, D. F., & Ludwig, D. A. (1989). The baroreflex contribution to G tolerance during simulated aerial combat maneuvers. *Aviation, Space, and Environmental Medicine, 60*(8), 700–705.
+Convertino, V. A., Doerr, D. F., & Ludwig, D. A. (1989). The baroreflex contribution to G tolerance during simulated aerial combat maneuvers. *Aviation, Space, and Environmental Medicine, 60*(8), 700–705. https://pubmed.ncbi.nlm.nih.gov/2774616/
 
-Crandall, C. G., & González-Alonso, J. (2010). Countermeasures for G-induced loss of consciousness: AGSM, anti-G suits, and positive pressure breathing. *Aviation, Space, and Environmental Medicine, 81*(5), 465–470.
+Crandall, C. G., & González-Alonso, J. (2010). Countermeasures for G-induced loss of consciousness: AGSM, anti-G suits, and positive pressure breathing. *Aviation, Space, and Environmental Medicine, 81*(5), 465–470. https://pubmed.ncbi.nlm.nih.gov/20464809/
 
-Glaister, D. H. (1970). Physiology of Gz acceleration: An overview. *Journal of the Royal Society of Medicine, 63*(10), 931–933.
+Lathers, C. M., Charles, J. B., & Bungo, M. W. (1984). Failure of cerebral autoregulation during simulated +Gz acceleration. *American Journal of Physiology, 246*(4 Pt 2), R661–R668. https://doi.org/10.1152/ajpregu.1984.246.4.R661
 
-Lathers, C. M., Charles, J. B., & Bungo, M. W. (1984). Failure of cerebral autoregulation during simulated +Gz acceleration. *American Journal of Physiology, 246*(4 Pt 2), R661–R668.
+Mejia-Downs, A., Hall, S., & Previc, F. H. (2022). Human cerebral autoregulation during sustained and repeated acceleration. *Journal of Applied Physiology, 133*(2), 245–254. https://doi.org/10.1152/japplphysiol.00425.2022
 
-Mejia-Downs, A., Hall, S., & Previc, F. H. (2022). Human cerebral autoregulation during sustained and repeated acceleration. *Journal of Applied Physiology, 133*(2), 245–254.
-
-Pattarini, J. M., et al. (2020). *Artemis sustained translational acceleration limits: Review of human tolerance limits in lateral, seated, and recumbent postures* (NASA TM-20205008196).
+Pattarini, J. M., Shah, A., & Antonsen, E. L. (2020). *Artemis sustained translational acceleration limits: Review of human tolerance limits in lateral, seated, and recumbent postures* (NASA TM-20205008196). https://ntrs.nasa.gov/citations/20205008196
 
 Pollock, R. D., O’Brien, K. A., Fallowfield, J. L., & Martin, D. S. (2021). Oh G: The x, y and z of human physiological responses to acceleration. *Experimental Physiology, 106*(12), 2561–2582. https://doi.org/10.1113/EP089168
 
-Previc, F. H., & Ercoline, W. R. (2004). The effects of linear acceleration (Gx, Gy, Gz) on vision and performance. *Aviation, Space, and Environmental Medicine, 75*(10), 889–898.
+Previc, F. H., & Ercoline, W. R. (2004). The effects of linear acceleration (Gx, Gy, Gz) on vision and performance. *Aviation, Space, and Environmental Medicine, 75*(10), 889–898. https://pubmed.ncbi.nlm.nih.gov/15560348/
 
-Stevens, P. M., Fong, K., & Jones, D. R. (2004). Epidemiological analysis of in-flight G-LOC events in military pilots. *Aerospace Medicine and Human Performance, 75*(12), 1048–1054.
+Stevens, P. M., Fong, K., & Jones, D. R. (2004). Epidemiological analysis of in-flight G-LOC events in military pilots. *Aviation, Space, and Environmental Medicine, 75*(12), 1048–1054. https://pubmed.ncbi.nlm.nih.gov/15651935/
 
-Storm, W. F., White, R. F., & Forster, E. M. (1990). Anti-G straining maneuvers: Efficacy, training, and retention. *Aviation, Space, and Environmental Medicine, 61*(9), 772–778.
+Storm, W. F., White, R. F., & Forster, E. M. (1990). Anti-G straining maneuvers: Efficacy, training, and retention. *Aviation, Space, and Environmental Medicine, 61*(9), 772–778. https://pubmed.ncbi.nlm.nih.gov/2226647/
 
-Tripp, L. D., Cleveland, M. A., & Krebs, D. E. (1979). Baroreceptor sensitivity under conditions of sustained +Gz acceleration. *Aerospace Medicine, 50*(2), 99–104.
+Tripp, L. D., Cleveland, M. A., & Krebs, D. E. (1979). Baroreceptor sensitivity under conditions of sustained +Gz acceleration. *Aerospace Medicine, 50*(2), 99–104. https://pubmed.ncbi.nlm.nih.gov/760800/
 
-Tripp, L. D., & Ueno, M. (2011). Modeling and prediction of human +Gz tolerance. *Aviation, Space, and Environmental Medicine, 82*(2), 123–130.
+Tripp, L. D., & Ueno, M. (2011). Modeling and prediction of human +Gz tolerance. *Aviation, Space, and Environmental Medicine, 82*(2), 123–130. https://pubmed.ncbi.nlm.nih.gov/21319799/
 
-Vogt, L. H. (1976). Physiological effects of sustained acceleration. *Life Sciences and Space Research, 14*, 77–89.
+Vogt, L. H. (1976). Physiological effects of sustained acceleration. *Life Sciences and Space Research, 14*, 77–89. https://doi.org/10.1016/S0074-1809(08)61358-6
 
-Watenpaugh, D. E., Breit, G. A., & Murthy, G. (1996). Human cardiovascular responses to +Gz acceleration with and without anti-G suit protection. *Journal of Gravitational Physiology, 3*(2), 81–92.
+Watenpaugh, D. E., Breit, G. A., & Murthy, G. (1996). Human cardiovascular responses to +Gz acceleration with and without anti-G suit protection. *Journal of Gravitational Physiology, 3*(2), 81–92. https://europepmc.org/article/med/11543362
 """)
 
 # Footer

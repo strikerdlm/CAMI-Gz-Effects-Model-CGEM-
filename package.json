@@ -1,0 +1,9 @@
+{
+  "scripts": {
+    "verify:citations": "python tools/verify_citations.py",
+    "verify:citations:strict": "python tools/verify_citations.py --strict"
+  },
+  "dependencies": {
+    "echarts": "^6.0.0"
+  }
+}
