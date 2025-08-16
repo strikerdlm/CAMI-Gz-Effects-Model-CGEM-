@@ -5,13 +5,41 @@ import subprocess
 import tempfile
 from dataclasses import dataclass
 from pathlib import Path
+import sys
 from typing import Dict, List, Optional, Tuple
 
 from aerobatic_profiles import Sample, load_profile
 
 
-CGEM_EXE = Path(__file__).resolve().parent / "cgem"
 BASE_GLOC_INP = Path(__file__).resolve().parent / "gloc_inp.dat"
+def _resolve_cgem_executable() -> Path:
+    """Resolve the correct CGEM executable path for the current OS.
+
+    On Windows, prefer `cgem.exe`. On POSIX, prefer the `cgem` binary.
+    Falls back between variants if one is missing. Ensures the resolved
+    path is a regular file (not a directory).
+    """
+    root = Path(__file__).resolve().parent
+    candidates = []
+
+    if sys.platform.startswith("win"):
+        candidates.extend([
+            root / "cgem.exe",
+            root / "cgem",
+        ])
+    else:
+        candidates.extend([
+            root / "cgem",
+            root / "cgem.exe",
+        ])
+
+    for candidate in candidates:
+        if candidate.is_file():
+            return candidate
+
+    # Provide a helpful error with the checked locations
+    checked = ", ".join(str(p) for p in candidates)
+    raise FileNotFoundError(f"CGEM executable not found. Checked: {checked}")
 
 
 @dataclass
@@ -97,9 +125,8 @@ def _prepare_gloc_inp(temp_dir: Path, egp_name: str = "input.egp", out_name: str
 
 
 def _run_cgem(temp_dir: Path) -> None:
-    if not CGEM_EXE.exists():
-        raise FileNotFoundError(f"CGEM executable not found at {CGEM_EXE}")
-    subprocess.run([str(CGEM_EXE)], cwd=str(temp_dir), check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    exe_path = _resolve_cgem_executable()
+    subprocess.run([str(exe_path)], cwd=str(temp_dir), check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
 
 def _parse_cgem_output(out_path: Path) -> CGEMResult:
