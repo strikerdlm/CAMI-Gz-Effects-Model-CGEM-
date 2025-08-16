@@ -90,18 +90,34 @@ with tab2:
     st.markdown("#### Pilot configuration")
     colA, colB, colC = st.columns(3)
     with colA:
+        PROFILE_DEFS = {
+            1: {"label": "Male: high cerebrovascular reserve", "male": 1, "howtall": 162.5, "fnorm": 54.0, "fcon": 18.0, "flife": 8.0,  "beta": 2.0, "bankcon": 15.0, "BSP": 130.0, "BDP": 90.0, "MSP": 213.0, "MDP": 98.0},
+            2: {"label": "Male: median physiology",            "male": 1, "howtall": 179.0, "fnorm": 49.5, "fcon": 19.0, "flife": 9.0,  "beta": 2.5, "bankcon": 7.1,  "BSP": 120.0, "BDP": 80.0, "MSP": 177.0, "MDP": 80.0},
+            3: {"label": "Male: low reserve, tall stature",    "male": 1, "howtall": 195.6, "fnorm": 45.0, "fcon": 20.0, "flife": 10.0, "beta": 3.0, "bankcon": 5.0,  "BSP": 100.0, "BDP": 60.0, "MSP": 147.0, "MDP": 59.0},
+            4: {"label": "Female: high cerebrovascular reserve","male": 0, "howtall": 162.5, "fnorm": 54.0, "fcon": 18.0, "flife": 8.0,  "beta": 2.0, "bankcon": 15.0, "BSP": 130.0, "BDP": 90.0, "MSP": 187.0, "MDP": 93.0},
+            5: {"label": "Female: median physiology",           "male": 0, "howtall": 179.0, "fnorm": 49.5, "fcon": 19.0, "flife": 9.0,  "beta": 2.5, "bankcon": 7.1,  "BSP": 120.0, "BDP": 80.0, "MSP": 157.0, "MDP": 76.0},
+            6: {"label": "Female: low reserve, tall stature",   "male": 0, "howtall": 195.6, "fnorm": 45.0, "fcon": 20.0, "flife": 10.0, "beta": 3.0, "bankcon": 5.0,  "BSP": 100.0, "BDP": 60.0, "MSP": 131.0, "MDP": 60.0},
+        }
+        who_options = ["Custom"] + [f"{PROFILE_DEFS[i]['label']} (who={i})" for i in range(1, 7)]
         who_choice = st.selectbox(
             "Standard subject profile",
-            ["Custom", "Best male (1)", "Midrange male (2)", "Worst male (3)",
-             "Best female (4)", "Midrange female (5)", "Worst female (6)"],
+            who_options,
             index=2,
         )
-        who_map = {"Best male (1)": 1, "Midrange male (2)": 2, "Worst male (3)": 3,
-                   "Best female (4)": 4, "Midrange female (5)": 5, "Worst female (6)": 6}
+        who_map = {f"{PROFILE_DEFS[i]['label']} (who={i})": i for i in range(1, 7)}
         who_profile = who_map.get(who_choice)
         dehydration = st.slider("Dehydration level", 0.0, 1.0, 0.0, 0.1)
         seat_tilt = st.number_input("Seat tilt (deg)", 0.0, 45.0, 10.0, 1.0)
         drug_delay = st.number_input("Drug-induced HR delay (s)", 0.0, 10.0, 0.0, 0.5)
+        if who_profile in PROFILE_DEFS:
+            d = PROFILE_DEFS[who_profile]
+            st.markdown(
+                f"- Sex: {'Male' if d['male']==1 else 'Female'}\n"
+                f"- Height: {d['howtall']} cm (affects heart–brain distance)\n"
+                f"- Cerebral flow thresholds (dl/min): normal {d['fnorm']}, consciousness {d['fcon']}, life {d['flife']}\n"
+                f"- Baseline BP (mmHg): {d['BSP']}/{d['BDP']}; Max BP (mmHg): {d['MSP']}/{d['MDP']}\n"
+                f"- Heart response tau: {d['beta']} s; Consciousness reserve: {d['bankcon']} s"
+            )
     with colB:
         gsuit_psi = st.number_input("G-suit max pressure (PSI)", 0.0, 20.0, 0.0, 0.5)
         gsuit_cov = st.slider("G-suit coverage (fraction)", 0.0, 0.7, 0.0, 0.05)

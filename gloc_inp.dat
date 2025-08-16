@@ -115,10 +115,14 @@ FILE FOR CENTRIFUGE EXPERIMENT MODELING OUTPUT
 PARTICIPANT PHYSIOLOGY STANDARD OPTIONS
 29. who        Allows a standard pilot physiology instead of the one defined by lines 3-14 
                0= Use data from lines 3-14
-               1= best male, 2= midrange male, 3= worst male, 
-               4= best female, 5= midrange female, 6= worst female 
-               Best and worst use parameters for greatest and least g-resistance within the 
-               "normal physiological range"
+               1= male: high cerebrovascular reserve (shorter stature, higher BP)
+               2= male: median physiology
+               3= male: low reserve (taller stature, lower BP)
+               4= female: high cerebrovascular reserve (shorter stature, higher BP)
+               5= female: median physiology
+               6= female: low reserve (taller stature, lower BP)
+               Category parameters correspond to reference values in the model source (fnorm/fcon/flife,
+               BP ranges, heart-response tau, consciousness reserve, and height).
                
 CHOOSE ACCELERATION DATA INPUTS AND OUTPUTS 
 30. gfile      0= Use built in experiment plan sequence with results written to file outname (#28), 
