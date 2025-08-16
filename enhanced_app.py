@@ -23,7 +23,8 @@ from cgem_wrapper import run_cgem_for_profile, CGEMResult, PilotConfig
 
 # Configure page
 st.set_page_config(
-    page_title="G-Effects Model — Civil Aerospace Medicine Institute",
+    page_title="G-Effects Model by Civil Aerospace Medicine Institute 🚀",
+    page_icon=":rocket:",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -848,11 +849,11 @@ def render_echarts_dashboard(times: List[float], g_values: List[float], geff_val
     components.html(html, height=height_value, scrolling=True)
 
 # Main application
-st.title("G-Effects Model by Civil Aerospace Medicine Institute")
-st.markdown("### Comprehensive visualization of physiological responses during flight maneuvers")
+st.title("G-Effects Model by Civil Aerospace Medicine Institute 🚀")
+st.markdown("### Comprehensive visualization of physiological responses during flight maneuvers — modern, fast, and interactive ✨")
 
 # Sidebar configuration
-st.sidebar.header("Configuration")
+st.sidebar.header("Configuration ⚙️")
 
 # Profile selection
 profiles = load_all_profiles()
@@ -867,7 +868,7 @@ filename, description = PROFILES[selected_key]
 st.sidebar.markdown(f"**Description**: {description}")
 
 # Pilot profile selection
-st.sidebar.subheader("Pilot Profile")
+st.sidebar.subheader("Pilot Profile 👨‍✈️")
 pilot_type = st.sidebar.selectbox(
     "Pilot Training Level",
     ["Untrained", "Basic Training", "Advanced Training", "Fighter Pilot"],
@@ -875,7 +876,7 @@ pilot_type = st.sidebar.selectbox(
 )
 
 # Visualization options
-st.sidebar.subheader("Visualization Options")
+st.sidebar.subheader("Visualization Options 📊")
 show_2d = st.sidebar.checkbox("2D Physiological Plots", value=True)
 show_3d = st.sidebar.checkbox("3D Trajectory Plot", value=True)
 show_animated = st.sidebar.checkbox("Animated Timeline", value=True)
@@ -915,12 +916,12 @@ def cached_run(profile_id: str, pilot_cfg_key: str, pilot_cfg: PilotConfig):
 
 # Main content area
 tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
-    "Profile Overview", 
-    "Physiological Analysis", 
-    "Maneuver Details",
-    "Comparative Analysis",
-    "ECharts Dashboard",
-    "Educational Resources"
+    "Profile Overview 📈", 
+    "Physiological Analysis 🧬", 
+    "Maneuver Details 🎯",
+    "Comparative Analysis 📊",
+    "ECharts Dashboard ✨",
+    "Educational Resources 📚"
 ])
 
 with tab1:

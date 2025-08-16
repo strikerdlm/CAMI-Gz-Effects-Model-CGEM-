@@ -1,27 +1,30 @@
-# CGEM-based G-LOC Modeling and Visualization Suite
+# G-Effects Model by Civil Aerospace Medicine Institute 🚀
 
 [![Python](https://img.shields.io/badge/Python-3.9%2B-3776AB?logo=python&logoColor=white)](https://www.python.org)
 [![Platform](https://img.shields.io/badge/Platform-Linux%20%7C%20macOS%20%7C%20Windows-lightgrey)](https://en.wikipedia.org/wiki/Cross-platform)
 [![Streamlit](https://img.shields.io/badge/UI-Streamlit-FF4B4B?logo=streamlit&logoColor=white)](https://streamlit.io)
 [![Status](https://img.shields.io/badge/Status-Research-blueviolet)](https://en.wikipedia.org/wiki/Research)
+[![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
 
-A modern, researcher-friendly toolkit for modeling G-induced loss of consciousness (G-LOC) and visualizing aerospace physiology using the FAA’s CGEM foundations. This repository brings together computational models, simulations, and interactive visualizations to support training, safety analysis, and research in aerospace medicine.
+Modern, stylish, and professional toolkit for modeling G-induced loss of consciousness (G-LOC) and visualizing aerospace physiology using the FAA’s CGEM foundations. This repository brings together computational models, simulations, and interactive visualizations to support training, safety analysis, and research in aerospace medicine.
 
 Forked from the original FAA AAM-631 CGEM project ("CAMI-Gz-Effects-Model-CGEM-") and extended with modern visualization and configuration tools.
 
 Developed by **Dr. Diego Malpica** (Direction of Aerospace Medicine, Colombian Aerospace Force, Aerospace Scientific Department). ORCID: [0000-0002-2257-4940](https://orcid.org/0000-0002-2257-4940).
 
-### Highlights
-- **Physiology-aware modeling**: CGEM-based computations for greyout, blackout, and G-LOC risk.
-- **Interactive visualizations**: Streamlit dashboards for scenarios, thresholds, timelines, and maneuver profiles.
-- **Reproducible workflows**: Notebooks and scripts for demos and experiments.
-- **Extensible**: Modular code to customize models, parameters, and data pipelines.
+## Highlights
+
+- **Physiology-aware modeling 🧬**: CGEM-based computations for greyout, blackout, and G-LOC risk.
+- **Interactive visualizations 📊**: Streamlit dashboards for scenarios, thresholds, timelines, and maneuver profiles.
+- **Reproducible workflows 🔁**: Notebooks and scripts for demos and experiments.
+- **Extensible 🧩**: Modular code to customize models, parameters, and data pipelines.
 
 ---
 
-## Quick Start
+## Quick Start ⚡
 
-1) Set up the environment
+1. Set up the environment
+
 ```bash
 python -m venv .venv
 source .venv/bin/activate  # Windows: .venv\Scripts\activate
@@ -30,22 +33,26 @@ pip install -r requirements.txt
 # sudo apt-get update && sudo apt-get install -y libgfortran5
 ```
 
-2) Launch the interactive visualization app
+1. Launch the interactive visualization app
+
 ```bash
 streamlit run enhanced_app.py
 ```
 
-3) Run the aerobatic profiles demo (optional)
+1. Run the aerobatic profiles demo (optional)
+
 ```bash
 python demo_example.py
 ```
 
-4) Explore notebooks
+1. Explore notebooks
+
 - Open `aerobatic_profiles_demo.ipynb` or `aerobatic_maneuvers_simulation.ipynb` in your favorite environment.
 
 ---
 
-## Features
+## Features ✨
+
 - Risk timelines and threshold overlays for greyout, blackout, and G-LOC.
 - Maneuver libraries and sample inputs for scenario exploration.
 - Exportable figures for training and reporting.
@@ -53,11 +60,12 @@ python demo_example.py
 
 ---
 
-## Pilot Configuration (Personalized Physiology)
+## Pilot Configuration (Personalized Physiology) 👨‍✈️
 
 You can now personalize the model with pilot-specific parameters from the UI or programmatically. This enables subject-specific predictions and “what-if” countermeasure exploration.
 
 ### In the Streamlit apps
+
 - Open either `enhanced_app.py` or `app.py` via Streamlit and locate the “Pilot configuration” panel.
 - Choose a profile and set parameters:
   - Standard subject profile (`who`): pick one of 6 standard physiology presets or choose “Custom”.
@@ -74,11 +82,13 @@ You can now personalize the model with pilot-specific parameters from the UI or 
     - Consciousness and life reserves (bankcon, banklife, s)
 
 Notes:
+
 - When a standard `who` profile (1..6) is selected, the model’s internal `Subject()` routine overrides subject physiology (flows, BP, sex, height). Your countermeasure and state inputs still apply.
 - When “Custom” is selected, the app writes your physiology fields directly to the model input (equivalent to `who=0`).
 - The app caches results using both the maneuver and the pilot configuration, so different setups won’t conflict.
 
-### Programmatic use
+### Programmatic use 💻
+
 You can configure and run CGEM directly from Python using `PilotConfig`:
 
 ```python
@@ -121,7 +131,7 @@ Dehydration mapping (heuristic): decreases baseline/max BP and slightly reduces 
 
 ---
 
-## Contributors & Attribution
+## Contributors & Attribution 🙏
 
 - **Original model (FAA CGEM)**: Developed and maintained within the FAA Civil Aerospace Medical Institute (CAMI), AAM-631. Foundational work by Kyle Copeland (FAA CAMI) and collaborators; see source headers in `src/cgem.f` and the FAA report cited below.
 - **This fork and application layer**: **Dr. Diego Malpica** (Direction of Aerospace Medicine, Colombian Aerospace Force, Aerospace Scientific Department). ORCID: [0000-0002-2257-4940](https://orcid.org/0000-0002-2257-4940).
@@ -129,14 +139,16 @@ Dehydration mapping (heuristic): decreases baseline/max BP and slightly reduces 
 
 Please retain attribution to the FAA CGEM model and authors in derivative works and cite the original FAA report.
 
-## Acknowledgments
+## Acknowledgments 💡
+
 This work is built upon and inspired by foundational research conducted within the **Federal Aviation Administration (FAA)** Office of Aerospace Medicine and decades of operational physiology experience. We gratefully acknowledge the contributions of the **U.S. Military** community—aviators, aircrew, and allied professionals—who served both as scientists and as research participants in the studies underpinning this modeling approach. Their service and commitment to safety and science made this work possible.
 
 Special recognition is due to the FAA researchers and collaborators whose efforts developed, validated, and documented the CGEM approach and related physiology insights.
 
 ---
 
-## How to Cite
+## How to Cite 📝
+
 If you use this repository in academic or technical work, please cite the foundational FAA report:
 
 Malpica, D. (Developer). (2025). CGEM-based G-LOC Modeling and Visualization Suite [Computer software].
@@ -147,13 +159,15 @@ Copeland, K., & Whinnery, J. E. (2023). Cerebral blood flow-based computer model
 
 ---
 
-## Disclaimer
+## Disclaimer ⚠️
+
 - This toolkit is intended for research, education, and training support. It does not substitute for operational aeromedical guidance or certification processes.
 - This project is not an official product of the FAA or the U.S. Department of Defense. All views expressed are those of the contributors.
 
 ---
 
-## Repository Guide
+## Repository Guide 📁
+
 - `enhanced_app.py`: Streamlit UI for interactive modeling and visualization
 - `app.py`, `demo_example.py`: Additional demos and app entry points
 - `src/`: Core model code (e.g., CGEM implementation and related utilities)
@@ -163,7 +177,7 @@ Copeland, K., & Whinnery, J. E. (2023). Cerebral blood flow-based computer model
 
 ---
 
-## Running with Conda (recommended for science stacks)
+## Running with Conda (recommended for science stacks) 🧪
 
 Create an isolated Conda environment with all dependencies (CPU-only):
 
@@ -190,16 +204,18 @@ pip install "streamlit>=1.28"
 ```
 
 Run the app:
+
 ```bash
 streamlit run enhanced_app.py
 ```
 
 Note:
+
 - The CGEM Fortran executable (`cgem`) requires the GNU Fortran runtime. On Linux, ensure `libgfortran5` is installed (e.g., `sudo apt-get install -y libgfortran5`). Inside Conda environments this is typically resolved by the system’s shared libraries.
 
 ---
 
-## Dockerization
+## Dockerization 🐳
 
 Use Docker to run the app with a reproducible environment.
 
@@ -241,6 +257,7 @@ CMD ["streamlit", "run", "enhanced_app.py", "--server.port=8501", "--server.addr
 ```
 
 Then build:
+
 ```bash
 docker build -t cgem-app:latest .
 ```
@@ -256,6 +273,7 @@ Open the app at `http://localhost:8501`.
 ### 3) Development mounts (optional)
 
 To iterate on code without rebuilding:
+
 ```bash
 docker run --rm -p 8501:8501 \
   -v $(pwd):/app \
@@ -266,7 +284,7 @@ This mounts your working directory into the container.
 
 ---
 
-## Troubleshooting
+## Troubleshooting 🛠️
 
 - Missing `libgfortran.so.5` when running CGEM:
   - On Debian/Ubuntu: `sudo apt-get update && sudo apt-get install -y libgfortran5`
@@ -277,7 +295,8 @@ This mounts your working directory into the container.
 
 ---
 
-## Contact
+## Contact ✉️
+
 Questions, collaborations, or feedback are welcome.
 
 - Lead developer: **Dr. Diego Malpica**
