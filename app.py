@@ -10,7 +10,7 @@ from mpl_toolkits.mplot3d import Axes3D  # noqa: F401
 import streamlit as st
 
 from aerobatic_profiles import load_all_profiles, load_profile, PROFILES, Sample
-from cgem_wrapper import run_cgem_for_profile
+from cgem_wrapper import run_cgem_for_profile, PilotConfig
 
 st.set_page_config(page_title="Aerobatic G-Profile CGEM Demo", layout="wide")
 
@@ -42,8 +42,8 @@ for s in samples:
 points_t = [t / 1000.0 for t in points_t]
 
 @st.cache_data(show_spinner=False)
-def cached_run(profile_id: str):
-    result, tmp_dir = run_cgem_for_profile(profile_id)
+def cached_run(profile_id: str, pilot_cfg_key: str, pilot_cfg: PilotConfig):
+    result, tmp_dir = run_cgem_for_profile(profile_id, config=pilot_cfg)
     # Return only serializable bits to cache
     data = {
         "times_s": result.times_s or [],
@@ -87,10 +87,71 @@ with tab1:
 with tab2:
     st.subheader("CGEM Model Prediction (Healthy, midrange subject)")
 
+    st.markdown("#### Pilot configuration")
+    colA, colB, colC = st.columns(3)
+    with colA:
+        who_choice = st.selectbox(
+            "Standard subject profile",
+            ["Custom", "Best male (1)", "Midrange male (2)", "Worst male (3)",
+             "Best female (4)", "Midrange female (5)", "Worst female (6)"],
+            index=2,
+        )
+        who_map = {"Best male (1)": 1, "Midrange male (2)": 2, "Worst male (3)": 3,
+                   "Best female (4)": 4, "Midrange female (5)": 5, "Worst female (6)": 6}
+        who_profile = who_map.get(who_choice)
+        dehydration = st.slider("Dehydration level", 0.0, 1.0, 0.0, 0.1)
+        seat_tilt = st.number_input("Seat tilt (deg)", 0.0, 45.0, 10.0, 1.0)
+        drug_delay = st.number_input("Drug-induced HR delay (s)", 0.0, 10.0, 0.0, 0.5)
+    with colB:
+        gsuit_psi = st.number_input("G-suit max pressure (PSI)", 0.0, 20.0, 0.0, 0.5)
+        gsuit_cov = st.slider("G-suit coverage (fraction)", 0.0, 0.7, 0.0, 0.05)
+        agsm = st.slider("AGSM effectiveness", 0.0, 1.0, 0.0, 0.05)
+        pbg = st.number_input("Pressure breathing max (mmHg)", 0.0, 60.0, 0.0, 1.0)
+    with colC:
+        other_strain = st.number_input("Pre-test other strain HLAP (mmHg)", 0.0, 60.0, 0.0, 1.0)
+        tensing_limit = st.number_input("Non-AGSM tensing limit (mmHg)", 0.0, 60.0, 0.0, 1.0)
+        if who_profile is None:
+            st.markdown("— Custom subject details —")
+            male = st.selectbox("Sex", ["Male", "Female"], index=0)
+            height_cm = st.number_input("Height (cm)", 150.0, 205.0, 179.0, 0.5)
+            bsp = st.number_input("Baseline systolic BP", 80.0, 180.0, 120.0, 1.0)
+            bdp = st.number_input("Baseline diastolic BP", 50.0, 110.0, 80.0, 1.0)
+            msp = st.number_input("Max systolic BP", 120.0, 260.0, 177.0, 1.0)
+            mdp = st.number_input("Max diastolic BP", 56.0, 140.0, 80.0, 1.0)
+            gtm = st.number_input("G tolerance multiplier", 0.8, 1.6, 1.0, 0.01)
+            beta = st.number_input("Heart response tau (s)", 1.0, 6.0, 2.5, 0.1)
+            conbank = st.number_input("Consciousness reserve (s)", 5.0, 20.0, 7.1, 0.1)
+            lifebank = st.number_input("Life reserve (s)", 120.0, 300.0, 180.0, 1.0)
+        else:
+            male = None; height_cm = None; bsp = None; bdp = None; msp = None; mdp = None; gtm = None; beta = None; conbank=None; lifebank=None
+
+    pilot_cfg = PilotConfig(
+        who_profile=who_profile,
+        male=1 if male == "Male" else 0 if who_profile is None else None,
+        height_cm=height_cm if who_profile is None else None,
+        baseline_systolic_bp=bsp if who_profile is None else None,
+        baseline_diastolic_bp=bdp if who_profile is None else None,
+        max_systolic_bp=msp if who_profile is None else None,
+        max_diastolic_bp=mdp if who_profile is None else None,
+        g_tolerance_multiplier=gtm if who_profile is None else None,
+        heart_response_tau_s=beta if who_profile is None else None,
+        conbank_s=conbank if who_profile is None else None,
+        lifebank_s=lifebank if who_profile is None else None,
+        gsuit_max_psi=gsuit_psi,
+        gsuit_coverage_fraction=gsuit_cov,
+        agsm_effectiveness=agsm,
+        pbg_max_mmhg=pbg,
+        pretest_other_strain_mmhg=other_strain,
+        non_agsm_tensing_limit_mmhg=tensing_limit,
+        seat_tilt_deg=seat_tilt,
+        drug_delay_s=drug_delay,
+        dehydration_level=dehydration,
+    )
+
     if st.button("Run CGEM Prediction", type="primary"):
         with st.spinner("Running CGEM model..."):
             try:
-                data, tmp_dir = cached_run(selected_key)
+                data, tmp_dir = cached_run(selected_key, pilot_cfg_key=pilot_cfg.to_cache_key(), pilot_cfg=pilot_cfg)
             except Exception as exc:
                 st.error(f"Model run failed: {exc}")
             else:

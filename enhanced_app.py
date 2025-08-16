@@ -18,7 +18,7 @@ from matplotlib.patches import Rectangle
 import seaborn as sns
 
 from aerobatic_profiles import load_all_profiles, load_profile, PROFILES, Sample
-from cgem_wrapper import run_cgem_for_profile, CGEMResult
+from cgem_wrapper import run_cgem_for_profile, CGEMResult, PilotConfig
 
 # Configure page
 st.set_page_config(
@@ -590,8 +590,8 @@ points_t = [t / 1000.0 for t in points_t]
 
 # Cache CGEM results
 @st.cache_data(show_spinner=False)
-def cached_run(profile_id: str):
-    result, tmp_dir = run_cgem_for_profile(profile_id)
+def cached_run(profile_id: str, pilot_cfg_key: str, pilot_cfg: PilotConfig):
+    result, tmp_dir = run_cgem_for_profile(profile_id, config=pilot_cfg)
     data = {
         "times_s": result.times_s or [],
         "g_values": result.g_values or [],
@@ -647,10 +647,72 @@ with tab1:
 with tab2:
     st.subheader("🧬 Advanced Physiological Analysis")
     
+    st.markdown("#### 👨‍✈️ Pilot configuration")
+    colA, colB, colC = st.columns(3)
+    with colA:
+        who_choice = st.selectbox(
+            "Standard subject profile",
+            ["Custom", "Best male (1)", "Midrange male (2)", "Worst male (3)",
+             "Best female (4)", "Midrange female (5)", "Worst female (6)"],
+            index=2,
+            key="who_sel"
+        )
+        who_map = {"Best male (1)": 1, "Midrange male (2)": 2, "Worst male (3)": 3,
+                   "Best female (4)": 4, "Midrange female (5)": 5, "Worst female (6)": 6}
+        who_profile = who_map.get(who_choice)
+        dehydration = st.slider("Dehydration level", 0.0, 1.0, 0.0, 0.1, key="dehydr")
+        seat_tilt = st.number_input("Seat tilt (deg)", 0.0, 45.0, 10.0, 1.0, key="seat")
+        drug_delay = st.number_input("Drug-induced HR delay (s)", 0.0, 10.0, 0.0, 0.5, key="drug")
+    with colB:
+        gsuit_psi = st.number_input("G-suit max pressure (PSI)", 0.0, 20.0, 0.0, 0.5, key="gpsi")
+        gsuit_cov = st.slider("G-suit coverage (fraction)", 0.0, 0.7, 0.0, 0.05, key="gcov")
+        agsm = st.slider("AGSM effectiveness", 0.0, 1.0, 0.0, 0.05, key="agsm")
+        pbg = st.number_input("Pressure breathing max (mmHg)", 0.0, 60.0, 0.0, 1.0, key="pbg")
+    with colC:
+        other_strain = st.number_input("Pre-test other strain HLAP (mmHg)", 0.0, 60.0, 0.0, 1.0, key="ostr")
+        tensing_limit = st.number_input("Non-AGSM tensing limit (mmHg)", 0.0, 60.0, 0.0, 1.0, key="tnlm")
+        if who_profile is None:
+            st.markdown("— Custom subject details —")
+            male = st.selectbox("Sex", ["Male", "Female"], index=0, key="sex")
+            height_cm = st.number_input("Height (cm)", 150.0, 205.0, 179.0, 0.5, key="ht")
+            bsp = st.number_input("Baseline systolic BP", 80.0, 180.0, 120.0, 1.0, key="bsp")
+            bdp = st.number_input("Baseline diastolic BP", 50.0, 110.0, 80.0, 1.0, key="bdp")
+            msp = st.number_input("Max systolic BP", 120.0, 260.0, 177.0, 1.0, key="msp")
+            mdp = st.number_input("Max diastolic BP", 56.0, 140.0, 80.0, 1.0, key="mdp")
+            gtm = st.number_input("G tolerance multiplier", 0.8, 1.6, 1.0, 0.01, key="gtm")
+            beta = st.number_input("Heart response tau (s)", 1.0, 6.0, 2.5, 0.1, key="beta")
+            conbank = st.number_input("Consciousness reserve (s)", 5.0, 20.0, 7.1, 0.1, key="conb")
+            lifebank = st.number_input("Life reserve (s)", 120.0, 300.0, 180.0, 1.0, key="lifeb")
+        else:
+            male = None; height_cm = None; bsp = None; bdp = None; msp = None; mdp = None; gtm = None; beta = None; conbank=None; lifebank=None
+
+    pilot_cfg = PilotConfig(
+        who_profile=who_profile,
+        male=1 if male == "Male" else 0 if who_profile is None else None,
+        height_cm=height_cm if who_profile is None else None,
+        baseline_systolic_bp=bsp if who_profile is None else None,
+        baseline_diastolic_bp=bdp if who_profile is None else None,
+        max_systolic_bp=msp if who_profile is None else None,
+        max_diastolic_bp=mdp if who_profile is None else None,
+        g_tolerance_multiplier=gtm if who_profile is None else None,
+        heart_response_tau_s=beta if who_profile is None else None,
+        conbank_s=conbank if who_profile is None else None,
+        lifebank_s=lifebank if who_profile is None else None,
+        gsuit_max_psi=gsuit_psi,
+        gsuit_coverage_fraction=gsuit_cov,
+        agsm_effectiveness=agsm,
+        pbg_max_mmhg=pbg,
+        pretest_other_strain_mmhg=other_strain,
+        non_agsm_tensing_limit_mmhg=tensing_limit,
+        seat_tilt_deg=seat_tilt,
+        drug_delay_s=drug_delay,
+        dehydration_level=dehydration,
+    )
+
     if st.button("🚀 Run CGEM Physiological Simulation", type="primary", key="run_sim"):
         with st.spinner("Running physiological simulation..."):
             try:
-                data, tmp_dir = cached_run(selected_key)
+                data, tmp_dir = cached_run(selected_key, pilot_cfg_key=pilot_cfg.to_cache_key(), pilot_cfg=pilot_cfg)
                 
                 # Create result object for analysis
                 result = CGEMResult(
@@ -733,7 +795,7 @@ with tab3:
     
     # Run simulation if not already done
     try:
-        data, _ = cached_run(selected_key)
+        data, _ = cached_run(selected_key, pilot_cfg_key=pilot_cfg.to_cache_key(), pilot_cfg=pilot_cfg)
         result = CGEMResult(
             time_to_greyout_s=data["time_to_greyout_s"],
             time_to_blackout_s=data["time_to_blackout_s"],
@@ -760,7 +822,7 @@ with tab4:
             progress_bar.progress((idx + 1) / len(profile_keys))
             
             try:
-                data, _ = cached_run(key)
+                data, _ = cached_run(key, pilot_cfg_key=pilot_cfg.to_cache_key(), pilot_cfg=pilot_cfg)
                 comparison_data.append({
                     "Maneuver": key.replace("_", " ").title(),
                     "Max G": max(data["g_values"]) if data["g_values"] else 0,

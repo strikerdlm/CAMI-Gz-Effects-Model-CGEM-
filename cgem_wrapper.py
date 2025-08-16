@@ -3,7 +3,7 @@ from __future__ import annotations
 import shutil
 import subprocess
 import tempfile
-from dataclasses import dataclass
+from dataclasses import dataclass, asdict
 from pathlib import Path
 import sys
 from typing import Dict, List, Optional, Tuple
@@ -62,6 +62,53 @@ class CGEMResult:
     flags_non2: Optional[List[int]] = None  # blackout flag
 
 
+@dataclass(frozen=True)
+class PilotConfig:
+    """Pilot/subject configuration for CGEM.
+
+    If who_profile is provided (1..6), the Fortran model will override
+    subject physiology (flows, BP, sex, height) to that standard profile.
+    In that case, only countermeasures and other non-subject parameters
+    (e.g., suit, AGSM, PBG, seat tilt, drug delay) will be applied.
+
+    If who_profile is None, a custom subject is used (who=0) and all
+    provided fields will be written into gloc_inp.dat.
+    """
+    # Standard subject selection (1..6) or None for custom
+    who_profile: Optional[int] = 2
+
+    # Subject physiology (used when who_profile is None)
+    male: Optional[int] = 1  # 1 male, 0 female
+    height_cm: Optional[float] = 179.0
+    baseline_systolic_bp: Optional[float] = 120.0
+    baseline_diastolic_bp: Optional[float] = 80.0
+    max_systolic_bp: Optional[float] = 177.0
+    max_diastolic_bp: Optional[float] = 80.0
+    g_tolerance_multiplier: Optional[float] = 1.0  # gtm
+    heart_response_tau_s: Optional[float] = 2.5  # beta
+    # Consciousness and life reserves (seconds)
+    conbank_s: Optional[float] = 7.1
+    lifebank_s: Optional[float] = 180.0
+
+    # Countermeasures and state
+    gsuit_max_psi: float = 0.0
+    gsuit_coverage_fraction: float = 0.0  # 0.0 - 0.7
+    agsm_effectiveness: float = 0.0  # 0..1
+    pbg_max_mmhg: float = 0.0  # 0..60
+    pretest_other_strain_mmhg: float = 0.0  # 0..60
+    non_agsm_tensing_limit_mmhg: float = 0.0  # 0..60
+    seat_tilt_deg: float = 10.0  # from vertical
+    drug_delay_s: float = 0.0
+
+    # Dehydration level as fraction 0.0 (none) .. 1.0 (severe)
+    dehydration_level: float = 0.0
+
+    def to_cache_key(self) -> str:
+        # Simple stable string for streamlit cache keys
+        d: Dict[str, object] = asdict(self)
+        # Convert None to a JSON-friendly null via repr
+        return str(sorted(d.items()))
+
 def _profile_to_egp_lines(samples: List[Sample], g0: float = 1.0) -> List[Tuple[float, int]]:
     """Convert Nz/duration_ms samples to CGEM EGP entries (dgdt[G/s], ms).
 
@@ -97,7 +144,12 @@ def _write_egp_file(egp_lines: List[Tuple[float, int]], path: Path) -> None:
             f.write(f"{dgdt:.6g}, {int(ms)}\n")
 
 
-def _prepare_gloc_inp(temp_dir: Path, egp_name: str = "input.egp", out_name: str = "output.out") -> None:
+def _prepare_gloc_inp(
+    temp_dir: Path,
+    egp_name: str = "input.egp",
+    out_name: str = "output.out",
+    config: Optional[PilotConfig] = None,
+) -> None:
     """Copy base gloc_inp.dat into temp_dir and set custom profile I/O names.
 
     We assume base file has the standard structure (lines 30-32 control gfile and names).
@@ -116,12 +168,99 @@ def _prepare_gloc_inp(temp_dir: Path, egp_name: str = "input.egp", out_name: str
     # 30: gfile (0 or 1)
     # 31: egpname (12 char max)
     # 32: egpoutname (12 char max)
+    def _set_line(idx0: int, value_str: str) -> None:
+        # idx0 is 0-based line index
+        if idx0 < 0 or idx0 >= len(lines):
+            return
+        # Preserve any comment after the first comma
+        if "," in lines[idx0]:
+            _, comment = lines[idx0].split(",", 1)
+            lines[idx0] = f"{value_str},{comment}"
+        else:
+            lines[idx0] = value_str
+
     # Set gfile to 1 (use custom experimental profile), then set names
-    lines[29] = "1, \"0 or 1, use a internal/custom experimental profile\""
-    lines[30] = egp_name
-    lines[31] = out_name
+    _set_line(29, "1")
+    _set_line(30, egp_name)
+    _set_line(31, out_name)
+
+    # Apply subject and countermeasure overrides
+    if config is not None:
+        # who_profile: if provided (1..6), use standard subject. else custom.
+        who = config.who_profile if config.who_profile in (1, 2, 3, 4, 5, 6) else 0
+        _set_line(28, str(who))  # who at 1-based line 29 -> 0-based index 28
+
+        # Countermeasures and other non-subject parameters (always applicable)
+        _set_line(19, f"{float(config.gsuit_max_psi):.1f}")  # line 20 smpsi
+        _set_line(20, f"{float(config.gsuit_coverage_fraction):.2f}")  # 21 sbc
+        _set_line(21, f"{float(config.agsm_effectiveness):.2f}")  # 22 agsm
+        _set_line(22, f"{float(config.pbg_max_mmhg):.1f}")  # 23 pbg
+        _set_line(23, f"{float(config.pretest_other_strain_mmhg):.1f}")  # 24 otherstrain
+        _set_line(24, f"{float(config.non_agsm_tensing_limit_mmhg):.1f}")  # 25 tenlim
+        _set_line(25, f"{float(config.seat_tilt_deg):.1f}")  # 26 seattilt
+        _set_line(26, f"{float(config.drug_delay_s):.1f}")  # 27 Drugdelay
+
+        if who == 0:
+            # Custom subject: write all subject physiology fields
+            male_val = 1 if (config.male is None or int(config.male) == 1) else 0
+            _set_line(17, str(int(male_val)))  # 18 male
+            _set_line(18, f"{float(config.height_cm if config.height_cm is not None else 179.0):.1f}")  # 19 height
+
+            # Baseline and max BPs
+            bsp = float(config.baseline_systolic_bp or 120.0)
+            bdp = float(config.baseline_diastolic_bp or 80.0)
+            msp = float(config.max_systolic_bp or 177.0)
+            mdp = float(config.max_diastolic_bp or 80.0)
+
+            # Adjust for dehydration fractionally: reduce BPs modestly and normal flow
+            dehydr = max(0.0, min(1.0, float(config.dehydration_level)))
+            if dehydr > 0:
+                # empirical simple adjustments
+                bsp -= 10.0 * dehydr
+                bdp -= 5.0 * dehydr
+                msp -= 10.0 * dehydr
+                mdp -= 5.0 * dehydr
+
+            _set_line(8, f"{bsp:.1f}")  # 9 BSP
+            _set_line(9, f"{bdp:.1f}")  # 10 BDP
+            _set_line(10, f"{msp:.1f}")  # 11 MSP
+            _set_line(11, f"{mdp:.1f}")  # 12 MDP
+
+            # Flow parameters and reserves
+            fnorm = float(_extract_numeric(lines[2], default=49.5))
+            fmax = float(_extract_numeric(lines[3], default=110.0))
+            fcon = float(_extract_numeric(lines[4], default=19.0))
+            flife = float(_extract_numeric(lines[5], default=9.0))
+            # Apply dehydration to flows (reduce normal and max flows)
+            if dehydr > 0:
+                fnorm *= (1.0 - 0.10 * dehydr)  # up to 10% reduction
+                fmax *= (1.0 - 0.10 * dehydr)
+
+            _set_line(2, f"{fnorm:.1f}")  # 3 fnorm
+            _set_line(3, f"{fmax:.1f}")  # 4 fmax
+            _set_line(4, f"{fcon:.1f}")  # 5 fcon
+            _set_line(5, f"{flife:.1f}")  # 6 flife
+
+            gtm = float(config.g_tolerance_multiplier or 1.0)
+            beta = float(config.heart_response_tau_s or 2.5)
+            _set_line(6, f"{gtm:.2f}")  # 7 gtm
+            _set_line(7, f"{beta:.2f}")  # 8 beta
+
+            conbank = float(config.conbank_s or 7.1)
+            lifebank = float(config.lifebank_s or 180.0)
+            _set_line(12, f"{conbank:.1f}")  # 13 conbank
+            _set_line(13, f"{lifebank:.1f}")  # 14 lifebank
+
 
     dst.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
+def _extract_numeric(line: str, default: float = 0.0) -> float:
+    try:
+        token = line.split(",", 1)[0].strip()
+        return float(token)
+    except Exception:
+        return default
 
 
 def _run_cgem(temp_dir: Path) -> None:
@@ -215,7 +354,7 @@ def _parse_cgem_output(out_path: Path) -> CGEMResult:
     )
 
 
-def run_cgem_for_profile(profile_id: str) -> Tuple[CGEMResult, Path]:
+def run_cgem_for_profile(profile_id: str, config: Optional[PilotConfig] = None) -> Tuple[CGEMResult, Path]:
     """Run CGEM on a given aerobatic profile identifier.
 
     Returns: (CGEMResult, temp_dir_path) for inspection. Caller may clean up.
@@ -231,7 +370,7 @@ def run_cgem_for_profile(profile_id: str) -> Tuple[CGEMResult, Path]:
         # Prepare files
         egp_path = temp_dir / "input.egp"
         _write_egp_file(egp_lines, egp_path)
-        _prepare_gloc_inp(temp_dir, egp_name="input.egp", out_name="output.out")
+        _prepare_gloc_inp(temp_dir, egp_name="input.egp", out_name="output.out", config=config)
 
         # Run CGEM
         _run_cgem(temp_dir)
