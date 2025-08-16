@@ -23,7 +23,7 @@ from cgem_wrapper import run_cgem_for_profile, CGEMResult, PilotConfig
 
 # Configure page
 st.set_page_config(
-    page_title="Advanced Aerobatic G-Profile Physiological Analysis",
+    page_title="G-Effects Model — Civil Aerospace Medicine Institute",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -35,17 +35,22 @@ st.markdown("""
         padding: 0rem 1rem;
     }
     .stMetric {
-        background-color: #f0f2f6;
+        background-color: #f8fafc;
         padding: 10px;
-        border-radius: 5px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        border-radius: 6px;
+        border: 1px solid #e5e7eb;
     }
     h1 {
-        color: #1976d2;
+        color: #0f172a;
+        letter-spacing: 0.2px;
     }
     h2 {
-        color: #2e7d32;
+        color: #334155;
+        letter-spacing: 0.2px;
     }
+    /* Tabs: slightly tighter and professional */
+    div.stTabs [data-baseweb="tab-list"] { gap: 0.5rem; }
+    div.stTabs [data-baseweb="tab"] { font-size: 0.95rem; padding: 0.3rem 0.6rem; }
     .warning-box {
         background-color: #fff3cd;
         border: 1px solid #ffc107;
@@ -843,11 +848,11 @@ def render_echarts_dashboard(times: List[float], g_values: List[float], geff_val
     components.html(html, height=height_value, scrolling=True)
 
 # Main application
-st.title("🚀 Advanced Aerobatic G-Profile Physiological Analysis System")
-st.markdown("### Comprehensive visualization of physiological changes during flight maneuvers")
+st.title("G-Effects Model by Civil Aerospace Medicine Institute")
+st.markdown("### Comprehensive visualization of physiological responses during flight maneuvers")
 
 # Sidebar configuration
-st.sidebar.header("🎯 Configuration")
+st.sidebar.header("Configuration")
 
 # Profile selection
 profiles = load_all_profiles()
@@ -862,7 +867,7 @@ filename, description = PROFILES[selected_key]
 st.sidebar.markdown(f"**Description**: {description}")
 
 # Pilot profile selection
-st.sidebar.subheader("👨‍✈️ Pilot Profile")
+st.sidebar.subheader("Pilot Profile")
 pilot_type = st.sidebar.selectbox(
     "Pilot Training Level",
     ["Untrained", "Basic Training", "Advanced Training", "Fighter Pilot"],
@@ -870,7 +875,7 @@ pilot_type = st.sidebar.selectbox(
 )
 
 # Visualization options
-st.sidebar.subheader("📊 Visualization Options")
+st.sidebar.subheader("Visualization Options")
 show_2d = st.sidebar.checkbox("2D Physiological Plots", value=True)
 show_3d = st.sidebar.checkbox("3D Trajectory Plot", value=True)
 show_animated = st.sidebar.checkbox("Animated Timeline", value=True)
@@ -910,12 +915,12 @@ def cached_run(profile_id: str, pilot_cfg_key: str, pilot_cfg: PilotConfig):
 
 # Main content area
 tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
-    "📈 Profile Overview", 
-    "🧬 Physiological Analysis", 
-    "🎯 Maneuver Details",
-    "📊 Comparative Analysis",
-    "📊 ECharts Dashboard",
-    "📚 Educational Resources"
+    "Profile Overview", 
+    "Physiological Analysis", 
+    "Maneuver Details",
+    "Comparative Analysis",
+    "ECharts Dashboard",
+    "Educational Resources"
 ])
 
 with tab1:
@@ -949,9 +954,9 @@ with tab1:
     col5.metric("G Range", f"{max(g_vals) - min(g_vals):.1f}")
 
 with tab2:
-    st.subheader("🧬 Advanced Physiological Analysis")
+    st.subheader("Advanced Physiological Analysis")
     
-    st.markdown("#### 👨‍✈️ Pilot configuration")
+    st.markdown("#### Pilot configuration")
     colA, colB, colC = st.columns(3)
     with colA:
         PROFILE_DEFS = {
@@ -1029,7 +1034,7 @@ with tab2:
         dehydration_level=dehydration,
     )
 
-    if st.button("🚀 Run CGEM Physiological Simulation", type="primary", key="run_sim"):
+    if st.button("Run CGEM Physiological Simulation", type="primary", key="run_sim"):
         with st.spinner("Running physiological simulation..."):
             try:
                 data, tmp_dir = cached_run(selected_key, pilot_cfg_key=pilot_cfg.to_cache_key(), pilot_cfg=pilot_cfg)
@@ -1048,30 +1053,30 @@ with tab2:
                 )
                 
                 # Display critical events
-                st.markdown("### ⚠️ Critical Physiological Events")
+                st.markdown("### Critical Physiological Events")
                 col1, col2, col3 = st.columns(3)
                 
                 with col1:
                     if data["time_to_greyout_s"]:
-                        st.error(f"🔴 Greyout at {data['time_to_greyout_s']:.2f}s")
+                        st.error(f"Greyout at {data['time_to_greyout_s']:.2f}s")
                     else:
-                        st.success("✅ No Greyout")
+                        st.success("No Greyout")
                 
                 with col2:
                     if data["time_to_blackout_s"]:
-                        st.error(f"⚫ Blackout at {data['time_to_blackout_s']:.2f}s")
+                        st.error(f"Blackout at {data['time_to_blackout_s']:.2f}s")
                     else:
-                        st.success("✅ No Blackout")
+                        st.success("No Blackout")
                 
                 with col3:
                     if data["time_to_gloc_s"]:
-                        st.error(f"💀 G-LOC at {data['time_to_gloc_s']:.2f}s")
+                        st.error(f"G-LOC at {data['time_to_gloc_s']:.2f}s")
                     else:
-                        st.success("✅ No G-LOC")
+                        st.success("No G-LOC")
                 
                 # Display selected visualizations
                 if show_2d:
-                    st.markdown("### 📊 2D Physiological Analysis")
+                    st.markdown("### 2D Physiological Analysis")
                     fig_2d = create_2d_physiological_plot(
                         data["times_s"], data["g_values"], 
                         data["geff_values"], selected_key
@@ -1079,7 +1084,7 @@ with tab2:
                     st.plotly_chart(fig_2d, use_container_width=True)
                 
                 if show_3d:
-                    st.markdown("### 🎯 3D Physiological Trajectory")
+                    st.markdown("### 3D Physiological Trajectory")
                     fig_3d = create_3d_trajectory_plot(
                         data["times_s"], data["g_values"],
                         data["geff_values"], data["flags_n2"],
@@ -1088,7 +1093,7 @@ with tab2:
                     st.plotly_chart(fig_3d, use_container_width=True)
                 
                 if show_animated:
-                    st.markdown("### 🎬 Animated Physiological Response")
+                    st.markdown("### Animated Physiological Response")
                     fig_anim = create_animated_plot(
                         data["times_s"], data["g_values"],
                         data["geff_values"], selected_key
@@ -1096,12 +1101,12 @@ with tab2:
                     st.plotly_chart(fig_anim, use_container_width=True)
                 
                 if show_heatmap:
-                    st.markdown("### 🌡️ Physiological Parameters Heatmap")
+                    st.markdown("### Physiological Parameters Heatmap")
                     fig_heat = create_physiological_heatmap(result, selected_key)
                     st.plotly_chart(fig_heat, use_container_width=True)
                 
                 if show_cardiovascular:
-                    st.markdown("### ❤️ Cardiovascular Response Estimation")
+                    st.markdown("### Cardiovascular Response Estimation")
                     fig_cardio = create_cardiovascular_response_plot(
                         data["times_s"], data["g_values"], data["geff_values"]
                     )
@@ -1111,7 +1116,7 @@ with tab2:
                 st.error(f"Simulation failed: {exc}")
 
 with tab3:
-    st.subheader(f"📋 Detailed Analysis: {selected_key.replace('_', ' ').title()}")
+    st.subheader(f"Detailed Analysis: {selected_key.replace('_', ' ').title()}")
     
     # Run simulation if not already done
     try:
@@ -1132,9 +1137,9 @@ with tab3:
         st.info("Run the physiological simulation first to see detailed analysis.")
 
 with tab4:
-    st.subheader("📊 Comparative Analysis Across All Maneuvers")
+    st.subheader("Comparative Analysis Across All Maneuvers")
     
-    if st.button("🔄 Run Batch Analysis", type="secondary"):
+    if st.button("Run Batch Analysis", type="secondary"):
         comparison_data = []
         
         progress_bar = st.progress(0)
@@ -1181,7 +1186,7 @@ with tab4:
                 st.plotly_chart(fig, use_container_width=True)
 
 with tab5:
-    st.subheader("📊 ECharts Scientific Dashboard")
+    st.subheader("ECharts Scientific Dashboard")
     st.caption("Powered by Apache ECharts; prefers local `node_modules/echarts` when available.")
     # Layout controls
     colL, colR = st.columns([1, 2])
@@ -1204,9 +1209,9 @@ with tab5:
         st.error(f"Unable to render ECharts dashboard: {exc}")
 
 with tab6:
-    st.subheader("📚 Educational Resources")
+    st.subheader("Educational Resources")
     
-    with st.expander("🧬 Understanding G-Forces and Physiology"):
+    with st.expander("Understanding G-Forces and Physiology"):
         st.markdown("""
         ### What are G-Forces?
         G-forces represent the acceleration relative to Earth's gravity. 1G is normal Earth gravity.
@@ -1223,7 +1228,7 @@ with tab6:
         - **Redout**: < -2G - Blood vessel rupture risk
         """)
     
-    with st.expander("🛡️ G-Force Mitigation Techniques"):
+    with st.expander("G-Force Mitigation Techniques"):
         st.markdown("""
         ### Anti-G Straining Maneuver (AGSM):
         1. Tense leg and abdominal muscles
@@ -1241,7 +1246,7 @@ with tab6:
         - Breathing technique practice
         """)
     
-    with st.expander("📊 Understanding the Visualizations"):
+    with st.expander("Understanding the Visualizations"):
         st.markdown("""
         ### 2D Plots:
         - **Top graph**: Shows actual G-forces with safety zones
@@ -1261,7 +1266,7 @@ with tab6:
         - Quickly identify critical periods
         """)
 
-    with st.expander("📑 Comprehensive Review of Sustained Acceleration Physiology"):
+    with st.expander("Comprehensive Review of Sustained Acceleration Physiology"):
         st.markdown("""
 ### Introduction
 
