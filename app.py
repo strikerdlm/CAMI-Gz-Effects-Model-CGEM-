@@ -262,3 +262,7 @@ with tab3:
 st.sidebar.info(
     "Predictions use the published CGEM v1.1.0.1 Fortran model with the midrange male subject profile (who=2)."
 )
+
+# Global footer
+st.markdown("---")
+st.caption("Developer for 'Fuerza Aeroespacial Colombiana': Dr. Diego Malpica, Direction of Aerospace Medicine.")

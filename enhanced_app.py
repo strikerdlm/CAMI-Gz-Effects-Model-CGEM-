@@ -1158,3 +1158,7 @@ st.sidebar.markdown("""
 - **Default Subject**: Male: median physiology (who=2)
 - **Purpose**: Educational/Research
 """)
+
+# Global footer
+st.markdown("---")
+st.caption("Developer for 'Fuerza Aeroespacial Colombiana': Dr. Diego Malpica, Direction of Aerospace Medicine.")
