@@ -13,6 +13,7 @@ import plotly.graph_objects as go
 import plotly.express as px
 from plotly.subplots import make_subplots
 import streamlit as st
+import streamlit.components.v1 as components
 from matplotlib.animation import FuncAnimation
 from matplotlib.patches import Rectangle
 import seaborn as sns
@@ -539,6 +540,308 @@ def create_cardiovascular_response_plot(times: List[float], g_values: List[float
     
     return fig
 
+def _classify_state(g: float, geff: float) -> str:
+    state, _ = get_physiological_state(g, geff)
+    if g < PHYSIOLOGICAL_THRESHOLDS["redout_g"]:
+        return "redout"
+    if geff >= PHYSIOLOGICAL_THRESHOLDS["gloc_geff"]:
+        return "gloc"
+    if geff >= PHYSIOLOGICAL_THRESHOLDS["blackout_geff"]:
+        return "blackout"
+    if geff >= PHYSIOLOGICAL_THRESHOLDS["greyout_geff"]:
+        return "greyout"
+    if state == "normal":
+        return "normal"
+    return "caution"
+
+def _compute_state_durations(times: List[float], g_values: List[float], geff_values: List[float]) -> Dict[str, float]:
+    if not times or not g_values or not geff_values or len(times) != len(g_values) or len(times) != len(geff_values):
+        return {k: 0.0 for k in ["normal", "caution", "greyout", "blackout", "gloc", "redout"]}
+    durations: Dict[str, float] = {"normal": 0.0, "caution": 0.0, "greyout": 0.0, "blackout": 0.0, "gloc": 0.0, "redout": 0.0}
+    for i in range(len(times) - 1):
+        dt = max(0.0, times[i+1] - times[i])
+        state = _classify_state(float(g_values[i]), float(geff_values[i]))
+        durations[state] += dt
+    return durations
+
+def _load_local_echarts_js() -> Optional[str]:
+    candidates = [
+        Path("node_modules") / "echarts" / "dist" / "echarts.min.js",
+        Path.cwd() / "node_modules" / "echarts" / "dist" / "echarts.min.js",
+    ]
+    for p in candidates:
+        try:
+            if p.exists():
+                return p.read_text(encoding="utf-8")
+        except Exception:
+            continue
+    return None
+
+def render_echarts_dashboard(times: List[float], g_values: List[float], geff_values: List[float],
+                             flags_n2: List[int], profile_name: str,
+                             layout_mode: str = "Grid", chart_choice: Optional[str] = None):
+    if not times or not g_values or not geff_values:
+        st.info("Run the physiological simulation first to populate the ECharts dashboard.")
+        return
+
+    durations = _compute_state_durations(times, g_values, geff_values)
+
+    # Histogram data
+    try:
+        bins = 20
+        hist_counts, hist_edges = np.histogram(np.array(g_values, dtype=float), bins=bins)
+        hist_labels = [f"{hist_edges[i]:.1f}–{hist_edges[i+1]:.1f}" for i in range(len(hist_edges)-1)]
+        hist_values = hist_counts.tolist()
+    except Exception:
+        hist_labels, hist_values = [], []
+
+    # Heatmap for flags (consciousness, vision, blackout proxies)
+    heat_params = ["Consciousness", "Vision", "Blackout"]
+    heat_matrix = []
+    flag_len = len(times)
+    cons = [(1 - int(flags_n2[i])) if i < len(flags_n2) else 1 for i in range(flag_len)]
+    vision = cons
+    blackout = [(1 if _classify_state(float(g_values[i]), float(geff_values[i])) in ("blackout", "gloc") else 0) for i in range(flag_len)]
+    heat_matrix.append(cons)
+    heat_matrix.append(vision)
+    heat_matrix.append(blackout)
+
+    # Radar metrics
+    time_above_greyout = sum(max(0.0, times[i+1] - times[i]) for i in range(len(times)-1) if geff_values[i] >= PHYSIOLOGICAL_THRESHOLDS["greyout_geff"]) if len(times) > 1 else 0.0
+    time_below_redout = sum(max(0.0, times[i+1] - times[i]) for i in range(len(times)-1) if g_values[i] < PHYSIOLOGICAL_THRESHOLDS["redout_g"]) if len(times) > 1 else 0.0
+    weighted_mean_g = float(np.average(g_values, weights=np.diff(times + [times[-1] + 1e-9])) if len(times) > 1 else np.mean(g_values))
+
+    radar_schema = [
+        {"name": "Max G", "max": max(10.0, float(max(g_values)) + 1.0)},
+        {"name": "Max G_eff", "max": max(10.0, float(max(geff_values)) + 1.0)},
+        {"name": "> Greyout (s)", "max": max(1.0, float(time_above_greyout) * 1.2)},
+        {"name": "< Redout (s)", "max": max(1.0, float(time_below_redout) * 1.2)},
+        {"name": "Mean G", "max": max(10.0, abs(float(weighted_mean_g)) * 2.0 + 1.0)},
+    ]
+    radar_values = [
+        float(max(g_values)),
+        float(max(geff_values)),
+        float(time_above_greyout),
+        float(time_below_redout),
+        float(abs(weighted_mean_g)),
+    ]
+
+    # Scatter coloring by state
+    scatter_points = [
+        {
+            "g": float(g_values[i]),
+            "geff": float(geff_values[i]),
+            "state": _classify_state(float(g_values[i]), float(geff_values[i]))
+        }
+        for i in range(len(times))
+    ]
+
+    payload = {
+        "times": times,
+        "g": g_values,
+        "geff": geff_values,
+        "thresholds": {
+            "greyout": PHYSIOLOGICAL_THRESHOLDS["greyout_geff"],
+            "blackout": PHYSIOLOGICAL_THRESHOLDS["blackout_geff"],
+            "gloc": PHYSIOLOGICAL_THRESHOLDS["gloc_geff"],
+            "redout": PHYSIOLOGICAL_THRESHOLDS["redout_g"]
+        },
+        "durations": durations,
+        "hist": {"labels": hist_labels, "values": hist_values},
+        "heat": {"params": heat_params, "matrix": heat_matrix},
+        "radar": {"schema": radar_schema, "values": radar_values},
+        "scatter": scatter_points,
+        "stateColors": STATE_COLORS,
+        "profile": profile_name.replace("_", " ").title(),
+        "ui": {"layoutMode": layout_mode, "chartChoice": chart_choice or ""}
+    }
+
+    echarts_js = _load_local_echarts_js()
+    data_json = json.dumps(payload)
+
+    # Containers based on layout
+    choice_to_id = {
+        "Lines": "c1",
+        "Heatmap": "c2",
+        "Histogram": "c3",
+        "Radar": "c4",
+        "Scatter": "c5",
+        "Durations": "c6",
+    }
+    selected_id = choice_to_id.get(chart_choice or "Lines", "c1")
+    if (layout_mode or "").lower().startswith("single"):
+        containers_html = f"""
+  <div class=\"grid single\"> 
+    <div class=\"tile\"><div class=\"title\">{chart_choice or 'Lines'}</div><div id=\"{selected_id}\" class=\"chart\"></div></div>
+  </div>
+        """
+        height_value = 460
+    else:
+        containers_html = """
+  <div class=\"grid\"> 
+    <div class=\"tile\"><div class=\"title\">Lines</div><div id=\"c1\" class=\"chart\"></div></div>
+    <div class=\"tile\"><div class=\"title\">Heatmap</div><div id=\"c2\" class=\"chart\"></div></div>
+    <div class=\"tile\"><div class=\"title\">Histogram</div><div id=\"c3\" class=\"chart\"></div></div>
+    <div class=\"tile\"><div class=\"title\">Radar</div><div id=\"c4\" class=\"chart\"></div></div>
+    <div class=\"tile\"><div class=\"title\">Scatter</div><div id=\"c5\" class=\"chart\"></div></div>
+    <div class=\"tile\"><div class=\"title\">Durations</div><div id=\"c6\" class=\"chart\"></div></div>
+  </div>
+        """
+        height_value = 1210
+
+    html = f"""
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset=\"utf-8\" />
+  <style>
+    body {{ margin: 0; font-family: -apple-system, Segoe UI, Roboto, Arial; background: #0b1220; color: #e5e7eb; }}
+    .grid {{ display: grid; grid-template-columns: repeat(2, 1fr); grid-auto-rows: 400px; gap: 16px; padding: 12px; }}
+    .grid.single {{ grid-template-columns: 1fr; grid-auto-rows: 420px; }}
+    .tile {{ background: #111827; border: 1px solid #1f2937; border-radius: 10px; box-shadow: 0 1px 2px rgba(0,0,0,0.2); position: relative; }}
+    .title {{ position: absolute; top: 8px; left: 12px; font-weight: 600; color: #cbd5e1; z-index: 2; font-size: 12px; }}
+    .chart {{ position: absolute; inset: 0; }}
+  </style>
+  {('<script>' + echarts_js + '</script>') if echarts_js else ''}
+  <script>
+    window.__ECHARTS_DATA__ = {data_json};
+    function initCharts() {{
+      var data = window.__ECHARTS_DATA__;
+      var stateColors = data.stateColors;
+      var colors = {{ text: '#e5e7eb', axis: '#cbd5e1', grid: '#1f2937', tile: '#111827' }};
+      function el(id) {{ return document.getElementById(id); }}
+      function mkChart(id) {{ var node = el(id); return node ? echarts.init(node) : null; }}
+      var baseTextStyle = {{ color: colors.text, fontSize: 10 }};
+      var axisCommon = {{
+        axisLabel: {{ color: colors.axis, fontSize: 10 }},
+        axisLine: {{ lineStyle: {{ color: colors.grid }} }},
+        splitLine: {{ show: true, lineStyle: {{ color: colors.grid }} }}
+      }};
+      var legendTextStyle = {{ textStyle: {{ color: colors.axis, fontSize: 10 }} }};
+      var titleTextStyle = {{ textStyle: {{ color: colors.text, fontSize: 12 }} }};
+      var tooltipCommon = {{ backgroundColor: colors.tile, borderColor: colors.grid, textStyle: {{ color: colors.text }} }};
+      var charts = [];
+
+      var line = mkChart('c1');
+      if (line) {{
+        line.setOption({{
+          backgroundColor: 'transparent',
+          textStyle: baseTextStyle,
+          title: Object.assign({{ text: 'G and G_eff vs Time — ' + data.profile }}, titleTextStyle),
+          tooltip: Object.assign({{ trigger: 'axis' }}, tooltipCommon),
+          legend: Object.assign({{ data: ['G', 'G_eff'] }}, legendTextStyle),
+          xAxis: Object.assign({{ type: 'category', data: data.times }}, axisCommon),
+          yAxis: Object.assign({{ type: 'value', name: 'G' }}, axisCommon),
+          series: [
+            {{ name: 'G', type: 'line', data: data.g, smooth: true, lineStyle: {{ width: 2, color: '#60a5fa' }} }},
+            {{ name: 'G_eff', type: 'line', data: data.geff, smooth: true, lineStyle: {{ width: 2, color: '#34d399' }} }}
+          ],
+          grid: {{ left: 55, right: 24, top: 36, bottom: 40, containLabel: true }}
+        }});
+        charts.push(line);
+      }}
+
+      var heat = mkChart('c2');
+      if (heat) {{
+        var heatData = [];
+        for (var r = 0; r < data.heat.matrix.length; r++) {{
+          for (var c = 0; c < data.times.length; c++) {{
+            heatData.push([c, r, data.heat.matrix[r][c]]);
+          }}
+        }}
+        heat.setOption({{
+          backgroundColor: 'transparent',
+          textStyle: baseTextStyle,
+          title: Object.assign({{ text: 'Physiological Flags Heatmap' }}, titleTextStyle),
+          tooltip: Object.assign({{ position: 'top' }}, tooltipCommon),
+          grid: {{ left: 60, right: 24, top: 36, bottom: 44, containLabel: true }},
+          xAxis: {{ type: 'category', data: data.times, splitArea: {{ show: true }}, axisLabel: {{ color: colors.axis, fontSize: 10 }} }},
+          yAxis: {{ type: 'category', data: data.heat.params, splitArea: {{ show: true }}, axisLabel: {{ color: colors.axis, fontSize: 10 }} }},
+          visualMap: {{ min: 0, max: 1, calculable: false, orient: 'horizontal', left: 'center', bottom: 10,
+                        textStyle: {{ color: colors.axis, fontSize: 10 }} }},
+          series: [{{ name: 'Flag', type: 'heatmap', data: heatData }}]
+        }});
+        charts.push(heat);
+      }}
+
+      var hist = mkChart('c3');
+      if (hist) {{
+        hist.setOption({{
+          backgroundColor: 'transparent',
+          textStyle: baseTextStyle,
+          title: Object.assign({{ text: 'G Distribution' }}, titleTextStyle),
+          tooltip: Object.assign({{ trigger: 'axis' }}, tooltipCommon),
+          xAxis: Object.assign({{ type: 'category', data: data.hist.labels, axisLabel: {{ rotate: 45 }} }}, axisCommon),
+          yAxis: Object.assign({{ type: 'value', name: 'Count' }}, axisCommon),
+          series: [{{ type: 'bar', data: data.hist.values, itemStyle: {{ color: '#60a5fa' }} }}],
+          grid: {{ left: 55, right: 24, top: 36, bottom: 60, containLabel: true }}
+        }});
+        charts.push(hist);
+      }}
+
+      var radar = mkChart('c4');
+      if (radar) {{
+        radar.setOption({{
+          backgroundColor: 'transparent',
+          textStyle: baseTextStyle,
+          title: Object.assign({{ text: 'Summary Metrics (Radar)' }}, titleTextStyle),
+          tooltip: tooltipCommon,
+          legend: Object.assign({{ data: [data.profile] }}, legendTextStyle),
+          radar: {{ indicator: data.radar.schema, name: {{ textStyle: {{ color: colors.axis, fontSize: 10 }} }} }},
+          series: [{{ type: 'radar', data: [{{ value: data.radar.values, name: data.profile }}],
+                     areaStyle: {{ opacity: 0.15 }}, lineStyle: {{ color: '#34d399' }}, itemStyle: {{ color: '#34d399' }} }}]
+        }});
+        charts.push(radar);
+      }}
+
+      var scatter = mkChart('c5');
+      if (scatter) {{
+        scatter.setOption({{
+          backgroundColor: 'transparent',
+          textStyle: baseTextStyle,
+          title: Object.assign({{ text: 'G vs G_eff (State-colored)' }}, titleTextStyle),
+          tooltip: Object.assign({{ trigger: 'item' }}, tooltipCommon),
+          legend: Object.assign({{ data: ['normal','caution','greyout','blackout','gloc','redout'] }}, legendTextStyle),
+          xAxis: Object.assign({{ type: 'value', name: 'G' }}, axisCommon),
+          yAxis: Object.assign({{ type: 'value', name: 'G_eff' }}, axisCommon),
+          series: ['normal','caution','greyout','blackout','gloc','redout'].map(function(cat) {{
+            var pts = data.scatter.filter(p => p.state === cat).map(p => [p.g, p.geff]);
+            return {{ name: cat, type: 'scatter', data: pts, symbolSize: 5, itemStyle: {{ color: stateColors[cat] || '#94a3b8' }} }};
+          }})
+        }});
+        charts.push(scatter);
+      }}
+
+      var dur = mkChart('c6');
+      if (dur) {{
+        var cats = ['normal','caution','greyout','blackout','gloc','redout'];
+        var secs = cats.map(c => +(data.durations[c] || 0).toFixed(2));
+        dur.setOption({{
+          backgroundColor: 'transparent',
+          textStyle: baseTextStyle,
+          title: Object.assign({{ text: 'Time in State (s)' }}, titleTextStyle),
+          tooltip: Object.assign({{ trigger: 'axis' }}, tooltipCommon),
+          xAxis: Object.assign({{ type: 'category', data: cats }}, axisCommon),
+          yAxis: Object.assign({{ type: 'value', name: 'Seconds' }}, axisCommon),
+          series: [{{ type: 'bar', data: secs, itemStyle: {{ color: function(params) {{ return stateColors[cats[params.dataIndex]]; }} }} }}],
+          grid: {{ left: 55, right: 24, top: 36, bottom: 40, containLabel: true }}
+        }});
+        charts.push(dur);
+      }}
+
+      window.addEventListener('resize', function() {{ charts.forEach(c => c && c.resize()); }});
+    }}
+  </script>
+  {'' if echarts_js else '<script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js" onload="window.initCharts()"></script>'}
+</head>
+<body onload="{ 'initCharts()' if echarts_js else '' }">
+  {containers_html}
+</body>
+</html>
+"""
+
+    components.html(html, height=height_value, scrolling=True)
+
 # Main application
 st.title("🚀 Advanced Aerobatic G-Profile Physiological Analysis System")
 st.markdown("### Comprehensive visualization of physiological changes during flight maneuvers")
@@ -606,11 +909,12 @@ def cached_run(profile_id: str, pilot_cfg_key: str, pilot_cfg: PilotConfig):
     return data, str(tmp_dir)
 
 # Main content area
-tab1, tab2, tab3, tab4, tab5 = st.tabs([
+tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
     "📈 Profile Overview", 
     "🧬 Physiological Analysis", 
     "🎯 Maneuver Details",
     "📊 Comparative Analysis",
+    "📊 ECharts Dashboard",
     "📚 Educational Resources"
 ])
 
@@ -877,6 +1181,29 @@ with tab4:
                 st.plotly_chart(fig, use_container_width=True)
 
 with tab5:
+    st.subheader("📊 ECharts Scientific Dashboard")
+    st.caption("Powered by Apache ECharts; prefers local `node_modules/echarts` when available.")
+    # Layout controls
+    colL, colR = st.columns([1, 2])
+    with colL:
+        layout_mode = st.radio("Layout", ["Grid (all charts)", "Single (one chart)"], index=0)
+    with colR:
+        chart_choice = st.selectbox("Chart", ["Lines", "Heatmap", "Histogram", "Radar", "Scatter", "Durations"], index=0)
+    try:
+        data, _ = cached_run(selected_key, pilot_cfg_key=pilot_cfg.to_cache_key(), pilot_cfg=pilot_cfg)
+        render_echarts_dashboard(
+            data.get("times_s", []),
+            data.get("g_values", []),
+            data.get("geff_values", []),
+            data.get("flags_n2", []),
+            selected_key,
+            layout_mode="Single" if layout_mode.startswith("Single") else "Grid",
+            chart_choice=chart_choice
+        )
+    except Exception as exc:
+        st.error(f"Unable to render ECharts dashboard: {exc}")
+
+with tab6:
     st.subheader("📚 Educational Resources")
     
     with st.expander("🧬 Understanding G-Forces and Physiology"):
