@@ -19,7 +19,7 @@ from matplotlib.patches import Rectangle
 import seaborn as sns
 
 from aerobatic_profiles import load_all_profiles, load_profile, PROFILES, Sample
-from cgem_wrapper import run_cgem_for_profile, CGEMResult, PilotConfig
+from cgem_wrapper import run_cgem_for_profile, run_cgem_centrifuge, CGEMResult, PilotConfig
 
 # Configure page
 st.set_page_config(
@@ -585,7 +585,13 @@ def _load_local_echarts_js() -> Optional[str]:
 
 def render_echarts_dashboard(times: List[float], g_values: List[float], geff_values: List[float],
                              flags_n2: List[int], profile_name: str,
-                             layout_mode: str = "Grid", chart_choice: Optional[str] = None):
+                             layout_mode: str = "Grid", chart_choice: Optional[str] = None,
+                             c_bank: Optional[List[float]] = None,
+                             f_con: Optional[List[float]] = None,
+                             f_vis: Optional[List[float]] = None,
+                             f_bo: Optional[List[float]] = None,
+                             bo_bank: Optional[List[float]] = None,
+                             hlap: Optional[List[float]] = None):
     if not times or not g_values or not geff_values:
         st.info("Run the physiological simulation first to populate the ECharts dashboard.")
         return
@@ -658,6 +664,16 @@ def render_echarts_dashboard(times: List[float], g_values: List[float], geff_val
         "radar": {"schema": radar_schema, "values": radar_values},
         "scatter": scatter_points,
         "stateColors": STATE_COLORS,
+        "banks": {
+            "c_bank": c_bank or [],
+            "bo_bank": bo_bank or []
+        },
+        "flows": {
+            "f_con": f_con or [],
+            "f_vis": f_vis or [],
+            "f_bo": f_bo or []
+        },
+        "hlap": hlap or [],
         "profile": profile_name.replace("_", " ").title(),
         "ui": {"layoutMode": layout_mode, "chartChoice": chart_choice or ""}
     }
@@ -673,6 +689,10 @@ def render_echarts_dashboard(times: List[float], g_values: List[float], geff_val
         "Radar": "c4",
         "Scatter": "c5",
         "Durations": "c6",
+        "Flows": "c7",
+        "Banks": "c8",
+        "HLAP": "c9",
+        "3D (ECharts)": "c10",
     }
     selected_id = choice_to_id.get(chart_choice or "Lines", "c1")
     if (layout_mode or "").lower().startswith("single"):
@@ -691,6 +711,10 @@ def render_echarts_dashboard(times: List[float], g_values: List[float], geff_val
     <div class=\"tile\"><div class=\"title\">Radar</div><div id=\"c4\" class=\"chart\"></div></div>
     <div class=\"tile\"><div class=\"title\">Scatter</div><div id=\"c5\" class=\"chart\"></div></div>
     <div class=\"tile\"><div class=\"title\">Durations</div><div id=\"c6\" class=\"chart\"></div></div>
+    <div class=\"tile\"><div class=\"title\">Flows</div><div id=\"c7\" class=\"chart\"></div></div>
+    <div class=\"tile\"><div class=\"title\">Banks</div><div id=\"c8\" class=\"chart\"></div></div>
+    <div class=\"tile\"><div class=\"title\">HLAP</div><div id=\"c9\" class=\"chart\"></div></div>
+    <div class=\"tile\"><div class=\"title\">3D (ECharts)</div><div id=\"c10\" class=\"chart\"></div></div>
   </div>
         """
         height_value = 1210
@@ -709,6 +733,7 @@ def render_echarts_dashboard(times: List[float], g_values: List[float], geff_val
     .chart {{ position: absolute; inset: 0; }}
   </style>
   {('<script>' + echarts_js + '</script>') if echarts_js else ''}
+  <script src="https://cdn.jsdelivr.net/npm/echarts-gl@2/dist/echarts-gl.min.js"></script>
   <script>
     window.__ECHARTS_DATA__ = {data_json};
     function initCharts() {{
@@ -819,6 +844,80 @@ def render_echarts_dashboard(times: List[float], g_values: List[float], geff_val
       }}
 
       var dur = mkChart('c6');
+      // Flows line chart
+      var flow = mkChart('c7');
+      if (flow) {{
+        flow.setOption({{
+          backgroundColor: 'transparent',
+          textStyle: baseTextStyle,
+          title: Object.assign({{ text: 'Flows over Time (F, F_vis, F_bo)' }}, titleTextStyle),
+          tooltip: Object.assign({{ trigger: 'axis' }}, tooltipCommon),
+          legend: Object.assign({{ data: ['F_con','F_vis','F_bo'] }}, legendTextStyle),
+          xAxis: Object.assign({{ type: 'category', data: data.times }}, axisCommon),
+          yAxis: Object.assign({{ type: 'value', name: 'dl/min' }}, axisCommon),
+          series: [
+            {{ name: 'F_con', type: 'line', data: data.flows.f_con, smooth: true }},
+            {{ name: 'F_vis', type: 'line', data: data.flows.f_vis, smooth: true }},
+            {{ name: 'F_bo', type: 'line', data: data.flows.f_bo, smooth: true }}
+          ],
+          grid: {{ left: 55, right: 24, top: 36, bottom: 40, containLabel: true }}
+        }});
+        charts.push(flow);
+      }}
+
+      // Banks line chart
+      var bank = mkChart('c8');
+      if (bank) {{
+        bank.setOption({{
+          backgroundColor: 'transparent',
+          textStyle: baseTextStyle,
+          title: Object.assign({{ text: 'Reserve Banks over Time' }}, titleTextStyle),
+          tooltip: Object.assign({{ trigger: 'axis' }}, tooltipCommon),
+          legend: Object.assign({{ data: ['Consciousness bank','Blackout bank'] }}, legendTextStyle),
+          xAxis: Object.assign({{ type: 'category', data: data.times }}, axisCommon),
+          yAxis: Object.assign({{ type: 'value', name: 'seconds of normal flow' }}, axisCommon),
+          series: [
+            {{ name: 'Consciousness bank', type: 'line', data: data.banks.c_bank, smooth: true }},
+            {{ name: 'Blackout bank', type: 'line', data: data.banks.bo_bank, smooth: true }}
+          ],
+          grid: {{ left: 55, right: 24, top: 36, bottom: 40, containLabel: true }}
+        }});
+        charts.push(bank);
+      }}
+
+      // HLAP line chart
+      var hlapC = mkChart('c9');
+      if (hlapC) {{
+        hlapC.setOption({{
+          backgroundColor: 'transparent',
+          textStyle: baseTextStyle,
+          title: Object.assign({{ text: 'Heart-Level MAP (HLAP) over Time' }}, titleTextStyle),
+          tooltip: Object.assign({{ trigger: 'axis' }}, tooltipCommon),
+          xAxis: Object.assign({{ type: 'category', data: data.times }}, axisCommon),
+          yAxis: Object.assign({{ type: 'value', name: 'mmHg' }}, axisCommon),
+          series: [ {{ name: 'HLAP', type: 'line', data: data.hlap, smooth: true }} ],
+          grid: {{ left: 55, right: 24, top: 36, bottom: 40, containLabel: true }}
+        }});
+        charts.push(hlapC);
+      }}
+
+      // 3D trajectory (ECharts GL)
+      var chart3d = mkChart('c10');
+      if (chart3d && echarts && echarts.graphic) {{
+        var seriesData = data.times.map(function(t, i){{ return [t, data.g[i] || 0, data.geff[i] || 0]; }});
+        chart3d.setOption({{
+          backgroundColor: 'transparent',
+          textStyle: baseTextStyle,
+          title: Object.assign({{ text: '3D Trajectory (time, G, G_eff)' }}, titleTextStyle),
+          tooltip: tooltipCommon,
+          xAxis3D: {{ type: 'value', name: 'Time (s)' }},
+          yAxis3D: {{ type: 'value', name: 'G' }},
+          zAxis3D: {{ type: 'value', name: 'G_eff' }},
+          grid3D: {{ viewControl: {{ projection: 'perspective' }} }},
+          series: [{{ type: 'line3D', data: seriesData, lineStyle: {{ width: 3, color: '#34d399' }} }}]
+        }});
+        charts.push(chart3d);
+      }}
       if (dur) {{
         var cats = ['normal','caution','greyout','blackout','gloc','redout'];
         var secs = cats.map(c => +(data.durations[c] || 0).toFixed(2));
@@ -911,6 +1010,13 @@ def cached_run(profile_id: str, pilot_cfg_key: str, pilot_cfg: PilotConfig):
         "time_to_greyout_s": result.time_to_greyout_s,
         "time_to_blackout_s": result.time_to_blackout_s,
         "time_to_gloc_s": result.time_to_gloc_s,
+        # Additional series
+        "c_bank_values": result.c_bank_values or [],
+        "f_con_values": result.f_con_values or [],
+        "f_vis_values": result.f_vis_values or [],
+        "f_bo_values": result.f_bo_values or [],
+        "bo_bank_values": result.bo_bank_values or [],
+        "hlap_values": result.hlap_values or [],
     }
     return data, str(tmp_dir)
 
@@ -1035,10 +1141,51 @@ with tab2:
         dehydration_level=dehydration,
     )
 
+    # Run mode selection
+    st.markdown("#### Run mode")
+    run_mode = st.radio("Select simulation mode", ["Custom EGP (aerobatic profile)", "Internal centrifuge experiment"], index=0, horizontal=True)
+    if run_mode == "Internal centrifuge experiment":
+        colR1, colR2, colR3, colR4, colR5 = st.columns(5)
+        with colR1:
+            r_g0 = st.number_input("G0", 0.0, 1.4, 1.0, 0.1, key="i_g0")
+        with colR2:
+            r_gmax = st.number_input("Gmax", 2.0, 15.0, 9.0, 0.1, key="i_gmax")
+        with colR3:
+            r_hold = st.number_input("Hold @Gmax (s)", 0.0, 20.0, 1.0, 0.5, key="i_hold")
+        with colR4:
+            r_up = st.number_input("Ramp up (G/s)", 0.01, 10.0, 0.5, 0.01, key="i_rup")
+        with colR5:
+            r_down = st.number_input("Ramp down (G/s)", 0.01, 10.0, 0.5, 0.01, key="i_rdown")
+
     if st.button("Run CGEM Physiological Simulation", type="primary", key="run_sim"):
         with st.spinner("Running physiological simulation..."):
             try:
-                data, tmp_dir = cached_run(selected_key, pilot_cfg_key=pilot_cfg.to_cache_key(), pilot_cfg=pilot_cfg)
+                if run_mode == "Internal centrifuge experiment":
+                    @st.cache_data(show_spinner=False)
+                    def cached_run_centrifuge(g0, gmax, hold, rup, rdown, pilot_cfg_key: str, pilot_cfg: PilotConfig):
+                        res, tmp_dir = run_cgem_centrifuge(g0=g0, gmax=gmax, gmaxtime=hold, rampup=rup, rampdown=rdown, config=pilot_cfg)
+                        d = {
+                            "times_s": res.times_s or [],
+                            "g_values": res.g_values or [],
+                            "geff_values": res.geff_values or [],
+                            "flags_n2": res.flags_n2 or [],
+                            "flags_ne2": res.flags_ne2 or [],
+                            "flags_non2": res.flags_non2 or [],
+                            "time_to_greyout_s": res.time_to_greyout_s,
+                            "time_to_blackout_s": res.time_to_blackout_s,
+                            "time_to_gloc_s": res.time_to_gloc_s,
+                            "c_bank_values": res.c_bank_values or [],
+                            "f_con_values": res.f_con_values or [],
+                            "f_vis_values": res.f_vis_values or [],
+                            "f_bo_values": res.f_bo_values or [],
+                            "bo_bank_values": res.bo_bank_values or [],
+                            "hlap_values": res.hlap_values or [],
+                        }
+                        return d, str(tmp_dir)
+
+                    data, tmp_dir = cached_run_centrifuge(r_g0, r_gmax, r_hold, r_up, r_down, pilot_cfg_key=pilot_cfg.to_cache_key(), pilot_cfg=pilot_cfg)
+                else:
+                    data, tmp_dir = cached_run(selected_key, pilot_cfg_key=pilot_cfg.to_cache_key(), pilot_cfg=pilot_cfg)
                 
                 # Create result object for analysis
                 result = CGEMResult(
@@ -1112,6 +1259,10 @@ with tab2:
                         data["times_s"], data["g_values"], data["geff_values"]
                     )
                     st.plotly_chart(fig_cardio, use_container_width=True)
+
+                # Save last run for other tabs
+                st.session_state["last_run_data"] = data
+                st.session_state["last_run_mode"] = run_mode
                 
             except Exception as exc:
                 st.error(f"Simulation failed: {exc}")
@@ -1121,7 +1272,9 @@ with tab3:
     
     # Run simulation if not already done
     try:
-        data, _ = cached_run(selected_key, pilot_cfg_key=pilot_cfg.to_cache_key(), pilot_cfg=pilot_cfg)
+        data = st.session_state.get("last_run_data")
+        if not data:
+            data, _ = cached_run(selected_key, pilot_cfg_key=pilot_cfg.to_cache_key(), pilot_cfg=pilot_cfg)
         result = CGEMResult(
             time_to_greyout_s=data["time_to_greyout_s"],
             time_to_blackout_s=data["time_to_blackout_s"],
@@ -1194,9 +1347,11 @@ with tab5:
     with colL:
         layout_mode = st.radio("Layout", ["Grid (all charts)", "Single (one chart)"], index=0)
     with colR:
-        chart_choice = st.selectbox("Chart", ["Lines", "Heatmap", "Histogram", "Radar", "Scatter", "Durations"], index=0)
+        chart_choice = st.selectbox("Chart", ["Lines", "Heatmap", "Histogram", "Radar", "Scatter", "Durations", "Flows", "Banks", "HLAP", "3D (ECharts)"], index=0)
     try:
-        data, _ = cached_run(selected_key, pilot_cfg_key=pilot_cfg.to_cache_key(), pilot_cfg=pilot_cfg)
+        data = st.session_state.get("last_run_data")
+        if not data:
+            data, _ = cached_run(selected_key, pilot_cfg_key=pilot_cfg.to_cache_key(), pilot_cfg=pilot_cfg)
         render_echarts_dashboard(
             data.get("times_s", []),
             data.get("g_values", []),
@@ -1204,7 +1359,13 @@ with tab5:
             data.get("flags_n2", []),
             selected_key,
             layout_mode="Single" if layout_mode.startswith("Single") else "Grid",
-            chart_choice=chart_choice
+            chart_choice=chart_choice,
+            c_bank=data.get("c_bank_values", []),
+            f_con=data.get("f_con_values", []),
+            f_vis=data.get("f_vis_values", []),
+            f_bo=data.get("f_bo_values", []),
+            bo_bank=data.get("bo_bank_values", []),
+            hlap=data.get("hlap_values", []),
         )
     except Exception as exc:
         st.error(f"Unable to render ECharts dashboard: {exc}")

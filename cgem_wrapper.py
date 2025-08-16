@@ -61,6 +61,14 @@ class CGEMResult:
     flags_ne2: Optional[List[int]] = None  # vision flag (greyout)
     flags_non2: Optional[List[int]] = None  # blackout flag
 
+    # Additional time-series (if available from custom() output)
+    c_bank_values: Optional[List[float]] = None  # consciousness bank (boc)
+    f_con_values: Optional[List[float]] = None   # cerebral flow for consciousness (F)
+    f_vis_values: Optional[List[float]] = None   # flow to retina central (FON)
+    f_bo_values: Optional[List[float]] = None    # flow to retina top (FOG)
+    bo_bank_values: Optional[List[float]] = None # blackout bank (bonoc)
+    hlap_values: Optional[List[float]] = None    # heart-level mean arterial pressure (HLAP)
+
 
 @dataclass(frozen=True)
 class PilotConfig:
@@ -255,6 +263,110 @@ def _prepare_gloc_inp(
     dst.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
+def _prepare_gloc_inp_internal(
+    temp_dir: Path,
+    out_name: str = "output.out",
+    g0: float = 1.0,
+    gmax: float = 9.0,
+    gmaxtime: float = 1.0,
+    rampup: float = 0.5,
+    rampdown: float = 0.5,
+    config: Optional[PilotConfig] = None,
+) -> None:
+    """Prepare gloc_inp.dat to run the internal centrifuge experiment modes.
+
+    Sets gfile=0 and writes outname (line 28), g0/gmax (1-2), gmaxtime (15), rampup (16), rampdown (17).
+    Applies subject/countermeasure overrides similar to the custom path.
+    """
+    assert len(out_name) <= 12, "OUT name must be <= 12 chars per CGEM"
+
+    src = BASE_GLOC_INP
+    dst = temp_dir / "gloc_inp.dat"
+    lines = src.read_text(encoding="utf-8").splitlines()
+
+    if len(lines) < 33:
+        raise RuntimeError("gloc_inp.dat has unexpected format (too few lines)")
+
+    def _set_line(idx0: int, value_str: str) -> None:
+        if idx0 < 0 or idx0 >= len(lines):
+            return
+        if "," in lines[idx0]:
+            _, comment = lines[idx0].split(",", 1)
+            lines[idx0] = f"{value_str},{comment}"
+        else:
+            lines[idx0] = value_str
+
+    # Core experiment settings
+    _set_line(0, f"{float(g0):.3f}")         # 1 G0
+    _set_line(1, f"{float(gmax):.3f}")       # 2 Gmax
+    _set_line(14, f"{float(gmaxtime):.3f}")  # 15 gmaxtime
+    _set_line(15, f"{float(rampup):.3f}")    # 16 rampup
+    _set_line(16, f"{float(rampdown):.3f}")  # 17 rampdown
+    _set_line(27, out_name)                   # 28 outname
+    _set_line(29, "0")                       # 30 gfile = 0 (internal)
+
+    # Subject and countermeasure overrides
+    if config is not None:
+        who = config.who_profile if config.who_profile in (1, 2, 3, 4, 5, 6) else 0
+        _set_line(28, str(who))  # who at line 29
+
+        # Countermeasures
+        _set_line(19, f"{float(config.gsuit_max_psi):.1f}")
+        _set_line(20, f"{float(config.gsuit_coverage_fraction):.2f}")
+        _set_line(21, f"{float(config.agsm_effectiveness):.2f}")
+        _set_line(22, f"{float(config.pbg_max_mmhg):.1f}")
+        _set_line(23, f"{float(config.pretest_other_strain_mmhg):.1f}")
+        _set_line(24, f"{float(config.non_agsm_tensing_limit_mmhg):.1f}")
+        _set_line(25, f"{float(config.seat_tilt_deg):.1f}")
+        _set_line(26, f"{float(config.drug_delay_s):.1f}")
+
+        if who == 0:
+            male_val = 1 if (config.male is None or int(config.male) == 1) else 0
+            _set_line(17, str(int(male_val)))
+            _set_line(18, f"{float(config.height_cm if config.height_cm is not None else 179.0):.1f}")
+
+            bsp = float(config.baseline_systolic_bp or 120.0)
+            bdp = float(config.baseline_diastolic_bp or 80.0)
+            msp = float(config.max_systolic_bp or 177.0)
+            mdp = float(config.max_diastolic_bp or 80.0)
+
+            dehydr = max(0.0, min(1.0, float(config.dehydration_level)))
+            if dehydr > 0:
+                bsp -= 10.0 * dehydr
+                bdp -= 5.0 * dehydr
+                msp -= 10.0 * dehydr
+                mdp -= 5.0 * dehydr
+
+            _set_line(8, f"{bsp:.1f}")
+            _set_line(9, f"{bdp:.1f}")
+            _set_line(10, f"{msp:.1f}")
+            _set_line(11, f"{mdp:.1f}")
+
+            fnorm = float(_extract_numeric(lines[2], default=49.5))
+            fmax = float(_extract_numeric(lines[3], default=110.0))
+            fcon = float(_extract_numeric(lines[4], default=19.0))
+            flife = float(_extract_numeric(lines[5], default=9.0))
+            if dehydr > 0:
+                fnorm *= (1.0 - 0.10 * dehydr)
+                fmax *= (1.0 - 0.10 * dehydr)
+            _set_line(2, f"{fnorm:.1f}")
+            _set_line(3, f"{fmax:.1f}")
+            _set_line(4, f"{fcon:.1f}")
+            _set_line(5, f"{flife:.1f}")
+
+            gtm = float(config.g_tolerance_multiplier or 1.0)
+            beta = float(config.heart_response_tau_s or 2.5)
+            _set_line(6, f"{gtm:.2f}")
+            _set_line(7, f"{beta:.2f}")
+
+            conbank = float(config.conbank_s or 7.1)
+            lifebank = float(config.lifebank_s or 180.0)
+            _set_line(12, f"{conbank:.1f}")
+            _set_line(13, f"{lifebank:.1f}")
+
+    dst.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
 def _extract_numeric(line: str, default: float = 0.0) -> float:
     try:
         token = line.split(",", 1)[0].strip()
@@ -292,6 +404,14 @@ def _parse_cgem_output(out_path: Path) -> CGEMResult:
     flags_ne2: List[int] = []
     flags_non2: List[int] = []
 
+    # Additional series
+    c_bank_values: List[float] = []
+    f_con_values: List[float] = []
+    f_vis_values: List[float] = []
+    f_bo_values: List[float] = []
+    bo_bank_values: List[float] = []
+    hlap_values: List[float] = []
+
     with out_path.open("r", encoding="utf-8", errors="ignore") as f:
         for line in f:
             parts = line.strip().split()
@@ -302,6 +422,13 @@ def _parse_cgem_output(out_path: Path) -> CGEMResult:
                     t_raw = float(parts[0])
                     g = float(parts[1])
                     geff = float(parts[2])
+                    # Extract middle fields if present (custom() format 700: time, G, Geff, boc, F, FOG, FON, bonoc, HLAP, n2, ne2, non2)
+                    boc = float(parts[3]) if len(parts) > 3 else float('nan')
+                    f_con = float(parts[4]) if len(parts) > 4 else float('nan')
+                    f_bog = float(parts[5]) if len(parts) > 5 else float('nan')
+                    f_on = float(parts[6]) if len(parts) > 6 else float('nan')
+                    bo_bank = float(parts[7]) if len(parts) > 7 else float('nan')
+                    hlap = float(parts[8]) if len(parts) > 8 else float('nan')
                     # Last 3 integers are flags
                     n2 = int(parts[-3])  # conscious state
                     ne2 = int(parts[-2])  # vision
@@ -319,6 +446,14 @@ def _parse_cgem_output(out_path: Path) -> CGEMResult:
                 flags_n2.append(n2)
                 flags_ne2.append(ne2)
                 flags_non2.append(non2)
+
+                # Append additional series (use NaN-safe conversion)
+                c_bank_values.append(boc)
+                f_con_values.append(f_con)
+                f_bo_values.append(f_bog)
+                f_vis_values.append(f_on)
+                bo_bank_values.append(bo_bank)
+                hlap_values.append(hlap)
 
                 # Keep last snapshot (prefer larger time)
                 last_time_s = t_sec if t_sec > (last_time_s or -1.0) else last_time_s
@@ -351,6 +486,12 @@ def _parse_cgem_output(out_path: Path) -> CGEMResult:
         flags_n2=flags_n2,
         flags_ne2=flags_ne2,
         flags_non2=flags_non2,
+        c_bank_values=c_bank_values,
+        f_con_values=f_con_values,
+        f_vis_values=f_vis_values,
+        f_bo_values=f_bo_values,
+        bo_bank_values=bo_bank_values,
+        hlap_values=hlap_values,
     )
 
 
@@ -384,6 +525,39 @@ def run_cgem_for_profile(profile_id: str, config: Optional[PilotConfig] = None) 
         shutil.rmtree(temp_dir, ignore_errors=True)
         raise
 
+
+def run_cgem_centrifuge(
+    g0: float = 1.0,
+    gmax: float = 9.0,
+    gmaxtime: float = 1.0,
+    rampup: float = 0.5,
+    rampdown: float = 0.5,
+    config: Optional[PilotConfig] = None
+) -> Tuple[CGEMResult, Path]:
+    """Run CGEM using the internal centrifuge experiment mode (gfile=0).
+
+    Returns: (CGEMResult, temp_dir_path)
+    """
+    temp_dir_path = tempfile.mkdtemp(prefix="cgem_run_")
+    temp_dir = Path(temp_dir_path)
+    try:
+        _prepare_gloc_inp_internal(
+            temp_dir,
+            out_name="output.out",
+            g0=g0,
+            gmax=gmax,
+            gmaxtime=gmaxtime,
+            rampup=rampup,
+            rampdown=rampdown,
+            config=config,
+        )
+        _run_cgem(temp_dir)
+        out_path = temp_dir / "output.out"
+        result = _parse_cgem_output(out_path)
+        return result, temp_dir
+    except Exception:
+        shutil.rmtree(temp_dir, ignore_errors=True)
+        raise
 
 if __name__ == "__main__":
     import argparse, json
