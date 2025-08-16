@@ -7,7 +7,9 @@
 
 A modern, researcher-friendly toolkit for modeling G-induced loss of consciousness (G-LOC) and visualizing aerospace physiology using the FAA’s CGEM foundations. This repository brings together computational models, simulations, and interactive visualizations to support training, safety analysis, and research in aerospace medicine.
 
-Developed by **Dr. Diego Malpica**.
+Forked from the original FAA AAM-631 CGEM project ("CAMI-Gz-Effects-Model-CGEM-") and extended with modern visualization and configuration tools.
+
+Developed by **Dr. Diego Malpica** (Direction of Aerospace Medicine, Colombian Aerospace Force, Aerospace Scientific Department). ORCID: [0000-0002-2257-4940](https://orcid.org/0000-0002-2257-4940).
 
 ### Highlights
 - **Physiology-aware modeling**: CGEM-based computations for greyout, blackout, and G-LOC risk.
@@ -118,6 +120,14 @@ result, _ = run_cgem_for_profile("outside_360", config=cfg)
 Dehydration mapping (heuristic): decreases baseline/max BP and slightly reduces normal/max flow; intended for exploratory use only.
 
 ---
+
+## Contributors & Attribution
+
+- **Original model (FAA CGEM)**: Developed and maintained within the FAA Civil Aerospace Medical Institute (CAMI), AAM-631. Foundational work by Kyle Copeland (FAA CAMI) and collaborators; see source headers in `src/cgem.f` and the FAA report cited below.
+- **This fork and application layer**: **Dr. Diego Malpica** (Direction of Aerospace Medicine, Colombian Aerospace Force, Aerospace Scientific Department). ORCID: [0000-0002-2257-4940](https://orcid.org/0000-0002-2257-4940).
+- **Upstream origin**: Forked from AAM-631/CAMI-Gz-Effects-Model-CGEM-.
+
+Please retain attribution to the FAA CGEM model and authors in derivative works and cite the original FAA report.
 
 ## Acknowledgments
 This work is built upon and inspired by foundational research conducted within the **Federal Aviation Administration (FAA)** Office of Aerospace Medicine and decades of operational physiology experience. We gratefully acknowledge the contributions of the **U.S. Military** community—aviators, aircrew, and allied professionals—who served both as scientists and as research participants in the studies underpinning this modeling approach. Their service and commitment to safety and science made this work possible.
