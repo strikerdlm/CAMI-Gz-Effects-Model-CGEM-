@@ -51,6 +51,74 @@ python demo_example.py
 
 ---
 
+## Pilot Configuration (Personalized Physiology)
+
+You can now personalize the model with pilot-specific parameters from the UI or programmatically. This enables subject-specific predictions and “what-if” countermeasure exploration.
+
+### In the Streamlit apps
+- Open either `enhanced_app.py` or `app.py` via Streamlit and locate the “Pilot configuration” panel.
+- Choose a profile and set parameters:
+  - Standard subject profile (`who`): pick one of 6 standard physiology presets or choose “Custom”.
+  - Dehydration level: 0.0–1.0. Applied as a modest reduction in baseline/max BP and normal/max cerebral flow.
+  - Countermeasures and state:
+    - G-suit max pressure (PSI), suit coverage fraction (0.0–0.7)
+    - AGSM effectiveness (0–1), pressure breathing max (mmHg)
+    - Pre-test other strain HLAP (mmHg), non-AGSM tensing limit (mmHg)
+    - Seat tilt (deg), drug-induced heart-rate response delay (s)
+  - If you select “Custom”, additional physiology fields appear:
+    - Sex, height (cm)
+    - Baseline and max blood pressures (BSP/BDP, MSP/MDP)
+    - G tolerance multiplier (gtm) and heart response time constant (beta, s)
+    - Consciousness and life reserves (bankcon, banklife, s)
+
+Notes:
+- When a standard `who` profile (1..6) is selected, the model’s internal `Subject()` routine overrides subject physiology (flows, BP, sex, height). Your countermeasure and state inputs still apply.
+- When “Custom” is selected, the app writes your physiology fields directly to the model input (equivalent to `who=0`).
+- The app caches results using both the maneuver and the pilot configuration, so different setups won’t conflict.
+
+### Programmatic use
+You can configure and run CGEM directly from Python using `PilotConfig`:
+
+```python
+from cgem_wrapper import run_cgem_for_profile, PilotConfig
+
+# Example: standard midrange male with some countermeasures and mild dehydration
+cfg = PilotConfig(
+    who_profile=2,                 # 1..6 for standard subjects; None for custom
+    gsuit_max_psi=5.0,
+    gsuit_coverage_fraction=0.35,
+    agsm_effectiveness=0.5,
+    pbg_max_mmhg=20.0,
+    dehydration_level=0.3,
+    seat_tilt_deg=10.0,
+)
+
+result, tmp_dir = run_cgem_for_profile("hammerhead", config=cfg)
+print(result.time_to_greyout_s, result.time_to_blackout_s, result.time_to_gloc_s)
+```
+
+Custom physiology example:
+
+```python
+cfg = PilotConfig(
+    who_profile=None,             # use custom fields below
+    male=1, height_cm=176.0,
+    baseline_systolic_bp=118.0, baseline_diastolic_bp=78.0,
+    max_systolic_bp=185.0, max_diastolic_bp=90.0,
+    g_tolerance_multiplier=1.05, heart_response_tau_s=2.3,
+    conbank_s=8.0, lifebank_s=180.0,
+    agsm_effectiveness=0.6, pbg_max_mmhg=30.0,
+    gsuit_max_psi=6.0, gsuit_coverage_fraction=0.4,
+    seat_tilt_deg=15.0, drug_delay_s=0.0,
+    dehydration_level=0.2,
+)
+result, _ = run_cgem_for_profile("outside_360", config=cfg)
+```
+
+Dehydration mapping (heuristic): decreases baseline/max BP and slightly reduces normal/max flow; intended for exploratory use only.
+
+---
+
 ## Acknowledgments
 This work is built upon and inspired by foundational research conducted within the **Federal Aviation Administration (FAA)** Office of Aerospace Medicine and decades of operational physiology experience. We gratefully acknowledge the contributions of the **U.S. Military** community—aviators, aircrew, and allied professionals—who served both as scientists and as research participants in the studies underpinning this modeling approach. Their service and commitment to safety and science made this work possible.
 
