@@ -53,10 +53,54 @@ python demo_example.py
 
 ## Features ✨
 
-- Risk timelines and threshold overlays for greyout, blackout, and G-LOC.
-- Maneuver libraries and sample inputs for scenario exploration.
-- Exportable figures for training and reporting.
-- Example inputs in `Aerobatics_sample_inputs/` and data files for model runs.
+- Interactive visualization suite
+  - 2D Plotly charts: G vs time with safety zones; G_eff vs thresholds (greyout, blackout, G-LOC)
+  - 3D Plotly trajectory: time × G × G_eff with state coloring
+  - Animated timeline playback for physiological response
+  - Scientific dashboard (ECharts): Lines, Heatmap (flags), Histogram (G distribution), Radar (summary metrics), Scatter (state-colored), Durations (time-in-state), Flows (F_con/F_vis/F_bo), Banks (consciousness/blackout), HLAP, and 3D (ECharts GL)
+- Pilot physiology configuration
+  - Standard physiology presets (`who=1..6`) or fully custom inputs (sex, height, BP ranges, cerebral flow thresholds, heart-response tau, reserve banks)
+  - Countermeasures and state: G-suit pressure/coverage, AGSM effectiveness, pressure-breathing, other muscle strain, non-AGSM tensing limit, seat tilt, drug-induced HR delay, dehydration level
+  - Result caching per (maneuver × pilot configuration)
+- Maneuver library and batch analysis
+  - Select any included aerobatic profile; view stats and descriptive analysis
+  - Batch run across all maneuvers for comparative metrics and charts
+- Centrifuge experiment mode
+  - Internal ramp-up/ramp-down experiment driver (G0, Gmax, hold@Gmax, dG/dt up/down)
+- CGEM integration
+  - Wrapper collects times, G, G_eff, consciousness/vision/blackout flags, time-to-events, flows (F_con/F_vis/F_bo), reserve banks (c_bank/bo_bank), and HLAP series
+- Cross-platform research app
+  - Streamlit UI; works on Windows, macOS, Linux; Docker recipe included
+  - Figures can be downloaded via Plotly/ECharts built-in exporters for reporting
+
+---
+
+## Supported Aerobatic Maneuvers 🛩️
+
+All maneuver inputs live in `Aerobatics_sample_inputs/` and follow the `Nz, duration_ms` format. The application currently includes:
+
+| Identifier | Source file | Description |
+|------------|-------------|-------------|
+| `hammerhead` | `hammerhead.txt` | Hammerhead (stall-turn): vertical climb, 180° yaw, vertical descent |
+| `horizontal_rolling_360` | `horizontalrolling360.txt` | 360° aileron roll while maintaining level flight |
+| `outside_360` | `outside360.txt` | 360° outside loop sustaining −G |
+| `outside_inside_vert8` | `outsideinsidevertical8.txt` | Vertical figure-of-eight – outside loop bottom, inside loop top |
+| `quarter_down_roll` | `quarterdownroll.txt` | Quarter outside loop followed by a downline snap roll |
+| `snap_45deg_down_roll` | `snap45degdownroll.txt` | 45° downline with a snap roll |
+| `half_vert_roll_neg_pull` | `halfverticalrollwnegpullout.txt` | ½ vertical roll ending with a negative G pull-out |
+| `triple_push_pull_loop` | `triple_push_pull_loop.txt` | Triple push–pull loop: repeated push (−G) then pull (+G) ×3 |
+| `triple_push_pull_immelmann` | `triple_push_pull_immelmann.txt` | Triple push–pull Immelmann: push–pull + half-roll repeated ×3 |
+| `triple_push_pull_split_s` | `triple_push_pull_split_s.txt` | Triple push–pull Split S: three consecutive push–pull Split S entries |
+| `high_g_turn` | `high_g_turn.txt` | Sustained high-G level turn with 6–7 G plateau and on/off modulation |
+| `loop_standard` | `loop_standard.txt` | Standard loop with 3–5 G pull-up and pull-out phases |
+| `immelmann_turn` | `immelmann_turn.txt` | Half-loop to half-roll Immelmann with high +G pull-up |
+| `split_s` | `split_s.txt` | Split-S: roll inverted then descending half-loop with high +G pull-out |
+| `cuban_eight` | `cuban_eight.txt` | Cuban Eight: two looping segments joined by half-rolls |
+| `vertical_eight` | `vertical_eight.txt` | Vertical figure eight with repeated +G exposures and brief −G transitions |
+
+Notes:
+
+- Some entries are conceptual/demo profiles intended for physiology and risk visualization rather than flight training guidance. You can add your own maneuvers by dropping a properly formatted file into `Aerobatics_sample_inputs/` and updating the mapping in `aerobatic_profiles.py`.
 
 ---
 

@@ -119,6 +119,13 @@ PROFILES: Dict[str, Tuple[str, str]] = {
         "triple_push_pull_split_s.txt",
         "Triple push–pull Split S: three consecutive push–pull Split S entries",
     ),
+    # High-risk maneuver set for G-LOC/greyout/blackout studies (conceptual)
+    "high_g_turn": ("high_g_turn.txt", "Sustained high-G level turn with 6–7 G plateau and on/off modulation"),
+    "loop_standard": ("loop_standard.txt", "Standard loop with 3–5 G pull-up and pull-out phases"),
+    "immelmann_turn": ("immelmann_turn.txt", "Half-loop to half-roll Immelmann with high +G pull-up"),
+    "split_s": ("split_s.txt", "Split-S: roll inverted then descending half-loop with high +G pull-out"),
+    "cuban_eight": ("cuban_eight.txt", "Cuban Eight: two looping segments joined by half-rolls"),
+    "vertical_eight": ("vertical_eight.txt", "Vertical figure eight with repeated +G exposures and brief −G transitions"),
 }
 
 

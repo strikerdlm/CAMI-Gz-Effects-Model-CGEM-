@@ -153,6 +153,42 @@ MANEUVER_EXPLANATIONS = {
         "physiological_effects": "Repeated negative-to-positive transitions on descending segments elevate cumulative load and fatigue.",
         "risk_factors": ["Accumulated cardiovascular strain", "Greyout during sustained +G", "Redout if −G is extended"],
         "mitigation": ["Adequate entry altitude", "Careful pacing", "Training and hydration"]
+    },
+    "high_g_turn": {
+        "description": "Sustained high-G level turn with brief on/off modulation around a 6–7 G plateau.",
+        "physiological_effects": "Sustained +G reduces cerebral perfusion leading to greyout/blackout and potential G-LOC without countermeasures.",
+        "risk_factors": ["High G-onset rate", "Sustained +G exposure", "Fatigue"],
+        "mitigation": ["AGSM", "Anti-G suit/PPB", "Manage onset rate"]
+    },
+    "loop_standard": {
+        "description": "Standard loop with 3–5 G pull-up and pull-out phases.",
+        "physiological_effects": "Peak +G at entry/exit may induce greyout; low/near 0 G over the top allows reperfusion.",
+        "risk_factors": ["High entry speed", "Aggressive pull", "Disorientation"],
+        "mitigation": ["Energy management", "AGSM during pull", "Altitude margins"]
+    },
+    "immelmann_turn": {
+        "description": "Half-loop followed by half-roll (direction reversal with altitude gain).",
+        "physiological_effects": "+G during half-loop can approach tolerance; roll introduces vestibular stress.",
+        "risk_factors": ["Rapid G-onset", "Spatial disorientation"],
+        "mitigation": ["Gradual pull", "AGSM"]
+    },
+    "split_s": {
+        "description": "Roll inverted then descending half-loop with high +G pull-out.",
+        "physiological_effects": "Pull-out +G is the primary risk for greyout/blackout; altitude loss is substantial.",
+        "risk_factors": ["High +G at pull-out", "Altitude margin"],
+        "mitigation": ["Adequate entry altitude", "AGSM"]
+    },
+    "cuban_eight": {
+        "description": "Two looping segments joined by half-rolls (lazy eight in vertical plane).",
+        "physiological_effects": "Repeated +G peaks; roll segments at low G reduce perfusion strain briefly.",
+        "risk_factors": ["Cumulative +G", "Disorientation"],
+        "mitigation": ["Pacing", "AGSM"]
+    },
+    "vertical_eight": {
+        "description": "Vertical figure eight with repeated +G exposures and brief −G transitions.",
+        "physiological_effects": "Alternating +/−G can introduce push–pull effect reducing +G tolerance.",
+        "risk_factors": ["Push–pull effect", "Repeated +G peaks"],
+        "mitigation": ["Limit −G duration", "AGSM on +G phases"]
     }
 }
 
