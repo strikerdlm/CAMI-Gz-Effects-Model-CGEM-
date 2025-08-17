@@ -2831,7 +2831,12 @@ with tab8:
                 pdf.set_font("Arial", size=10)
                 _pdf_add_wrapped(pdf, ai_text)
 
-            return pdf.output(dest="S").encode("latin1", errors="ignore")
+            out = pdf.output(dest="S")
+            # FPDF >= 2 returns bytes/bytearray; ensure bytes
+            if isinstance(out, (bytes, bytearray)):
+                return bytes(out)
+            # Older versions may return str
+            return str(out).encode("latin1", errors="ignore")
 
         if st.button("Generate PDF Report"):
             try:
