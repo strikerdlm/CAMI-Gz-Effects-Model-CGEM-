@@ -102,13 +102,42 @@ st.markdown("""
     .app-subtitle a { color: inherit; text-decoration: underline; }
     @media (prefers-color-scheme: dark) { .app-subtitle { color: #cbd5e1; } }
     [data-theme="dark"] .app-subtitle { color: #cbd5e1; }
-    h2 {
-        color: #334155;
-        letter-spacing: 0.2px;
+    h2 { color: #334155; letter-spacing: 0.2px; }
+    /* Enhanced tabbar with icons */
+    .tabbar {
+        display: flex;
+        gap: 8px;
+        margin: 0.25rem 0 0.75rem;
+        overflow-x: auto;
+        padding-bottom: 4px;
+        border-bottom: 1px solid rgba(100,100,100,0.25);
     }
-    /* Tabs: slightly tighter and professional */
-    div.stTabs [data-baseweb="tab-list"] { gap: 0.5rem; }
-    div.stTabs [data-baseweb="tab"] { font-size: 0.95rem; padding: 0.3rem 0.6rem; }
+    .tabpill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: rgba(2,132,199,0.08);
+        color: inherit;
+        border: 1px solid rgba(2,132,199,0.18);
+        font-weight: 600;
+        white-space: nowrap;
+    }
+    .tabpill .ico { font-size: 1rem; opacity: 0.9; }
+    /* Tabs: slightly tighter and professional; make horizontally scrollable on small screens */
+    div.stTabs [data-baseweb="tab-list"] {
+        gap: 0.5rem;
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        scrollbar-width: thin;
+    }
+    div.stTabs [data-baseweb="tab"] {
+        font-size: 0.95rem;
+        padding: 0.3rem 0.6rem;
+        white-space: nowrap;
+        flex: 0 0 auto;
+    }
     .warning-box {
         background-color: #fff3cd;
         border: 1px solid #ffc107;
@@ -1436,15 +1465,25 @@ def cached_run(profile_id: str, pilot_cfg_key: str, pilot_cfg: PilotConfig):
     return data, str(tmp_dir)
 
 # Main content area
+# Custom header with compact icon labels (non-interactive; tabs remain the control)
+st.markdown(
+    """
+    <div class="tabbar">
+      <span class="tabpill"><span class="ico">📈</span>Overview</span>
+      <span class="tabpill"><span class="ico">🧬</span>Physiology</span>
+      <span class="tabpill"><span class="ico">🎯</span>Maneuver</span>
+      <span class="tabpill"><span class="ico">📊</span>Compare</span>
+      <span class="tabpill"><span class="ico">✨</span>ECharts</span>
+      <span class="tabpill"><span class="ico">🧑‍✈️📋</span>Survey</span>
+      <span class="tabpill"><span class="ico">📚</span>Learn</span>
+      <span class="tabpill"><span class="ico">📤</span>Export</span>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
+
 tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8 = st.tabs([
-    _("Profile Overview 📈") if False else "Profile Overview 📈", 
-    _("Physiological Analysis 🧬") if False else "Physiological Analysis 🧬", 
-    _("Maneuver Details 🎯") if False else "Maneuver Details 🎯",
-    _("Comparative Analysis 📊") if False else "Comparative Analysis 📊",
-    _("ECharts Dashboard ✨") if False else "ECharts Dashboard ✨",
-    _("Pilot Survey 🧑‍✈️📋") if False else "Pilot Survey 🧑‍✈️📋",
-    _("Educational Resources 📚") if False else "Educational Resources 📚",
-    _("Export & Reports 📤") if False else "Export & Reports 📤",
+    "Overview", "Physiology", "Maneuver", "Compare", "ECharts", "Survey", "Learn", "Export"
 ])
 
 with tab1:
