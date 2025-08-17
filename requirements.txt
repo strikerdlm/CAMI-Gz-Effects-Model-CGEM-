@@ -16,5 +16,8 @@ Pillow>=10.0.0
 requests>=2.31.0
 pre-commit>=3.7.0
 
+# Export to Excel
+openpyxl>=3.1.0
+
 # Note for Conda users: you can install most of the above from conda-forge,
 # then use pip only for streamlit if desired.
