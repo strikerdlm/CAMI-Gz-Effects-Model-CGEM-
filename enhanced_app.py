@@ -1361,9 +1361,9 @@ with tab4:
                     "Max G": max(data["g_values"]) if data["g_values"] else 0,
                     "Min G": min(data["g_values"]) if data["g_values"] else 0,
                     "Max G_eff": max(data["geff_values"]) if data["geff_values"] else 0,
-                    "Greyout Time": data["time_to_greyout_s"] or "None",
-                    "Blackout Time": data["time_to_blackout_s"] or "None",
-                    "G-LOC Time": data["time_to_gloc_s"] or "None"
+                    "Greyout Time": (data["time_to_greyout_s"] if data["time_to_greyout_s"] is not None else np.nan),
+                    "Blackout Time": (data["time_to_blackout_s"] if data["time_to_blackout_s"] is not None else np.nan),
+                    "G-LOC Time": (data["time_to_gloc_s"] if data["time_to_gloc_s"] is not None else np.nan)
                 })
             except:
                 continue
