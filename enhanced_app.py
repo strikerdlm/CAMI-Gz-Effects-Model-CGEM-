@@ -25,26 +25,12 @@ import streamlit.components.v1 as components
 from matplotlib.animation import FuncAnimation
 from matplotlib.patches import Rectangle
 import seaborn as sns
-import requests
 from fpdf import FPDF
 
 from aerobatic_profiles import load_all_profiles, load_profile, PROFILES, Sample
 from cgem_wrapper import run_cgem_for_profile, run_cgem_centrifuge, CGEMResult, PilotConfig
 from i18n import _, use_lang_selector, get_locale
 from io import BytesIO
-
-# Optional: external AI + env
-try:
-    from dotenv import load_dotenv  # type: ignore
-except Exception:
-    load_dotenv = None  # type: ignore
-
-# Load environment variables if available (for OPENAI_API_KEY)
-try:
-    if load_dotenv is not None:
-        load_dotenv()
-except Exception:
-    pass
 
 
 # Configure page
@@ -2699,97 +2685,50 @@ with tab8:
         except Exception:
             png_scatter = b""
 
-        col_ai1, col_ai2 = st.columns([1, 1])
-        with col_ai1:
-            use_ai = st.checkbox("Include AI recommendations (requires internet)", value=False)
-        with col_ai2:
-            net_ok = False
-            try:
-                requests.get("https://api.openai.com", timeout=2)
-                net_ok = True
-            except Exception:
-                net_ok = False
-            st.write("Internet: " + ("Available" if net_ok else "Unavailable"))
+        # Local, deterministic recommendations (non-AI)
+        def build_local_recommendations() -> str:
+            lines: List[str] = []
+            lines.append("Overview: Results indicate the pilot's physiological tolerance relative to maneuver demands.")
+            # Risk assessment
+            ttg = last_data.get("time_to_greyout_s")
+            ttb = last_data.get("time_to_blackout_s")
+            ttl = last_data.get("time_to_gloc_s")
+            risk = []
+            if isinstance(ttg, (int, float)):
+                risk.append(f"Greyout risk: {ttg:.2f}s to onset")
+            if isinstance(ttb, (int, float)):
+                risk.append(f"Blackout risk: {ttb:.2f}s to onset")
+            if isinstance(ttl, (int, float)):
+                risk.append(f"G-LOC risk: {ttl:.2f}s to onset")
+            if not risk:
+                risk.append("No critical thresholds predicted in the simulated window.")
+            lines.append("Risk Assessment:\n- " + "\n- ".join(risk))
+            # Maneuver drivers
+            drivers = [
+                "Rapid +G onset during pull-up phases",
+                "Sustained +G plateaus without relief",
+                "Push–pull transitions reducing +G tolerance",
+            ]
+            lines.append("Maneuver-Specific Drivers:\n- " + "\n- ".join(drivers))
+            # Countermeasures
+            cms = [
+                "AGSM: practice and apply during +G phases",
+                "G-suit/PPB: ensure fit and correct use during high-G",
+                "Pacing: manage entry speed and pull rates to reduce G-onset",
+                "Hydration: maintain plasma volume, avoid alcohol before flight",
+                "Conditioning: core and lower-body strength to sustain AGSM",
+            ]
+            lines.append("Recommended Countermeasures:\n- " + "\n- ".join(cms))
+            # Training
+            trn = [
+                "Refresher centrifuge exposures focusing on rapid-onset profiles",
+                "Coached AGSM sessions with capnography/EMG feedback if available",
+                "Review of maneuver energy management to avoid unnecessary +G spikes",
+            ]
+            lines.append("Training Recommendations:\n- " + "\n- ".join(trn))
+            return "\n\n".join(lines)
 
-        ai_text = None
-        if use_ai and net_ok:
-            try:
-                # Attempt Responses API first
-                from openai import OpenAI  # type: ignore
-                client = OpenAI()
-                payload: Dict[str, Any] = {
-                    "pilot_id": pilot_label,
-                    "maneuver": selected_key,
-                    "summary": {
-                        "time_to_greyout_s": last_data.get("time_to_greyout_s"),
-                        "time_to_blackout_s": last_data.get("time_to_blackout_s"),
-                        "time_to_gloc_s": last_data.get("time_to_gloc_s"),
-                    },
-                    "context": {
-                        "profile_key": selected_key,
-                        "flags": {
-                            "n2": last_data.get("flags_n2", []),
-                            "ne2": last_data.get("flags_ne2", []),
-                            "non2": last_data.get("flags_non2", []),
-                        }
-                    }
-                }
-                prompt = (
-                    "You are an aerospace medicine assistant. Generate a concise, pilot-friendly analysis of CGEM results. "
-                    "Explain: (1) what the results mean, (2) risk assessment (greyout/blackout/G-LOC), (3) maneuver-specific risk drivers, "
-                    "(4) actionable countermeasures (AGSM, suit/PPB, hydration, pacing), (5) training recommendations. Use clear headings and bullet points."
-                )
-
-                try:
-                    response = client.responses.create(
-                        model="gpt-5",
-                        input=[
-                            {"role": "system", "content": "You explain physiological risk in language understandable to pilots."},
-                            {"role": "user", "content": prompt},
-                            {"role": "user", "content": json.dumps(payload)},
-                        ],
-                        text={"format": {"type": "text"}, "verbosity": "high"},
-                        reasoning={"effort": "high", "summary": "auto"},
-                        tools=[{"type": "web_search_preview", "user_location": {"type": "approximate"}, "search_context_size": "high"}],
-                        store=False,
-                    )
-                    ai_text = getattr(response, "output_text", None) or getattr(response, "content", None)
-                    if isinstance(ai_text, list):
-                        ai_text = "\n".join(str(x) for x in ai_text)
-                    if not isinstance(ai_text, str):
-                        ai_text = None
-                except Exception:
-                    # Fallback: Chat Completions with GPT-5 or o3
-                    try:
-                        chat = client.chat.completions.create(
-                            model="gpt-5",
-                            messages=[
-                                {"role": "system", "content": "You explain physiological risk in language understandable to pilots."},
-                                {"role": "user", "content": prompt},
-                                {"role": "user", "content": json.dumps(payload)},
-                            ],
-                            temperature=0.3,
-                        )
-                        ai_text = (chat.choices[0].message.content or "").strip()
-                    except Exception:
-                        # Legacy fallback (older openai package)
-                        try:
-                            import openai  # type: ignore
-                            openai.api_key = os.getenv("OPENAI_API_KEY")
-                            legacy = openai.ChatCompletion.create(
-                                model="gpt-4o",  # common broadly-available model
-                                messages=[
-                                    {"role": "system", "content": "You explain physiological risk in language understandable to pilots."},
-                                    {"role": "user", "content": prompt},
-                                    {"role": "user", "content": json.dumps(payload)},
-                                ],
-                                temperature=0.3,
-                            )
-                            ai_text = (legacy["choices"][0]["message"]["content"] or "").strip()
-                        except Exception as e3:
-                            st.warning(f"AI recommendations unavailable: {e3}")
-            except Exception as exc:
-                st.warning(f"AI recommendations unavailable: {exc}")
+        ai_text = build_local_recommendations()
 
         def _pdf_add_wrapped(pdf: FPDF, text: str):
             for line in pdf.multi_cell(w=0, h=6, txt=text, align="L", split_only=True):

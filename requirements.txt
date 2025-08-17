@@ -16,8 +16,6 @@ scipy>=1.10.0
 Pillow>=10.0.0
 requests>=2.31.0
 pre-commit>=3.7.0
-python-dotenv>=1.0.1
-openai>=1.35.0
 fpdf2>=2.7.9
 
 # Export to Excel
