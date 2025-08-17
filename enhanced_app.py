@@ -44,7 +44,7 @@ def _find_icon_path() -> Optional[Path]:
 ICON_PATH = _find_icon_path()
 page_icon_arg: Optional[str] = str(ICON_PATH) if ICON_PATH else None
 st.set_page_config(
-    page_title="G-Effects Model by Civil Aerospace Medicine Institute",
+    page_title="G-Effects Model",
     page_icon=page_icon_arg,
     layout="wide",
     initial_sidebar_state="expanded"
@@ -86,6 +86,11 @@ st.markdown("""
     .app-header { display: flex; align-items: center; gap: 14px; margin: 0.25rem 0 0.75rem; }
     .app-logo { width: 56px; height: 56px; border-radius: 14px; box-shadow: 0 8px 22px rgba(0,0,0,0.25); }
     @media (max-width: 480px) { .app-logo { width: 44px; height: 44px; border-radius: 12px; } }
+    .app-subtitle { margin-top: -6px; color: #475569; font-size: 0.92rem; }
+    .app-subtitle em { color: inherit; }
+    .app-subtitle a { color: inherit; text-decoration: underline; }
+    @media (prefers-color-scheme: dark) { .app-subtitle { color: #cbd5e1; } }
+    [data-theme="dark"] .app-subtitle { color: #cbd5e1; }
     h2 {
         color: #334155;
         letter-spacing: 0.2px;
@@ -1043,6 +1048,16 @@ def render_echarts_dashboard(times: List[float], g_values: List[float], geff_val
     components.html(html, height=height_value, scrolling=True)
 
 # Main application
+APA_CITATION = (
+    "Copeland, K., & Whinnery, J. E. (2023). Cerebral blood flow based computer modeling of Gz-induced effects. "
+    "<em>Aerospace Medicine and Human Performance, 94</em>(1), 39–45. "
+    "<a href=\"https://doi.org/10.3357/AMHP.6179.2023\" target=\"_blank\">https://doi.org/10.3357/AMHP.6179.2023</a>"
+)
+DEV_CREDIT = (
+    "Developer for Colombian Aerospace Force: Dr. Diego Malpica — "
+    "<a href=\"https://orcid.org/0000-0002-2257-4940\" target=\"_blank\">ORCID 0000-0002-2257-4940</a>"
+)
+
 if ICON_PATH and ICON_PATH.exists():
     try:
         with open(ICON_PATH, "rb") as _f:
@@ -1051,15 +1066,17 @@ if ICON_PATH and ICON_PATH.exists():
             f"""
             <div class="app-header">
                 <img src="data:image/png;base64,{_b64}" alt="App logo" class="app-logo" />
-                <h1>G-Effects Model by Civil Aerospace Medicine Institute</h1>
+                <h1>G-Effects Model</h1>
             </div>
+            <div class="app-subtitle">{APA_CITATION}<br/>{DEV_CREDIT}</div>
             """,
             unsafe_allow_html=True,
         )
     except Exception:
-        st.title("G-Effects Model by Civil Aerospace Medicine Institute")
+        st.title("G-Effects Model")
 else:
-    st.title("G-Effects Model by Civil Aerospace Medicine Institute")
+    st.title("G-Effects Model")
+    st.markdown(f"<div class=\"app-subtitle\">{APA_CITATION}<br/>{DEV_CREDIT}</div>", unsafe_allow_html=True)
     st.caption("Tip: place 'icon.png' in the project root or in 'assets/', 'images/', or 'docs/' to display the logo.")
 st.markdown("### Comprehensive visualization of physiological responses during flight maneuvers — modern, fast, and interactive ✨")
 
