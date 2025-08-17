@@ -100,4 +100,4 @@ models/
 
 ---
 
-*Prepared by: AI assistant • Month 2025*
+Prepared by Diego Malpica https://orcid.org/0000-0002-2257-4940

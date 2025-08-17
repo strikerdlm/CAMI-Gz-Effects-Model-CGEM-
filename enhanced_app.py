@@ -23,8 +23,26 @@ from aerobatic_profiles import load_all_profiles, load_profile, PROFILES, Sample
 from cgem_wrapper import run_cgem_for_profile, run_cgem_centrifuge, CGEMResult, PilotConfig
 
 # Configure page
-ICON_PATH = Path(__file__).with_name("icon.png")
-page_icon_arg: Optional[str] = str(ICON_PATH) if ICON_PATH.exists() else None
+def _find_icon_path() -> Optional[Path]:
+    here = Path(__file__).parent
+    candidates = [
+        here / "icon.png",
+        here / "assets" / "icon.png",
+        Path.cwd() / "icon.png",
+        Path.cwd() / "assets" / "icon.png",
+        Path.cwd() / "images" / "icon.png",
+        Path.cwd() / "docs" / "icon.png",
+    ]
+    for p in candidates:
+        try:
+            if p.exists():
+                return p
+        except Exception:
+            continue
+    return None
+
+ICON_PATH = _find_icon_path()
+page_icon_arg: Optional[str] = str(ICON_PATH) if ICON_PATH else None
 st.set_page_config(
     page_title="G-Effects Model by Civil Aerospace Medicine Institute",
     page_icon=page_icon_arg,
@@ -1025,7 +1043,7 @@ def render_echarts_dashboard(times: List[float], g_values: List[float], geff_val
     components.html(html, height=height_value, scrolling=True)
 
 # Main application
-if ICON_PATH.exists():
+if ICON_PATH and ICON_PATH.exists():
     try:
         with open(ICON_PATH, "rb") as _f:
             _b64 = base64.b64encode(_f.read()).decode("utf-8")
@@ -1042,6 +1060,7 @@ if ICON_PATH.exists():
         st.title("G-Effects Model by Civil Aerospace Medicine Institute")
 else:
     st.title("G-Effects Model by Civil Aerospace Medicine Institute")
+    st.caption("Tip: place 'icon.png' in the project root or in 'assets/', 'images/', or 'docs/' to display the logo.")
 st.markdown("### Comprehensive visualization of physiological responses during flight maneuvers — modern, fast, and interactive ✨")
 
 # Sidebar configuration
@@ -1477,10 +1496,10 @@ with tab6:
         - **Lateral G (Gy)**: Side-to-side forces, generally better tolerated
         
         ### Critical Thresholds:
-        - **Greyout**: ~4.1 G_eff - Peripheral vision loss
-        - **Blackout**: ~5.0 G_eff - Complete vision loss
-        - **G-LOC**: ~5.5 G_eff - Loss of consciousness
-        - **Redout**: < -2G - Blood vessel rupture risk
+        - **Greyout**: ≈4.1 G_eff - Peripheral vision loss
+        - **Blackout**: ≈5.0 G_eff - Complete vision loss
+        - **G-LOC**: ≈5.5 G_eff - Loss of consciousness
+        - **Redout**: < −2 G - Blood vessel rupture risk
         """)
     
     with st.expander("G-Force Mitigation Techniques"):
@@ -1529,28 +1548,28 @@ Sustained linear acceleration represents a pervasive environmental stressor in m
 
 ### Core Physiology and Mechanisms
 
-**Hydrostatic gradients.** Each +1 Gz produces ~7.4 mmHg per cm vertical pressure drop (ΔP = ρ·g·h; blood density ≈ 1.06 g·cm⁻³), decreasing mean arterial pressure (MAP) at the Circle of Willis by ≈50 mmHg at +3 Gz for a 24 cm heart–brain distance (Pollock et al., 2021). Baroreflex-mediated tachycardia and vasoconstriction partly restore MAP but saturate beyond +4–5 Gz.
+**Hydrostatic gradients.** Each +1 Gz produces ≈0.77 mmHg per cm vertical pressure drop (ΔP = ρ·g·h; blood density ≈ 1.06 g·cm⁻³), decreasing mean arterial pressure (MAP) at the Circle of Willis by ≈55 mmHg at +3 Gz for a 24 cm heart–brain distance (Pollock et al., 2021). Baroreflex-mediated tachycardia and vasoconstriction partly restore MAP but saturate beyond +4–5 Gz.
 
 **Cerebral autoregulation.** Cerebral blood flow remains relatively constant while MAP at the Circle of Willis lies between ~60–160 mmHg. Acceleration-induced hydrostatic depression can drive MAP below the lower autoregulatory bound, precipitating retinal ischaemia (greyout), cortical hypoxia (blackout), and G-LOC (Lathers et al., 1984; Blaber et al., 2001).
 
 **Venous compliance and splanchnic pooling.** Venous capacitance expansion sequesters ≥2 L of blood in the abdomen and legs under +Gz, reducing preload and cardiac output; sympathetic activation constricts capacitance vessels yet cannot fully offset pooling (Convertino et al., 1989).
 
-**Respiratory mechanics.** Upward diaphragm displacement increases transpulmonary pressure and the work of breathing by ~50% at +5 Gz. Positive pressure breathing elevates intrathoracic pressure, improving heart-level MAP but can impede venous return if excessive (Crandall & González-Alonso, 2010).
+**Respiratory mechanics.** Upward diaphragm displacement increases transpulmonary pressure and the work of breathing by ≈50% at +5 Gz. Positive pressure breathing elevates intrathoracic pressure, improving heart-level MAP but can impede venous return if excessive (Crandall & González-Alonso, 2010).
 
 **Ocular and neurocognitive phenomena.** Retinal arterial pressure falling below intraocular pressure (~20 mmHg) triggers greyout/blackout. Sustained ‑Gz causes cephalad congestion and redout. Vestibular misinterpretation of otolith signals under sustained acceleration degrades spatial orientation (Previc & Ercoline, 2004).
 
-**Musculoskeletal loading.** A 2 kg helmet equates to ~20 kg effective mass at +9 Gz, elevating cervical spine injury risk (Previc & Ercoline, 2004).
+**Musculoskeletal loading.** A 2 kg helmet equates to ≈20 kg effective mass at +9 Gz, elevating cervical spine injury risk (Previc & Ercoline, 2004).
 
 ### Human Tolerance and Dose–Response
 
-Unprotected rapid-onset (≥2 G·s⁻¹) +Gz tolerance averages 5–6 Gz for ≤8 s; greyout ~4.1 Gz, blackout ~5 Gz, G-LOC ~5.5 Gz (Burton & Smith, 1982). Slower onset allows additional baroreflex compensation (~+1 G). AGSM proficiency adds ~1–2 G; pneumatic anti-G suits add ~1 G; integrated positive-pressure breathing enables +9 Gz for ~15–45 s (Banks et al., 2014). ‑Gz tolerance (~−2 to −3 Gz for ~10 s) is limited by cerebral hyperaemia (Vogt, 1976). Lateral ±Gy and fore–aft +Gx loads invoke lower cardiovascular strain but earlier vestibular/respiratory limitations mitigated by semi-reclined seating (Pattarini et al., 2020).
+Unprotected rapid-onset (≥2 G·s⁻¹) +Gz tolerance averages 5–6 Gz for ≤8 s; greyout ≈4.1 Gz, blackout ≈5 Gz, G-LOC ≈5.5 Gz (Burton & Smith, 1982). Slower onset allows additional baroreflex compensation (approximately +1 G). AGSM proficiency adds ≈1–2 G; pneumatic anti-G suits add ≈1 G; integrated positive-pressure breathing enables +9 Gz for ≈15–45 s (Banks et al., 2014). ‑Gz tolerance (≈−2 to −3 Gz for ≈10 s) is limited by cerebral hyperaemia (Vogt, 1976). Lateral ±Gy and fore–aft +Gx loads invoke lower cardiovascular strain but earlier vestibular/respiratory limitations mitigated by semi-reclined seating (Pattarini et al., 2020).
 
 ### Countermeasures
 
-- **AGSM:** Isometric tensing with cyclic forced exhalation; adds ~1–2 G tolerance, efficacy decays with fatigue and poor technique (Storm et al., 1990).
+- **AGSM:** Isometric tensing with cyclic forced exhalation; adds ≈1–2 G tolerance, efficacy decays with fatigue and poor technique (Storm et al., 1990).
 - **Anti-G suits:** CSU-13B/P inflates ~25 mmHg·G⁻¹ above +2 G (≈1 G protection). ATAGS and gradient liquid suits provide faster inflation and ~1.4 G protection but at comfort/logistical cost (Watenpaugh et al., 1996).
-- **Positive pressure breathing (PPB/COMBAT EDGE):** Mask pressure up to ~60 mmHg synchronised with suit inflation confers an extra ~2–3 G tolerance; risk of reduced venous return necessitates training (Crandall & González-Alonso, 2010).
-- **Ergonomics & hydration:** ~30° seat recline shortens the heart–brain vertical distance by ~8 cm, improving +Gz tolerance by ~0.7 G; pre-flight isotonic hydration expands plasma volume (~0.5 G gain) (Convertino et al., 1989).
+- **Positive pressure breathing (PPB/COMBAT EDGE):** Mask pressure up to ≈60 mmHg synchronised with suit inflation confers an extra ≈2–3 G tolerance; risk of reduced venous return necessitates training (Crandall & González-Alonso, 2010).
+- **Ergonomics & hydration:** ≈30° seat recline shortens the heart–brain vertical distance by ≈8 cm, improving +Gz tolerance by ≈0.7 G; pre-flight isotonic hydration expands plasma volume (≈0.5 G gain) (Convertino et al., 1989).
 
 ### Epidemiology and Clinical Sequelae
 
