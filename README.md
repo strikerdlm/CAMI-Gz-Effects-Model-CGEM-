@@ -75,6 +75,52 @@ python demo_example.py
 
 ---
 
+## Scientific background and model overview
+
+CGEM is a physiology-aware model that predicts visual symptoms, G-induced loss of consciousness (G-LOC), and recovery based on cerebral and retinal perfusion. It tracks reserve “banks” for consciousness and vision, and models the effects of countermeasures (G-suit, AGSM, positive pressure breathing), muscle tensing, seat tilt, drug-induced delays, and dehydration on heart-level mean arterial pressure and effective perfusion. The underlying methods, assumptions, and validation are documented in the FAA Office of Aerospace Medicine technical reports and peer‑reviewed literature listed in References.
+
+- Blood oxygen delivery serves as a proxy for “resource flow” to brain/retina; flow depends on perfusion pressure gradients, vascular resistance, oxygenation fraction, and Gz geometry.
+- Heart response: mean arterial pressure ramps toward a max with a time constant after Gz > 1.4; negative Gz produces a transient “push–pull” delay when returning to +Gz.
+- Visual states: onset (greyout/red‑out) and blackout reflect intraocular pressure thresholds and retinal perfusion; consciousness tracking uses flow thresholds and reserve banks.
+
+Key sources: FAA OAM technical report describing CGEM’s methods and validation and the CGEM User’s Guide (both cited with DOIs below).
+
+---
+
+## Validation and verification (concise summary)
+
+Independent FAA validation compared CGEM predictions versus pooled centrifuge datasets (USN/USAF) and aerobatic profiles:
+
+- Time to G‑LOC vs. onset rate: CGEM tracked pooled data within ~1 SD across 0.05–10 G/s onset rates for relaxed participants without countermeasures.
+- Recovery of consciousness: predicted absolute incapacitation durations closely matched pooled experimental findings across offset rates.
+- Visual thresholds and countermeasures: predicted greyout/blackout and +G tolerances aligned with cohort means and ranges across gear/technique combinations; aerobatic maneuver symptoms matched expert pilot reports.
+
+See the FAA OAM technical report (DOT/FAA/AM‑23/6; DOI in References) for full tables, figures, and methods.
+
+---
+
+## Architecture and code map
+
+- Core model: `src/cgem.f` compiled Fortran executable (`cgem`/`cgem.exe`).
+- Python wrapper: `cgem_wrapper.py`
+  - Prepares `gloc_inp.dat` and optional `EGP` (jerk profile) files
+  - Launches the CGEM executable and parses outputs into rich time series
+  - Public API:
+    - `run_cgem_for_profile(profile_id, config: PilotConfig)`
+    - `run_cgem_centrifuge(g0, gmax, gmaxtime, rampup, rampdown, config)`
+    - `PilotConfig` captures subject profile or custom physiology and countermeasures
+- Apps and demos: `enhanced_app.py`, `app.py`, `demo_example.py`
+- Maneuvers: `aerobatic_profiles.py` and files in `Aerobatics_sample_inputs/`
+- Docs: FAA user guide and “How it Works” summaries in `docs/`
+
+---
+
+## Usage via Python API (quick view)
+
+Import from `cgem_wrapper` to run any `Aerobatics_sample_inputs/` profile with a `PilotConfig`. Batch and centrifuge modes are supported; see examples below.
+
+---
+
 ## Supported Aerobatic Maneuvers 🛩️
 
 All maneuver inputs live in `Aerobatics_sample_inputs/` and follow the `Nz, duration_ms` format. The application currently includes:
@@ -175,6 +221,15 @@ Dehydration mapping (heuristic): decreases baseline/max BP and slightly reduces 
 
 ---
 
+## Reproducibility and provenance
+
+- Deterministic executable: results are deterministic for a given `gloc_inp.dat` and EGP profile.
+- Environment capture: use the Conda or Docker recipes below for stable runs.
+- Temporary outputs: wrappers persist run artifacts under a temp directory; keep these to reproduce plots.
+- Cite primary sources (FAA CGEM technical report, user guide, and CGEM software DOI) alongside this repository when publishing results.
+
+---
+
 ## Contributors & Attribution 🙏
 
 - **Original model (FAA CGEM)**: Developed and maintained within the FAA Civil Aerospace Medical Institute (CAMI), AAM-631. Foundational work by Kyle Copeland (FAA CAMI) and collaborators; see source headers in `src/cgem.f` and the FAA report cited below.
@@ -191,15 +246,15 @@ Special recognition is due to the FAA researchers and collaborators whose effort
 
 ---
 
-## How to Cite 📝
+## How to cite 📝
 
-If you use this repository in academic or technical work, please cite the foundational FAA report:
+When publishing results derived from this code and the CGEM model, please cite:
 
-Malpica, D. (Developer). (2025). CGEM-based G-LOC Modeling and Visualization Suite [Computer software].
+- Copeland, K., & Whinnery, J. E. (2023). Cerebral blood flow‑based computer modeling of Gz‑induced effects (DOT/FAA/AM‑23/6). Office of Aerospace Medicine, FAA. DOI: https://doi.org/10.21949/1524446
+- Copeland, K. (2021). CGEM User’s Guide (DOT/FAA/AM‑23/5). Office of Aerospace Medicine, FAA. DOI: https://doi.org/10.21949/1524438
+- CGEM software release (archived package). DOI: https://doi.org/10.21949/1524439
 
-And include the original research reference (APA format):
-
-Copeland, K., & Whinnery, J. E. (2023). Cerebral blood flow-based computer modeling of Gz-induced effects (DOT/FAA/AM-23/6). Office of Aerospace Medicine, Federal Aviation Administration, Washington, DC.
+Optionally add a software citation for this repository (include commit hash or release tag) and the specific version of the CGEM executable used.
 
 ---
 
@@ -336,6 +391,26 @@ This mounts your working directory into the container.
   - Recreate your environment and re-run `pip install -r requirements.txt` (or Conda steps above).
 - Persisting CGEM temp files:
   - The wrapper now stores run artifacts under `/tmp/cgem_run_*` and returns the path for inspection.
+
+---
+
+## References (key sources with DOIs/URLs)
+
+- Besch, E. L., Werchan, P. M., Wiegman, J. F., Nesthus, T. E., & Shahed, A. R. (1994). Effect of hypoxia and hyperoxia on human +Gz duration tolerance. Journal of Applied Physiology, 76(4), 1693–1700. DOI: https://doi.org/10.1152/jappl.1994.76.4.1693
+- Copeland, K., & Whinnery, J. E. (2023). Cerebral blood flow‑based computer modeling of Gz‑induced effects (DOT/FAA/AM‑23/6). Office of Aerospace Medicine, FAA. DOI: https://doi.org/10.21949/1524446
+- Copeland, K. (2021). CGEM User’s Guide (DOT/FAA/AM‑23/5). Office of Aerospace Medicine, FAA. DOI: https://doi.org/10.21949/1524438
+- CGEM software (archived package). DOI: https://doi.org/10.21949/1524439
+- Eiken, O., & Grönkvist, M. (2013). Signs and symptoms during supra‑tolerance +Gz exposures, with reference to G‑garment failure. Aviation, Space, and Environmental Medicine, 84(3), 196–205. DOI: https://doi.org/10.3357/asem.3436.2013
+- Långsjö, J. W., Alkire, M. T., Kaskinoro, K., et al. (2012). Returning from oblivion: imaging the neural core of consciousness. The Journal of Neuroscience, 32(14), 4935–4943. DOI: https://doi.org/10.1523/JNEUROSCI.4962-11.2012
+- Quarry, V. M., & Spodick, D. H. (1974). Cardiac responses to isometric exercise: comparative effects of different postures and levels of exertion. Circulation, 49(5), 905–920. DOI: https://doi.org/10.1161/01.CIR.49.5.905
+- Rossen, R., Kabat, H., & Anderson, J. P. (1943). Acute arrest of cerebral circulation in man. Archives of Neurology and Psychiatry, 50(5), 510–528. DOI: https://doi.org/10.1001/archneurpsyc.1943.02290230022002
+- Ryoo, H. C., Sun, H. H., Shender, B. S., & Hrebien, L. (2004). Consciousness monitoring using NIRS during high +Gz exposures. Medical Engineering & Physics, 26(9), 745–753. DOI: https://doi.org/10.1016/j.medengphy.2004.07.003
+- Sabbahi, A., Arena, R., Kaminsky, L. A., Myers, J., & Phillips, S. A. (2018). Peak blood pressure responses during maximum cardiopulmonary exercise testing: FRIEND reference standards. Hypertension, 71(2), 229–236. DOI: https://doi.org/10.1161/HYPERTENSIONAHA.117.10116
+- Tripp, L. D., Warm, J. S., Matthews, G., Chiu, P. Y., & Bracken, R. B. (2009). Cerebral oxygen saturation and pilot performance during G‑LOC. Human Factors, 51(6), 775–784. DOI: https://doi.org/10.1177/0018720809359631
+- Whinnery, T., & Forster, E. M. (2015). Neurologic state transitions in the eye and brain: kinetics of loss and recovery of vision and consciousness. Visual Neuroscience, 32, E008. DOI: https://doi.org/10.1017/S095252381500005X
+- Whinnery, T., Forster, E. M., & Rogers, P. B. (2014). The +Gz recovery of consciousness curve. Extreme Physiology & Medicine, 3, 9. DOI: https://doi.org/10.1186/2046-7648-3-9
+
+For historical FAA technical reports and broader catalog access, see the FAA Office of Aerospace Medicine portal (`https://www.faa.gov/go/oamtechreports`) and the National Transportation Library ROSA P repository (`https://rosap.ntl.bts.gov`).
 
 ---
 
