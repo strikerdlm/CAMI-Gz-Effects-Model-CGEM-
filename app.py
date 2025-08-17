@@ -2,12 +2,15 @@ from __future__ import annotations
 
 import math
 from pathlib import Path
-from typing import List, Dict
+import json
+from typing import List, Dict, Optional
 
 import pandas as pd
 import matplotlib.pyplot as plt
+import numpy as np
 from mpl_toolkits.mplot3d import Axes3D  # noqa: F401
 import streamlit as st
+import streamlit.components.v1 as components
 
 from aerobatic_profiles import load_all_profiles, load_profile, PROFILES, Sample
 from cgem_wrapper import run_cgem_for_profile, PilotConfig
@@ -44,6 +47,77 @@ for s in samples:
 # Convert to seconds
 points_t = [t / 1000.0 for t in points_t]
 
+def _load_local_echarts_js() -> Optional[str]:
+    candidates = [
+        Path("node_modules") / "echarts" / "dist" / "echarts.min.js",
+        Path.cwd() / "node_modules" / "echarts" / "dist" / "echarts.min.js",
+    ]
+    for p in candidates:
+        try:
+            if p.exists():
+                return p.read_text(encoding="utf-8")
+        except Exception:
+            continue
+    return None
+
+def render_g_time_echarts(times: List[float], g_values: List[float], title: str, height: int = 400) -> None:
+    container_id = "g_time_chart"
+    pairs = [[float(t), float(g)] for t, g in zip(times, g_values)]
+    option = {
+        "backgroundColor": "transparent",
+        "title": {"text": title, "left": "center", "textStyle": {"fontSize": 14}},
+        "tooltip": {"trigger": "axis", "axisPointer": {"type": "line"}},
+        "grid": {"left": 55, "right": 24, "top": 36, "bottom": 40, "containLabel": True},
+        "xAxis": {"type": "value", "name": "Time (s)", "axisLine": {"lineStyle": {"color": "#666"}}},
+        "yAxis": {"type": "value", "name": "G-Force", "axisLine": {"lineStyle": {"color": "#666"}}},
+        "dataZoom": [{"type": "inside"}, {"type": "slider", "height": 18}],
+        "series": [
+            {
+                "type": "line",
+                "name": "G-Force",
+                "symbol": "none",
+                "lineStyle": {"width": 3, "color": "#1976d2"},
+                "step": "end",
+                "encode": {"x": 0, "y": 1},
+                "data": pairs,
+                "markLine": {"silent": True, "data": [{"yAxis": 0, "lineStyle": {"type": "dashed", "color": "#999"}}]},
+            }
+        ],
+    }
+    echarts_js = _load_local_echarts_js()
+    option_json = json.dumps(option)
+    html = f"""
+    <div id="{container_id}" style="width:100%;height:{height}px;"></div>
+    {f'<script>{echarts_js}</script>' if echarts_js else '<script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>'}
+    <script>
+      (function() {{
+        var el = document.getElementById('{container_id}');
+        var chart = echarts.init(el, null, {{ renderer: 'canvas' }});
+        var option = {option_json};
+        chart.setOption(option);
+        window.addEventListener('resize', function() {{ chart.resize(); }});
+      }})();
+    </script>
+    """
+    components.html(html, height=height)
+
+def _weighted_percentile(values: list[float], weights: list[float], percentile: float) -> float:
+    if not values or not weights or len(values) != len(weights):
+        return float('nan')
+    if percentile <= 0:
+        return float(min(values))
+    if percentile >= 100:
+        return float(max(values))
+    arr = np.array(values, dtype=float)
+    w = np.array(weights, dtype=float)
+    sort_idx = np.argsort(arr)
+    arr = arr[sort_idx]
+    w = w[sort_idx]
+    cum_w = np.cumsum(w)
+    cutoff = percentile / 100.0 * cum_w[-1]
+    idx = int(np.searchsorted(cum_w, cutoff, side='left'))
+    return float(arr[min(max(idx, 0), len(arr) - 1)])
+
 @st.cache_data(show_spinner=False)
 def cached_run(profile_id: str, pilot_cfg_key: str, pilot_cfg: PilotConfig):
     result, tmp_dir = run_cgem_for_profile(profile_id, config=pilot_cfg)
@@ -70,14 +144,7 @@ tab1, tab2, tab3 = st.tabs([
 
 with tab1:
     st.subheader(_("Normal Acceleration vs Time"))
-    fig, ax = plt.subplots(figsize=(9, 4))
-    ax.plot(points_t, points_g, color="#1976d2", linewidth=2)
-    ax.axhline(0, color="black", linestyle="--", alpha=0.5)
-    ax.set_xlabel("Time (s)")
-    ax.set_ylabel("Normal Acceleration (G)")
-    ax.set_title(selected_key.replace("_", " ").title())
-    ax.grid(True, alpha=0.3)
-    st.pyplot(fig, clear_figure=True)
+    render_g_time_echarts(points_t, points_g, title=selected_key.replace("_", " ").title(), height=400)
 
     # Show basic stats
     g_vals = [s.nz for s in samples]
@@ -90,6 +157,25 @@ with tab1:
     colB.metric(_("Max +G"), f"{max(g_vals):.1f}")
     colC.metric(_("Max -G"), f"{min(g_vals):.1f}")
     colD.metric(_("Weighted mean G"), f"{weighted_mean:.2f}")
+
+    # Additional evidence-based insights derived from the maneuver
+    total_ms = max(1, sum(durations))
+    pos_exposure_s = sum(d for g, d in zip(g_vals, durations) if g > 3.0) / 1000.0
+    neg_exposure_s = sum(d for g, d in zip(g_vals, durations) if g < -1.0) / 1000.0
+    # G-dose: time integral of positive and negative G magnitudes (G·s)
+    pos_g_dose = sum(max(0.0, g) * (d / 1000.0) for g, d in zip(g_vals, durations))
+    neg_g_dose = sum(max(0.0, -g) * (d / 1000.0) for g, d in zip(g_vals, durations))
+    # Weighted P95 of |G|
+    p95_abs_g = _weighted_percentile([abs(g) for g in g_vals], durations, 95.0)
+    # Weighted RMS G
+    mean_square = sum((g * g) * d for g, d in zip(g_vals, durations)) / total_ms
+    rms_g = float(np.sqrt(mean_square)) if mean_square >= 0 else float('nan')
+
+    col1, col2, col3, col4 = st.columns(4)
+    col1.metric("Time > +3G", f"{pos_exposure_s:.1f} s")
+    col2.metric("Time < −1G", f"{neg_exposure_s:.1f} s")
+    col3.metric("G-dose (+/−)", f"{pos_g_dose:.1f} / {neg_g_dose:.1f} G·s")
+    col4.metric("P95 |G| / RMS G", f"{p95_abs_g:.1f} / {rms_g:.1f}")
 
 with tab2:
     st.subheader(_("CGEM Model Prediction (Healthy, midrange subject)"))

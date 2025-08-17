@@ -1009,6 +1009,69 @@ def _load_local_echarts_js() -> Optional[str]:
             continue
     return None
 
+def _weighted_percentile(values: List[float], weights: List[float], percentile: float) -> float:
+    """Weighted percentile where weights correspond to sample durations (ms)."""
+    try:
+        if not values or not weights or len(values) != len(weights):
+            return float('nan')
+        if percentile <= 0:
+            return float(min(values))
+        if percentile >= 100:
+            return float(max(values))
+        arr = np.array(values, dtype=float)
+        w = np.array(weights, dtype=float)
+        order = np.argsort(arr)
+        arr = arr[order]
+        w = w[order]
+        cum_w = np.cumsum(w)
+        cutoff = percentile / 100.0 * cum_w[-1]
+        idx = int(np.searchsorted(cum_w, cutoff, side='left'))
+        return float(arr[min(max(idx, 0), len(arr) - 1)])
+    except Exception:
+        return float('nan')
+
+def render_g_time_overview(times: List[float], g_values: List[float], title: str, height: int = 400) -> None:
+    """Render a simple ECharts line (G vs Time) with a zero reference line."""
+    container_id = "g_time_overview"
+    pairs = [[float(t), float(g)] for t, g in zip(times, g_values)]
+    option = {
+        "backgroundColor": "transparent",
+        "title": {"text": title, "left": "center", "textStyle": {"fontSize": 14}},
+        "tooltip": {"trigger": "axis", "axisPointer": {"type": "line"}},
+        "grid": {"left": 55, "right": 24, "top": 36, "bottom": 40, "containLabel": True},
+        "xAxis": {"type": "value", "name": "Time (s)", "axisLine": {"lineStyle": {"color": "#666"}}},
+        "yAxis": {"type": "value", "name": "G-Force", "axisLine": {"lineStyle": {"color": "#666"}}},
+        "dataZoom": [{"type": "inside"}, {"type": "slider", "height": 18}],
+        "series": [
+            {
+                "type": "line",
+                "name": "G-Force",
+                "symbol": "none",
+                "lineStyle": {"width": 3, "color": "#1976d2"},
+                "step": "end",
+                "encode": {"x": 0, "y": 1},
+                "data": pairs,
+                "markLine": {"silent": True, "data": [{"yAxis": 0, "lineStyle": {"type": "dashed", "color": "#999"}}]},
+            }
+        ],
+    }
+    echarts_js = _load_local_echarts_js()
+    option_json = json.dumps(option)
+    html = f"""
+    <div id=\"{container_id}\" style=\"width:100%;height:{height}px;\"></div>
+    {f'<script>{echarts_js}</script>' if echarts_js else '<script src=\"https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js\"></script>'}
+    <script>
+      (function() {{
+        var el = document.getElementById('{container_id}');
+        var chart = echarts.init(el, null, {{ renderer: 'canvas' }});
+        var option = {option_json};
+        chart.setOption(option);
+        window.addEventListener('resize', function() {{ chart.resize(); }});
+      }})();
+    </script>
+    """
+    components.html(html, height=height)
+
 def render_echarts_dashboard(times: List[float], g_values: List[float], geff_values: List[float],
                              flags_n2: List[int], profile_name: str,
                              layout_mode: str = "Grid", chart_choice: Optional[str] = None,
@@ -1512,19 +1575,8 @@ tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8 = st.tabs([
 with tab1:
     st.subheader(_("G-Force Profile: {profile}", profile=selected_key.replace('_', ' ').title()))
     
-    # Basic profile plot
-    fig = go.Figure()
-    fig.add_trace(go.Scatter(x=points_t, y=points_g, mode='lines',
-                            name='G-Force', line=dict(color='#1976d2', width=3)))
-    fig.add_hline(y=0, line_dash="dash", line_color="gray")
-    fig.update_layout(
-        title=_("Normal Acceleration vs Time") if False else "Normal Acceleration vs Time",
-        xaxis_title="Time (s)",
-        yaxis_title=_("G-Force") if False else "G-Force",
-        height=400,
-        hovermode='x unified'
-    )
-    st.plotly_chart(fig, use_container_width=True)
+    # Overview ECharts line: G vs Time
+    render_g_time_overview(points_t, points_g, title="Normal Acceleration vs Time", height=400)
     
     # Statistics
     g_vals = [s.nz for s in samples]
@@ -1538,6 +1590,22 @@ with tab1:
     col3.metric("Min G", f"{min(g_vals):.1f}")
     col4.metric("Mean G", f"{weighted_mean:.2f}")
     col5.metric("G Range", f"{max(g_vals) - min(g_vals):.1f}")
+
+    # Enhanced, evidence-based insights
+    total_ms = max(1, sum(durations))
+    pos_exposure_s = sum(d for g, d in zip(g_vals, durations) if g > 3.0) / 1000.0
+    neg_exposure_s = sum(d for g, d in zip(g_vals, durations) if g < -1.0) / 1000.0
+    pos_g_dose = sum(max(0.0, g) * (d / 1000.0) for g, d in zip(g_vals, durations))
+    neg_g_dose = sum(max(0.0, -g) * (d / 1000.0) for g, d in zip(g_vals, durations))
+    p95_abs_g = _weighted_percentile([abs(g) for g in g_vals], durations, 95.0)
+    mean_square = sum((g * g) * d for g, d in zip(g_vals, durations)) / total_ms
+    rms_g = float(np.sqrt(mean_square)) if mean_square >= 0 else float('nan')
+
+    cA, cB, cC, cD = st.columns(4)
+    cA.metric("Time > +3G", f"{pos_exposure_s:.1f} s")
+    cB.metric("Time < −1G", f"{neg_exposure_s:.1f} s")
+    cC.metric("G-dose (+/−)", f"{pos_g_dose:.1f} / {neg_g_dose:.1f} G·s")
+    cD.metric("P95 |G| / RMS G", f"{p95_abs_g:.1f} / {rms_g:.1f}")
 
 with tab2:
     st.subheader(_("Advanced Physiological Analysis") if False else "Advanced Physiological Analysis")
