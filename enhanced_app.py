@@ -41,9 +41,25 @@ st.markdown("""
         border-radius: 6px;
         border: 1px solid #e5e7eb;
     }
-    h1 {
-        color: #0f172a;
+    /* Title styling: light and dark mode */
+    :root {
+        --title-color-light: #0f172a;
+        --title-color-dark: #f8fafc;
+    }
+    h1, .stApp h1 {
+        color: var(--title-color-light);
         letter-spacing: 0.2px;
+        font-weight: 800;
+    }
+    @media (prefers-color-scheme: dark) {
+        h1, .stApp h1 {
+            color: var(--title-color-dark) !important;
+            text-shadow: 0 1px 1px rgba(0,0,0,0.4);
+        }
+    }
+    [data-theme="dark"] h1, [data-theme="dark"] .stApp h1 {
+        color: var(--title-color-dark) !important;
+        text-shadow: 0 1px 1px rgba(0,0,0,0.4);
     }
     h2 {
         color: #334155;
@@ -1565,14 +1581,6 @@ Watenpaugh, D. E., Breit, G. A., & Murthy, G. (1996). Human cardiovascular respo
 """)
 
 # Footer
-st.sidebar.markdown("---")
-st.sidebar.info(
-    "⚠️ **Disclaimer**: This simulation uses the CGEM v1.1.0.1 model "
-    "with standard parameters. Actual physiological responses vary "
-    "significantly between individuals based on training, health, "
-    "and environmental factors."
-)
-
 st.sidebar.markdown("---")
 st.sidebar.markdown("### 🔬 Model Information")
 st.sidebar.markdown("""
