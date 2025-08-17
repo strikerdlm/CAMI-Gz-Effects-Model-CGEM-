@@ -1081,6 +1081,18 @@ else:
 
 
 # Sidebar configuration
+# Sidebar logo at the top (centered)
+if ICON_PATH and ICON_PATH.exists():
+    try:
+        with open(ICON_PATH, "rb") as _sf:
+            _sb64 = base64.b64encode(_sf.read()).decode("utf-8")
+        st.sidebar.markdown(
+            f"<div style=\"text-align:center;margin:0.25rem 0 0.5rem;\"><img src=\"data:image/png;base64,{_sb64}\" alt=\"Logo\" style=\"width:72px;height:72px;border-radius:16px;box-shadow:0 6px 18px rgba(0,0,0,0.25);\"/></div>",
+            unsafe_allow_html=True,
+        )
+    except Exception:
+        pass
+
 st.sidebar.header("Configuration ⚙️")
 
 # Profile selection
@@ -1648,6 +1660,27 @@ st.sidebar.markdown("""
 - **Purpose**: Educational/Research
 """)
 
+# Sidebar developer credit at the bottom
+st.sidebar.markdown("---")
+st.sidebar.markdown(
+    """
+    <div style="text-align:center; font-size: 0.9rem;">
+      Developer for Colombian Aerospace Force:<br/>
+      <strong>Dr. Diego Malpica, MD</strong><br/>
+      <a href="https://orcid.org/0000-0002-2257-4940" target="_blank">ORCID 0000-0002-2257-4940</a>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
+
 # Global footer
 st.markdown("---")
-st.caption("Developer for 'Fuerza Aeroespacial Colombiana': Dr. Diego Malpica, Direction of Aerospace Medicine.")
+st.markdown(
+    """
+    <div class="app-subtitle" style="font-size: 0.95rem;">
+      Developed by <strong>Dr Diego Malpica, MD (Aerospace Medicine)</strong>. Subdirectorate of Aerospace Sciences and the Direction of Aerospace Medicine. Colombian Aerospace Force. 
+      <a href="https://orcid.org/0000-0002-2257-4940" target="_blank">ORCID 0000-0002-2257-4940</a>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
