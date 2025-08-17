@@ -26,7 +26,7 @@ import seaborn as sns
 
 from aerobatic_profiles import load_all_profiles, load_profile, PROFILES, Sample
 from cgem_wrapper import run_cgem_for_profile, run_cgem_centrifuge, CGEMResult, PilotConfig
-from i18n import _, use_lang_selector
+from i18n import _, use_lang_selector, get_locale
 
 # Configure page
 def _find_icon_path() -> Optional[Path]:
@@ -245,6 +245,82 @@ MANEUVER_EXPLANATIONS = {
         "risk_factors": ["Push–pull effect", "Repeated +G peaks"],
         "mitigation": ["Limit −G duration", "AGSM on +G phases"]
     }
+}
+
+# Spanish translations for maneuver explanations (UI-only)
+MANEUVER_EXPLANATIONS_ES = {
+    "hammerhead": {
+        "description": "Un giro martillo (también llamado giro de pérdida) consiste en una subida vertical hasta que la velocidad se acerca a cero, seguido de una rotación de guiñada de 180° y descenso vertical.",
+        "physiological_effects": "El +G inicial durante el tirón puede causar acumulación de sangre en extremidades inferiores. La subida vertical reduce la carga G a casi cero, permitiendo la redistribución sanguínea. La fase de descenso puede implicar −G, con riesgo de redout.",
+        "risk_factors": ["Rápida aparición de G durante el tirón", "Posible desorientación durante la rotación", "G negativo durante el descenso"],
+        "mitigation": ["Maniobra de tensión anti-G (AGSM) durante el tirón", "Entrada gradual de G cuando sea posible", "Posición adecuada de la cabeza durante la rotación"],
+    },
+    "horizontal_rolling_360": {
+        "description": "Un tonel de 360° realizado manteniendo el vuelo nivelado.",
+        "physiological_effects": "+G y −G alternantes a medida que la aeronave rota. La sangre se desplaza entre la parte superior e inferior del cuerpo durante toda la maniobra.",
+        "risk_factors": ["Transiciones rápidas de G", "Posible desorientación espacial", "Efectos vestibulares por la rotación"],
+        "mitigation": ["Mantener referencia visual", "Controlar la velocidad de rol", "Prepararse para las transiciones de G"],
+    },
+    "outside_360": {
+        "description": "Un bucle externo de 360° donde el piloto experimenta −G sostenido durante la maniobra.",
+        "physiological_effects": "El −G sostenido causa acumulación de sangre en la cabeza, lo que puede llevar a redout. El aumento de la presión intracraneal produce malestar y alteraciones visuales.",
+        "risk_factors": ["Exposición sostenida a −G", "Riesgo de redout", "Malestar intenso", "Posible ruptura vascular"],
+        "mitigation": ["Limitar la duración de −G", "Entradas y salidas graduales", "Sistema de sujeción adecuado"],
+    },
+    "outside_inside_vert8": {
+        "description": "Un ocho vertical que combina un bucle externo abajo con un bucle interno arriba.",
+        "physiological_effects": "Patrón complejo de carga con alternancia entre +G y −G. Las transiciones rápidas desafían el mantenimiento de la perfusión cerebral.",
+        "risk_factors": ["Transiciones rápidas de G", "Efectos combinados de +/−G", "Fatiga acumulada"],
+        "mitigation": ["Acondicionamiento físico adecuado", "AGSM durante las fases de +G", "Controlar la tasa de transición"],
+    },
+    "quarter_down_roll": {
+        "description": "Un cuarto de bucle externo seguido de un snap roll de 90° en la línea de descenso.",
+        "physiological_effects": "−G inicial durante la parte externa, seguido de rotación rápida durante el snap roll. La línea de descenso puede implicar cargas G variables.",
+        "risk_factors": ["Exposición a −G", "Efectos de rotación rápida", "Posible desorientación"],
+        "mitigation": ["Prepararse para −G", "Mantener conciencia espacial", "Controlar la velocidad del snap"],
+    },
+    "snap_45deg_down_roll": {
+        "description": "Línea descendente a 45° con un snap roll, combinando fuerzas gravitacionales y rotacionales.",
+        "physiological_effects": "Carga compleja combinando G axiales y radiales. El descenso inclinado añade componente gravitacional mientras el snap induce rotación rápida.",
+        "risk_factors": ["Carga G multi-eje", "Estimulación vestibular", "Desorientación espacial"],
+        "mitigation": ["Mantener referencia visual", "Controlar velocidad de entrada", "Postura corporal adecuada"],
+    },
+    "half_vert_roll_neg_pull": {
+        "description": "Medio tonel vertical que termina con salida en −G, pasando de +G a −G.",
+        "physiological_effects": "El cambio de +G a −G desafía la adaptación cardiovascular. Ocurre redistribución sanguínea rápida.",
+        "risk_factors": ["Reversión rápida de G", "Estrés cardiovascular", "Posible G-LOC o redout"],
+        "mitigation": ["Transiciones graduales cuando sea posible", "Técnica de respiración adecuada", "Acondicionamiento físico"],
+    },
+    "triple_push_pull_loop": {
+        "description": "Tres bucles push–pull sucesivos: breve empuje a −G hacia arco invertido seguido de tirón a +G, repetido tres veces.",
+        "physiological_effects": "Las alternancias cefaladas/caudadas estresan la autorregulación; las transiciones repetidas fatigan el barorreflejo.",
+        "risk_factors": ["Transiciones rápidas ±G", "Riesgo de redout en empujes", "Riesgo de greyout/blackout en tirones"],
+        "mitigation": ["Moderar la tasa de transición", "AGSM en fases de +G", "Limitar la duración de −G"],
+    },
+    "triple_push_pull_immelmann": {
+        "description": "Elementos tipo Immelmann con entrada push–pull repetida tres veces (variante conceptual).",
+        "physiological_effects": "Mezcla de −G, +G y rol desafía sistemas vestibular y cardiovascular; medios toneles intercalados.",
+        "risk_factors": ["Desorientación espacial", "Rápidas oscilaciones de G", "Compromiso visual"],
+        "mitigation": ["Fijar imagen estable antes del rol", "AGSM durante +G", "Limitar exposición a −G"],
+    },
+    "triple_push_pull_split_s": {
+        "description": "Tres entradas estilo Split S consecutivas con cadencia push–pull (variante conceptual).",
+        "physiological_effects": "Transiciones repetidas de −G a +G en segmentos descendentes aumentan la carga acumulada y fatiga.",
+        "risk_factors": ["Tensión cardiovascular acumulada", "Greyout con +G sostenido", "Redout si −G se prolonga"],
+        "mitigation": ["Altura de entrada adecuada", "Ritmo cuidadoso", "Entrenamiento e hidratación"],
+    },
+    "high_g_turn": {
+        "description": "Giro sostenido de alto +G con modulación breve on/off alrededor de 6–7 G.",
+        "physiological_effects": "+G sostenido reduce perfusión cerebral con riesgo de greyout/blackout y posible G-LOC sin contramedidas.",
+        "risk_factors": ["Alta tasa de inicio de G", "Exposición sostenida a +G", "Fatiga"],
+        "mitigation": ["AGSM", "G-suit/PPB", "Gestionar la tasa de inicio"],
+    },
+    "loop_standard": {
+        "description": "Bucle estándar con fases de tirón de 3–5 G al inicio y salida.",
+        "physiological_effects": "+G pico en entrada/salida puede inducir greyout; G bajo/cercano a 0 en la cima permite reperfusión.",
+        "risk_factors": ["Alta velocidad de entrada", "Tirón agresivo", "Desorientación"],
+        "mitigation": ["Gestión de energía", "AGSM durante el tirón", "Márgenes de altitud"],
+    },
 }
 
 #############################
@@ -733,16 +809,17 @@ def display_maneuver_analysis(profile_key: str, result: CGEMResult):
     """Display detailed analysis and explanation for a specific maneuver."""
     
     if profile_key not in MANEUVER_EXPLANATIONS:
-        st.info("Detailed analysis not yet available for this maneuver.")
+        st.info(_("Detailed analysis not yet available for this maneuver."))
         return
     
-    info = MANEUVER_EXPLANATIONS[profile_key]
+    locale = get_locale()
+    info = (MANEUVER_EXPLANATIONS_ES.get(profile_key) if locale == "es" else None) or MANEUVER_EXPLANATIONS[profile_key]
     
     # Create expandable sections
-    with st.expander("📋 Maneuver Description", expanded=True):
+    with st.expander(_("📋 Maneuver Description") if locale == "es" else "📋 Maneuver Description", expanded=True):
         st.write(info["description"])
     
-    with st.expander("🧬 Physiological Effects", expanded=True):
+    with st.expander(_("🧬 Physiological Effects") if locale == "es" else "🧬 Physiological Effects", expanded=True):
         st.write(info["physiological_effects"])
         
         # Add specific metrics if available
@@ -750,25 +827,25 @@ def display_maneuver_analysis(profile_key: str, result: CGEMResult):
             col1, col2, col3 = st.columns(3)
             with col1:
                 if result.time_to_greyout_s:
-                    st.metric("Time to Greyout", f"{result.time_to_greyout_s:.2f}s", 
+                    st.metric(_("Time to Greyout") if locale == "es" else "Time to Greyout", f"{result.time_to_greyout_s:.2f}s", 
                              delta="Risk" if result.time_to_greyout_s < 10 else None,
                              delta_color="inverse")
             with col2:
                 if result.time_to_blackout_s:
-                    st.metric("Time to Blackout", f"{result.time_to_blackout_s:.2f}s",
+                    st.metric(_("Time to Blackout") if locale == "es" else "Time to Blackout", f"{result.time_to_blackout_s:.2f}s",
                              delta="High Risk" if result.time_to_blackout_s < 15 else None,
                              delta_color="inverse")
             with col3:
                 if result.time_to_gloc_s:
-                    st.metric("Time to G-LOC", f"{result.time_to_gloc_s:.2f}s",
+                    st.metric(_("Time to G-LOC") if locale == "es" else "Time to G-LOC", f"{result.time_to_gloc_s:.2f}s",
                              delta="Critical" if result.time_to_gloc_s < 20 else None,
                              delta_color="inverse")
     
-    with st.expander("⚠️ Risk Factors", expanded=False):
+    with st.expander(_("⚠️ Risk Factors") if locale == "es" else "⚠️ Risk Factors", expanded=False):
         for risk in info["risk_factors"]:
             st.write(f"• {risk}")
     
-    with st.expander("🛡️ Mitigation Strategies", expanded=False):
+    with st.expander(_("🛡️ Mitigation Strategies") if locale == "es" else "🛡️ Mitigation Strategies", expanded=False):
         for strategy in info["mitigation"]:
             st.write(f"• {strategy}")
 
@@ -1626,7 +1703,7 @@ with tab2:
                 st.error(_("Simulation failed: {error}", error=exc))
 
 with tab3:
-    st.subheader(f"Detailed Analysis: {selected_key.replace('_', ' ').title()}")
+    st.subheader(_("Detailed Analysis: {profile}", profile=selected_key.replace('_', ' ').title()))
     
     # Run simulation if not already done
     try:
@@ -1730,7 +1807,7 @@ with tab5:
 
 with tab6:
     st.subheader(_("Pilot Survey"))
-    st.caption("Local-only data collection. Exports to CSV/Excel. Objective data can be entered by the flight surgeon.")
+    st.caption(_("Local-only data collection. Exports to CSV/Excel. Objective data can be entered by the flight surgeon.") if False else "Local-only data collection. Exports to CSV/Excel. Objective data can be entered by the flight surgeon.")
 
     survey_tab, db_tab = st.tabs([_("New Entry 📝") if False else "New Entry 📝", _("Database & Export 💾") if False else "Database & Export 💾"])
 
@@ -1829,189 +1906,189 @@ with tab6:
             st.markdown("### " + _("Administrative"))
             col_admin1, col_admin2, col_admin3 = st.columns(3)
             with col_admin1:
-                pilot_id = st.text_input("Pilot ID (required)", help="Unique identifier for this pilot")
+                pilot_id = st.text_input(_("Pilot ID (required)"), help="Unique identifier for this pilot")
             with col_admin2:
-                collected_by = st.text_input("Collected by (Flight Surgeon)")
+                collected_by = st.text_input(_("Collected by (Flight Surgeon)"))
             with col_admin3:
-                collection_time = st.text_input("Collection time (auto)", value=datetime.now().strftime("%Y-%m-%d %H:%M:%S"), disabled=True)
+                collection_time = st.text_input(_("Collection time (auto)"), value=datetime.now().strftime("%Y-%m-%d %H:%M:%S"), disabled=True)
             _autosave_if_ready()
 
             st.markdown("### " + _("Pilot Demographics & Experience"))
             col_d1, col_d2, col_d3, col_d4 = st.columns(4)
             with col_d1:
-                age = st.number_input("Age (years) (required)", min_value=16, max_value=80, value=30)
-                sex_options = ["Male", "Female", "Other"]
+                age = st.number_input(_("Age (years) (required)"), min_value=16, max_value=80, value=30)
+                sex_options = [_("Male"), _("Female"), _("Other")]
                 sex_default = str(pref.get("sex", "Male"))
-                sex_index = sex_options.index(sex_default) if sex_default in sex_options else 0
-                sex = st.selectbox("Sex (required)", sex_options, index=sex_index)
-                height_cm = st.number_input("Height (cm) (required)", min_value=140.0, max_value=210.0, value=float(pref.get("height_cm", 179.0)), step=0.1)
+                sex_index = sex_options.index(_(sex_default)) if _(sex_default) in sex_options else 0
+                sex = st.selectbox(_("Sex (required)"), sex_options, index=sex_index)
+                height_cm = st.number_input(_("Height (cm) (required)"), min_value=140.0, max_value=210.0, value=float(pref.get("height_cm", 179.0)), step=0.1)
             _autosave_if_ready()
             with col_d2:
-                weight_kg = st.number_input("Weight (kg) (required)", min_value=40.0, max_value=150.0, value=80.0, step=0.1)
-                unit = st.text_input("Military unit")
-                aircraft_type = st.text_input("Current aircraft type (required)")
+                weight_kg = st.number_input(_("Weight (kg) (required)"), min_value=40.0, max_value=150.0, value=80.0, step=0.1)
+                unit = st.text_input(_("Military unit"))
+                aircraft_type = st.text_input(_("Current aircraft type (required)"))
             _autosave_if_ready()
             with col_d3:
-                total_hours = st.number_input("Total flight hours (all)", min_value=0.0, value=1000.0, step=1.0)
-                current_ac_hours = st.number_input("Hours in current aircraft", min_value=0.0, value=250.0, step=1.0)
-                hours_2w = st.number_input("Hours flown (last 2 weeks)", min_value=0.0, value=10.0, step=0.5)
+                total_hours = st.number_input(_("Total flight hours (all)"), min_value=0.0, value=1000.0, step=1.0)
+                current_ac_hours = st.number_input(_("Hours in current aircraft"), min_value=0.0, value=250.0, step=1.0)
+                hours_2w = st.number_input(_("Hours flown (last 2 weeks)"), min_value=0.0, value=10.0, step=0.5)
             _autosave_if_ready()
             with col_d4:
-                hours_1m = st.number_input("Hours flown (last month)", min_value=0.0, value=20.0, step=0.5)
-                years_mil = st.number_input("Years military flight exp", min_value=0.0, value=5.0, step=0.5)
-                types_flown = st.number_input("# aircraft types flown", min_value=0, value=3, step=1)
+                hours_1m = st.number_input(_("Hours flown (last month)"), min_value=0.0, value=20.0, step=0.5)
+                years_mil = st.number_input(_("Years military flight exp"), min_value=0.0, value=5.0, step=0.5)
+                types_flown = st.number_input(_("# aircraft types flown"), min_value=0, value=3, step=1)
             _autosave_if_ready()
 
             col_exp = st.columns(3)
             with col_exp[0]:
-                days_since_g = st.number_input("Days since last G-exposure flight", min_value=0, value=7)
+                days_since_g = st.number_input(_("Days since last G-exposure flight"), min_value=0, value=7)
             with col_exp[1]:
-                avg_g_exp = st.number_input("Avg G-exposures/month (current role)", min_value=0, value=8)
+                avg_g_exp = st.number_input(_("Avg G-exposures/month (current role)"), min_value=0, value=8)
             with col_exp[2]:
-                typical_max_g = st.number_input("Typical max G (current ops)", min_value=-5.0, max_value=15.0, value=6.0, step=0.1)
+                typical_max_g = st.number_input(_("Typical max G (current ops)"), min_value=-5.0, max_value=15.0, value=6.0, step=0.1)
             _autosave_if_ready()
 
             st.markdown("### " + _("G-Force Experience History"))
             col_g1, col_g2, col_g3 = st.columns(3)
             with col_g1:
-                greyout_year = st.number_input("Greyout episodes (past year)", min_value=0, value=0)
-                blackout_year = st.number_input("Blackout episodes (past year)", min_value=0, value=0)
-                gloc_year = st.number_input("G-LOC episodes (past year)", min_value=0, value=0)
+                greyout_year = st.number_input(_("Greyout episodes (past year)"), min_value=0, value=0)
+                blackout_year = st.number_input(_("Blackout episodes (past year)"), min_value=0, value=0)
+                gloc_year = st.number_input(_("G-LOC episodes (past year)"), min_value=0, value=0)
             with col_g2:
-                last_greyout_days = st.number_input("Most recent greyout (days)", min_value=0, value=0)
-                last_blackout_days = st.number_input("Most recent blackout (days)", min_value=0, value=0)
-                last_gloc_days = st.number_input("Most recent G-LOC (days)", min_value=0, value=0)
+                last_greyout_days = st.number_input(_("Most recent greyout (days)"), min_value=0, value=0)
+                last_blackout_days = st.number_input(_("Most recent blackout (days)"), min_value=0, value=0)
+                last_gloc_days = st.number_input(_("Most recent G-LOC (days)"), min_value=0, value=0)
             with col_g3:
-                highest_g = st.number_input("Highest G in career", min_value=-5.0, max_value=20.0, value=9.0, step=0.1)
+                highest_g = st.number_input(_("Highest G in career"), min_value=-5.0, max_value=20.0, value=9.0, step=0.1)
             _autosave_if_ready()
 
             st.markdown("### " + _("Sleep & Fatigue Assessment"))
             col_s1, col_s2, col_s3 = st.columns(3)
             with col_s1:
-                avg_sleep = st.number_input("Avg sleep hours/night (past week)", min_value=0.0, max_value=14.0, value=7.0, step=0.25)
-                sleep_quality = st.slider("Sleep quality (1–10)", 1, 10, 7)
-                short_nights = st.number_input("Nights with <6h sleep (week)", min_value=0, max_value=7, value=0)
+                avg_sleep = st.number_input(_("Avg sleep hours/night (past week)"), min_value=0.0, max_value=14.0, value=7.0, step=0.25)
+                sleep_quality = st.slider(_("Sleep quality (1–10)"), 1, 10, 7)
+                short_nights = st.number_input(_("Nights with <6h sleep (week)"), min_value=0, max_value=7, value=0)
             with col_s2:
-                hours_before_flight = st.number_input("Hours of sleep before current flight", min_value=0.0, max_value=24.0, value=7.0, step=0.25)
-                duty_no_rest = st.number_input("Duty days without adequate rest (month)", min_value=0, max_value=31, value=0)
-                shift_changes = st.number_input("Shift changes per month", min_value=0, max_value=31, value=0)
+                hours_before_flight = st.number_input(_("Hours of sleep before current flight"), min_value=0.0, max_value=24.0, value=7.0, step=0.25)
+                duty_no_rest = st.number_input(_("Duty days without adequate rest (month)"), min_value=0, max_value=31, value=0)
+                shift_changes = st.number_input(_("Shift changes per month"), min_value=0, max_value=31, value=0)
             with col_s3:
-                tz_changes = st.number_input("Time zone changes (past 2 weeks)", min_value=0, max_value=20, value=0)
-                last_sleep_time = st.time_input("Time of last sleep before flight")
+                tz_changes = st.number_input(_("Time zone changes (past 2 weeks)"), min_value=0, max_value=20, value=0)
+                last_sleep_time = st.time_input(_("Time of last sleep before flight"))
             _autosave_if_ready()
 
             st.markdown("### " + _("Physical Health & Fitness"))
             col_p1, col_p2, col_p3 = st.columns(3)
             with col_p1:
-                resting_hr = st.number_input("Resting heart rate (bpm)", min_value=30, max_value=220, value=70)
-                systolic_bp = st.number_input("Systolic BP (mmHg)", min_value=70, max_value=260, value=int(pref.get("systolic_bp", 120)))
-                diastolic_bp = st.number_input("Diastolic BP (mmHg)", min_value=40, max_value=160, value=int(pref.get("diastolic_bp", 80)))
+                resting_hr = st.number_input(_("Resting heart rate (bpm)"), min_value=30, max_value=220, value=70)
+                systolic_bp = st.number_input(_("Systolic BP (mmHg)"), min_value=70, max_value=260, value=int(pref.get("systolic_bp", 120)))
+                diastolic_bp = st.number_input(_("Diastolic BP (mmHg)"), min_value=40, max_value=160, value=int(pref.get("diastolic_bp", 80)))
             with col_p2:
-                exercise_freq = st.number_input("Exercise frequency (/week)", min_value=0, max_value=14, value=3)
-                exercise_type = st.selectbox("Primary exercise type", ["Aerobic", "Strength", "Mixed", "None"])
-                hours_exercise = st.number_input("Hours of exercise per week", min_value=0.0, max_value=50.0, value=3.0, step=0.5)
+                exercise_freq = st.number_input(_("Exercise frequency (/week)"), min_value=0, max_value=14, value=3)
+                exercise_type = st.selectbox(_("Primary exercise type"), [_("Aerobic"), _("Strength"), _("Mixed"), _("None")])
+                hours_exercise = st.number_input(_("Hours of exercise per week"), min_value=0.0, max_value=50.0, value=3.0, step=0.5)
             with col_p3:
-                body_fat_pct = st.number_input("Body fat %", min_value=0.0, max_value=60.0, value=18.0, step=0.1)
-                cv_meds = st.selectbox("Cardiovascular meds?", ["No", "Yes"])
-                bp_meds = st.selectbox("Blood pressure meds?", ["No", "Yes"])
+                body_fat_pct = st.number_input(_("Body fat %"), min_value=0.0, max_value=60.0, value=18.0, step=0.1)
+                cv_meds = st.selectbox(_("Cardiovascular meds?"), [_("No"), _("Yes")])
+                bp_meds = st.selectbox(_("Blood pressure meds?"), [_("No"), _("Yes")])
             col_p4, col_p5 = st.columns(2)
             with col_p4:
-                current_illness = st.selectbox("Current illness/infection?", ["No", "Yes"]) 
+                current_illness = st.selectbox(_("Current illness/infection?"), [_("No"), _("Yes")]) 
             with col_p5:
-                days_since_illness = st.number_input("Days since last illness", min_value=0, value=0)
+                days_since_illness = st.number_input(_("Days since last illness"), min_value=0, value=0)
             _autosave_if_ready()
 
             st.markdown("### " + _("Physiological Status (Day of Survey)"))
             col_ps1, col_ps2, col_ps3, col_ps4 = st.columns(4)
             with col_ps1:
-                hours_since_meal = st.number_input("Hours since last meal", min_value=0.0, max_value=72.0, value=4.0, step=0.5)
-                hours_since_caffeine = st.number_input("Hours since caffeine", min_value=0.0, max_value=72.0, value=6.0, step=0.5)
+                hours_since_meal = st.number_input(_("Hours since last meal"), min_value=0.0, max_value=72.0, value=4.0, step=0.5)
+                hours_since_caffeine = st.number_input(_("Hours since caffeine"), min_value=0.0, max_value=72.0, value=6.0, step=0.5)
             with col_ps2:
-                cups_caffeine = st.number_input("Cups caffeine (24h)", min_value=0, max_value=50, value=0)
-                water_glasses = st.number_input("Glasses of water today", min_value=0, max_value=50, value=6)
+                cups_caffeine = st.number_input(_("Cups caffeine (24h)"), min_value=0, max_value=50, value=0)
+                water_glasses = st.number_input(_("Glasses of water today"), min_value=0, max_value=50, value=6)
             with col_ps3:
-                alcohol_24 = st.number_input("Alcohol (units, 24h)", min_value=0.0, max_value=50.0, value=0.0, step=0.5)
-                alcohol_week = st.number_input("Alcohol (units, week)", min_value=0.0, max_value=100.0, value=0.0, step=0.5)
+                alcohol_24 = st.number_input(_("Alcohol (units, 24h)"), min_value=0.0, max_value=50.0, value=0.0, step=0.5)
+                alcohol_week = st.number_input(_("Alcohol (units, week)"), min_value=0.0, max_value=100.0, value=0.0, step=0.5)
             with col_ps4:
-                stress_level = st.slider("Current stress (1–10)", 1, 10, 5)
-                energy_level = st.slider("Energy now (1–10)", 1, 10, 6)
+                stress_level = st.slider(_("Current stress (1–10)"), 1, 10, 5)
+                energy_level = st.slider(_("Energy now (1–10)"), 1, 10, 6)
             col_temp, col_med = st.columns(2)
             with col_temp:
-                body_temp_c = st.number_input("Body temperature (°C)", min_value=34.0, max_value=42.0, value=36.8, step=0.1)
+                body_temp_c = st.number_input(_("Body temperature (°C)"), min_value=34.0, max_value=42.0, value=36.8, step=0.1)
             with col_med:
-                meds_24h = st.text_area("Any medication taken in past 24h (list)")
+                meds_24h = st.text_area(_("Any medication taken in past 24h (list)"))
             _autosave_if_ready()
 
             st.markdown("### " + _("Environmental & Operational Factors"))
             col_e1, col_e2, col_e3 = st.columns(3)
             with col_e1:
-                base_altitude = st.number_input("Base operations altitude (m)", min_value=0, max_value=6000, value=0)
-                cockpit_temp = st.selectbox("Avg cockpit temperature", ["Hot", "Comfortable", "Cold"])
+                base_altitude = st.number_input(_("Base operations altitude (m)"), min_value=0, max_value=6000, value=0)
+                cockpit_temp = st.selectbox(_("Avg cockpit temperature"), [_("Hot"), _("Comfortable"), _("Cold")])
             with col_e2:
-                noise_hours = st.number_input("Noise exposure (hrs/week)", min_value=0.0, max_value=168.0, value=5.0, step=0.5)
-                vibration_hours = st.number_input("Vibration exposure (hrs/week)", min_value=0.0, max_value=168.0, value=3.0, step=0.5)
+                noise_hours = st.number_input(_("Noise exposure (hrs/week)"), min_value=0.0, max_value=168.0, value=5.0, step=0.5)
+                vibration_hours = st.number_input(_("Vibration exposure (hrs/week)"), min_value=0.0, max_value=168.0, value=3.0, step=0.5)
             with col_e3:
-                mission_combat = st.number_input("Mission: combat %", min_value=0, max_value=100, value=0)
-                mission_training = st.number_input("Mission: training %", min_value=0, max_value=100, value=100)
-                mission_transport = st.number_input("Mission: transport %", min_value=0, max_value=100, value=0)
+                mission_combat = st.number_input(_("Mission: combat %"), min_value=0, max_value=100, value=0)
+                mission_training = st.number_input(_("Mission: training %"), min_value=0, max_value=100, value=100)
+                mission_transport = st.number_input(_("Mission: transport %"), min_value=0, max_value=100, value=0)
             col_e4, col_e5, col_e6 = st.columns(3)
             with col_e4:
-                gsuit_available = st.selectbox("G-suit availability", ["No", "Yes"])
+                gsuit_available = st.selectbox(_("G-suit availability"), [_("No"), _("Yes")])
             with col_e5:
-                gsuit_usage = st.selectbox("G-suit usage frequency", ["Never", "Rarely", "Sometimes", "Often", "Always"])
+                gsuit_usage = st.selectbox(_("G-suit usage frequency"), [_("Never"), _("Rarely"), _("Sometimes"), _("Often"), _("Always")], key="env_gsuit_usage")
             with col_e6:
-                anti_g_training_weeks = st.number_input("Anti-G training recency (weeks)", min_value=0, max_value=520, value=12)
+                anti_g_training_weeks = st.number_input(_("Anti-G training recency (weeks)"), min_value=0, max_value=520, value=12)
             col_e7, col_e8 = st.columns(2)
             with col_e7:
-                breathing_training = st.selectbox("Breathing technique training", ["None", "Basic", "Advanced"])    
+                breathing_training = st.selectbox(_("Breathing technique training"), [_("None"), _("Basic"), _("Advanced")])    
             with col_e8:
-                agsm_proficiency = st.slider("AGSM proficiency (1–10)", 1, 10, 7)
+                agsm_proficiency = st.slider(_("AGSM proficiency (1–10)"), 1, 10, 7)
             _autosave_if_ready()
 
             st.markdown("### " + _("Lifestyle & Behavioral Factors"))
             col_l1, col_l2, col_l3 = st.columns(3)
             with col_l1:
-                smoking_status = st.selectbox("Smoking status", ["Never", "Former", "Current"]) 
-                cigs_per_day = st.number_input("Cigarettes per day (if current)", min_value=0, max_value=80, value=0)
-                diet_pattern = st.selectbox("Dietary pattern", ["Regular meals", "Irregular", "Skip meals"]) 
+                smoking_status = st.selectbox(_("Smoking status"), [_("Never"), _("Former"), _("Current")]) 
+                cigs_per_day = st.number_input(_("Cigarettes per day (if current)"), min_value=0, max_value=80, value=0)
+                diet_pattern = st.selectbox(_("Dietary pattern"), [_("Regular meals"), _("Irregular"), _("Skip meals")]) 
             with col_l2:
-                hydration_habits = st.selectbox("Hydration habits", ["Excellent", "Good", "Fair", "Poor"]) 
-                supplements = st.text_input("Supplement usage (list)")
-                relaxation = st.selectbox("Relaxation/meditation frequency", ["Never", "Occasionally", "Weekly", "Daily"]) 
+                hydration_habits = st.selectbox(_("Hydration habits"), [_("Excellent"), _("Good"), _("Fair"), _("Poor")]) 
+                supplements = st.text_input(_("Supplement usage (list)"))
+                relaxation = st.selectbox(_("Relaxation/meditation frequency"), [_("Never"), _("Occasionally"), _("Weekly"), _("Daily")]) 
             with col_l3:
-                stress_sources = st.text_area("Mental stress sources (notes)")
-                time_off_month = st.number_input("Time off from flying duties (days, month)", min_value=0, max_value=31, value=0)
+                stress_sources = st.text_area(_("Mental stress sources (notes)"))
+                time_off_month = st.number_input(_("Time off from flying duties (days, month)"), min_value=0, max_value=31, value=0)
             _autosave_if_ready()
 
             st.markdown("### " + _("Performance & Symptoms"))
             col_sym1, col_sym2, col_sym3 = st.columns(3)
             with col_sym1:
-                self_gtol = st.selectbox("Self-rated G-tolerance vs peers", ["Much lower", "Lower", "Average", "Higher", "Much higher"]) 
-                warn_signs = st.text_input("Typical warning signs before greyout")
+                self_gtol = st.selectbox(_("Self-rated G-tolerance vs peers"), [_("Much lower"), _("Lower"), _("Average"), _("Higher"), _("Much higher")]) 
+                warn_signs = st.text_input(_("Typical warning signs before greyout"))
             with col_sym2:
-                recovery_time_s = st.number_input("Recovery time after high-G (s)", min_value=0.0, max_value=600.0, value=30.0, step=1.0)
-                post_fatigue = st.selectbox("Post-flight fatigue frequency", ["Never", "Rarely", "Sometimes", "Often", "Always"]) 
+                recovery_time_s = st.number_input(_("Recovery time after high-G (s)"), min_value=0.0, max_value=600.0, value=30.0, step=1.0)
+                post_fatigue = st.selectbox(_("Post-flight fatigue frequency"), [_("Never"), _("Rarely"), _("Sometimes"), _("Often"), _("Always")]) 
             with col_sym3:
-                headaches_freq = st.selectbox("Headaches after high-G", ["Never", "Rarely", "Sometimes", "Often", "Always"]) 
-                vision_changes = st.selectbox("Vision changes after G-exposure", ["No", "Yes"]) 
+                headaches_freq = st.selectbox(_("Headaches after high-G"), [_("Never"), _("Rarely"), _("Sometimes"), _("Often"), _("Always")]) 
+                vision_changes = st.selectbox(_("Vision changes after G-exposure"), [_("No"), _("Yes")]) 
             col_sym4, col_sym5 = st.columns(2)
             with col_sym4:
-                concentration_diff = st.selectbox("Concentration difficulties after high-G", ["No", "Yes"]) 
+                concentration_diff = st.selectbox(_("Concentration difficulties after high-G"), [_("No"), _("Yes")]) 
             with col_sym5:
-                phys_symptoms = st.multiselect("Physical symptoms during high-G", ["Nausea", "Muscle fatigue", "Breathing difficulty", "Dizziness", "Other"]) 
+                phys_symptoms = st.multiselect(_("Physical symptoms during high-G"), [_("Nausea"), _("Muscle fatigue"), _("Breathing difficulty"), _("Dizziness"), _("Other")]) 
             _autosave_if_ready()
 
             st.markdown("### " + _("Training & Countermeasures"))
             col_t1, col_t2, col_t3 = st.columns(3)
             with col_t1:
-                breathing_proficiency = st.slider("Breathing control proficiency (1–10)", 1, 10, 7)
-                gsuit_fit = st.selectbox("G-suit fit quality", ["Poor", "Adequate", "Excellent"]) 
+                breathing_proficiency = st.slider(_("Breathing control proficiency (1–10)"), 1, 10, 7)
+                gsuit_fit = st.selectbox(_("G-suit fit quality"), [_("Poor"), _("Adequate"), _("Excellent")]) 
             with col_t2:
-                gsuit_use_frequency = st.selectbox("Frequency of G-suit use", ["Never", "Rarely", "Sometimes", "Often", "Always"]) 
-                muscle_tensing = st.selectbox("Muscle tensing/gripping techniques used?", ["No", "Yes"]) 
+                gsuit_use_frequency = st.selectbox(_("Frequency of G-suit use"), [_("Never"), _("Rarely"), _("Sometimes"), _("Often"), _("Always")], key="training_gsuit_usage") 
+                muscle_tensing = st.selectbox(_("Muscle tensing/gripping techniques used?"), [_("No"), _("Yes")]) 
             with col_t3:
-                preflight_prep = st.selectbox("Pre-flight preparation routine consistency", ["Low", "Moderate", "High"]) 
-                conditioning_focus = st.selectbox("Physical conditioning focus", ["General", "G-specific", "None"]) 
+                preflight_prep = st.selectbox(_("Pre-flight preparation routine consistency"), [_("Low"), _("Moderate"), _("High")]) 
+                conditioning_focus = st.selectbox(_("Physical conditioning focus"), [_("General"), _("G-specific"), _("None")]) 
 
             st.markdown("### " + _("Psychological Factors"))
             col_psi1, col_psi2, col_psi3 = st.columns(3)
@@ -2024,29 +2101,29 @@ with tab6:
             with col_psi3:
                 mental_workload = st.slider("Mental workload during typical flights (1–10)", 1, 10, 5)
                 attention_focus = st.slider("Attention/focus during high-G (1–10)", 1, 10, 7)
-            risk_tolerance = st.selectbox("Risk tolerance personality", ["Conservative", "Moderate", "Aggressive"]) 
+            risk_tolerance = st.selectbox(_("Risk tolerance personality"), [_("Conservative"), _("Moderate"), _("Aggressive")]) 
             _autosave_if_ready()
 
             st.markdown("### " + _("Flight Surgeon Objective Data (optional)"))
             col_obj1, col_obj2 = st.columns(2)
             with col_obj1:
-                measured_hr = st.number_input("Measured HR (bpm)", min_value=30, max_value=220, value=70)
-                measured_bp_sys = st.number_input("Measured SBP (mmHg)", min_value=70, max_value=260, value=120)
-                measured_bp_dia = st.number_input("Measured DBP (mmHg)", min_value=40, max_value=160, value=80)
+                measured_hr = st.number_input(_("Measured HR (bpm)"), min_value=30, max_value=220, value=70)
+                measured_bp_sys = st.number_input(_("Measured SBP (mmHg)"), min_value=70, max_value=260, value=120)
+                measured_bp_dia = st.number_input(_("Measured DBP (mmHg)"), min_value=40, max_value=160, value=80)
             with col_obj2:
-                measured_temp_c = st.number_input("Measured temperature (°C)", min_value=34.0, max_value=42.0, value=36.8, step=0.1)
-                objective_notes = st.text_area("Additional objective findings/notes")
+                measured_temp_c = st.number_input(_("Measured temperature (°C)"), min_value=34.0, max_value=42.0, value=36.8, step=0.1)
+                objective_notes = st.text_area(_("Additional objective findings/notes"))
             _autosave_if_ready()
 
             st.markdown("### " + _("Attach RR Files (optional)"))
             col_rr1, col_rr2 = st.columns(2)
             with col_rr1:
-                rr_baseline = st.file_uploader("Baseline RR file", type=None, accept_multiple_files=False)
+                rr_baseline = st.file_uploader(_("Baseline RR file"), type=None, accept_multiple_files=False)
             with col_rr2:
-                rr_inflight = st.file_uploader("In-flight RR file", type=None, accept_multiple_files=False)
+                rr_inflight = st.file_uploader(_("In-flight RR file"), type=None, accept_multiple_files=False)
             # Note: files are persisted on explicit Save action to avoid excessive writes during autosave
 
-            submitted = st.form_submit_button("Save Survey Entry", type="primary")
+            submitted = st.form_submit_button(_("Save Survey Entry"), type="primary")
             if submitted:
                 errors: List[str] = []
                 if not pilot_id.strip():
@@ -2289,60 +2366,110 @@ with tab6:
 with tab7:
     st.subheader(_("Educational Resources"))
     
-    with st.expander("Understanding G-Forces and Physiology"):
+    with st.expander(_("Understanding G-Forces and Physiology") if False else "Understanding G-Forces and Physiology"):
         st.markdown("""
-        ### What are G-Forces?
-        G-forces represent the acceleration relative to Earth's gravity. 1G is normal Earth gravity.
+        ### {title}
+        {p1}
         
-        ### Physiological Effects:
-        - **Positive G (+Gz)**: Blood pools in lower body, reducing brain perfusion
-        - **Negative G (-Gz)**: Blood rushes to the head, increasing intracranial pressure
-        - **Lateral G (Gy)**: Side-to-side forces, generally better tolerated
+        ### {pe}
+        - **{pg}**: {pgd}
+        - **{ng}**: {ngd}
+        - **{lg}**: {lgd}
         
-        ### Critical Thresholds:
-        - **Greyout**: ≈4.1 G_eff - Peripheral vision loss
-        - **Blackout**: ≈5.0 G_eff - Complete vision loss
-        - **G-LOC**: ≈5.5 G_eff - Loss of consciousness
-        - **Redout**: < −2 G - Blood vessel rupture risk
-        """)
+        ### {ct}
+        - **{grey}**: ≈4.1 G_eff - {grey_d}
+        - **{black}**: ≈5.0 G_eff - {black_d}
+        - **{gloc}**: ≈5.5 G_eff - {gloc_d}
+        - **{red}**: < −2 G - {red_d}
+        """.format(
+            title=_("What are G-Forces?") if False else "What are G-Forces?",
+            p1=_("G-forces represent the acceleration relative to Earth's gravity. 1G is normal Earth gravity.") if False else "G-forces represent the acceleration relative to Earth's gravity. 1G is normal Earth gravity.",
+            pe=_("Physiological Effects:") if False else "Physiological Effects:",
+            pg=_("Positive G (+Gz)") if False else "Positive G (+Gz)",
+            pgd=_("Blood pools in lower body, reducing brain perfusion") if False else "Blood pools in lower body, reducing brain perfusion",
+            ng=_("Negative G (-Gz)") if False else "Negative G (-Gz)",
+            ngd=_("Blood rushes to the head, increasing intracranial pressure") if False else "Blood rushes to the head, increasing intracranial pressure",
+            lg=_("Lateral G (Gy)") if False else "Lateral G (Gy)",
+            lgd=_("Side-to-side forces, generally better tolerated") if False else "Side-to-side forces, generally better tolerated",
+            ct=_("Critical Thresholds:") if False else "Critical Thresholds:",
+            grey=_("Greyout") if False else "Greyout",
+            grey_d=_("Peripheral vision loss") if False else "Peripheral vision loss",
+            black=_("Blackout") if False else "Blackout",
+            black_d=_("Complete vision loss") if False else "Complete vision loss",
+            gloc=_("G-LOC") if False else "G-LOC",
+            gloc_d=_("Loss of consciousness") if False else "Loss of consciousness",
+            red=_("Redout") if False else "Redout",
+            red_d=_("Blood vessel rupture risk") if False else "Blood vessel rupture risk",
+        ))
     
-    with st.expander("G-Force Mitigation Techniques"):
+    with st.expander(_("G-Force Mitigation Techniques") if False else "G-Force Mitigation Techniques"):
         st.markdown("""
-        ### Anti-G Straining Maneuver (AGSM):
-        1. Tense leg and abdominal muscles
-        2. Breathe in short, rapid cycles
-        3. Maintain muscle tension throughout G-exposure
+        ### {ag}
+        1. {s1}
+        2. {s2}
+        3. {s3}
         
-        ### Equipment:
-        - **G-Suit**: Inflates to prevent blood pooling
-        - **Pressure breathing**: Assists during high-G
-        - **Reclined seats**: Reduces vertical G-component
+        ### {eq}
+        - **G-Suit**: {e1}
+        - **{ppb}**: {e2}
+        - **{rs}**: {e3}
         
-        ### Training:
-        - Progressive G-exposure in centrifuge
-        - Physical conditioning
-        - Breathing technique practice
-        """)
+        ### {tr}
+        - {t1}
+        - {t2}
+        - {t3}
+        """.format(
+            ag=_("Anti-G Straining Maneuver (AGSM):") if False else "Anti-G Straining Maneuver (AGSM):",
+            s1=_("Tense leg and abdominal muscles") if False else "Tense leg and abdominal muscles",
+            s2=_("Breathe in short, rapid cycles") if False else "Breathe in short, rapid cycles",
+            s3=_("Maintain muscle tension throughout G-exposure") if False else "Maintain muscle tension throughout G-exposure",
+            eq=_("Equipment:") if False else "Equipment:",
+            e1=_("Inflates to prevent blood pooling") if False else "Inflates to prevent blood pooling",
+            ppb=_("Pressure breathing") if False else "Pressure breathing",
+            e2=_("Assists during high-G") if False else "Assists during high-G",
+            rs=_("Reclined seats") if False else "Reclined seats",
+            e3=_("Reduces vertical G-component") if False else "Reduces vertical G-component",
+            tr=_("Training:") if False else "Training:",
+            t1=_("Progressive G-exposure in centrifuge") if False else "Progressive G-exposure in centrifuge",
+            t2=_("Physical conditioning") if False else "Physical conditioning",
+            t3=_("Breathing technique practice") if False else "Breathing technique practice",
+        ))
     
-    with st.expander("Understanding the Visualizations"):
+    with st.expander(_("Understanding the Visualizations") if False else "Understanding the Visualizations"):
         st.markdown("""
-        ### 2D Plots:
-        - **Top graph**: Shows actual G-forces with safety zones
-        - **Bottom graph**: Shows effective G (G_eff) with physiological thresholds
+        ### {p2d}
+        - **{tg}**: {tg_d}
+        - **{bg}**: {bg_d}
         
-        ### 3D Trajectory:
-        - Visualizes the relationship between time, G-force, and G_eff
-        - Color coding indicates physiological state
-        - Threshold planes show critical boundaries
+        ### {t3d}
+        - {t3d1}
+        - {t3d2}
+        - {t3d3}
         
-        ### Animated Timeline:
-        - Shows real-time progression of physiological stress
-        - Helps understand rapid transitions
+        ### {atl}
+        - {atl1}
+        - {atl2}
         
-        ### Heatmap:
-        - Comprehensive view of all parameters
-        - Quickly identify critical periods
-        """)
+        ### {hm}
+        - {hm1}
+        - {hm2}
+        """.format(
+            p2d=_("2D Plots:") if False else "2D Plots:",
+            tg=_("Top graph") if False else "Top graph",
+            tg_d=_("Shows actual G-forces with safety zones") if False else "Shows actual G-forces with safety zones",
+            bg=_("Bottom graph") if False else "Bottom graph",
+            bg_d=_("Shows effective G (G_eff) with physiological thresholds") if False else "Shows effective G (G_eff) with physiological thresholds",
+            t3d=_("3D Trajectory:") if False else "3D Trajectory:",
+            t3d1=_("Visualizes the relationship between time, G-force, and G_eff") if False else "Visualizes the relationship between time, G-force, and G_eff",
+            t3d2=_("Color coding indicates physiological state") if False else "Color coding indicates physiological state",
+            t3d3=_("Threshold planes show critical boundaries") if False else "Threshold planes show critical boundaries",
+            atl=_("Animated Timeline:") if False else "Animated Timeline:",
+            atl1=_("Shows real-time progression of physiological stress") if False else "Shows real-time progression of physiological stress",
+            atl2=_("Helps understand rapid transitions") if False else "Helps understand rapid transitions",
+            hm=_("Heatmap:") if False else "Heatmap:",
+            hm1=_("Comprehensive view of all parameters") if False else "Comprehensive view of all parameters",
+            hm2=_("Quickly identify critical periods") if False else "Quickly identify critical periods",
+        ))
 
     with st.expander("Comprehensive Review of Sustained Acceleration Physiology"):
         st.markdown("""
