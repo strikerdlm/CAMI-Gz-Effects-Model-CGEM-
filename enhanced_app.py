@@ -2663,7 +2663,7 @@ with tab8:
         except Exception:
             png_cardio = b""
         try:
-            fig_hist = px.histogram(x=g_values, nbins=20, title="Histogram of G")
+            fig_hist = px.histogram(x=g_values, nbins=20, title=_sanitize_text("Histogram of G"))
             png_hist = _plotly_png_bytes(fig_hist)
         except Exception:
             png_hist = b""
@@ -2783,14 +2783,14 @@ with tab8:
             pdf.set_font("Arial", style="B", size=16)
             pdf.cell(0, 10, _sanitize_text(f"CGEM Report - {pilot_label}"), ln=1)
             pdf.set_font("Arial", size=10)
-            pdf.cell(0, 6, f"Maneuver: {selected_key.replace('_', ' ').title()}", ln=1)
+            pdf.cell(0, 6, _sanitize_text(f"Maneuver: {selected_key.replace('_', ' ').title()}"), ln=1)
             pdf.ln(2)
             pdf.set_font("Arial", style="B", size=12)
             pdf.cell(0, 7, "Summary Metrics", ln=1)
             pdf.set_font("Arial", size=10)
             def _metric(label: str, val: Optional[float]):
-                s = "—" if val is None else f"{float(val):.2f} s"
-                pdf.cell(0, 6, f"{label}: {s}", ln=1)
+                s = "N/A" if val is None else f"{float(val):.2f} s"
+                pdf.cell(0, 6, _sanitize_text(f"{label}: {s}"), ln=1)
             _metric("Time to Greyout", last_data.get("time_to_greyout_s"))
             _metric("Time to Blackout", last_data.get("time_to_blackout_s"))
             _metric("Time to G-LOC", last_data.get("time_to_gloc_s"))
