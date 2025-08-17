@@ -26,6 +26,29 @@ from matplotlib.animation import FuncAnimation
 from matplotlib.patches import Rectangle
 import seaborn as sns
 from fpdf import FPDF
+from fpdf.enums import XPos, YPos
+import asyncio
+try:
+    from tornado.websocket import WebSocketClosedError  # type: ignore
+    from tornado.iostream import StreamClosedError  # type: ignore
+except Exception:  # pragma: no cover - optional at runtime
+    WebSocketClosedError = None  # type: ignore
+    StreamClosedError = None  # type: ignore
+
+# Suppress noisy asyncio logs when client disconnects mid-write (Streamlit/Tornado)
+def _suppress_ws_closed_error(loop: asyncio.AbstractEventLoop, context):
+    exc = context.get("exception")
+    if (WebSocketClosedError and isinstance(exc, WebSocketClosedError)) or (
+        StreamClosedError and isinstance(exc, StreamClosedError)
+    ):
+        return
+    loop.default_exception_handler(context)
+
+try:
+    _loop = asyncio.get_event_loop()
+    _loop.set_exception_handler(_suppress_ws_closed_error)
+except Exception:
+    pass
 
 from aerobatic_profiles import load_all_profiles, load_profile, PROFILES, Sample
 from cgem_wrapper import run_cgem_for_profile, run_cgem_centrifuge, CGEMResult, PilotConfig
@@ -2792,16 +2815,17 @@ with tab8:
 
         def _pdf_add_wrapped(pdf: FPDF, text: str):
             clean = _sanitize_text(text)
-            for line in pdf.multi_cell(w=0, h=6, txt=clean, align="L", split_only=True):
-                pdf.cell(0, 6, _sanitize_text(line), ln=1)
+            # fpdf2 >=2.7: use text=, and split_only is deprecated → dry_run+output="LINES"
+            for line in pdf.multi_cell(w=0, h=6, text=clean, align="L", dry_run=True, output="LINES"):
+                pdf.cell(0, 6, _sanitize_text(line), new_x=XPos.LMARGIN, new_y=YPos.NEXT)
 
         def _pdf_add_image(pdf: FPDF, img_bytes: bytes, title: str, description: str):
             if not img_bytes:
                 return
             pdf.add_page()
-            pdf.set_font("Arial", style="B", size=12)
-            pdf.cell(0, 7, title, ln=1)
-            pdf.set_font("Arial", size=10)
+            pdf.set_font("helvetica", style="B", size=12)
+            pdf.cell(0, 7, title, new_x=XPos.LMARGIN, new_y=YPos.NEXT)
+            pdf.set_font("helvetica", size=10)
             _pdf_add_wrapped(pdf, description)
             with tempfile.NamedTemporaryFile(delete=False, suffix=".png") as tmp:
                 tmp.write(img_bytes)
@@ -2819,17 +2843,17 @@ with tab8:
             pdf = FPDF(format="A4", unit="mm")
             pdf.set_auto_page_break(auto=True, margin=12)
             pdf.add_page()
-            pdf.set_font("Arial", style="B", size=16)
-            pdf.cell(0, 10, _sanitize_text(f"CGEM Report - {pilot_label}"), ln=1)
-            pdf.set_font("Arial", size=10)
-            pdf.cell(0, 6, _sanitize_text(f"Maneuver: {selected_key.replace('_', ' ').title()}"), ln=1)
+            pdf.set_font("helvetica", style="B", size=16)
+            pdf.cell(0, 10, _sanitize_text(f"CGEM Report - {pilot_label}"), new_x=XPos.LMARGIN, new_y=YPos.NEXT)
+            pdf.set_font("helvetica", size=10)
+            pdf.cell(0, 6, _sanitize_text(f"Maneuver: {selected_key.replace('_', ' ').title()}"), new_x=XPos.LMARGIN, new_y=YPos.NEXT)
             pdf.ln(2)
-            pdf.set_font("Arial", style="B", size=12)
-            pdf.cell(0, 7, "Summary Metrics", ln=1)
-            pdf.set_font("Arial", size=10)
+            pdf.set_font("helvetica", style="B", size=12)
+            pdf.cell(0, 7, "Summary Metrics", new_x=XPos.LMARGIN, new_y=YPos.NEXT)
+            pdf.set_font("helvetica", size=10)
             def _metric(label: str, val: Optional[float]):
                 s = "N/A" if val is None else f"{float(val):.2f} s"
-                pdf.cell(0, 6, _sanitize_text(f"{label}: {s}"), ln=1)
+                pdf.cell(0, 6, _sanitize_text(f"{label}: {s}"), new_x=XPos.LMARGIN, new_y=YPos.NEXT)
             _metric("Time to Greyout", last_data.get("time_to_greyout_s"))
             _metric("Time to Blackout", last_data.get("time_to_blackout_s"))
             _metric("Time to G-LOC", last_data.get("time_to_gloc_s"))
@@ -2838,20 +2862,20 @@ with tab8:
             info = (MANEUVER_EXPLANATIONS_ES.get(selected_key) if locale == "es" else None) or MANEUVER_EXPLANATIONS.get(selected_key, {})
             if info:
                 pdf.add_page()
-                pdf.set_font("Arial", style="B", size=12)
-                pdf.cell(0, 7, _sanitize_text("Maneuver Details"), ln=1)
-                pdf.set_font("Arial", size=10)
+                pdf.set_font("helvetica", style="B", size=12)
+                pdf.cell(0, 7, _sanitize_text("Maneuver Details"), new_x=XPos.LMARGIN, new_y=YPos.NEXT)
+                pdf.set_font("helvetica", size=10)
                 _pdf_add_wrapped(pdf, str(info.get("description", "")))
                 pdf.ln(2)
-                pdf.set_font("Arial", style="B", size=11)
-                pdf.cell(0, 6, _sanitize_text("Physiological Effects"), ln=1)
-                pdf.set_font("Arial", size=10)
+                pdf.set_font("helvetica", style="B", size=11)
+                pdf.cell(0, 6, _sanitize_text("Physiological Effects"), new_x=XPos.LMARGIN, new_y=YPos.NEXT)
+                pdf.set_font("helvetica", size=10)
                 _pdf_add_wrapped(pdf, str(info.get("physiological_effects", "")))
                 if info.get("mitigation"):
                     pdf.ln(2)
-                    pdf.set_font("Arial", style="B", size=11)
-                    pdf.cell(0, 6, _sanitize_text("Recommended Countermeasures"), ln=1)
-                    pdf.set_font("Arial", size=10)
+                    pdf.set_font("helvetica", style="B", size=11)
+                    pdf.cell(0, 6, _sanitize_text("Recommended Countermeasures"), new_x=XPos.LMARGIN, new_y=YPos.NEXT)
+                    pdf.set_font("helvetica", size=10)
                     for m in info["mitigation"]:
                         _pdf_add_wrapped(pdf, f"- {m}")
 
@@ -2865,16 +2889,27 @@ with tab8:
 
             if ai_text:
                 pdf.add_page()
-                pdf.set_font("Arial", style="B", size=12)
-                pdf.cell(0, 7, _sanitize_text("Tailored Recommendations"), ln=1)
-                pdf.set_font("Arial", size=10)
+                pdf.set_font("helvetica", style="B", size=12)
+                pdf.cell(0, 7, _sanitize_text("Tailored Recommendations"), new_x=XPos.LMARGIN, new_y=YPos.NEXT)
+                pdf.set_font("helvetica", size=10)
                 _pdf_add_wrapped(pdf, ai_text)
 
-            out = pdf.output(dest="S")
-            # FPDF >= 2 returns bytes/bytearray; ensure bytes
+            # Use return value as bytes; dest parameter deprecated
+            out = pdf.output()
+            # Prefer bytes return
             if isinstance(out, (bytes, bytearray)):
                 return bytes(out)
-            # Older versions may return str
+            # If a file path was returned/written, read it back
+            if isinstance(out, str) and os.path.exists(out):
+                try:
+                    with open(out, "rb") as fbin:
+                        return fbin.read()
+                finally:
+                    try:
+                        os.remove(out)
+                    except Exception:
+                        pass
+            # Fallback: encode string representation
             return str(out).encode("latin1", errors="ignore")
 
         if st.button("Generate PDF Report"):
