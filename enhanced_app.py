@@ -1078,7 +1078,7 @@ else:
     st.title("G-Effects Model")
     st.markdown(f"<div class=\"app-subtitle\">{APA_CITATION}<br/>{DEV_CREDIT}</div>", unsafe_allow_html=True)
     st.caption("Tip: place 'icon.png' in the project root or in 'assets/', 'images/', or 'docs/' to display the logo.")
-st.markdown("### Comprehensive visualization of physiological responses during flight maneuvers — modern, fast, and interactive ✨")
+
 
 # Sidebar configuration
 st.sidebar.header("Configuration ⚙️")
