@@ -26,6 +26,7 @@ import seaborn as sns
 
 from aerobatic_profiles import load_all_profiles, load_profile, PROFILES, Sample
 from cgem_wrapper import run_cgem_for_profile, run_cgem_centrifuge, CGEMResult, PilotConfig
+from i18n import _, use_lang_selector
 
 # Configure page
 def _find_icon_path() -> Optional[Path]:
@@ -119,6 +120,9 @@ st.markdown("""
     }
 </style>
 """, unsafe_allow_html=True)
+
+# Language toggle (one-click Español)
+use_lang_selector()
 
 # Physiological thresholds and constants
 PHYSIOLOGICAL_THRESHOLDS = {
@@ -1281,35 +1285,35 @@ if ICON_PATH and ICON_PATH.exists():
     except Exception:
         pass
 
-st.sidebar.header("Configuration ⚙️")
+st.sidebar.header(_("Configuration ⚙️"))
 
 # Profile selection
 profiles = load_all_profiles()
 profile_keys = list(PROFILES.keys())
 selected_key = st.sidebar.selectbox(
-    "Select Aerobatic Maneuver",
+    _("Select Aerobatic Maneuver") if False else "Select Aerobatic Maneuver",
     profile_keys,
     format_func=lambda k: k.replace("_", " ").title(),
 )
 
 filename, description = PROFILES[selected_key]
-st.sidebar.markdown(f"**Description**: {description}")
+st.sidebar.markdown(f"**{_('Description') if False else 'Description'}**: {description}")
 
 # Pilot profile selection
-st.sidebar.subheader("Pilot Profile 👨‍✈️")
+st.sidebar.subheader(_("Pilot Profile 👨‍✈️"))
 pilot_type = st.sidebar.selectbox(
-    "Pilot Training Level",
+    _("Pilot Training Level") if False else "Pilot Training Level",
     ["Untrained", "Basic Training", "Advanced Training", "Fighter Pilot"],
     index=1
 )
 
 # Visualization options
-st.sidebar.subheader("Visualization Options 📊")
-show_2d = st.sidebar.checkbox("2D Physiological Plots", value=True)
-show_3d = st.sidebar.checkbox("3D Trajectory Plot", value=True)
-show_animated = st.sidebar.checkbox("Animated Timeline", value=True)
-show_heatmap = st.sidebar.checkbox("Parameter Heatmap", value=True)
-show_cardiovascular = st.sidebar.checkbox("Cardiovascular Response", value=True)
+st.sidebar.subheader(_("Visualization Options 📊"))
+show_2d = st.sidebar.checkbox(_("2D Physiological Plots"), value=True)
+show_3d = st.sidebar.checkbox(_("3D Trajectory Plot"), value=True)
+show_animated = st.sidebar.checkbox(_("Animated Timeline"), value=True)
+show_heatmap = st.sidebar.checkbox(_("Parameter Heatmap"), value=True)
+show_cardiovascular = st.sidebar.checkbox(_("Cardiovascular Response"), value=True)
 
 # Load profile data
 samples: List[Sample] = profiles[selected_key]
@@ -1351,17 +1355,17 @@ def cached_run(profile_id: str, pilot_cfg_key: str, pilot_cfg: PilotConfig):
 
 # Main content area
 tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs([
-    "Profile Overview 📈", 
-    "Physiological Analysis 🧬", 
-    "Maneuver Details 🎯",
-    "Comparative Analysis 📊",
-    "ECharts Dashboard ✨",
-    "Pilot Survey 🧑‍✈️📋",
-    "Educational Resources 📚"
+    _("Profile Overview 📈") if False else "Profile Overview 📈", 
+    _("Physiological Analysis 🧬") if False else "Physiological Analysis 🧬", 
+    _("Maneuver Details 🎯") if False else "Maneuver Details 🎯",
+    _("Comparative Analysis 📊") if False else "Comparative Analysis 📊",
+    _("ECharts Dashboard ✨") if False else "ECharts Dashboard ✨",
+    _("Pilot Survey 🧑‍✈️📋") if False else "Pilot Survey 🧑‍✈️📋",
+    _("Educational Resources 📚") if False else "Educational Resources 📚"
 ])
 
 with tab1:
-    st.subheader(f"G-Force Profile: {selected_key.replace('_', ' ').title()}")
+    st.subheader(_("G-Force Profile: {profile}", profile=selected_key.replace('_', ' ').title()))
     
     # Basic profile plot
     fig = go.Figure()
@@ -1369,9 +1373,9 @@ with tab1:
                             name='G-Force', line=dict(color='#1976d2', width=3)))
     fig.add_hline(y=0, line_dash="dash", line_color="gray")
     fig.update_layout(
-        title="Normal Acceleration vs Time",
+        title=_("Normal Acceleration vs Time") if False else "Normal Acceleration vs Time",
         xaxis_title="Time (s)",
-        yaxis_title="G-Force",
+        yaxis_title=_("G-Force") if False else "G-Force",
         height=400,
         hovermode='x unified'
     )
@@ -1391,9 +1395,9 @@ with tab1:
     col5.metric("G Range", f"{max(g_vals) - min(g_vals):.1f}")
 
 with tab2:
-    st.subheader("Advanced Physiological Analysis")
+    st.subheader(_("Advanced Physiological Analysis") if False else "Advanced Physiological Analysis")
     
-    st.markdown("#### Pilot configuration")
+    st.markdown("#### " + _("Pilot configuration"))
     colA, colB, colC = st.columns(3)
     with colA:
         PROFILE_DEFS = {
@@ -1496,8 +1500,8 @@ with tab2:
         pass
 
     # Run mode selection
-    st.markdown("#### Run mode")
-    run_mode = st.radio("Select simulation mode", ["Custom EGP (aerobatic profile)", "Internal centrifuge experiment"], index=0, horizontal=True)
+    st.markdown("#### " + _("Run mode"))
+    run_mode = st.radio(_("Select simulation mode"), [_("Custom EGP (aerobatic profile)"), _("Internal centrifuge experiment")], index=0, horizontal=True)
     if run_mode == "Internal centrifuge experiment":
         colR1, colR2, colR3, colR4, colR5 = st.columns(5)
         with colR1:
@@ -1511,7 +1515,7 @@ with tab2:
         with colR5:
             r_down = st.number_input("Ramp down (G/s)", 0.01, 10.0, 0.5, 0.01, key="i_rdown")
 
-    if st.button("Run CGEM Physiological Simulation", type="primary", key="run_sim"):
+    if st.button(_("Run CGEM Physiological Simulation"), type="primary", key="run_sim"):
         with st.spinner("Running physiological simulation..."):
             try:
                 if run_mode == "Internal centrifuge experiment":
@@ -1619,7 +1623,7 @@ with tab2:
                 st.session_state["last_run_mode"] = run_mode
                 
             except Exception as exc:
-                st.error(f"Simulation failed: {exc}")
+                st.error(_("Simulation failed: {error}", error=exc))
 
 with tab3:
     st.subheader(f"Detailed Analysis: {selected_key.replace('_', ' ').title()}")
@@ -1642,12 +1646,12 @@ with tab3:
         )
         display_maneuver_analysis(selected_key, result)
     except:
-        st.info("Run the physiological simulation first to see detailed analysis.")
+        st.info(_("Run the physiological simulation first to see detailed analysis."))
 
 with tab4:
     st.subheader("Comparative Analysis Across All Maneuvers")
     
-    if st.button("Run Batch Analysis", type="secondary"):
+    if st.button(_("Run Batch Analysis"), type="secondary"):
         comparison_data = []
         
         progress_bar = st.progress(0)
@@ -1672,7 +1676,7 @@ with tab4:
             df = pd.DataFrame(comparison_data)
             
             # Display comparison table
-            st.markdown("### Comparison Table")
+            st.markdown("### " + _("Comparison Table") if False else "### Comparison Table")
             st.dataframe(df, use_container_width=True)
             
             # Create comparison charts
@@ -1694,14 +1698,14 @@ with tab4:
                 st.plotly_chart(fig, use_container_width=True)
 
 with tab5:
-    st.subheader("ECharts Scientific Dashboard")
+    st.subheader(_("ECharts Scientific Dashboard"))
     st.caption("Powered by Apache ECharts; prefers local `node_modules/echarts` when available.")
     # Layout controls
     colL, colR = st.columns([1, 2])
     with colL:
-        layout_mode = st.radio("Layout", ["Grid (all charts)", "Single (one chart)"], index=0)
+        layout_mode = st.radio(_("Layout"), [_("Grid (all charts)"), _("Single (one chart)")], index=0)
     with colR:
-        chart_choice = st.selectbox("Chart", ["Lines", "Heatmap", "Histogram", "Radar", "Scatter", "Durations", "Flows", "Banks", "HLAP", "3D (ECharts)"], index=0)
+        chart_choice = st.selectbox(_("Chart"), [_("Lines"), _("Heatmap"), _("Histogram"), _("Radar"), _("Scatter"), _("Durations"), _("Flows"), _("Banks"), _("HLAP"), _("3D (ECharts)")], index=0)
     try:
         data = st.session_state.get("last_run_data")
         if not data:
@@ -1722,13 +1726,13 @@ with tab5:
             hlap=data.get("hlap_values", []),
         )
     except Exception as exc:
-        st.error(f"Unable to render ECharts dashboard: {exc}")
+        st.error(_("Unable to render ECharts dashboard: {error}", error=exc))
 
 with tab6:
-    st.subheader("Pilot Survey")
+    st.subheader(_("Pilot Survey"))
     st.caption("Local-only data collection. Exports to CSV/Excel. Objective data can be entered by the flight surgeon.")
 
-    survey_tab, db_tab = st.tabs(["New Entry 📝", "Database & Export 💾"])
+    survey_tab, db_tab = st.tabs([_("New Entry 📝") if False else "New Entry 📝", _("Database & Export 💾") if False else "Database & Export 💾"])
 
     with survey_tab:
         pref = st.session_state.get("survey_prefill", {})
@@ -1822,7 +1826,7 @@ with tab6:
                     pass
 
         with st.form("pilot_survey_form"):
-            st.markdown("### Administrative")
+            st.markdown("### " + _("Administrative"))
             col_admin1, col_admin2, col_admin3 = st.columns(3)
             with col_admin1:
                 pilot_id = st.text_input("Pilot ID (required)", help="Unique identifier for this pilot")
@@ -1832,7 +1836,7 @@ with tab6:
                 collection_time = st.text_input("Collection time (auto)", value=datetime.now().strftime("%Y-%m-%d %H:%M:%S"), disabled=True)
             _autosave_if_ready()
 
-            st.markdown("### Pilot Demographics & Experience")
+            st.markdown("### " + _("Pilot Demographics & Experience"))
             col_d1, col_d2, col_d3, col_d4 = st.columns(4)
             with col_d1:
                 age = st.number_input("Age (years) (required)", min_value=16, max_value=80, value=30)
@@ -1867,7 +1871,7 @@ with tab6:
                 typical_max_g = st.number_input("Typical max G (current ops)", min_value=-5.0, max_value=15.0, value=6.0, step=0.1)
             _autosave_if_ready()
 
-            st.markdown("### G-Force Experience History")
+            st.markdown("### " + _("G-Force Experience History"))
             col_g1, col_g2, col_g3 = st.columns(3)
             with col_g1:
                 greyout_year = st.number_input("Greyout episodes (past year)", min_value=0, value=0)
@@ -1881,7 +1885,7 @@ with tab6:
                 highest_g = st.number_input("Highest G in career", min_value=-5.0, max_value=20.0, value=9.0, step=0.1)
             _autosave_if_ready()
 
-            st.markdown("### Sleep & Fatigue Assessment")
+            st.markdown("### " + _("Sleep & Fatigue Assessment"))
             col_s1, col_s2, col_s3 = st.columns(3)
             with col_s1:
                 avg_sleep = st.number_input("Avg sleep hours/night (past week)", min_value=0.0, max_value=14.0, value=7.0, step=0.25)
@@ -1896,7 +1900,7 @@ with tab6:
                 last_sleep_time = st.time_input("Time of last sleep before flight")
             _autosave_if_ready()
 
-            st.markdown("### Physical Health & Fitness")
+            st.markdown("### " + _("Physical Health & Fitness"))
             col_p1, col_p2, col_p3 = st.columns(3)
             with col_p1:
                 resting_hr = st.number_input("Resting heart rate (bpm)", min_value=30, max_value=220, value=70)
@@ -1917,7 +1921,7 @@ with tab6:
                 days_since_illness = st.number_input("Days since last illness", min_value=0, value=0)
             _autosave_if_ready()
 
-            st.markdown("### Physiological Status (Day of Survey)")
+            st.markdown("### " + _("Physiological Status (Day of Survey)"))
             col_ps1, col_ps2, col_ps3, col_ps4 = st.columns(4)
             with col_ps1:
                 hours_since_meal = st.number_input("Hours since last meal", min_value=0.0, max_value=72.0, value=4.0, step=0.5)
@@ -1938,7 +1942,7 @@ with tab6:
                 meds_24h = st.text_area("Any medication taken in past 24h (list)")
             _autosave_if_ready()
 
-            st.markdown("### Environmental & Operational Factors")
+            st.markdown("### " + _("Environmental & Operational Factors"))
             col_e1, col_e2, col_e3 = st.columns(3)
             with col_e1:
                 base_altitude = st.number_input("Base operations altitude (m)", min_value=0, max_value=6000, value=0)
@@ -1964,7 +1968,7 @@ with tab6:
                 agsm_proficiency = st.slider("AGSM proficiency (1–10)", 1, 10, 7)
             _autosave_if_ready()
 
-            st.markdown("### Lifestyle & Behavioral Factors")
+            st.markdown("### " + _("Lifestyle & Behavioral Factors"))
             col_l1, col_l2, col_l3 = st.columns(3)
             with col_l1:
                 smoking_status = st.selectbox("Smoking status", ["Never", "Former", "Current"]) 
@@ -1979,7 +1983,7 @@ with tab6:
                 time_off_month = st.number_input("Time off from flying duties (days, month)", min_value=0, max_value=31, value=0)
             _autosave_if_ready()
 
-            st.markdown("### Performance & Symptoms")
+            st.markdown("### " + _("Performance & Symptoms"))
             col_sym1, col_sym2, col_sym3 = st.columns(3)
             with col_sym1:
                 self_gtol = st.selectbox("Self-rated G-tolerance vs peers", ["Much lower", "Lower", "Average", "Higher", "Much higher"]) 
@@ -1997,7 +2001,7 @@ with tab6:
                 phys_symptoms = st.multiselect("Physical symptoms during high-G", ["Nausea", "Muscle fatigue", "Breathing difficulty", "Dizziness", "Other"]) 
             _autosave_if_ready()
 
-            st.markdown("### Training & Countermeasures")
+            st.markdown("### " + _("Training & Countermeasures"))
             col_t1, col_t2, col_t3 = st.columns(3)
             with col_t1:
                 breathing_proficiency = st.slider("Breathing control proficiency (1–10)", 1, 10, 7)
@@ -2009,7 +2013,7 @@ with tab6:
                 preflight_prep = st.selectbox("Pre-flight preparation routine consistency", ["Low", "Moderate", "High"]) 
                 conditioning_focus = st.selectbox("Physical conditioning focus", ["General", "G-specific", "None"]) 
 
-            st.markdown("### Psychological Factors")
+            st.markdown("### " + _("Psychological Factors"))
             col_psi1, col_psi2, col_psi3 = st.columns(3)
             with col_psi1:
                 confidence = st.slider("Confidence during high-G (1–10)", 1, 10, 7)
@@ -2023,7 +2027,7 @@ with tab6:
             risk_tolerance = st.selectbox("Risk tolerance personality", ["Conservative", "Moderate", "Aggressive"]) 
             _autosave_if_ready()
 
-            st.markdown("### Flight Surgeon Objective Data (optional)")
+            st.markdown("### " + _("Flight Surgeon Objective Data (optional)"))
             col_obj1, col_obj2 = st.columns(2)
             with col_obj1:
                 measured_hr = st.number_input("Measured HR (bpm)", min_value=30, max_value=220, value=70)
@@ -2034,7 +2038,7 @@ with tab6:
                 objective_notes = st.text_area("Additional objective findings/notes")
             _autosave_if_ready()
 
-            st.markdown("### Attach RR Files (optional)")
+            st.markdown("### " + _("Attach RR Files (optional)"))
             col_rr1, col_rr2 = st.columns(2)
             with col_rr1:
                 rr_baseline = st.file_uploader("Baseline RR file", type=None, accept_multiple_files=False)
@@ -2055,10 +2059,10 @@ with tab6:
                     errors.append("Height out of expected range (140–210 cm).")
                 mission_sum = mission_combat + mission_training + mission_transport
                 if mission_sum != 100:
-                    st.warning(f"Mission percentages sum to {mission_sum}%. Consider adjusting to total 100%.")
+                    st.warning(_("Mission percentages sum to {pct}%\. Consider adjusting to total 100%.") if False else f"Mission percentages sum to {mission_sum}%. Consider adjusting to total 100%.")
 
                 if errors:
-                    st.error("Please correct the following:")
+                    st.error(_("Please correct the following:") if False else "Please correct the following:")
                     for e in errors:
                         st.write(f"- {e}")
                 else:
@@ -2283,7 +2287,7 @@ with tab6:
             st.info("No survey records yet. Save your first entry in the New Entry tab.")
 
 with tab7:
-    st.subheader("Educational Resources")
+    st.subheader(_("Educational Resources"))
     
     with st.expander("Understanding G-Forces and Physiology"):
         st.markdown("""

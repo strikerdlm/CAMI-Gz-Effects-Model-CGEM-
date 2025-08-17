@@ -11,22 +11,25 @@ import streamlit as st
 
 from aerobatic_profiles import load_all_profiles, load_profile, PROFILES, Sample
 from cgem_wrapper import run_cgem_for_profile, PilotConfig
+from i18n import _, use_lang_selector
 
 st.set_page_config(page_title="Aerobatic G-Profile CGEM Demo", layout="wide")
 
-st.title("Aerobatic G-Profile – CGEM Prediction Demo")
+use_lang_selector()
+
+st.title(_("Aerobatic G-Profile – CGEM Prediction Demo"))
 
 # Sidebar – profile selection
 profiles = load_all_profiles()
 profile_keys = list(PROFILES.keys())
 selected_key = st.sidebar.selectbox(
-    "Select aerobatic manoeuvre",
+    _("Select aerobatic manoeuvre") if False else "Select aerobatic manoeuvre",
     profile_keys,
     format_func=lambda k: k.replace("_", " ").title(),
 )
 
 filename, description = PROFILES[selected_key]
-st.sidebar.markdown(f"**Description**: {description}")
+st.sidebar.markdown(f"**{_('Description') if False else 'Description'}**: {description}")
 
 samples: List[Sample] = profiles[selected_key]
 
@@ -59,10 +62,14 @@ def cached_run(profile_id: str, pilot_cfg_key: str, pilot_cfg: PilotConfig):
     return data, str(tmp_dir)
 
 
-tab1, tab2, tab3 = st.tabs(["Profile", "Prediction (CGEM)", "All Profiles (Batch)"])
+tab1, tab2, tab3 = st.tabs([
+    _("Profile") if False else "Profile",
+    _("Prediction (CGEM)") if False else "Prediction (CGEM)",
+    _("All Profiles (Batch)") if False else "All Profiles (Batch)",
+])
 
 with tab1:
-    st.subheader("Normal Acceleration vs Time")
+    st.subheader(_("Normal Acceleration vs Time"))
     fig, ax = plt.subplots(figsize=(9, 4))
     ax.plot(points_t, points_g, color="#1976d2", linewidth=2)
     ax.axhline(0, color="black", linestyle="--", alpha=0.5)
@@ -79,13 +86,13 @@ with tab1:
     weighted_mean = sum(g * d for g, d in zip(g_vals, durations)) / max(1, sum(durations))
 
     colA, colB, colC, colD = st.columns(4)
-    colA.metric("Duration", f"{total_s:.1f} s")
-    colB.metric("Max +G", f"{max(g_vals):.1f}")
-    colC.metric("Max -G", f"{min(g_vals):.1f}")
-    colD.metric("Weighted mean G", f"{weighted_mean:.2f}")
+    colA.metric(_("Duration"), f"{total_s:.1f} s")
+    colB.metric(_("Max +G"), f"{max(g_vals):.1f}")
+    colC.metric(_("Max -G"), f"{min(g_vals):.1f}")
+    colD.metric(_("Weighted mean G"), f"{weighted_mean:.2f}")
 
 with tab2:
-    st.subheader("CGEM Model Prediction (Healthy, midrange subject)")
+    st.subheader(_("CGEM Model Prediction (Healthy, midrange subject)"))
 
     st.markdown("#### Pilot configuration")
     colA, colB, colC = st.columns(3)
@@ -100,15 +107,15 @@ with tab2:
         }
         who_options = ["Custom"] + [f"{PROFILE_DEFS[i]['label']} (who={i})" for i in range(1, 7)]
         who_choice = st.selectbox(
-            "Standard subject profile",
+            _("Standard subject profile") if False else "Standard subject profile",
             who_options,
             index=2,
         )
         who_map = {f"{PROFILE_DEFS[i]['label']} (who={i})": i for i in range(1, 7)}
         who_profile = who_map.get(who_choice)
-        dehydration = st.slider("Dehydration level", 0.0, 1.0, 0.0, 0.1)
-        seat_tilt = st.number_input("Seat tilt (deg)", 0.0, 45.0, 10.0, 1.0)
-        drug_delay = st.number_input("Drug-induced HR delay (s)", 0.0, 10.0, 0.0, 0.5)
+        dehydration = st.slider(_("Dehydration level") if False else "Dehydration level", 0.0, 1.0, 0.0, 0.1)
+        seat_tilt = st.number_input(_("Seat tilt (deg)") if False else "Seat tilt (deg)", 0.0, 45.0, 10.0, 1.0)
+        drug_delay = st.number_input(_("Drug-induced HR delay (s)") if False else "Drug-induced HR delay (s)", 0.0, 10.0, 0.0, 0.5)
         if who_profile in PROFILE_DEFS:
             d = PROFILE_DEFS[who_profile]
             st.markdown(
@@ -164,12 +171,12 @@ with tab2:
         dehydration_level=dehydration,
     )
 
-    if st.button("Run CGEM Prediction", type="primary"):
+    if st.button(_("Run CGEM Prediction"), type="primary"):
         with st.spinner("Running CGEM model..."):
             try:
                 data, tmp_dir = cached_run(selected_key, pilot_cfg_key=pilot_cfg.to_cache_key(), pilot_cfg=pilot_cfg)
             except Exception as exc:
-                st.error(f"Model run failed: {exc}")
+                st.error(_("Model run failed: {error}") if False else f"Model run failed: {exc}")
             else:
                 times = data["times_s"]
                 g = data["g_values"]
@@ -179,9 +186,9 @@ with tab2:
                 grey = "—" if data["time_to_greyout_s"] is None else f"{data['time_to_greyout_s']:.2f} s"
                 black = "—" if data["time_to_blackout_s"] is None else f"{data['time_to_blackout_s']:.2f} s"
                 gloc = "—" if data["time_to_gloc_s"] is None else f"{data['time_to_gloc_s']:.2f} s"
-                col1.metric("Time to greyout", grey)
-                col2.metric("Time to blackout", black)
-                col3.metric("Time to G-LOC", gloc)
+                col1.metric(_("Time to greyout") if False else "Time to greyout", grey)
+                col2.metric(_("Time to blackout") if False else "Time to blackout", black)
+                col3.metric(_("Time to G-LOC") if False else "Time to G-LOC", gloc)
 
                 st.caption(f"Temporary run files saved in: {tmp_dir}")
 
@@ -192,7 +199,7 @@ with tab2:
                     ax2.plot(times, g, color="#0277bd", linewidth=1.2, alpha=0.7, label="G")
                     ax2.set_xlabel("Time (s)")
                     ax2.set_ylabel("G / G_eff")
-                    ax2.set_title("Predicted Effective G vs Time")
+                    ax2.set_title(_("Predicted Effective G vs Time") if False else "Predicted Effective G vs Time")
                     ax2.grid(True, alpha=0.3)
                     ax2.legend()
                     st.pyplot(fig2, clear_figure=True)
@@ -205,12 +212,12 @@ with tab2:
                     ax3.set_xlabel("Time (s)")
                     ax3.set_ylabel("G")
                     ax3.set_zlabel("G_eff")
-                    ax3.set_title("3D Trajectory: Time vs G vs G_eff")
+                    ax3.set_title(_("3D Trajectory: Time vs G vs G_eff") if False else "3D Trajectory: Time vs G vs G_eff")
                     st.pyplot(fig3, clear_figure=True)
 
 with tab3:
     st.subheader("Batch Predictions for All Profiles (Healthy, midrange subject)")
-    run_all = st.button("Run Predictions for All Profiles", type="secondary")
+    run_all = st.button(_("Run Predictions for All Profiles") if False else "Run Predictions for All Profiles", type="secondary")
 
     if run_all:
         for key in profile_keys:
@@ -219,7 +226,7 @@ with tab3:
                     try:
                         data, tmp_dir = cached_run(key)
                     except Exception as exc:
-                        st.error(f"Model run failed: {exc}")
+                        st.error(_("Model run failed: {error}") if False else f"Model run failed: {exc}")
                         continue
 
                 times = data.get("times_s", [])
@@ -231,9 +238,9 @@ with tab3:
                 grey = "—" if data["time_to_greyout_s"] is None else f"{data['time_to_greyout_s']:.2f} s"
                 black = "—" if data["time_to_blackout_s"] is None else f"{data['time_to_blackout_s']:.2f} s"
                 gloc = "—" if data["time_to_gloc_s"] is None else f"{data['time_to_gloc_s']:.2f} s"
-                col1.metric("Greyout", grey)
-                col2.metric("Blackout", black)
-                col3.metric("G-LOC", gloc)
+                col1.metric(_("Greyout") if False else "Greyout", grey)
+                col2.metric(_("Blackout") if False else "Blackout", black)
+                col3.metric(_("G-LOC") if False else "G-LOC", gloc)
 
                 # Layout: side-by-side 2D and 3D
                 c1, c2 = st.columns(2)
