@@ -3,6 +3,8 @@ from __future__ import annotations
 import math
 import numpy as np
 from pathlib import Path
+import os
+import tempfile
 from typing import List, Dict, Optional, Tuple
 import sqlite3
 from datetime import datetime
@@ -23,10 +25,27 @@ import streamlit.components.v1 as components
 from matplotlib.animation import FuncAnimation
 from matplotlib.patches import Rectangle
 import seaborn as sns
+import requests
+from fpdf import FPDF
 
 from aerobatic_profiles import load_all_profiles, load_profile, PROFILES, Sample
 from cgem_wrapper import run_cgem_for_profile, run_cgem_centrifuge, CGEMResult, PilotConfig
 from i18n import _, use_lang_selector, get_locale
+from io import BytesIO
+
+# Optional: external AI + env
+try:
+    from dotenv import load_dotenv  # type: ignore
+except Exception:
+    load_dotenv = None  # type: ignore
+
+# Load environment variables if available (for OPENAI_API_KEY)
+try:
+    if load_dotenv is not None:
+        load_dotenv()
+except Exception:
+    pass
+
 
 # Configure page
 def _find_icon_path() -> Optional[Path]:
@@ -1431,14 +1450,15 @@ def cached_run(profile_id: str, pilot_cfg_key: str, pilot_cfg: PilotConfig):
     return data, str(tmp_dir)
 
 # Main content area
-tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs([
+tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8 = st.tabs([
     _("Profile Overview 📈") if False else "Profile Overview 📈", 
     _("Physiological Analysis 🧬") if False else "Physiological Analysis 🧬", 
     _("Maneuver Details 🎯") if False else "Maneuver Details 🎯",
     _("Comparative Analysis 📊") if False else "Comparative Analysis 📊",
     _("ECharts Dashboard ✨") if False else "ECharts Dashboard ✨",
     _("Pilot Survey 🧑‍✈️📋") if False else "Pilot Survey 🧑‍✈️📋",
-    _("Educational Resources 📚") if False else "Educational Resources 📚"
+    _("Educational Resources 📚") if False else "Educational Resources 📚",
+    _("Export & Reports 📤") if False else "Export & Reports 📤",
 ])
 
 with tab1:
@@ -1709,7 +1729,7 @@ with tab3:
     try:
         data = st.session_state.get("last_run_data")
         if not data:
-            data, _ = cached_run(selected_key, pilot_cfg_key=pilot_cfg.to_cache_key(), pilot_cfg=pilot_cfg)
+            data, _tmp_dir = cached_run(selected_key, pilot_cfg_key=pilot_cfg.to_cache_key(), pilot_cfg=pilot_cfg)
         result = CGEMResult(
             time_to_greyout_s=data["time_to_greyout_s"],
             time_to_blackout_s=data["time_to_blackout_s"],
@@ -1736,7 +1756,7 @@ with tab4:
             progress_bar.progress((idx + 1) / len(profile_keys))
             
             try:
-                data, _ = cached_run(key, pilot_cfg_key=pilot_cfg.to_cache_key(), pilot_cfg=pilot_cfg)
+                data, _tmp_dir = cached_run(key, pilot_cfg_key=pilot_cfg.to_cache_key(), pilot_cfg=pilot_cfg)
                 comparison_data.append({
                     "Maneuver": key.replace("_", " ").title(),
                     "Max G": max(data["g_values"]) if data["g_values"] else 0,
@@ -1786,7 +1806,7 @@ with tab5:
     try:
         data = st.session_state.get("last_run_data")
         if not data:
-            data, _ = cached_run(selected_key, pilot_cfg_key=pilot_cfg.to_cache_key(), pilot_cfg=pilot_cfg)
+            data, _tmp_dir = cached_run(selected_key, pilot_cfg_key=pilot_cfg.to_cache_key(), pilot_cfg=pilot_cfg)
         render_echarts_dashboard(
             data.get("times_s", []),
             data.get("g_values", []),
@@ -2552,6 +2572,269 @@ Vogt, L. H. (1976). Physiological effects of sustained acceleration. *Life Scien
 
 Watenpaugh, D. E., Breit, G. A., & Murthy, G. (1996). Human cardiovascular responses to +Gz acceleration with and without anti-G suit protection. *Journal of Gravitational Physiology, 3*(2), 81–92. https://europepmc.org/article/med/11543362
 """)
+
+with tab8:
+    st.subheader("Export & Reports")
+    st.caption("Export analysis results and generate a pilot PDF report. AI recommendations are optional and require internet.")
+
+    last_data = st.session_state.get("last_run_data")
+    if not last_data:
+        st.info("Run a physiological simulation first to enable exports.")
+    else:
+        pilot_label = st.text_input("Pilot ID for filenames", value=st.session_state.get("export_pilot_id", "pilot"))
+        st.session_state["export_pilot_id"] = pilot_label
+
+        df_series = pd.DataFrame({
+            "time_s": last_data.get("times_s", []),
+            "g": last_data.get("g_values", []),
+            "g_eff": last_data.get("geff_values", []),
+        })
+        df_flags = pd.DataFrame({
+            "flag_cons": last_data.get("flags_n2", []),
+            "flag_vis": last_data.get("flags_ne2", []),
+            "flag_non": last_data.get("flags_non2", []),
+        })
+
+        st.download_button(
+            label="Download CSV (series + flags)",
+            data=df_series.join(df_flags, how="left").to_csv(index=False).encode("utf-8"),
+            file_name=f"{pilot_label}_analysis.csv",
+            mime="text/csv",
+        )
+
+        excel_buf = BytesIO()
+        try:
+            with pd.ExcelWriter(excel_buf, engine="openpyxl") as writer:
+                df_series.to_excel(writer, sheet_name="Series", index=False)
+                df_flags.to_excel(writer, sheet_name="Flags", index=False)
+                meta = pd.DataFrame([
+                    {"metric": "time_to_greyout_s", "value": last_data.get("time_to_greyout_s")},
+                    {"metric": "time_to_blackout_s", "value": last_data.get("time_to_blackout_s")},
+                    {"metric": "time_to_gloc_s", "value": last_data.get("time_to_gloc_s")},
+                ])
+                meta.to_excel(writer, sheet_name="Summary", index=False)
+                locale = get_locale()
+                info = (MANEUVER_EXPLANATIONS_ES.get(selected_key) if locale == "es" else None) or MANEUVER_EXPLANATIONS.get(selected_key, {})
+                rows = []
+                if info:
+                    rows.append({"section": "description", "text": str(info.get("description", ""))})
+                    rows.append({"section": "physiological_effects", "text": str(info.get("physiological_effects", ""))})
+                    for r in info.get("risk_factors", []):
+                        rows.append({"section": "risk_factor", "text": str(r)})
+                    for m in info.get("mitigation", []):
+                        rows.append({"section": "mitigation", "text": str(m)})
+                pd.DataFrame(rows).to_excel(writer, sheet_name="ManeuverDetails", index=False)
+        except Exception as exc:
+            st.warning(f"Excel export note: {exc}")
+        st.download_button(
+            label="Download Excel",
+            data=excel_buf.getvalue(),
+            file_name=f"{pilot_label}_analysis.xlsx",
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        )
+
+        times = last_data.get("times_s", [])
+        g_values = last_data.get("g_values", [])
+        geff_values = last_data.get("geff_values", [])
+        flags_n2 = last_data.get("flags_n2", [])
+
+        def _plotly_png_bytes(fig: go.Figure, width: int = 1000, height: int = 600) -> bytes:
+            try:
+                return fig.to_image(format="png", width=width, height=height, engine="kaleido")
+            except Exception:
+                return b""
+
+        try:
+            fig_2d = create_2d_physiological_plot(times, g_values, geff_values, selected_key)
+            png_2d = _plotly_png_bytes(fig_2d)
+        except Exception:
+            png_2d = b""
+        try:
+            fig_3d = create_3d_trajectory_plot(times, g_values, geff_values, flags_n2, selected_key)
+            png_3d = _plotly_png_bytes(fig_3d)
+        except Exception:
+            png_3d = b""
+        try:
+            result_obj = CGEMResult(
+                time_to_greyout_s=last_data.get("time_to_greyout_s"),
+                time_to_blackout_s=last_data.get("time_to_blackout_s"),
+                time_to_gloc_s=last_data.get("time_to_gloc_s"),
+                times_s=times,
+                g_values=g_values,
+                geff_values=geff_values,
+                flags_n2=flags_n2,
+                flags_ne2=last_data.get("flags_ne2", []),
+                flags_non2=last_data.get("flags_non2", []),
+            )
+            fig_heat = create_physiological_heatmap(result_obj, selected_key)
+            png_heat = _plotly_png_bytes(fig_heat)
+        except Exception:
+            png_heat = b""
+        try:
+            fig_cardio = create_cardiovascular_response_plot(times, g_values, geff_values)
+            png_cardio = _plotly_png_bytes(fig_cardio)
+        except Exception:
+            png_cardio = b""
+        try:
+            fig_hist = px.histogram(x=g_values, nbins=20, title="Histogram of G")
+            png_hist = _plotly_png_bytes(fig_hist)
+        except Exception:
+            png_hist = b""
+        try:
+            time_above_greyout = sum(max(0.0, times[i+1] - times[i]) for i in range(len(times)-1) if geff_values[i] >= PHYSIOLOGICAL_THRESHOLDS["greyout_geff"]) if len(times) > 1 else 0.0
+            time_below_redout = sum(max(0.0, times[i+1] - times[i]) for i in range(len(times)-1) if g_values[i] < PHYSIOLOGICAL_THRESHOLDS["redout_g"]) if len(times) > 1 else 0.0
+            weighted_mean_g = float(np.average(g_values, weights=np.diff(times + [times[-1] + 1e-9])) if len(times) > 1 else (np.mean(g_values) if g_values else 0))
+            theta = ["Max G", "Max G_eff", "> Greyout (s)", "< Redout (s)", "Mean G"]
+            r = [float(max(g_values)) if g_values else 0.0, float(max(geff_values)) if geff_values else 0.0, float(time_above_greyout), float(time_below_redout), float(abs(weighted_mean_g))]
+            fig_radar = go.Figure(data=go.Scatterpolar(r=r, theta=theta, fill="toself"))
+            fig_radar.update_layout(title="Radar Summary")
+            png_radar = _plotly_png_bytes(fig_radar)
+        except Exception:
+            png_radar = b""
+        try:
+            classes = [_classify_state(float(g_values[i]), float(geff_values[i])) if i < len(g_values) and i < len(geff_values) else "normal" for i in range(len(times))]
+            fig_scatter = px.scatter(x=g_values, y=geff_values, color=classes, title="G vs G_eff by State", labels={"x": "G", "y": "G_eff"})
+            png_scatter = _plotly_png_bytes(fig_scatter)
+        except Exception:
+            png_scatter = b""
+
+        col_ai1, col_ai2 = st.columns([1, 1])
+        with col_ai1:
+            use_ai = st.checkbox("Include AI recommendations (requires internet)", value=False)
+        with col_ai2:
+            net_ok = False
+            try:
+                requests.get("https://api.openai.com", timeout=2)
+                net_ok = True
+            except Exception:
+                net_ok = False
+            st.write("Internet: " + ("Available" if net_ok else "Unavailable"))
+
+        ai_text = None
+        if use_ai and net_ok:
+            try:
+                from openai import OpenAI  # type: ignore
+                client = OpenAI()
+                payload = {
+                    "pilot_id": pilot_label,
+                    "summary": {
+                        "time_to_greyout_s": last_data.get("time_to_greyout_s"),
+                        "time_to_blackout_s": last_data.get("time_to_blackout_s"),
+                        "time_to_gloc_s": last_data.get("time_to_gloc_s"),
+                    },
+                    "maneuver": selected_key,
+                }
+                response = client.responses.create(
+                    model="gpt-5",
+                    input=[
+                        {"role": "user", "content": "Provide tailored countermeasures and recommendations for this pilot, based on CGEM outputs and maneuver details."},
+                        {"role": "user", "content": json.dumps(payload)},
+                    ],
+                    text={"format": {"type": "text"}, "verbosity": "high"},
+                    reasoning={"effort": "high", "summary": "auto"},
+                    tools=[{"type": "web_search_preview", "user_location": {"type": "approximate"}, "search_context_size": "high"}],
+                    store=False,
+                )
+                ai_text = getattr(response, "output_text", None) or getattr(response, "content", None)
+                if isinstance(ai_text, list):
+                    ai_text = "\n".join(str(x) for x in ai_text)
+                if not isinstance(ai_text, str):
+                    ai_text = None
+            except Exception as exc:
+                st.warning(f"AI recommendations unavailable: {exc}")
+
+        def _pdf_add_wrapped(pdf: FPDF, text: str):
+            for line in pdf.multi_cell(w=0, h=6, txt=text, align="L", split_only=True):
+                pdf.cell(0, 6, line, ln=1)
+
+        def _pdf_add_image(pdf: FPDF, img_bytes: bytes, title: str, description: str):
+            if not img_bytes:
+                return
+            pdf.add_page()
+            pdf.set_font("Arial", style="B", size=12)
+            pdf.cell(0, 7, title, ln=1)
+            pdf.set_font("Arial", size=10)
+            _pdf_add_wrapped(pdf, description)
+            with tempfile.NamedTemporaryFile(delete=False, suffix=".png") as tmp:
+                tmp.write(img_bytes)
+                tmp.flush()
+                tmp_path = tmp.name
+            try:
+                pdf.image(tmp_path, w=180)
+            finally:
+                try:
+                    os.remove(tmp_path)
+                except Exception:
+                    pass
+
+        def build_pdf() -> bytes:
+            pdf = FPDF(format="A4", unit="mm")
+            pdf.set_auto_page_break(auto=True, margin=12)
+            pdf.add_page()
+            pdf.set_font("Arial", style="B", size=16)
+            pdf.cell(0, 10, f"CGEM Report – {pilot_label}", ln=1)
+            pdf.set_font("Arial", size=10)
+            pdf.cell(0, 6, f"Maneuver: {selected_key.replace('_', ' ').title()}", ln=1)
+            pdf.ln(2)
+            pdf.set_font("Arial", style="B", size=12)
+            pdf.cell(0, 7, "Summary Metrics", ln=1)
+            pdf.set_font("Arial", size=10)
+            def _metric(label: str, val: Optional[float]):
+                s = "—" if val is None else f"{float(val):.2f} s"
+                pdf.cell(0, 6, f"{label}: {s}", ln=1)
+            _metric("Time to Greyout", last_data.get("time_to_greyout_s"))
+            _metric("Time to Blackout", last_data.get("time_to_blackout_s"))
+            _metric("Time to G-LOC", last_data.get("time_to_gloc_s"))
+
+            locale = get_locale()
+            info = (MANEUVER_EXPLANATIONS_ES.get(selected_key) if locale == "es" else None) or MANEUVER_EXPLANATIONS.get(selected_key, {})
+            if info:
+                pdf.add_page()
+                pdf.set_font("Arial", style="B", size=12)
+                pdf.cell(0, 7, "Maneuver Details", ln=1)
+                pdf.set_font("Arial", size=10)
+                _pdf_add_wrapped(pdf, str(info.get("description", "")))
+                pdf.ln(2)
+                pdf.set_font("Arial", style="B", size=11)
+                pdf.cell(0, 6, "Physiological Effects", ln=1)
+                pdf.set_font("Arial", size=10)
+                _pdf_add_wrapped(pdf, str(info.get("physiological_effects", "")))
+                if info.get("mitigation"):
+                    pdf.ln(2)
+                    pdf.set_font("Arial", style="B", size=11)
+                    pdf.cell(0, 6, "Recommended Countermeasures", ln=1)
+                    pdf.set_font("Arial", size=10)
+                    for m in info["mitigation"]:
+                        _pdf_add_wrapped(pdf, f"• {m}")
+
+            _pdf_add_image(pdf, png_2d, "Plot: 2D Physiological Analysis", "Time series for G and G_eff with thresholds and risk zones.")
+            _pdf_add_image(pdf, png_3d, "Plot: 3D Trajectory", "Time vs G vs G_eff trajectory with threshold planes and state coloring.")
+            _pdf_add_image(pdf, png_heat, "Plot: Physiological Parameters Heatmap", "Heatmap of consciousness, vision and blackout proxy across time.")
+            _pdf_add_image(pdf, png_cardio, "Plot: Cardiovascular Response", "Estimated heart rate and blood pressure responses over the maneuver.")
+            _pdf_add_image(pdf, png_hist, "Plot: Histogram of G", "Distribution of G values across the profile (ECharts-equivalent).")
+            _pdf_add_image(pdf, png_radar, "Plot: Radar Summary", "Consolidated risk and exposure metrics (ECharts-equivalent).")
+            _pdf_add_image(pdf, png_scatter, "Plot: G vs G_eff by State", "Scatter of instantaneous G and G_eff colored by physiological state.")
+
+            if ai_text:
+                pdf.add_page()
+                pdf.set_font("Arial", style="B", size=12)
+                pdf.cell(0, 7, "Tailored AI Recommendations", ln=1)
+                pdf.set_font("Arial", size=10)
+                _pdf_add_wrapped(pdf, ai_text)
+
+            return pdf.output(dest="S").encode("latin1", errors="ignore")
+
+        if st.button("Generate PDF Report"):
+            try:
+                pdf_bytes = build_pdf()
+                st.download_button(
+                    label="Download PDF",
+                    data=pdf_bytes,
+                    file_name=f"{pilot_label}_report.pdf",
+                    mime="application/pdf",
+                )
+            except Exception as exc:
+                st.error(f"Failed to build PDF: {exc}")
 
 # Footer
 st.sidebar.markdown("---")
