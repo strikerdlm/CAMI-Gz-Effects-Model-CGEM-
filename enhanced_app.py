@@ -5,6 +5,7 @@ import numpy as np
 from pathlib import Path
 from typing import List, Dict, Optional, Tuple
 import json
+import base64
 
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -22,9 +23,11 @@ from aerobatic_profiles import load_all_profiles, load_profile, PROFILES, Sample
 from cgem_wrapper import run_cgem_for_profile, run_cgem_centrifuge, CGEMResult, PilotConfig
 
 # Configure page
+ICON_PATH = Path(__file__).with_name("icon.png")
+page_icon_arg: Optional[str] = str(ICON_PATH) if ICON_PATH.exists() else None
 st.set_page_config(
-    page_title="G-Effects Model by Civil Aerospace Medicine Institute 🚀",
-    page_icon=":rocket:",
+    page_title="G-Effects Model by Civil Aerospace Medicine Institute",
+    page_icon=page_icon_arg,
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -61,6 +64,10 @@ st.markdown("""
         color: var(--title-color-dark) !important;
         text-shadow: 0 1px 1px rgba(0,0,0,0.4);
     }
+    /* Header with logo */
+    .app-header { display: flex; align-items: center; gap: 14px; margin: 0.25rem 0 0.75rem; }
+    .app-logo { width: 56px; height: 56px; border-radius: 14px; box-shadow: 0 8px 22px rgba(0,0,0,0.25); }
+    @media (max-width: 480px) { .app-logo { width: 44px; height: 44px; border-radius: 12px; } }
     h2 {
         color: #334155;
         letter-spacing: 0.2px;
@@ -1018,7 +1025,23 @@ def render_echarts_dashboard(times: List[float], g_values: List[float], geff_val
     components.html(html, height=height_value, scrolling=True)
 
 # Main application
-st.title("G-Effects Model by Civil Aerospace Medicine Institute 🚀")
+if ICON_PATH.exists():
+    try:
+        with open(ICON_PATH, "rb") as _f:
+            _b64 = base64.b64encode(_f.read()).decode("utf-8")
+        st.markdown(
+            f"""
+            <div class="app-header">
+                <img src="data:image/png;base64,{_b64}" alt="App logo" class="app-logo" />
+                <h1>G-Effects Model by Civil Aerospace Medicine Institute</h1>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+    except Exception:
+        st.title("G-Effects Model by Civil Aerospace Medicine Institute")
+else:
+    st.title("G-Effects Model by Civil Aerospace Medicine Institute")
 st.markdown("### Comprehensive visualization of physiological responses during flight maneuvers — modern, fast, and interactive ✨")
 
 # Sidebar configuration
