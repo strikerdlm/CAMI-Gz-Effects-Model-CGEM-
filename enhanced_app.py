@@ -1360,6 +1360,30 @@ with tab2:
         dehydration_level=dehydration,
     )
 
+    # Prefill survey defaults from current Pilot configuration
+    try:
+        survey_prefill: Dict[str, object] = {}
+        if who_profile in (1, 2, 3, 4, 5, 6):
+            d = PROFILE_DEFS[int(who_profile)]
+            survey_prefill = {
+                "sex": "Male" if d.get("male", 1) == 1 else "Female",
+                "height_cm": float(d.get("howtall", 179.0)),
+                "systolic_bp": int(d.get("BSP", 120)),
+                "diastolic_bp": int(d.get("BDP", 80)),
+            }
+        else:
+            if 'male' in locals() and male is not None:
+                survey_prefill["sex"] = str(male)
+            if 'height_cm' in locals() and height_cm is not None:
+                survey_prefill["height_cm"] = float(height_cm)
+            if 'bsp' in locals() and bsp is not None:
+                survey_prefill["systolic_bp"] = int(bsp)
+            if 'bdp' in locals() and bdp is not None:
+                survey_prefill["diastolic_bp"] = int(bdp)
+        st.session_state["survey_prefill"] = survey_prefill
+    except Exception:
+        pass
+
     # Run mode selection
     st.markdown("#### Run mode")
     run_mode = st.radio("Select simulation mode", ["Custom EGP (aerobatic profile)", "Internal centrifuge experiment"], index=0, horizontal=True)
@@ -1596,11 +1620,12 @@ with tab6:
     survey_tab, db_tab = st.tabs(["New Entry 📝", "Database & Export 💾"])
 
     with survey_tab:
+        pref = st.session_state.get("survey_prefill", {})
         with st.form("pilot_survey_form"):
             st.markdown("### Administrative")
             col_admin1, col_admin2, col_admin3 = st.columns(3)
             with col_admin1:
-                pilot_id = st.text_input("Pilot ID", help="Unique identifier for this pilot")
+                pilot_id = st.text_input("Pilot ID (required)", help="Unique identifier for this pilot")
             with col_admin2:
                 collected_by = st.text_input("Collected by (Flight Surgeon)")
             with col_admin3:
@@ -1609,13 +1634,16 @@ with tab6:
             st.markdown("### Pilot Demographics & Experience")
             col_d1, col_d2, col_d3, col_d4 = st.columns(4)
             with col_d1:
-                age = st.number_input("Age (years)", min_value=16, max_value=80, value=30)
-                sex = st.selectbox("Sex", ["Male", "Female", "Other"]) 
-                height_cm = st.number_input("Height (cm)", min_value=140.0, max_value=210.0, value=179.0, step=0.1)
+                age = st.number_input("Age (years) (required)", min_value=16, max_value=80, value=30)
+                sex_options = ["Male", "Female", "Other"]
+                sex_default = str(pref.get("sex", "Male"))
+                sex_index = sex_options.index(sex_default) if sex_default in sex_options else 0
+                sex = st.selectbox("Sex (required)", sex_options, index=sex_index)
+                height_cm = st.number_input("Height (cm) (required)", min_value=140.0, max_value=210.0, value=float(pref.get("height_cm", 179.0)), step=0.1)
             with col_d2:
-                weight_kg = st.number_input("Weight (kg)", min_value=40.0, max_value=150.0, value=80.0, step=0.1)
+                weight_kg = st.number_input("Weight (kg) (required)", min_value=40.0, max_value=150.0, value=80.0, step=0.1)
                 unit = st.text_input("Military unit")
-                aircraft_type = st.text_input("Current aircraft type")
+                aircraft_type = st.text_input("Current aircraft type (required)")
             with col_d3:
                 total_hours = st.number_input("Total flight hours (all)", min_value=0.0, value=1000.0, step=1.0)
                 current_ac_hours = st.number_input("Hours in current aircraft", min_value=0.0, value=250.0, step=1.0)
@@ -1664,8 +1692,8 @@ with tab6:
             col_p1, col_p2, col_p3 = st.columns(3)
             with col_p1:
                 resting_hr = st.number_input("Resting heart rate (bpm)", min_value=30, max_value=220, value=70)
-                systolic_bp = st.number_input("Systolic BP (mmHg)", min_value=70, max_value=260, value=120)
-                diastolic_bp = st.number_input("Diastolic BP (mmHg)", min_value=40, max_value=160, value=80)
+                systolic_bp = st.number_input("Systolic BP (mmHg)", min_value=70, max_value=260, value=int(pref.get("systolic_bp", 120)))
+                diastolic_bp = st.number_input("Diastolic BP (mmHg)", min_value=40, max_value=160, value=int(pref.get("diastolic_bp", 80)))
             with col_p2:
                 exercise_freq = st.number_input("Exercise frequency (/week)", min_value=0, max_value=14, value=3)
                 exercise_type = st.selectbox("Primary exercise type", ["Aerobic", "Strength", "Mixed", "None"])
@@ -1793,8 +1821,23 @@ with tab6:
 
             submitted = st.form_submit_button("Save Survey Entry", type="primary")
             if submitted:
+                errors: List[str] = []
                 if not pilot_id.strip():
-                    st.error("Pilot ID is required to save.")
+                    errors.append("Pilot ID is required.")
+                if not aircraft_type.strip():
+                    errors.append("Current aircraft type is required.")
+                if weight_kg < 40.0 or weight_kg > 150.0:
+                    errors.append("Weight out of expected range (40–150 kg).")
+                if height_cm < 140.0 or height_cm > 210.0:
+                    errors.append("Height out of expected range (140–210 cm).")
+                mission_sum = mission_combat + mission_training + mission_transport
+                if mission_sum != 100:
+                    st.warning(f"Mission percentages sum to {mission_sum}%. Consider adjusting to total 100%.")
+
+                if errors:
+                    st.error("Please correct the following:")
+                    for e in errors:
+                        st.write(f"- {e}")
                 else:
                     payload = {
                         "admin": {
@@ -1885,11 +1928,40 @@ with tab6:
         records = _load_all_records()
         if records:
             df = pd.DataFrame(records)
-            st.dataframe(df, use_container_width=True, height=360)
+            if "collected_at" in df.columns:
+                df["collected_at"] = pd.to_datetime(df["collected_at"], errors="coerce")
+
+            with st.expander("Filters", expanded=True):
+                col_f1, col_f2 = st.columns(2)
+                with col_f1:
+                    pilot_filter = st.text_input("Filter by Pilot ID contains")
+                    collected_by_filter = st.text_input("Filter by Collected By contains")
+                with col_f2:
+                    date_range = st.date_input("Date range (collected_at)", [])
+                global_search = st.text_input("Search in any field")
+
+            filtered_df = df.copy()
+            if pilot_filter:
+                mask = filtered_df["pilot_id"].astype(str).str.contains(pilot_filter, case=False, na=False)
+                filtered_df = filtered_df[mask]
+            if collected_by_filter:
+                mask = filtered_df["collected_by"].astype(str).str.contains(collected_by_filter, case=False, na=False)
+                filtered_df = filtered_df[mask]
+            if date_range and len(date_range) == 2 and "collected_at" in filtered_df.columns:
+                start_dt = pd.to_datetime(date_range[0])
+                end_dt = pd.to_datetime(date_range[1]) + pd.Timedelta(days=1)
+                mask = (filtered_df["collected_at"] >= start_dt) & (filtered_df["collected_at"] < end_dt)
+                filtered_df = filtered_df[mask]
+            if global_search:
+                gs = global_search
+                mask = filtered_df.apply(lambda row: row.astype(str).str.contains(gs, case=False, na=False).any(), axis=1)
+                filtered_df = filtered_df[mask]
+
+            st.dataframe(filtered_df, use_container_width=True, height=360)
 
             st.markdown("#### Export")
             now_tag = datetime.now().strftime("%Y%m%d_%H%M%S")
-            csv_bytes = df.to_csv(index=False).encode("utf-8")
+            csv_bytes = filtered_df.to_csv(index=False).encode("utf-8")
             st.download_button(
                 "Download CSV",
                 data=csv_bytes,
@@ -1899,7 +1971,7 @@ with tab6:
             xls_buffer = io.BytesIO()
             try:
                 with pd.ExcelWriter(xls_buffer, engine="openpyxl") as writer:
-                    df.to_excel(writer, sheet_name="Surveys", index=False)
+                    filtered_df.to_excel(writer, sheet_name="Surveys", index=False)
                 xls_buffer.seek(0)
                 st.download_button(
                     "Download Excel",
@@ -1916,7 +1988,8 @@ with tab6:
             if st.button("Delete selected", type="secondary"):
                 try:
                     removed = _delete_records_by_ids(ids_to_delete)
-                    st.success(f"Deleted {removed} record(s). Refresh the page to update the table.")
+                    st.success(f"Deleted {removed} record(s).")
+                    st.experimental_rerun()
                 except Exception as exc:
                     st.error(f"Failed to delete: {exc}")
         else:
