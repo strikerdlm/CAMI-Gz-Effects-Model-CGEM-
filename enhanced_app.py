@@ -8,6 +8,7 @@ import sqlite3
 from datetime import datetime
 import io
 import re
+import hashlib
 import json
 import base64
 
@@ -370,6 +371,60 @@ def _list_pilot_files(pilot_id: str) -> List[Path]:
         return sorted([p for p in d.iterdir() if p.is_file()])
     except Exception:
         return []
+
+########################
+# Autosave DB upsert   #
+########################
+
+def _find_latest_autosave_record_id(pilot_id: str) -> Optional[int]:
+    conn = _get_db_connection()
+    try:
+        cur = conn.cursor()
+        cur.execute(
+            "SELECT id, payload_json FROM pilot_survey WHERE pilot_id = ? ORDER BY id DESC LIMIT 50",
+            (pilot_id,)
+        )
+        rows = cur.fetchall()
+        for rid, payload in rows:
+            try:
+                data = json.loads(payload or "{}")
+                if isinstance(data, dict) and data.get("meta", {}).get("autosave") is True:
+                    return int(rid)
+            except Exception:
+                continue
+        return None
+    finally:
+        conn.close()
+
+def _upsert_autosave_record(pilot_id: str, collected_by: Optional[str], payload: Dict[str, object]) -> int:
+    payload = dict(payload)
+    meta = dict(payload.get("meta") or {})
+    meta["autosave"] = True
+    meta["updated_at"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    payload["meta"] = meta
+    payload_json = json.dumps(payload)
+
+    conn = _get_db_connection()
+    try:
+        rid = _find_latest_autosave_record_id(pilot_id)
+        if rid is not None:
+            cur = conn.cursor()
+            cur.execute(
+                "UPDATE pilot_survey SET payload_json = ?, collected_at = ? WHERE id = ?",
+                (payload_json, datetime.now().strftime("%Y-%m-%d %H:%M:%S"), rid),
+            )
+            conn.commit()
+            return int(rid)
+        else:
+            cur = conn.cursor()
+            cur.execute(
+                "INSERT INTO pilot_survey (pilot_id, collected_by, payload_json) VALUES (?, ?, ?)",
+                (pilot_id, (collected_by or "auto"), payload_json),
+            )
+            conn.commit()
+            return int(cur.lastrowid)
+    finally:
+        conn.close()
 
 def get_physiological_state(g: float, geff: float) -> Tuple[str, str]:
     """Determine physiological state based on G and G_eff values."""
@@ -1677,6 +1732,95 @@ with tab6:
 
     with survey_tab:
         pref = st.session_state.get("survey_prefill", {})
+        # Use a form-like layout but also autosave on changes
+        def _build_payload() -> Dict[str, object]:
+            return {
+                "admin": {
+                    "pilot_id": pilot_id.strip() if pilot_id else "",
+                    "collected_by": collected_by.strip() if collected_by else "",
+                    "collected_at_local": collection_time,
+                },
+                "demographics_experience": {
+                    "age": age, "sex": sex, "height_cm": height_cm, "weight_kg": weight_kg,
+                    "military_unit": unit, "current_aircraft_type": aircraft_type,
+                    "total_flight_hours": total_hours, "current_aircraft_hours": current_ac_hours,
+                    "hours_last_2_weeks": hours_2w, "hours_last_month": hours_1m,
+                    "years_military_flight": years_mil, "num_aircraft_types_flown": types_flown,
+                    "days_since_last_g": days_since_g, "avg_g_exposures_per_month": avg_g_exp,
+                    "typical_max_g": typical_max_g
+                },
+                "g_experience_history": {
+                    "greyout_episodes_year": greyout_year, "blackout_episodes_year": blackout_year,
+                    "gloc_episodes_year": gloc_year, "last_greyout_days": last_greyout_days,
+                    "last_blackout_days": last_blackout_days, "last_gloc_days": last_gloc_days,
+                    "highest_g_career": highest_g
+                },
+                "sleep_fatigue": {
+                    "avg_sleep_hours": avg_sleep, "sleep_quality_1_10": sleep_quality,
+                    "nights_lt6h": short_nights, "last_sleep_time": str(last_sleep_time),
+                    "hours_sleep_before_flight": hours_before_flight, "duty_days_no_rest_month": duty_no_rest,
+                    "shift_changes_month": shift_changes, "tz_changes_2w": tz_changes
+                },
+                "physical_health": {
+                    "resting_hr_bpm": resting_hr, "systolic_bp": systolic_bp, "diastolic_bp": diastolic_bp,
+                    "exercise_freq_per_week": exercise_freq, "primary_exercise_type": exercise_type,
+                    "hours_exercise_week": hours_exercise, "body_fat_pct": body_fat_pct,
+                    "cv_meds": cv_meds, "bp_meds": bp_meds, "current_illness": current_illness,
+                    "days_since_last_illness": days_since_illness
+                },
+                "phys_status_today": {
+                    "hours_since_meal": hours_since_meal, "hours_since_caffeine": hours_since_caffeine,
+                    "cups_caffeine_24h": cups_caffeine, "glasses_water_today": water_glasses,
+                    "alcohol_units_24h": alcohol_24, "alcohol_units_week": alcohol_week,
+                    "stress_level_1_10": stress_level, "energy_level_1_10": energy_level,
+                    "body_temp_c": body_temp_c, "meds_24h": meds_24h
+                },
+                "environment_operational": {
+                    "base_altitude_m": base_altitude, "avg_cockpit_temp": cockpit_temp,
+                    "noise_hours_week": noise_hours, "vibration_hours_week": vibration_hours,
+                    "mission_combat_pct": mission_combat, "mission_training_pct": mission_training,
+                    "mission_transport_pct": mission_transport, "gsuit_available": gsuit_available,
+                    "gsuit_usage_frequency": gsuit_usage, "anti_g_training_recency_weeks": anti_g_training_weeks,
+                    "breathing_training_level": breathing_training, "agsm_proficiency_1_10": agsm_proficiency
+                },
+                "lifestyle_behavior": {
+                    "smoking_status": smoking_status, "cigarettes_per_day": cigs_per_day,
+                    "dietary_pattern": diet_pattern, "hydration_habits": hydration_habits,
+                    "supplement_usage": supplements, "relaxation_frequency": relaxation,
+                    "stress_sources": stress_sources, "time_off_flying_days_month": time_off_month
+                },
+                "performance_symptoms": {
+                    "self_rated_g_tolerance": self_gtol, "warning_signs": warn_signs,
+                    "recovery_time_s": recovery_time_s, "post_flight_fatigue": post_fatigue,
+                    "headaches_frequency": headaches_freq, "vision_changes": vision_changes,
+                    "concentration_difficulties": concentration_diff, "physical_symptoms": phys_symptoms
+                },
+                "training_countermeasures": {
+                    "breathing_control_proficiency": breathing_proficiency, "gsuit_fit_quality": gsuit_fit,
+                    "gsuit_use_frequency": gsuit_use_frequency, "muscle_tensing_used": muscle_tensing,
+                    "preflight_prep_consistency": preflight_prep, "conditioning_focus": conditioning_focus
+                },
+                "psychological_factors": {
+                    "confidence_1_10": confidence, "anxiety_1_10": anxiety,
+                    "motivation_1_10": motivation, "job_satisfaction_1_10": job_satisfaction,
+                    "mental_workload_1_10": mental_workload, "attention_focus_1_10": attention_focus,
+                    "risk_tolerance": risk_tolerance
+                },
+                "objective_data": {
+                    "measured_hr_bpm": measured_hr, "measured_sbp": measured_bp_sys,
+                    "measured_dbp": measured_bp_dia, "measured_temp_c": measured_temp_c,
+                    "objective_notes": objective_notes
+                }
+            }
+
+        def _autosave_if_ready():
+            if pilot_id and pilot_id.strip():
+                try:
+                    payload = _build_payload()
+                    _upsert_autosave_record(pilot_id=pilot_id.strip(), collected_by=collected_by, payload=payload)
+                except Exception:
+                    pass
+
         with st.form("pilot_survey_form"):
             st.markdown("### Administrative")
             col_admin1, col_admin2, col_admin3 = st.columns(3)
@@ -1686,6 +1830,7 @@ with tab6:
                 collected_by = st.text_input("Collected by (Flight Surgeon)")
             with col_admin3:
                 collection_time = st.text_input("Collection time (auto)", value=datetime.now().strftime("%Y-%m-%d %H:%M:%S"), disabled=True)
+            _autosave_if_ready()
 
             st.markdown("### Pilot Demographics & Experience")
             col_d1, col_d2, col_d3, col_d4 = st.columns(4)
@@ -1696,18 +1841,22 @@ with tab6:
                 sex_index = sex_options.index(sex_default) if sex_default in sex_options else 0
                 sex = st.selectbox("Sex (required)", sex_options, index=sex_index)
                 height_cm = st.number_input("Height (cm) (required)", min_value=140.0, max_value=210.0, value=float(pref.get("height_cm", 179.0)), step=0.1)
+            _autosave_if_ready()
             with col_d2:
                 weight_kg = st.number_input("Weight (kg) (required)", min_value=40.0, max_value=150.0, value=80.0, step=0.1)
                 unit = st.text_input("Military unit")
                 aircraft_type = st.text_input("Current aircraft type (required)")
+            _autosave_if_ready()
             with col_d3:
                 total_hours = st.number_input("Total flight hours (all)", min_value=0.0, value=1000.0, step=1.0)
                 current_ac_hours = st.number_input("Hours in current aircraft", min_value=0.0, value=250.0, step=1.0)
                 hours_2w = st.number_input("Hours flown (last 2 weeks)", min_value=0.0, value=10.0, step=0.5)
+            _autosave_if_ready()
             with col_d4:
                 hours_1m = st.number_input("Hours flown (last month)", min_value=0.0, value=20.0, step=0.5)
                 years_mil = st.number_input("Years military flight exp", min_value=0.0, value=5.0, step=0.5)
                 types_flown = st.number_input("# aircraft types flown", min_value=0, value=3, step=1)
+            _autosave_if_ready()
 
             col_exp = st.columns(3)
             with col_exp[0]:
@@ -1716,6 +1865,7 @@ with tab6:
                 avg_g_exp = st.number_input("Avg G-exposures/month (current role)", min_value=0, value=8)
             with col_exp[2]:
                 typical_max_g = st.number_input("Typical max G (current ops)", min_value=-5.0, max_value=15.0, value=6.0, step=0.1)
+            _autosave_if_ready()
 
             st.markdown("### G-Force Experience History")
             col_g1, col_g2, col_g3 = st.columns(3)
@@ -1729,6 +1879,7 @@ with tab6:
                 last_gloc_days = st.number_input("Most recent G-LOC (days)", min_value=0, value=0)
             with col_g3:
                 highest_g = st.number_input("Highest G in career", min_value=-5.0, max_value=20.0, value=9.0, step=0.1)
+            _autosave_if_ready()
 
             st.markdown("### Sleep & Fatigue Assessment")
             col_s1, col_s2, col_s3 = st.columns(3)
@@ -1743,6 +1894,7 @@ with tab6:
             with col_s3:
                 tz_changes = st.number_input("Time zone changes (past 2 weeks)", min_value=0, max_value=20, value=0)
                 last_sleep_time = st.time_input("Time of last sleep before flight")
+            _autosave_if_ready()
 
             st.markdown("### Physical Health & Fitness")
             col_p1, col_p2, col_p3 = st.columns(3)
@@ -1763,6 +1915,7 @@ with tab6:
                 current_illness = st.selectbox("Current illness/infection?", ["No", "Yes"]) 
             with col_p5:
                 days_since_illness = st.number_input("Days since last illness", min_value=0, value=0)
+            _autosave_if_ready()
 
             st.markdown("### Physiological Status (Day of Survey)")
             col_ps1, col_ps2, col_ps3, col_ps4 = st.columns(4)
@@ -1783,6 +1936,7 @@ with tab6:
                 body_temp_c = st.number_input("Body temperature (°C)", min_value=34.0, max_value=42.0, value=36.8, step=0.1)
             with col_med:
                 meds_24h = st.text_area("Any medication taken in past 24h (list)")
+            _autosave_if_ready()
 
             st.markdown("### Environmental & Operational Factors")
             col_e1, col_e2, col_e3 = st.columns(3)
@@ -1808,6 +1962,7 @@ with tab6:
                 breathing_training = st.selectbox("Breathing technique training", ["None", "Basic", "Advanced"])    
             with col_e8:
                 agsm_proficiency = st.slider("AGSM proficiency (1–10)", 1, 10, 7)
+            _autosave_if_ready()
 
             st.markdown("### Lifestyle & Behavioral Factors")
             col_l1, col_l2, col_l3 = st.columns(3)
@@ -1822,6 +1977,7 @@ with tab6:
             with col_l3:
                 stress_sources = st.text_area("Mental stress sources (notes)")
                 time_off_month = st.number_input("Time off from flying duties (days, month)", min_value=0, max_value=31, value=0)
+            _autosave_if_ready()
 
             st.markdown("### Performance & Symptoms")
             col_sym1, col_sym2, col_sym3 = st.columns(3)
@@ -1839,6 +1995,7 @@ with tab6:
                 concentration_diff = st.selectbox("Concentration difficulties after high-G", ["No", "Yes"]) 
             with col_sym5:
                 phys_symptoms = st.multiselect("Physical symptoms during high-G", ["Nausea", "Muscle fatigue", "Breathing difficulty", "Dizziness", "Other"]) 
+            _autosave_if_ready()
 
             st.markdown("### Training & Countermeasures")
             col_t1, col_t2, col_t3 = st.columns(3)
@@ -1864,6 +2021,7 @@ with tab6:
                 mental_workload = st.slider("Mental workload during typical flights (1–10)", 1, 10, 5)
                 attention_focus = st.slider("Attention/focus during high-G (1–10)", 1, 10, 7)
             risk_tolerance = st.selectbox("Risk tolerance personality", ["Conservative", "Moderate", "Aggressive"]) 
+            _autosave_if_ready()
 
             st.markdown("### Flight Surgeon Objective Data (optional)")
             col_obj1, col_obj2 = st.columns(2)
@@ -1874,6 +2032,7 @@ with tab6:
             with col_obj2:
                 measured_temp_c = st.number_input("Measured temperature (°C)", min_value=34.0, max_value=42.0, value=36.8, step=0.1)
                 objective_notes = st.text_area("Additional objective findings/notes")
+            _autosave_if_ready()
 
             st.markdown("### Attach RR Files (optional)")
             col_rr1, col_rr2 = st.columns(2)
@@ -1881,6 +2040,7 @@ with tab6:
                 rr_baseline = st.file_uploader("Baseline RR file", type=None, accept_multiple_files=False)
             with col_rr2:
                 rr_inflight = st.file_uploader("In-flight RR file", type=None, accept_multiple_files=False)
+            # Note: files are persisted on explicit Save action to avoid excessive writes during autosave
 
             submitted = st.form_submit_button("Save Survey Entry", type="primary")
             if submitted:
