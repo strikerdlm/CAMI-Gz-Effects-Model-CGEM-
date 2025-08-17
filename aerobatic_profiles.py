@@ -106,6 +106,19 @@ PROFILES: Dict[str, Tuple[str, str]] = {
         "halfverticalrollwnegpullout.txt",
         "½ vertical roll ending with a negative G pull-out",
     ),
+    # Custom push–pull sequences (conceptual/demo)
+    "triple_push_pull_loop": (
+        "triple_push_pull_loop.txt",
+        "Triple push–pull loop: repeated push (−G) then pull (+G) x3",
+    ),
+    "triple_push_pull_immelmann": (
+        "triple_push_pull_immelmann.txt",
+        "Triple push–pull Immelmann: push–pull + half-roll repeated x3",
+    ),
+    "triple_push_pull_split_s": (
+        "triple_push_pull_split_s.txt",
+        "Triple push–pull Split S: three consecutive push–pull Split S entries",
+    ),
 }
 
 

@@ -135,6 +135,24 @@ MANEUVER_EXPLANATIONS = {
         "physiological_effects": "Transition from positive G during the vertical portion to negative G during pull-out challenges cardiovascular adaptation. Blood redistribution occurs rapidly.",
         "risk_factors": ["Rapid G reversal", "Cardiovascular stress", "Potential for G-LOC or redout"],
         "mitigation": ["Gradual transitions when possible", "Proper breathing technique", "Physical conditioning"]
+    },
+    "triple_push_pull_loop": {
+        "description": "Three successive push–pull loops: brief −G push into inverted arc followed by +G pull-up, repeated three times.",
+        "physiological_effects": "Alternating cephalad and caudad blood shifts stress autoregulation; repeated transitions tax baroreflex and may accumulate fatigue.",
+        "risk_factors": ["Rapid +/−G transitions", "Potential redout during pushes", "Greyout/blackout risk during pulls"],
+        "mitigation": ["Moderate transition rates", "AGSM on +G phases", "Limit −G duration"]
+    },
+    "triple_push_pull_immelmann": {
+        "description": "Immelmann elements with push–pull entry repeated three times (conceptual variant).",
+        "physiological_effects": "Mixed −G, +G, and roll elements challenge vestibular and cardiovascular systems; half-rolls interspersed with G changes.",
+        "risk_factors": ["Spatial disorientation", "Rapid G swings", "Vision compromise"],
+        "mitigation": ["Stable sight picture before roll", "AGSM during +G", "Limit −G exposure"]
+    },
+    "triple_push_pull_split_s": {
+        "description": "Three consecutive Split S–style entries with push–pull cadence (conceptual variant).",
+        "physiological_effects": "Repeated negative-to-positive transitions on descending segments elevate cumulative load and fatigue.",
+        "risk_factors": ["Accumulated cardiovascular strain", "Greyout during sustained +G", "Redout if −G is extended"],
+        "mitigation": ["Adequate entry altitude", "Careful pacing", "Training and hydration"]
     }
 }
 
