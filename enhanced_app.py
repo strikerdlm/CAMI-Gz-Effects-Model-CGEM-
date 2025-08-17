@@ -5,7 +5,7 @@ import numpy as np
 from pathlib import Path
 import os
 import tempfile
-from typing import List, Dict, Optional, Tuple
+from typing import List, Dict, Optional, Tuple, Any
 import sqlite3
 from datetime import datetime
 import io
@@ -2640,7 +2640,8 @@ with tab8:
 
         def _plotly_png_bytes(fig: go.Figure, width: int = 1000, height: int = 600) -> bytes:
             try:
-                return fig.to_image(format="png", width=width, height=height, engine="kaleido")
+                # Newer Plotly versions default to kaleido; avoid deprecated engine arg
+                return fig.to_image(format="png", width=width, height=height)
             except Exception:
                 return b""
 
@@ -2713,33 +2714,80 @@ with tab8:
         ai_text = None
         if use_ai and net_ok:
             try:
+                # Attempt Responses API first
                 from openai import OpenAI  # type: ignore
                 client = OpenAI()
-                payload = {
+                payload: Dict[str, Any] = {
                     "pilot_id": pilot_label,
+                    "maneuver": selected_key,
                     "summary": {
                         "time_to_greyout_s": last_data.get("time_to_greyout_s"),
                         "time_to_blackout_s": last_data.get("time_to_blackout_s"),
                         "time_to_gloc_s": last_data.get("time_to_gloc_s"),
                     },
-                    "maneuver": selected_key,
+                    "context": {
+                        "profile_key": selected_key,
+                        "flags": {
+                            "n2": last_data.get("flags_n2", []),
+                            "ne2": last_data.get("flags_ne2", []),
+                            "non2": last_data.get("flags_non2", []),
+                        }
+                    }
                 }
-                response = client.responses.create(
-                    model="gpt-5",
-                    input=[
-                        {"role": "user", "content": "Provide tailored countermeasures and recommendations for this pilot, based on CGEM outputs and maneuver details."},
-                        {"role": "user", "content": json.dumps(payload)},
-                    ],
-                    text={"format": {"type": "text"}, "verbosity": "high"},
-                    reasoning={"effort": "high", "summary": "auto"},
-                    tools=[{"type": "web_search_preview", "user_location": {"type": "approximate"}, "search_context_size": "high"}],
-                    store=False,
+                prompt = (
+                    "You are an aerospace medicine assistant. Generate a concise, pilot-friendly analysis of CGEM results. "
+                    "Explain: (1) what the results mean, (2) risk assessment (greyout/blackout/G-LOC), (3) maneuver-specific risk drivers, "
+                    "(4) actionable countermeasures (AGSM, suit/PPB, hydration, pacing), (5) training recommendations. Use clear headings and bullet points."
                 )
-                ai_text = getattr(response, "output_text", None) or getattr(response, "content", None)
-                if isinstance(ai_text, list):
-                    ai_text = "\n".join(str(x) for x in ai_text)
-                if not isinstance(ai_text, str):
-                    ai_text = None
+
+                try:
+                    response = client.responses.create(
+                        model="gpt-5",
+                        input=[
+                            {"role": "system", "content": "You explain physiological risk in language understandable to pilots."},
+                            {"role": "user", "content": prompt},
+                            {"role": "user", "content": json.dumps(payload)},
+                        ],
+                        text={"format": {"type": "text"}, "verbosity": "high"},
+                        reasoning={"effort": "high", "summary": "auto"},
+                        tools=[{"type": "web_search_preview", "user_location": {"type": "approximate"}, "search_context_size": "high"}],
+                        store=False,
+                    )
+                    ai_text = getattr(response, "output_text", None) or getattr(response, "content", None)
+                    if isinstance(ai_text, list):
+                        ai_text = "\n".join(str(x) for x in ai_text)
+                    if not isinstance(ai_text, str):
+                        ai_text = None
+                except Exception:
+                    # Fallback: Chat Completions with GPT-5 or o3
+                    try:
+                        chat = client.chat.completions.create(
+                            model="gpt-5",
+                            messages=[
+                                {"role": "system", "content": "You explain physiological risk in language understandable to pilots."},
+                                {"role": "user", "content": prompt},
+                                {"role": "user", "content": json.dumps(payload)},
+                            ],
+                            temperature=0.3,
+                        )
+                        ai_text = (chat.choices[0].message.content or "").strip()
+                    except Exception:
+                        # Legacy fallback (older openai package)
+                        try:
+                            import openai  # type: ignore
+                            openai.api_key = os.getenv("OPENAI_API_KEY")
+                            legacy = openai.ChatCompletion.create(
+                                model="gpt-4o",  # common broadly-available model
+                                messages=[
+                                    {"role": "system", "content": "You explain physiological risk in language understandable to pilots."},
+                                    {"role": "user", "content": prompt},
+                                    {"role": "user", "content": json.dumps(payload)},
+                                ],
+                                temperature=0.3,
+                            )
+                            ai_text = (legacy["choices"][0]["message"]["content"] or "").strip()
+                        except Exception as e3:
+                            st.warning(f"AI recommendations unavailable: {e3}")
             except Exception as exc:
                 st.warning(f"AI recommendations unavailable: {exc}")
 
