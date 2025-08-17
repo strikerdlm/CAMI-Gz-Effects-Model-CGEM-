@@ -7,6 +7,7 @@ from typing import List, Dict, Optional, Tuple
 import sqlite3
 from datetime import datetime
 import io
+import re
 import json
 import base64
 
@@ -314,6 +315,61 @@ def _delete_records_by_ids(ids: List[int]) -> int:
         return cur.rowcount or 0
     finally:
         conn.close()
+
+###########################
+# Pilot files attachments #
+###########################
+
+def _sanitize_pilot_id(pilot_id: str) -> str:
+    # Allow letters, numbers, underscore, hyphen; replace others with underscore
+    cleaned = re.sub(r"[^A-Za-z0-9_-]", "_", pilot_id.strip())
+    return cleaned[:100]  # limit folder name length
+
+def _get_pilots_base_dir() -> Path:
+    base = Path.cwd() / "data" / "pilots"
+    try:
+        base.mkdir(parents=True, exist_ok=True)
+    except Exception:
+        pass
+    return base
+
+def _get_pilot_dir(pilot_id: str) -> Path:
+    pid = _sanitize_pilot_id(pilot_id)
+    d = _get_pilots_base_dir() / pid
+    try:
+        d.mkdir(parents=True, exist_ok=True)
+    except Exception:
+        pass
+    return d
+
+def _save_uploaded_file(pilot_id: str, uploaded_file, label: str) -> Optional[str]:
+    try:
+        if uploaded_file is None:
+            return None
+        pilot_dir = _get_pilot_dir(pilot_id)
+        ts = datetime.now().strftime("%Y%m%d_%H%M%S")
+        original = Path(getattr(uploaded_file, "name", f"{label}.bin")).name
+        safe_original = re.sub(r"[^A-Za-z0-9_.-]", "_", original)
+        filename = f"{label}_{ts}_{safe_original}"
+        target = pilot_dir / filename
+        # Read and write bytes
+        data = uploaded_file.read()
+        with open(target, "wb") as f:
+            f.write(data)
+        try:
+            rel = target.relative_to(Path.cwd())
+            return str(rel)
+        except Exception:
+            return str(target)
+    except Exception:
+        return None
+
+def _list_pilot_files(pilot_id: str) -> List[Path]:
+    d = _get_pilot_dir(pilot_id)
+    try:
+        return sorted([p for p in d.iterdir() if p.is_file()])
+    except Exception:
+        return []
 
 def get_physiological_state(g: float, geff: float) -> Tuple[str, str]:
     """Determine physiological state based on G and G_eff values."""
@@ -1819,6 +1875,13 @@ with tab6:
                 measured_temp_c = st.number_input("Measured temperature (°C)", min_value=34.0, max_value=42.0, value=36.8, step=0.1)
                 objective_notes = st.text_area("Additional objective findings/notes")
 
+            st.markdown("### Attach RR Files (optional)")
+            col_rr1, col_rr2 = st.columns(2)
+            with col_rr1:
+                rr_baseline = st.file_uploader("Baseline RR file", type=None, accept_multiple_files=False)
+            with col_rr2:
+                rr_inflight = st.file_uploader("In-flight RR file", type=None, accept_multiple_files=False)
+
             submitted = st.form_submit_button("Save Survey Entry", type="primary")
             if submitted:
                 errors: List[str] = []
@@ -1839,6 +1902,13 @@ with tab6:
                     for e in errors:
                         st.write(f"- {e}")
                 else:
+                    # Save attachments if provided
+                    saved_files: Dict[str, Optional[str]] = {"baseline_rr": None, "inflight_rr": None}
+                    if rr_baseline is not None:
+                        saved_files["baseline_rr"] = _save_uploaded_file(pilot_id.strip(), rr_baseline, "baseline_rr")
+                    if rr_inflight is not None:
+                        saved_files["inflight_rr"] = _save_uploaded_file(pilot_id.strip(), rr_inflight, "inflight_rr")
+
                     payload = {
                         "admin": {
                             "pilot_id": pilot_id.strip(),
@@ -1915,7 +1985,8 @@ with tab6:
                             "measured_hr_bpm": measured_hr, "measured_sbp": measured_bp_sys,
                             "measured_dbp": measured_bp_dia, "measured_temp_c": measured_temp_c,
                             "objective_notes": objective_notes
-                        }
+                        },
+                        "attachments": saved_files
                     }
                     try:
                         record_id = _insert_survey_record(pilot_id=pilot_id.strip(), collected_by=collected_by.strip(), payload_json=json.dumps(payload))
@@ -1925,6 +1996,62 @@ with tab6:
 
     with db_tab:
         st.markdown("### Database")
+        st.markdown("#### Search Pilot by ID and view files")
+        search_pid = st.text_input("Enter Pilot ID to search", key="search_pid")
+        if search_pid.strip():
+            spid = search_pid.strip()
+            files = _list_pilot_files(spid)
+            if files:
+                st.write(f"Files for pilot '{spid}' in `data/pilots/{_sanitize_pilot_id(spid)}`:")
+                for p in files:
+                    try:
+                        with open(p, "rb") as fb:
+                            st.download_button(
+                                label=f"Download {Path(p).name}",
+                                data=fb.read(),
+                                file_name=Path(p).name,
+                                key=f"dl_{Path(p).name}_{spid}",
+                            )
+                    except Exception:
+                        st.write(f"- {p}")
+            else:
+                st.info("No files found for this pilot.")
+
+            # Show saved survey entries for this pilot
+            try:
+                pilot_records = [r for r in _load_all_records() if str(r.get("pilot_id", "")).strip() == spid]
+                if pilot_records:
+                    st.write(f"Found {len(pilot_records)} saved survey record(s) for '{spid}'.")
+                    for rec in pilot_records:
+                        rid = rec.get("id")
+                        collected_at = rec.get("collected_at")
+                        with st.expander(f"Record ID {rid} — collected at {collected_at}", expanded=False):
+                            # Show attachments (if any) as download buttons
+                            attachments = rec.get("attachments") or {}
+                            if isinstance(attachments, dict) and attachments:
+                                st.markdown("Attachments:")
+                                for label, path in attachments.items():
+                                    if not path:
+                                        continue
+                                    try:
+                                        apath = Path(path)
+                                        if not apath.is_absolute():
+                                            apath = Path.cwd() / apath
+                                        with open(apath, "rb") as fbin:
+                                            st.download_button(
+                                                label=f"Download {label}: {apath.name}",
+                                                data=fbin.read(),
+                                                file_name=apath.name,
+                                                key=f"dl_{label}_{rid}",
+                                            )
+                                    except Exception:
+                                        st.write(f"- {label}: {path}")
+                            # Show JSON payload view
+                            st.json({k: v for k, v in rec.items() if k not in ("id",)})
+                else:
+                    st.info("No survey records found for this pilot ID.")
+            except Exception as exc:
+                st.warning(f"Unable to load pilot records: {exc}")
         records = _load_all_records()
         if records:
             df = pd.DataFrame(records)
@@ -1934,7 +2061,7 @@ with tab6:
             with st.expander("Filters", expanded=True):
                 col_f1, col_f2 = st.columns(2)
                 with col_f1:
-                    pilot_filter = st.text_input("Filter by Pilot ID contains")
+                    pilot_filter = st.text_input("Filter by Pilot ID contains", value=search_pid.strip() if search_pid else "")
                     collected_by_filter = st.text_input("Filter by Collected By contains")
                 with col_f2:
                     date_range = st.date_input("Date range (collected_at)", [])
