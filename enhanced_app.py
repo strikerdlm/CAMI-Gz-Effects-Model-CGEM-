@@ -2730,9 +2730,31 @@ with tab8:
 
         ai_text = build_local_recommendations()
 
+        def _sanitize_text(text: str) -> str:
+            if not isinstance(text, str):
+                text = str(text)
+            replacements = {
+                "\u2013": "-",  # en dash
+                "\u2014": "-",  # em dash
+                "\u2022": "-",  # bullet
+                "\u2019": "'",  # right single quote
+                "\u2018": "'",  # left single quote
+                "\u201c": '"',   # left double quote
+                "\u201d": '"',   # right double quote
+                "\u00a0": " ",  # nbsp
+            }
+            for k, v in replacements.items():
+                text = text.replace(k, v)
+            try:
+                text.encode("latin-1")
+                return text
+            except Exception:
+                return text.encode("latin-1", "ignore").decode("latin-1")
+
         def _pdf_add_wrapped(pdf: FPDF, text: str):
-            for line in pdf.multi_cell(w=0, h=6, txt=text, align="L", split_only=True):
-                pdf.cell(0, 6, line, ln=1)
+            clean = _sanitize_text(text)
+            for line in pdf.multi_cell(w=0, h=6, txt=clean, align="L", split_only=True):
+                pdf.cell(0, 6, _sanitize_text(line), ln=1)
 
         def _pdf_add_image(pdf: FPDF, img_bytes: bytes, title: str, description: str):
             if not img_bytes:
@@ -2759,7 +2781,7 @@ with tab8:
             pdf.set_auto_page_break(auto=True, margin=12)
             pdf.add_page()
             pdf.set_font("Arial", style="B", size=16)
-            pdf.cell(0, 10, f"CGEM Report – {pilot_label}", ln=1)
+            pdf.cell(0, 10, _sanitize_text(f"CGEM Report - {pilot_label}"), ln=1)
             pdf.set_font("Arial", size=10)
             pdf.cell(0, 6, f"Maneuver: {selected_key.replace('_', ' ').title()}", ln=1)
             pdf.ln(2)
@@ -2778,34 +2800,34 @@ with tab8:
             if info:
                 pdf.add_page()
                 pdf.set_font("Arial", style="B", size=12)
-                pdf.cell(0, 7, "Maneuver Details", ln=1)
+                pdf.cell(0, 7, _sanitize_text("Maneuver Details"), ln=1)
                 pdf.set_font("Arial", size=10)
                 _pdf_add_wrapped(pdf, str(info.get("description", "")))
                 pdf.ln(2)
                 pdf.set_font("Arial", style="B", size=11)
-                pdf.cell(0, 6, "Physiological Effects", ln=1)
+                pdf.cell(0, 6, _sanitize_text("Physiological Effects"), ln=1)
                 pdf.set_font("Arial", size=10)
                 _pdf_add_wrapped(pdf, str(info.get("physiological_effects", "")))
                 if info.get("mitigation"):
                     pdf.ln(2)
                     pdf.set_font("Arial", style="B", size=11)
-                    pdf.cell(0, 6, "Recommended Countermeasures", ln=1)
+                    pdf.cell(0, 6, _sanitize_text("Recommended Countermeasures"), ln=1)
                     pdf.set_font("Arial", size=10)
                     for m in info["mitigation"]:
-                        _pdf_add_wrapped(pdf, f"• {m}")
+                        _pdf_add_wrapped(pdf, f"- {m}")
 
-            _pdf_add_image(pdf, png_2d, "Plot: 2D Physiological Analysis", "Time series for G and G_eff with thresholds and risk zones.")
-            _pdf_add_image(pdf, png_3d, "Plot: 3D Trajectory", "Time vs G vs G_eff trajectory with threshold planes and state coloring.")
-            _pdf_add_image(pdf, png_heat, "Plot: Physiological Parameters Heatmap", "Heatmap of consciousness, vision and blackout proxy across time.")
-            _pdf_add_image(pdf, png_cardio, "Plot: Cardiovascular Response", "Estimated heart rate and blood pressure responses over the maneuver.")
-            _pdf_add_image(pdf, png_hist, "Plot: Histogram of G", "Distribution of G values across the profile (ECharts-equivalent).")
-            _pdf_add_image(pdf, png_radar, "Plot: Radar Summary", "Consolidated risk and exposure metrics (ECharts-equivalent).")
-            _pdf_add_image(pdf, png_scatter, "Plot: G vs G_eff by State", "Scatter of instantaneous G and G_eff colored by physiological state.")
+            _pdf_add_image(pdf, png_2d, _sanitize_text("Plot: 2D Physiological Analysis"), _sanitize_text("Time series for G and G_eff with thresholds and risk zones."))
+            _pdf_add_image(pdf, png_3d, _sanitize_text("Plot: 3D Trajectory"), _sanitize_text("Time vs G vs G_eff trajectory with threshold planes and state coloring."))
+            _pdf_add_image(pdf, png_heat, _sanitize_text("Plot: Physiological Parameters Heatmap"), _sanitize_text("Heatmap of consciousness, vision and blackout proxy across time."))
+            _pdf_add_image(pdf, png_cardio, _sanitize_text("Plot: Cardiovascular Response"), _sanitize_text("Estimated heart rate and blood pressure responses over the maneuver."))
+            _pdf_add_image(pdf, png_hist, _sanitize_text("Plot: Histogram of G"), _sanitize_text("Distribution of G values across the profile (ECharts-equivalent)."))
+            _pdf_add_image(pdf, png_radar, _sanitize_text("Plot: Radar Summary"), _sanitize_text("Consolidated risk and exposure metrics (ECharts-equivalent)."))
+            _pdf_add_image(pdf, png_scatter, _sanitize_text("Plot: G vs G_eff by State"), _sanitize_text("Scatter of instantaneous G and G_eff colored by physiological state."))
 
             if ai_text:
                 pdf.add_page()
                 pdf.set_font("Arial", style="B", size=12)
-                pdf.cell(0, 7, "Tailored AI Recommendations", ln=1)
+                pdf.cell(0, 7, _sanitize_text("Tailored Recommendations"), ln=1)
                 pdf.set_font("Arial", size=10)
                 _pdf_add_wrapped(pdf, ai_text)
 
