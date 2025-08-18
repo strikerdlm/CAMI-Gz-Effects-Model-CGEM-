@@ -175,6 +175,19 @@ st.markdown("""
         padding: 10px;
         margin: 10px 0;
     }
+    /* Tiny magnitude badges for metrics */
+    .metric-badges {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin-top: -6px;
+    }
+    .badge-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 999px;
+        box-shadow: 0 0 0 2px rgba(0,0,0,0.08) inset, 0 0 0 1px rgba(255,255,255,0.6);
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -1037,23 +1050,48 @@ def render_g_time_overview(times: List[float], g_values: List[float], title: str
     option = {
         "backgroundColor": "transparent",
         "title": {"text": title, "left": "center", "textStyle": {"fontSize": 14}},
-        "tooltip": {"trigger": "axis", "axisPointer": {"type": "line"}},
-        "grid": {"left": 55, "right": 24, "top": 36, "bottom": 40, "containLabel": True},
-        "xAxis": {"type": "value", "name": "Time (s)", "axisLine": {"lineStyle": {"color": "#666"}}},
-        "yAxis": {"type": "value", "name": "G-Force", "axisLine": {"lineStyle": {"color": "#666"}}},
-        "dataZoom": [{"type": "inside"}, {"type": "slider", "height": 18}],
+        "tooltip": {
+            "trigger": "axis",
+            "axisPointer": {
+                "type": "line",
+                "lineStyle": {"color": "rgba(148,163,184,0.45)", "width": 1.25}
+            },
+            "backgroundColor": "rgba(17,24,39,0.85)",
+            "borderWidth": 0
+        },
+        "grid": {"left": 55, "right": 24, "top": 36, "bottom": 40, "containLabel": True, "borderColor": "rgba(148,163,184,0.12)"},
+        "xAxis": {
+            "type": "value",
+            "name": "Time (s)",
+            "axisLine": {"lineStyle": {"color": "#9ca3af"}},
+            "axisLabel": {"color": "#94a3b8"},
+            "splitLine": {"show": True, "lineStyle": {"color": "rgba(148,163,184,0.18)", "type": "solid"}},
+            "minorTick": {"show": True},
+            "minorSplitLine": {"show": True, "lineStyle": {"color": "rgba(148,163,184,0.08)"}}
+        },
+        "yAxis": {
+            "type": "value",
+            "name": "G-Force",
+            "axisLine": {"lineStyle": {"color": "#9ca3af"}},
+            "axisLabel": {"color": "#94a3b8"},
+            "splitLine": {"show": True, "lineStyle": {"color": "rgba(148,163,184,0.18)", "type": "dashed"}},
+            "minorTick": {"show": True},
+            "minorSplitLine": {"show": True, "lineStyle": {"color": "rgba(148,163,184,0.08)"}}
+        },
+        "dataZoom": [{"type": "inside"}, {"type": "slider", "height": 18, "brushSelect": False, "backgroundColor": "rgba(148,163,184,0.08)", "fillerColor": "rgba(59,130,246,0.15)", "borderColor": "rgba(148,163,184,0.18)"}],
         "series": [
             {
                 "type": "line",
                 "name": "G-Force",
                 "symbol": "none",
-                "lineStyle": {"width": 3, "color": "#1976d2"},
+                "lineStyle": {"width": 3, "color": "#3b82f6"},
                 "step": "end",
                 "encode": {"x": 0, "y": 1},
                 "data": pairs,
-                "markLine": {"silent": True, "data": [{"yAxis": 0, "lineStyle": {"type": "dashed", "color": "#999"}}]},
+                "markLine": {"silent": True, "data": [{"yAxis": 0, "lineStyle": {"type": "dashed", "color": "rgba(148,163,184,0.6)"}}]},
             }
         ],
+        "animationDuration": 350
     }
     echarts_js = _load_local_echarts_js()
     option_json = json.dumps(option)
@@ -1586,12 +1624,37 @@ with tab1:
     total_s = sum(durations) / 1000.0
     weighted_mean = sum(g * d for g, d in zip(g_vals, durations)) / max(1, sum(durations))
     
+    # Helper to show a tiny color badge indicating magnitude
+    def _badge(color: str) -> str:
+        return f"<div class=\"metric-badges\"><span class=\"badge-dot\" style=\"background:{color}\"></span></div>"
+    def _color_from_value(value: float, bounds: tuple[float, float, float]) -> str:
+        try:
+            v = float(value)
+        except Exception:
+            return "#94a3b8"
+        low, mid, high = bounds
+        if v < low:
+            return "#10b981"  # emerald-500
+        if v < mid:
+            return "#f59e0b"  # amber-500
+        if v < high:
+            return "#f97316"  # orange-500
+        return "#ef4444"      # red-500
+
     col1, col2, col3, col4, col5 = st.columns(5)
+    max_g = float(max(g_vals)) if g_vals else 0.0
+    min_g = float(min(g_vals)) if g_vals else 0.0
+    g_range = max_g - min_g
     col1.metric("Duration", f"{total_s:.1f} s")
-    col2.metric("Max +G", f"{max(g_vals):.1f}")
-    col3.metric("Min G", f"{min(g_vals):.1f}")
+    col1.markdown(_badge(_color_from_value(total_s, (20.0, 60.0, 120.0))), unsafe_allow_html=True)
+    col2.metric("Max +G", f"{max_g:.1f}")
+    col2.markdown(_badge(_color_from_value(max_g, (4.0, 6.0, 9.0))), unsafe_allow_html=True)
+    col3.metric("Min G", f"{min_g:.1f}")
+    col3.markdown(_badge(_color_from_value(abs(min_g), (1.0, 2.0, 3.0))), unsafe_allow_html=True)
     col4.metric("Mean G", f"{weighted_mean:.2f}")
-    col5.metric("G Range", f"{max(g_vals) - min(g_vals):.1f}")
+    col4.markdown(_badge(_color_from_value(abs(weighted_mean), (1.0, 2.0, 4.0))), unsafe_allow_html=True)
+    col5.metric("G Range", f"{g_range:.1f}")
+    col5.markdown(_badge(_color_from_value(g_range, (2.0, 4.0, 6.0))), unsafe_allow_html=True)
 
     # Enhanced, evidence-based insights
     total_ms = max(1, sum(durations))
@@ -1605,9 +1668,15 @@ with tab1:
 
     cA, cB, cC, cD = st.columns(4)
     cA.metric("Time > +3G", f"{pos_exposure_s:.1f} s")
+    cA.markdown(_badge(_color_from_value(pos_exposure_s, (1.0, 5.0, 10.0))), unsafe_allow_html=True)
     cB.metric("Time < −1G", f"{neg_exposure_s:.1f} s")
+    cB.markdown(_badge(_color_from_value(neg_exposure_s, (1.0, 5.0, 10.0))), unsafe_allow_html=True)
     cC.metric("G-dose (+/−)", f"{pos_g_dose:.1f} / {neg_g_dose:.1f} G·s")
+    total_dose = float(pos_g_dose + neg_g_dose)
+    cC.markdown(_badge(_color_from_value(total_dose, (10.0, 30.0, 60.0))), unsafe_allow_html=True)
     cD.metric("P95 |G| / RMS G", f"{p95_abs_g:.1f} / {rms_g:.1f}")
+    dose_level = float(max(p95_abs_g, rms_g)) if np.isfinite(p95_abs_g) and np.isfinite(rms_g) else 0.0
+    cD.markdown(_badge(_color_from_value(dose_level, (2.0, 4.0, 6.0))), unsafe_allow_html=True)
 
 with tab2:
     st.subheader(_("Advanced Physiological Analysis") if False else "Advanced Physiological Analysis")
