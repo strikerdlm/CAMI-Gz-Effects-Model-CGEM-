@@ -1057,9 +1057,10 @@ def render_g_time_overview(times: List[float], g_values: List[float], title: str
     }
     echarts_js = _load_local_echarts_js()
     option_json = json.dumps(option)
+    script_tag = f"<script>{echarts_js}</script>" if echarts_js else '<script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>'
     html = f"""
     <div id=\"{container_id}\" style=\"width:100%;height:{height}px;\"></div>
-    {f'<script>{echarts_js}</script>' if echarts_js else '<script src=\"https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js\"></script>'}
+    {script_tag}
     <script>
       (function() {{
         var el = document.getElementById('{container_id}');
@@ -1577,6 +1578,7 @@ with tab1:
     
     # Overview ECharts line: G vs Time
     render_g_time_overview(points_t, points_g, title="Normal Acceleration vs Time", height=400)
+    st.caption("Powered by Apache ECharts; prefers local node_modules/echarts when available.")
     
     # Statistics
     g_vals = [s.nz for s in samples]
@@ -2672,7 +2674,7 @@ Mejia-Downs, A., Hall, S., & Previc, F. H. (2022). Human cerebral autoregulation
 
 Pattarini, J. M., Shah, A., & Antonsen, E. L. (2020). *Artemis sustained translational acceleration limits: Review of human tolerance limits in lateral, seated, and recumbent postures* (NASA TM-20205008196). https://ntrs.nasa.gov/citations/20205008196
 
-Pollock, R. D., O’Brien, K. A., Fallowfield, J. L., & Martin, D. S. (2021). Oh G: The x, y and z of human physiological responses to acceleration. *Experimental Physiology, 106*(12), 2561–2582. https://doi.org/10.1113/EP089168
+Pollock, R. D., O'Brien, K. A., Fallowfield, J. L., & Martin, D. S. (2021). Oh G: The x, y and z of human physiological responses to acceleration. *Experimental Physiology, 106*(12), 2561–2582. https://doi.org/10.1113/EP089168
 
 Previc, F. H., & Ercoline, W. R. (2004). The effects of linear acceleration (Gx, Gy, Gz) on vision and performance. *Aviation, Space, and Environmental Medicine, 75*(10), 889–898. https://pubmed.ncbi.nlm.nih.gov/15560348/
 

@@ -86,9 +86,10 @@ def render_g_time_echarts(times: List[float], g_values: List[float], title: str,
     }
     echarts_js = _load_local_echarts_js()
     option_json = json.dumps(option)
+    script_tag = f"<script>{echarts_js}</script>" if echarts_js else '<script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>'
     html = f"""
     <div id="{container_id}" style="width:100%;height:{height}px;"></div>
-    {f'<script>{echarts_js}</script>' if echarts_js else '<script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>'}
+    {script_tag}
     <script>
       (function() {{
         var el = document.getElementById('{container_id}');
@@ -145,6 +146,7 @@ tab1, tab2, tab3 = st.tabs([
 with tab1:
     st.subheader(_("Normal Acceleration vs Time"))
     render_g_time_echarts(points_t, points_g, title=selected_key.replace("_", " ").title(), height=400)
+    st.caption("Powered by Apache ECharts; prefers local node_modules/echarts when available.")
 
     # Show basic stats
     g_vals = [s.nz for s in samples]
