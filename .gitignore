@@ -52,3 +52,7 @@ Thumbs.db
 *.pid
 *.log
 **/.pytest_cache/
+
+# Gantt charts and exports
+docs/Gantt.py
+cronograma_cgem_*.html

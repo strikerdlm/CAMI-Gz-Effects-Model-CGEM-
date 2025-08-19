@@ -10,7 +10,7 @@ def create_gantt_data():
     """Crear datos estructurados para el diagrama de Gantt"""
 
     # Fecha de inicio del proyecto
-    start_date = datetime(2024, 1, 1)
+    start_date = datetime(2025, 11, 1)
 
     # Definir actividades principales con sus detalles
     activities = [
@@ -237,17 +237,6 @@ def create_gantt_data():
             'Parent': 'OBJ3: Caracterización Pilotos FAC'
         },
 
-        # OBJETIVO 4: Protocolos Operacionales
-        {
-            'Task': 'OBJ4: Protocolos Operacionales',
-            'Type': 'Objetivo',
-            'Start': start_date + timedelta(weeks=60),
-            'Duration': 12,  # 3 meses
-            'Progress': 0,
-            'Resource': 'Especialistas OTAN + FAC',
-            'Priority': 'Alta',
-            'Budget': 60000
-        },
 
         # Hitos críticos
         {
@@ -451,7 +440,7 @@ def create_resource_timeline():
 
     for i, resource in enumerate(resources):
         resource_tasks = df[df['Resource'] == resource]
-        # Use modulo to cycle through colors if we have more resources than colors
+        # Use modulo to cycle through colors if more resources than colors
         color_index = i % len(resource_colors)
 
         for _, task in resource_tasks.iterrows():
