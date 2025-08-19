@@ -447,17 +447,19 @@ def create_resource_timeline():
 
     fig = go.Figure()
 
-    resource_colors = px.colors.qualitative.Set3[:len(resources)]
+    resource_colors = px.colors.qualitative.Set3
 
     for i, resource in enumerate(resources):
         resource_tasks = df[df['Resource'] == resource]
+        # Use modulo to cycle through colors if we have more resources than colors
+        color_index = i % len(resource_colors)
 
         for _, task in resource_tasks.iterrows():
             fig.add_trace(go.Scatter(
                 x=[task['Start'], task['End']],
                 y=[i, i],
                 mode='lines',
-                line=dict(color=resource_colors[i], width=10),
+                line=dict(color=resource_colors[color_index], width=10),
                 name=resource,
                 hovertemplate=(
                     f"<b>{resource}</b><br>" +
@@ -466,7 +468,7 @@ def create_resource_timeline():
                     "<extra></extra>"
                 ),
                 # Solo mostrar leyenda una vez por recurso
-                showlegend=(task.name == resource_tasks.index[0])
+                showlegend=bool(task.name == resource_tasks.index[0])
             ))
 
     fig.update_layout(
@@ -553,11 +555,15 @@ if __name__ == "__main__":
     budget_fig.show()
 
     # Opcional: Guardar como HTML
-    gantt_fig.write_html("cronograma_cgem_gantt.html")
-    resource_fig.write_html("cronograma_cgem_recursos.html")
-    budget_fig.write_html("cronograma_cgem_presupuesto.html")
+    gantt_fig.write_html("../cronograma_cgem_gantt.html")
+    resource_fig.write_html("../cronograma_cgem_recursos.html")
+    budget_fig.write_html("../cronograma_cgem_presupuesto.html")
 
     print("Diagramas de Gantt creados exitosamente!")
+    print("Archivos HTML exportados a:")
+    print("  - cronograma_cgem_gantt.html")
+    print("  - cronograma_cgem_recursos.html")
+    print("  - cronograma_cgem_presupuesto.html")
     print("\nResumen del Proyecto:")
     print("=" * 50)
 
