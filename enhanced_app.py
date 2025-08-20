@@ -95,7 +95,11 @@ st.markdown("""
         padding: 10px;
         border-radius: 6px;
         border: 1px solid #e5e7eb;
+        color: #0f172a;
     }
+    .stMetric label,
+    .stMetric [data-testid="stMetricValue"],
+    .stMetric [data-testid="stMetricDelta"] { color: #0f172a !important; }
     /* Title styling: light and dark mode */
     :root {
         --title-color-light: #0f172a;
@@ -111,11 +115,21 @@ st.markdown("""
             color: var(--title-color-dark) !important;
             text-shadow: 0 1px 1px rgba(0,0,0,0.4);
         }
+        /* Metrics readable in dark mode */
+        .stMetric { background-color: #111827; border-color: #1f2937; color: #e5e7eb; }
+        .stMetric label,
+        .stMetric [data-testid="stMetricValue"],
+        .stMetric [data-testid="stMetricDelta"] { color: #e5e7eb !important; }
     }
     [data-theme="dark"] h1, [data-theme="dark"] .stApp h1 {
         color: var(--title-color-dark) !important;
         text-shadow: 0 1px 1px rgba(0,0,0,0.4);
     }
+    /* Also ensure metrics readable for explicit dark theme toggle */
+    [data-theme="dark"] .stMetric { background-color: #111827; border-color: #1f2937; color: #e5e7eb; }
+    [data-theme="dark"] .stMetric label,
+    [data-theme="dark"] .stMetric [data-testid="stMetricValue"],
+    [data-theme="dark"] .stMetric [data-testid="stMetricDelta"] { color: #e5e7eb !important; }
     /* Header with logo */
     .app-header { display: flex; align-items: center; gap: 14px; margin: 0.25rem 0 0.75rem; }
     .app-logo { width: 56px; height: 56px; border-radius: 14px; box-shadow: 0 8px 22px rgba(0,0,0,0.25); }
@@ -1111,6 +1125,33 @@ def render_g_time_overview(times: List[float], g_values: List[float], title: str
     """
     components.html(html, height=height)
 
+def render_overview_plotly(times: List[float], g_values: List[float], title: str, height: int = 420) -> None:
+    """Render a wide Plotly line chart for Overview (fills container width)."""
+    try:
+        fig = go.Figure()
+        fig.add_trace(
+            go.Scatter(
+                x=times,
+                y=g_values,
+                name="G-Force",
+                mode="lines",
+                line=dict(color="#3b82f6", width=3),
+                hovertemplate="Time: %{x:.2f}s<br>G: %{y:.2f}<extra></extra>",
+            )
+        )
+        fig.update_layout(
+            title=title,
+            xaxis_title="Time (s)",
+            yaxis_title="G-Force",
+            height=height,
+            margin=dict(l=60, r=24, t=40, b=45),
+            hovermode="x unified",
+        )
+        st.plotly_chart(fig, use_container_width=True, theme="streamlit")
+    except Exception:
+        # Fallback to ECharts renderer if Plotly fails for any reason
+        render_g_time_overview(times, g_values, title=title, height=height)
+
 def render_echarts_dashboard(times: List[float], g_values: List[float], geff_values: List[float],
                              flags_n2: List[int], profile_name: str,
                              layout_mode: str = "Grid", chart_choice: Optional[str] = None,
@@ -1614,8 +1655,8 @@ tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8 = st.tabs([
 with tab1:
     st.subheader(_("G-Force Profile: {profile}", profile=selected_key.replace('_', ' ').title()))
     
-    # Overview ECharts line: G vs Time
-    render_g_time_overview(points_t, points_g, title="Normal Acceleration vs Time", height=400)
+    # Overview line: use Plotly wide chart for better use of screen width
+    render_overview_plotly(points_t, points_g, title="Normal Acceleration vs Time", height=420)
     st.caption("Powered by Apache ECharts; prefers local node_modules/echarts when available.")
     
     # Statistics
@@ -2343,7 +2384,7 @@ with tab6:
                     errors.append("Height out of expected range (140–210 cm).")
                 mission_sum = mission_combat + mission_training + mission_transport
                 if mission_sum != 100:
-                    st.warning(_("Mission percentages sum to {pct}%\. Consider adjusting to total 100%.") if False else f"Mission percentages sum to {mission_sum}%. Consider adjusting to total 100%.")
+                    st.warning(_("Mission percentages sum to {pct}%. Consider adjusting to total 100%.") if False else f"Mission percentages sum to {mission_sum}%. Consider adjusting to total 100%.")
 
                 if errors:
                     st.error(_("Please correct the following:") if False else "Please correct the following:")
