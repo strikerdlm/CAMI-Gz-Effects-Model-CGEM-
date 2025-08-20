@@ -54,5 +54,7 @@ Thumbs.db
 **/.pytest_cache/
 
 # Gantt charts and exports
-docs/Gantt.py
+# Ignore all documentation and protocol outputs
+docs/
+docs/Protocolo/
 cronograma_cgem_*.html
