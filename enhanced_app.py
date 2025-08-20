@@ -1270,7 +1270,7 @@ def render_echarts_dashboard(times: List[float], g_values: List[float], geff_val
     <div class=\"tile\"><div class=\"title\">{chart_choice or 'Lines'}</div><div id=\"{selected_id}\" class=\"chart\"></div></div>
   </div>
         """
-        height_value = 460
+        height_value = 720
     else:
         containers_html = """
   <div class=\"grid\"> 
@@ -1286,7 +1286,7 @@ def render_echarts_dashboard(times: List[float], g_values: List[float], geff_val
     <div class=\"tile\"><div class=\"title\">3D (ECharts)</div><div id=\"c10\" class=\"chart\"></div></div>
   </div>
         """
-        height_value = 1210
+        height_value = 1600
 
     html = f"""
 <!DOCTYPE html>
@@ -1295,11 +1295,11 @@ def render_echarts_dashboard(times: List[float], g_values: List[float], geff_val
   <meta charset=\"utf-8\" />
   <style>
     body {{ margin: 0; font-family: -apple-system, Segoe UI, Roboto, Arial; background: #0b1220; color: #e5e7eb; }}
-    .grid {{ display: grid; grid-template-columns: repeat(2, 1fr); grid-auto-rows: 400px; gap: 16px; padding: 12px; }}
-    .grid.single {{ grid-template-columns: 1fr; grid-auto-rows: 420px; }}
-    .tile {{ background: #111827; border: 1px solid #1f2937; border-radius: 10px; box-shadow: 0 1px 2px rgba(0,0,0,0.2); position: relative; }}
+    .grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); grid-auto-rows: minmax(360px, 42vh); gap: 16px; padding: 12px; }}
+    .grid.single {{ grid-template-columns: 1fr; grid-auto-rows: minmax(520px, 70vh); }}
+    .tile {{ background: #111827; border: 1px solid #1f2937; border-radius: 10px; box-shadow: 0 1px 2px rgba(0,0,0,0.2); position: relative; height: 100%; min-height: 360px; }}
     .title {{ position: absolute; top: 8px; left: 12px; font-weight: 600; color: #cbd5e1; z-index: 2; font-size: 12px; }}
-    .chart {{ position: absolute; inset: 0; }}
+    .chart {{ position: absolute; inset: 0; width: 100%; height: 100%; }}
   </style>
   {('<script>' + echarts_js + '</script>') if echarts_js else ''}
   <script src="https://cdn.jsdelivr.net/npm/echarts-gl@2/dist/echarts-gl.min.js"></script>
@@ -1311,6 +1311,21 @@ def render_echarts_dashboard(times: List[float], g_values: List[float], geff_val
       var colors = {{ text: '#e5e7eb', axis: '#cbd5e1', grid: '#1f2937', tile: '#111827' }};
       function el(id) {{ return document.getElementById(id); }}
       function mkChart(id) {{ var node = el(id); return node ? echarts.init(node) : null; }}
+      function afterInit(id, chart) {{
+        if (!chart) return;
+        charts.push(chart);
+        try {{ chart.resize(); }} catch (e) {{}}
+        if (typeof ResizeObserver !== 'undefined') {{
+          var node = el(id);
+          if (node) {{
+            try {{
+              var ro = new ResizeObserver(function() {{ chart.resize(); }});
+              ro.observe(node);
+            }} catch (e) {{}}
+          }}
+        }}
+        setTimeout(function(){{ try {{ chart.resize(); }} catch (e) {{}} }}, 120);
+      }}
       var baseTextStyle = {{ color: colors.text, fontSize: 10 }};
       var axisCommon = {{
         axisLabel: {{ color: colors.axis, fontSize: 10 }},
@@ -1338,7 +1353,7 @@ def render_echarts_dashboard(times: List[float], g_values: List[float], geff_val
           ],
           grid: {{ left: 55, right: 24, top: 36, bottom: 40, containLabel: true }}
         }});
-        charts.push(line);
+        afterInit('c1', line);
       }}
 
       var heat = mkChart('c2');
@@ -1361,7 +1376,7 @@ def render_echarts_dashboard(times: List[float], g_values: List[float], geff_val
                         textStyle: {{ color: colors.axis, fontSize: 10 }} }},
           series: [{{ name: 'Flag', type: 'heatmap', data: heatData }}]
         }});
-        charts.push(heat);
+        afterInit('c2', heat);
       }}
 
       var hist = mkChart('c3');
@@ -1376,7 +1391,7 @@ def render_echarts_dashboard(times: List[float], g_values: List[float], geff_val
           series: [{{ type: 'bar', data: data.hist.values, itemStyle: {{ color: '#60a5fa' }} }}],
           grid: {{ left: 55, right: 24, top: 36, bottom: 60, containLabel: true }}
         }});
-        charts.push(hist);
+        afterInit('c3', hist);
       }}
 
       var radar = mkChart('c4');
@@ -1391,7 +1406,7 @@ def render_echarts_dashboard(times: List[float], g_values: List[float], geff_val
           series: [{{ type: 'radar', data: [{{ value: data.radar.values, name: data.profile }}],
                      areaStyle: {{ opacity: 0.15 }}, lineStyle: {{ color: '#34d399' }}, itemStyle: {{ color: '#34d399' }} }}]
         }});
-        charts.push(radar);
+        afterInit('c4', radar);
       }}
 
       var scatter = mkChart('c5');
@@ -1409,7 +1424,7 @@ def render_echarts_dashboard(times: List[float], g_values: List[float], geff_val
             return {{ name: cat, type: 'scatter', data: pts, symbolSize: 5, itemStyle: {{ color: stateColors[cat] || '#94a3b8' }} }};
           }})
         }});
-        charts.push(scatter);
+        afterInit('c5', scatter);
       }}
 
       var dur = mkChart('c6');
@@ -1431,7 +1446,7 @@ def render_echarts_dashboard(times: List[float], g_values: List[float], geff_val
           ],
           grid: {{ left: 55, right: 24, top: 36, bottom: 40, containLabel: true }}
         }});
-        charts.push(flow);
+        afterInit('c7', flow);
       }}
 
       // Banks line chart
@@ -1451,7 +1466,7 @@ def render_echarts_dashboard(times: List[float], g_values: List[float], geff_val
           ],
           grid: {{ left: 55, right: 24, top: 36, bottom: 40, containLabel: true }}
         }});
-        charts.push(bank);
+        afterInit('c8', bank);
       }}
 
       // HLAP line chart
@@ -1467,7 +1482,7 @@ def render_echarts_dashboard(times: List[float], g_values: List[float], geff_val
           series: [ {{ name: 'HLAP', type: 'line', data: data.hlap, smooth: true }} ],
           grid: {{ left: 55, right: 24, top: 36, bottom: 40, containLabel: true }}
         }});
-        charts.push(hlapC);
+        afterInit('c9', hlapC);
       }}
 
       // 3D trajectory (ECharts GL)
@@ -1485,7 +1500,7 @@ def render_echarts_dashboard(times: List[float], g_values: List[float], geff_val
           grid3D: {{ viewControl: {{ projection: 'perspective' }} }},
           series: [{{ type: 'line3D', data: seriesData, lineStyle: {{ width: 3, color: '#34d399' }} }}]
         }});
-        charts.push(chart3d);
+        afterInit('c10', chart3d);
       }}
       if (dur) {{
         var cats = ['normal','caution','greyout','blackout','gloc','redout'];
@@ -1500,10 +1515,13 @@ def render_echarts_dashboard(times: List[float], g_values: List[float], geff_val
           series: [{{ type: 'bar', data: secs, itemStyle: {{ color: function(params) {{ return stateColors[cats[params.dataIndex]]; }} }} }}],
           grid: {{ left: 55, right: 24, top: 36, bottom: 40, containLabel: true }}
         }});
-        charts.push(dur);
+        afterInit('c6', dur);
       }}
 
-      window.addEventListener('resize', function() {{ charts.forEach(c => c && c.resize()); }});
+      function __forceResizeAll(){{ charts.forEach(function(c){{ try {{ c.resize(); }} catch(e){{}} }}); }}
+      window.addEventListener('resize', __forceResizeAll);
+      document.addEventListener('DOMContentLoaded', function(){{ setTimeout(__forceResizeAll, 200); }});
+      setTimeout(__forceResizeAll, 600);
     }}
   </script>
   {'' if echarts_js else '<script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js" onload="window.initCharts()"></script>'}
@@ -1514,7 +1532,12 @@ def render_echarts_dashboard(times: List[float], g_values: List[float], geff_val
 </html>
 """
 
-    components.html(html, height=height_value, scrolling=True)
+    try:
+        # Make iframe wide to avoid clipped charts; Streamlit defaults to ~700px if width not provided
+        components.html(html, height=height_value, scrolling=True, width=1600)
+    except TypeError:
+        # Fallback for older Streamlit versions without width arg
+        components.html(html, height=height_value, scrolling=True)
 
 # Main application
 APA_CITATION = (
