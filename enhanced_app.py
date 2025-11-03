@@ -1147,7 +1147,7 @@ def render_overview_plotly(times: List[float], g_values: List[float], title: str
             margin=dict(l=60, r=24, t=40, b=45),
             hovermode="x unified",
         )
-        st.plotly_chart(fig, use_container_width=True, theme="streamlit")
+        st.plotly_chart(fig, width='stretch', theme="streamlit")
     except Exception:
         # Fallback to ECharts renderer if Plotly fails for any reason
         render_g_time_overview(times, g_values, title=title, height=height)
@@ -1935,7 +1935,7 @@ with tab2:
                         data["times_s"], data["g_values"], 
                         data["geff_values"], selected_key
                     )
-                    st.plotly_chart(fig_2d, use_container_width=True)
+                    st.plotly_chart(fig_2d, width='stretch')
                 
                 if show_3d:
                     st.markdown("### 3D Physiological Trajectory")
@@ -1944,7 +1944,7 @@ with tab2:
                         data["geff_values"], data["flags_n2"],
                         selected_key
                     )
-                    st.plotly_chart(fig_3d, use_container_width=True)
+                    st.plotly_chart(fig_3d, width='stretch')
                 
                 if show_animated:
                     st.markdown("### Animated Physiological Response")
@@ -1952,19 +1952,19 @@ with tab2:
                         data["times_s"], data["g_values"],
                         data["geff_values"], selected_key
                     )
-                    st.plotly_chart(fig_anim, use_container_width=True)
+                    st.plotly_chart(fig_anim, width='stretch')
                 
                 if show_heatmap:
                     st.markdown("### Physiological Parameters Heatmap")
                     fig_heat = create_physiological_heatmap(result, selected_key)
-                    st.plotly_chart(fig_heat, use_container_width=True)
+                    st.plotly_chart(fig_heat, width='stretch')
                 
                 if show_cardiovascular:
                     st.markdown("### Cardiovascular Response Estimation")
                     fig_cardio = create_cardiovascular_response_plot(
                         data["times_s"], data["g_values"], data["geff_values"]
                     )
-                    st.plotly_chart(fig_cardio, use_container_width=True)
+                    st.plotly_chart(fig_cardio, width='stretch')
 
                 # Save last run for other tabs
                 st.session_state["last_run_data"] = data
@@ -2025,7 +2025,7 @@ with tab4:
             
             # Display comparison table
             st.markdown("### " + _("Comparison Table") if False else "### Comparison Table")
-            st.dataframe(df, use_container_width=True)
+            st.dataframe(df, width='stretch')
             
             # Create comparison charts
             col1, col2 = st.columns(2)
@@ -2035,7 +2035,7 @@ with tab4:
                            title="G-Force Comparison",
                            barmode='group')
                 fig.update_layout(height=400)
-                st.plotly_chart(fig, use_container_width=True)
+                st.plotly_chart(fig, width='stretch')
             
             with col2:
                 fig = px.bar(df, x="Maneuver", y="Max G_eff",
@@ -2043,7 +2043,7 @@ with tab4:
                            color="Max G_eff",
                            color_continuous_scale="RdYlGn_r")
                 fig.update_layout(height=400)
-                st.plotly_chart(fig, use_container_width=True)
+                st.plotly_chart(fig, width='stretch')
 
 with tab5:
     st.subheader(_("ECharts Scientific Dashboard"))
@@ -2596,7 +2596,7 @@ with tab6:
                 mask = filtered_df.apply(lambda row: row.astype(str).str.contains(gs, case=False, na=False).any(), axis=1)
                 filtered_df = filtered_df[mask]
 
-            st.dataframe(filtered_df, use_container_width=True, height=360)
+            st.dataframe(filtered_df, width='stretch', height=360)
 
             st.markdown("#### Export")
             now_tag = datetime.now().strftime("%Y%m%d_%H%M%S")
