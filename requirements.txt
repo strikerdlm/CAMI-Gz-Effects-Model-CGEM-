@@ -21,5 +21,13 @@ fpdf2>=2.7.9
 # Export to Excel
 openpyxl>=3.1.0
 
+# HRV Integration (optional - for Polar H10 real-time monitoring)
+# Uncomment when implementing HRV-based G-LOC prediction
+# bleak>=0.21.0       # Bluetooth LE for Polar H10 connection
+# neurokit2>=0.2.0    # Advanced HRV analysis algorithms
+# scikit-learn>=1.3.0 # ML models for HRV-based risk prediction
+# xgboost>=2.0.0      # Gradient boosting for risk classification
+# torch>=2.0.0        # LSTM models for temporal HRV patterns (optional)
+
 # Note for Conda users: you can install most of the above from conda-forge,
 # then use pip only for streamlit if desired.
