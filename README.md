@@ -49,11 +49,43 @@ python demo_example.py
 
 - Open `aerobatic_profiles_demo.ipynb` or `aerobatic_maneuvers_simulation.ipynb` in your favorite environment.
 
+### TypeScript Frontend (New!)
+
+A modern TypeScript frontend with publication-quality ECharts visualizations is also available:
+
+```bash
+# Install dependencies
+cd frontend
+npm install
+
+# Run development server
+npm run dev
+
+# Build for production
+npm run build
+```
+
+The frontend provides:
+- Interactive G-force profile visualization with physiological zones
+- CGEM model simulation with configurable pilot parameters
+- Scientific dashboard with 6+ ECharts visualizations
+- Batch analysis for comparing all aerobatic profiles
+- Modern glass-morphism UI optimized for presentations and publications
+
 ---
 
 ## Features ✨
 
-- Interactive visualization suite
+- **TypeScript Frontend** (NEW - ideal for investor demos and publications)
+  - Modern React + TypeScript + Vite application
+  - Publication-quality Apache ECharts visualizations
+  - Glass-morphism dark theme UI with smooth animations
+  - Scientific dashboard with: G-force line charts, physiological heatmaps, risk radar, G distribution histograms, state duration charts, cerebral flow dynamics
+  - Interactive pilot configuration with all CGEM parameters
+  - Batch analysis for comparing all aerobatic maneuvers
+  - All DOI references verifiable for journal publication
+
+- Interactive visualization suite (Streamlit)
   - 2D Plotly charts: G vs time with safety zones; G_eff vs thresholds (greyout, blackout, G-LOC)
   - 3D Plotly trajectory: time × G × G_eff with state coloring
   - Animated timeline playback for physiological response
@@ -109,6 +141,11 @@ See the FAA OAM technical report (DOT/FAA/AM‑23/6; DOI in References) for full
     - `run_cgem_for_profile(profile_id, config: PilotConfig)`
     - `run_cgem_centrifuge(g0, gmax, gmaxtime, rampup, rampdown, config)`
     - `PilotConfig` captures subject profile or custom physiology and countermeasures
+- **TypeScript Frontend**: `frontend/` (React + Vite + TailwindCSS)
+  - `src/components/charts/`: ECharts visualization components
+  - `src/pages/`: Dashboard pages (Overview, Prediction, Dashboard, Batch, Analysis)
+  - `src/types/`: Full TypeScript type definitions for CGEM data
+  - `src/utils/`: Scientific calculations and physiological thresholds
 - Apps and demos: `enhanced_app.py`, `app.py`, `demo_example.py`
 - Maneuvers: `aerobatic_profiles.py` and files in `Aerobatics_sample_inputs/`
 - Docs: FAA user guide and “How it Works” summaries in `docs/`
