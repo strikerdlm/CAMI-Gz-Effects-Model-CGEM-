@@ -9,3 +9,5 @@ export { RadarSummaryChart } from './RadarSummaryChart';
 export { GDistributionChart } from './GDistributionChart';
 export { StateDurationsChart } from './StateDurationsChart';
 export { CerebralFlowChart } from './CerebralFlowChart';
+export { ModelDynamicsChart } from './ModelDynamicsChart';
+export type { ModelVariableKey } from './ModelDynamicsChart';
