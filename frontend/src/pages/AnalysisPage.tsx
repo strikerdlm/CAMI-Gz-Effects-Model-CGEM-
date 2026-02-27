@@ -22,6 +22,39 @@ import { MANEUVER_EXPLANATIONS } from '../utils/constants';
 import { calculateProfileStats } from '../utils/calculations';
 import { cn } from '../utils';
 
+interface SectionHeaderProps {
+  id: string;
+  icon: React.ElementType;
+  title: string;
+  color: string;
+  isExpanded: boolean;
+  onToggle: (sectionId: string) => void;
+}
+
+const SectionHeader: React.FC<SectionHeaderProps> = ({
+  id,
+  icon: Icon,
+  title,
+  color,
+  isExpanded,
+  onToggle,
+}) => (
+  <button
+    onClick={() => onToggle(id)}
+    className="w-full flex items-center justify-between p-4 hover:bg-surface-800/50 transition-colors"
+  >
+    <div className="flex items-center gap-3">
+      <div className={cn('p-2 rounded-lg', color)}>
+        <Icon className="w-5 h-5" />
+      </div>
+      <span className="font-semibold text-white">{title}</span>
+    </div>
+    <ChevronDown
+      className={cn('w-5 h-5 text-surface-400 transition-transform', isExpanded && 'rotate-180')}
+    />
+  </button>
+);
+
 export const AnalysisPage: React.FC = () => {
   const [selectedProfileId, setSelectedProfileId] = useState('high_g_turn');
   const [expandedSections, setExpandedSections] = useState<Set<string>>(
@@ -41,31 +74,6 @@ export const AnalysisPage: React.FC = () => {
     }
     setExpandedSections(newExpanded);
   };
-
-  const SectionHeader: React.FC<{
-    id: string;
-    icon: React.ElementType;
-    title: string;
-    color: string;
-  }> = ({ id, icon: Icon, title, color }) => (
-    <button
-      onClick={() => toggleSection(id)}
-      className="w-full flex items-center justify-between p-4 hover:bg-surface-800/50 transition-colors"
-    >
-      <div className="flex items-center gap-3">
-        <div className={cn('p-2 rounded-lg', color)}>
-          <Icon className="w-5 h-5" />
-        </div>
-        <span className="font-semibold text-white">{title}</span>
-      </div>
-      <ChevronDown
-        className={cn(
-          'w-5 h-5 text-surface-400 transition-transform',
-          expandedSections.has(id) && 'rotate-180'
-        )}
-      />
-    </button>
-  );
 
   return (
     <div className="space-y-6">
@@ -106,6 +114,8 @@ export const AnalysisPage: React.FC = () => {
                   icon={FileText}
                   title="Maneuver Description"
                   color="bg-primary-500/20 text-primary-400"
+                  isExpanded={expandedSections.has('description')}
+                  onToggle={toggleSection}
                 />
                 <AnimatePresence>
                   {expandedSections.has('description') && (
@@ -137,6 +147,8 @@ export const AnalysisPage: React.FC = () => {
                   icon={Activity}
                   title="Physiological Effects"
                   color="bg-accent-500/20 text-accent-400"
+                  isExpanded={expandedSections.has('effects')}
+                  onToggle={toggleSection}
                 />
                 <AnimatePresence>
                   {expandedSections.has('effects') && (
@@ -168,6 +180,8 @@ export const AnalysisPage: React.FC = () => {
                   icon={AlertTriangle}
                   title="Risk Factors"
                   color="bg-warning-500/20 text-warning-400"
+                  isExpanded={expandedSections.has('risks')}
+                  onToggle={toggleSection}
                 />
                 <AnimatePresence>
                   {expandedSections.has('risks') && (
@@ -205,6 +219,8 @@ export const AnalysisPage: React.FC = () => {
                   icon={Shield}
                   title="Mitigation Strategies"
                   color="bg-accent-500/20 text-accent-400"
+                  isExpanded={expandedSections.has('mitigation')}
+                  onToggle={toggleSection}
                 />
                 <AnimatePresence>
                   {expandedSections.has('mitigation') && (

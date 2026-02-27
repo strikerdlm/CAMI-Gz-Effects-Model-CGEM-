@@ -4,9 +4,9 @@
  * Dropdown selector for aerobatic maneuver profiles with preview information.
  */
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown, Plane, AlertTriangle, Clock } from 'lucide-react';
+import { ChevronDown, Plane, AlertTriangle, Clock, Search } from 'lucide-react';
 import { cn } from '../../utils';
 import { AEROBATIC_PROFILES } from '../../services/mockData';
 import { calculateProfileStats } from '../../utils/calculations';
@@ -24,6 +24,8 @@ export const ProfileSelector: React.FC<ProfileSelectorProps> = ({
   className,
 }) => {
   const [isOpen, setIsOpen] = React.useState(false);
+  const [searchQuery, setSearchQuery] = React.useState('');
+  const [activeFilter, setActiveFilter] = React.useState<'all' | 'high_g' | 'negative_g' | 'mixed'>('all');
   const dropdownRef = React.useRef<HTMLDivElement>(null);
 
   // Close dropdown when clicking outside
@@ -37,8 +39,23 @@ export const ProfileSelector: React.FC<ProfileSelectorProps> = ({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const profiles = Object.values(AEROBATIC_PROFILES);
+  const profiles = useMemo(() => Object.values(AEROBATIC_PROFILES), []);
   const selectedProfile = AEROBATIC_PROFILES[selectedProfileId];
+
+  const formatProfileName = (profileId: string): string =>
+    profileId.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase());
+
+  const classifyProfile = (
+    stats: ReturnType<typeof calculateProfileStats>
+  ): 'high_g' | 'negative_g' | 'mixed' => {
+    if (stats.max_positive_g >= 5.5 && stats.max_negative_g <= -1.0) {
+      return 'mixed';
+    }
+    if (stats.max_negative_g <= -1.0) {
+      return 'negative_g';
+    }
+    return 'high_g';
+  };
 
   const getProfileRiskLevel = (profile: AerobaticProfile): 'low' | 'medium' | 'high' => {
     const stats = calculateProfileStats(profile.samples);
@@ -47,11 +64,50 @@ export const ProfileSelector: React.FC<ProfileSelectorProps> = ({
     return 'low';
   };
 
+  const profileSummaries = useMemo(
+    () =>
+      profiles.map((profile) => {
+        const stats = calculateProfileStats(profile.samples);
+        return {
+          profile,
+          stats,
+          riskLevel: getProfileRiskLevel(profile),
+          category: classifyProfile(stats),
+          displayName: formatProfileName(profile.id),
+        };
+      }),
+    [profiles]
+  );
+
+  const filteredProfiles = useMemo(() => {
+    const normalizedQuery = searchQuery.trim().toLowerCase();
+    return profileSummaries.filter(({ profile, displayName, category }) => {
+      const matchesFilter = activeFilter === 'all' || category === activeFilter;
+      if (!matchesFilter) {
+        return false;
+      }
+      if (normalizedQuery.length === 0) {
+        return true;
+      }
+      return (
+        displayName.toLowerCase().includes(normalizedQuery) ||
+        profile.description.toLowerCase().includes(normalizedQuery)
+      );
+    });
+  }, [activeFilter, profileSummaries, searchQuery]);
+
   const riskColors = {
     low: 'bg-accent-500/20 text-accent-400 border-accent-500/30',
     medium: 'bg-warning-500/20 text-warning-400 border-warning-500/30',
     high: 'bg-danger-500/20 text-danger-400 border-danger-500/30',
   };
+
+  const filterLabels = {
+    all: 'All',
+    high_g: '+G Focused',
+    negative_g: '-G Focused',
+    mixed: 'Mixed Profile',
+  } as const;
 
   return (
     <div ref={dropdownRef} className={cn('relative', className)}>
@@ -73,7 +129,7 @@ export const ProfileSelector: React.FC<ProfileSelectorProps> = ({
           <div className="text-left">
             <p className="font-medium text-white">
               {selectedProfile 
-                ? selectedProfileId.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
+                ? formatProfileName(selectedProfileId)
                 : 'Select Profile'
               }
             </p>
@@ -106,9 +162,43 @@ export const ProfileSelector: React.FC<ProfileSelectorProps> = ({
               'max-h-[400px] overflow-y-auto custom-scrollbar'
             )}
           >
-            {profiles.map((profile) => {
-              const stats = calculateProfileStats(profile.samples);
-              const riskLevel = getProfileRiskLevel(profile);
+            <div className="px-3 pt-2 pb-3 border-b border-surface-700/40 sticky top-0 bg-surface-900/95 backdrop-blur-xl z-10">
+              <div className="relative">
+                <Search className="w-3.5 h-3.5 text-surface-500 absolute left-3 top-1/2 -translate-y-1/2" />
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(event) => setSearchQuery(event.target.value)}
+                  placeholder="Search maneuver..."
+                  className={cn(
+                    'w-full h-8 pl-9 pr-3 rounded-lg text-xs',
+                    'bg-surface-800/80 border border-surface-700/60',
+                    'text-surface-100 placeholder:text-surface-500',
+                    'focus:outline-none focus:ring-1 focus:ring-primary-500/60 focus:border-primary-500/40'
+                  )}
+                />
+              </div>
+              <div className="flex items-center gap-1.5 mt-2 flex-wrap">
+                {Object.entries(filterLabels).map(([filterId, label]) => (
+                  <button
+                    key={filterId}
+                    onClick={() =>
+                      setActiveFilter(filterId as 'all' | 'high_g' | 'negative_g' | 'mixed')
+                    }
+                    className={cn(
+                      'px-2.5 py-1 rounded-md text-[11px] border transition-colors',
+                      activeFilter === filterId
+                        ? 'bg-primary-500/20 text-primary-300 border-primary-500/35'
+                        : 'bg-surface-800/70 text-surface-400 border-surface-700/60 hover:text-surface-200'
+                    )}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {filteredProfiles.map(({ profile, stats, riskLevel, displayName }) => {
               const isSelected = profile.id === selectedProfileId;
 
               return (
@@ -130,7 +220,7 @@ export const ProfileSelector: React.FC<ProfileSelectorProps> = ({
                         'font-medium',
                         isSelected ? 'text-primary-400' : 'text-white'
                       )}>
-                        {profile.id.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}
+                        {displayName}
                       </p>
                       <p className="text-xs text-surface-400 mt-0.5 line-clamp-2">
                         {profile.description}
@@ -165,6 +255,13 @@ export const ProfileSelector: React.FC<ProfileSelectorProps> = ({
                 </button>
               );
             })}
+
+            {filteredProfiles.length === 0 && (
+              <div className="px-4 py-6 text-center">
+                <p className="text-sm text-surface-400">No profiles match your filters.</p>
+                <p className="text-xs text-surface-500 mt-1">Try clearing search or selecting "All".</p>
+              </div>
+            )}
           </motion.div>
         )}
       </AnimatePresence>

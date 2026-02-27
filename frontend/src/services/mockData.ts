@@ -11,6 +11,7 @@ import type {
   CGEMResult,
   PilotConfig 
 } from '../types';
+import { PHYSIOLOGICAL_THRESHOLDS, STANDARD_PROFILES } from '../utils/constants';
 
 // =============================================================================
 // AEROBATIC PROFILE DATA
@@ -256,8 +257,11 @@ export const AEROBATIC_PROFILES: Record<string, AerobaticProfile> = {
  */
 export function simulateCGEMResult(
   profile: AerobaticProfile,
-  _config: PilotConfig
+  config: PilotConfig
 ): CGEMResult {
+  const clamp = (value: number, min: number, max: number): number =>
+    Math.min(max, Math.max(min, value));
+
   // Build time series from samples
   const times_s: number[] = [];
   const g_values: number[] = [];
@@ -272,15 +276,37 @@ export function simulateCGEMResult(
   const f_bo_values: number[] = [];
   const hlap_values: number[] = [];
 
-  // Simulation parameters (based on CGEM model thresholds)
-  const baselineFlow = 49.5; // dl/min - normal cerebral blood flow
-  const greyoutGeff = 4.1;   // G_eff threshold for greyout onset
-  const blackoutGeff = 5.0;  // G_eff threshold for blackout
-  const glocGeff = 5.5;      // G_eff threshold for G-LOC
+  const matchedProfile = config.who_profile
+    ? STANDARD_PROFILES.find((candidate) => candidate.id === config.who_profile)
+    : undefined;
+
+  const customPhysiology = config.customPhysiology;
+  const baselineFlow = matchedProfile?.fnorm ?? (customPhysiology ? 49.5 * customPhysiology.g_tolerance_multiplier : 49.5);
+  const baseConsciousnessBank = matchedProfile?.bankcon ?? customPhysiology?.conbank_s ?? 7.1;
+  const baseBlackoutBank = Math.max(3.5, baseConsciousnessBank * 0.72);
+  const responseTauSeconds = matchedProfile?.beta ?? customPhysiology?.heart_response_tau_s ?? 2.5;
+
+  const baselineSystolic = matchedProfile?.BSP ?? customPhysiology?.baseline_systolic_bp ?? 120;
+  const baselineDiastolic = matchedProfile?.BDP ?? customPhysiology?.baseline_diastolic_bp ?? 80;
+  const baselineMAP = (baselineSystolic + 2 * baselineDiastolic) / 3;
+
+  const agsmEffectiveness = clamp(config.countermeasures.agsm_effectiveness, 0, 1);
+  const gSuitPressurePsi = clamp(config.countermeasures.gsuit_max_psi, 0, 10);
+  const seatTiltDegrees = clamp(config.countermeasures.seat_tilt_deg, 0, 45);
+  const dehydrationLevel = clamp(config.countermeasures.dehydration_level, 0, 1);
+  const pbgFactor = clamp(config.countermeasures.pbg_max_mmhg / 120, 0, 1);
+
+  const toleranceBoost = 1 + agsmEffectiveness * 0.06 + gSuitPressurePsi * 0.008 + seatTiltDegrees * 0.0015 - dehydrationLevel * 0.08;
+  const thresholdScale = clamp(toleranceBoost, 0.82, 1.22);
+
+  const greyoutGeff = PHYSIOLOGICAL_THRESHOLDS.greyout_geff * thresholdScale;
+  const blackoutGeff = PHYSIOLOGICAL_THRESHOLDS.blackout_geff * thresholdScale;
+  const glocGeff = PHYSIOLOGICAL_THRESHOLDS.gloc_geff * thresholdScale;
 
   let currentTime = 0;
-  let consciousnessBank = 7.1; // seconds
-  let blackoutBank = 5.0;
+  let consciousnessBank = baseConsciousnessBank;
+  let blackoutBank = baseBlackoutBank;
+  let effectiveGState = 1.0;
 
   let greyoutTime: number | null = null;
   let blackoutTime: number | null = null;
@@ -294,31 +320,45 @@ export function simulateCGEMResult(
     for (let i = 0; i < steps; i++) {
       const g = sample.nz;
       
-      // Simplified G_eff calculation (real CGEM is more complex)
-      // G_eff accounts for cardiovascular response lag
-      const geff = g > 1 ? g * 0.95 : g;
+      // Countermeasure-informed effective G estimate with response lag.
+      const positiveLoad = Math.max(0, g - 1);
+      const protectionOffset =
+        positiveLoad *
+        (agsmEffectiveness * 0.34 + gSuitPressurePsi * 0.02 + seatTiltDegrees * 0.003 + pbgFactor * 0.16);
+      const dehydrationPenalty = positiveLoad * dehydrationLevel * 0.08;
 
-      // Simplified flow calculation
-      const flowFactor = Math.max(0, 1 - (geff - 1) * 0.15);
-      const cerebralFlow = baselineFlow * flowFactor;
+      const targetGeff = g - protectionOffset + dehydrationPenalty;
+      const lagGain = dt / (responseTauSeconds + dt);
+      effectiveGState += (targetGeff - effectiveGState) * lagGain;
+      const geff = effectiveGState;
+
+      // Perfusion model with positive-G suppression and limited negative-G augmentation.
+      const geffPositiveLoad = Math.max(0, geff - 1);
+      const geffNegativeLoad = Math.max(0, -geff);
+      const perfusionRatio =
+        1 - geffPositiveLoad * 0.16 + geffNegativeLoad * 0.04 - dehydrationLevel * 0.06;
+      const cerebralFlow = baselineFlow * Math.max(0.18, perfusionRatio);
 
       // Update reserve banks
       if (geff >= greyoutGeff) {
-        consciousnessBank -= dt * (geff - greyoutGeff) * 0.5;
-        blackoutBank -= dt * (geff - greyoutGeff) * 0.3;
+        const geffExcess = geff - greyoutGeff;
+        const protectionFactor = 1 - Math.min(0.6, agsmEffectiveness * 0.35 + gSuitPressurePsi * 0.03 + pbgFactor * 0.2);
+        consciousnessBank -= dt * geffExcess * 0.55 * protectionFactor;
+        blackoutBank -= dt * geffExcess * 0.35 * protectionFactor;
       } else {
-        // Recovery
-        consciousnessBank = Math.min(7.1, consciousnessBank + dt * 0.5);
-        blackoutBank = Math.min(5.0, blackoutBank + dt * 0.3);
+        // Recovery when load drops below threshold.
+        const recoveryRate = Math.max(0.16, 0.56 - dehydrationLevel * 0.22);
+        consciousnessBank = Math.min(baseConsciousnessBank, consciousnessBank + dt * recoveryRate);
+        blackoutBank = Math.min(baseBlackoutBank, blackoutBank + dt * recoveryRate * 0.66);
       }
 
       consciousnessBank = Math.max(0, consciousnessBank);
       blackoutBank = Math.max(0, blackoutBank);
 
       // Determine flags
-      const isGreyout = geff >= greyoutGeff && cerebralFlow < baselineFlow * 0.7;
-      const isBlackout = geff >= blackoutGeff || blackoutBank <= 0;
-      const isGLOC = geff >= glocGeff || consciousnessBank <= 0;
+      const isGreyout = geff >= greyoutGeff || cerebralFlow < baselineFlow * 0.64;
+      const isBlackout = geff >= blackoutGeff || blackoutBank <= 0.2;
+      const isGLOC = geff >= glocGeff || consciousnessBank <= 0.2;
 
       // Record event times
       if (isGreyout && greyoutTime === null) {
@@ -331,9 +371,8 @@ export function simulateCGEMResult(
         glocTime = currentTime;
       }
 
-      // HLAP calculation (simplified)
-      const baselineMAP = 93; // mmHg
-      const hlap = baselineMAP + (g - 1) * 8;
+      // HLAP estimate with seat-tilt and AGSM compensation.
+      const hlap = baselineMAP + (g - 1) * (7.5 + seatTiltDegrees * 0.05) + agsmEffectiveness * 4;
 
       // Store values
       times_s.push(currentTime);

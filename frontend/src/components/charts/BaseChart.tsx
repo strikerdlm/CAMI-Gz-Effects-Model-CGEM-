@@ -65,7 +65,7 @@ export const BaseChart: React.FC<BaseChartProps> = ({
       window.removeEventListener('resize', handleResize);
       chartInstance.current?.dispose();
     };
-  }, []);
+  }, [onChartReady]);
 
   // Update chart options
   useEffect(() => {

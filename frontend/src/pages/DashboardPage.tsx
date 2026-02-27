@@ -5,7 +5,7 @@
  * Designed for Q1 science journal publication standards.
  */
 
-import React, { useState, useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import {
   LayoutGrid,
@@ -15,22 +15,27 @@ import {
   PieChart,
   Activity,
   Download,
+  Brain,
+  Shield,
+  Star,
 } from 'lucide-react';
 
-import { ProfileSelector, MetricCard } from '../components/ui';
+import { MetricCard, ProfileSelector, VariableInsightsPanel } from '../components/ui';
 import {
+  ModelDynamicsChart,
   GForceLineChart,
   PhysiologicalHeatmap,
   RadarSummaryChart,
   GDistributionChart,
   StateDurationsChart,
   CerebralFlowChart,
+  type ModelVariableKey,
 } from '../components/charts';
 import { AEROBATIC_PROFILES, simulateCGEMResult } from '../services/mockData';
 import { DEFAULT_COUNTERMEASURES } from '../utils/constants';
 import { calculateProfileStats, computeStateDurations } from '../utils/calculations';
 import { cn } from '../utils';
-import type { PilotConfig, CGEMResult } from '../types';
+import type { CGEMResult, Countermeasures, PilotConfig } from '../types';
 
 type ViewMode = 'grid' | 'single';
 type ChartType = 'lines' | 'heatmap' | 'radar' | 'histogram' | 'durations' | 'flows';
@@ -44,14 +49,95 @@ const CHART_OPTIONS: { id: ChartType; label: string; icon: React.ElementType }[]
   { id: 'flows', label: 'Cerebral Flow', icon: Activity },
 ];
 
+interface PilotPreset {
+  id: string;
+  label: string;
+  summary: string;
+  whoProfile: number;
+  tag: 'balanced' | 'aggressive' | 'protected' | 'degraded';
+  countermeasureOverrides: Partial<Countermeasures>;
+}
+
+const PILOT_PRESETS: PilotPreset[] = [
+  {
+    id: 'elite_balanced',
+    label: 'Elite Balanced',
+    summary: 'Median physiology with moderate AGSM and seat optimization.',
+    whoProfile: 2,
+    tag: 'balanced',
+    countermeasureOverrides: {
+      agsm_effectiveness: 0.45,
+      gsuit_max_psi: 3.0,
+      seat_tilt_deg: 12,
+      dehydration_level: 0.1,
+    },
+  },
+  {
+    id: 'aggressive_sortie',
+    label: 'Aggressive Sortie',
+    summary: 'High maneuver stress with limited protection margin.',
+    whoProfile: 3,
+    tag: 'aggressive',
+    countermeasureOverrides: {
+      agsm_effectiveness: 0.25,
+      gsuit_max_psi: 1.5,
+      seat_tilt_deg: 8,
+      dehydration_level: 0.2,
+    },
+  },
+  {
+    id: 'max_protection',
+    label: 'Max Protection',
+    summary: 'High reserve profile with tuned G-suit and strong AGSM.',
+    whoProfile: 1,
+    tag: 'protected',
+    countermeasureOverrides: {
+      agsm_effectiveness: 0.7,
+      gsuit_max_psi: 5.0,
+      seat_tilt_deg: 15,
+      dehydration_level: 0.05,
+    },
+  },
+  {
+    id: 'degraded_state',
+    label: 'Degraded State',
+    summary: 'Fatigue-like condition for conservative scenario analysis.',
+    whoProfile: 6,
+    tag: 'degraded',
+    countermeasureOverrides: {
+      agsm_effectiveness: 0.1,
+      gsuit_max_psi: 0.5,
+      seat_tilt_deg: 6,
+      dehydration_level: 0.35,
+    },
+  },
+];
+
+const PRESET_STYLES: Record<PilotPreset['tag'], string> = {
+  balanced: 'border-primary-500/35 bg-primary-500/10 text-primary-300',
+  aggressive: 'border-warning-500/35 bg-warning-500/10 text-warning-300',
+  protected: 'border-accent-500/35 bg-accent-500/10 text-accent-300',
+  degraded: 'border-danger-500/35 bg-danger-500/10 text-danger-300',
+};
+
 export const DashboardPage: React.FC = () => {
   const [selectedProfileId, setSelectedProfileId] = useState('high_g_turn');
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
   const [selectedChart, setSelectedChart] = useState<ChartType>('lines');
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [_isLoading, setIsLoading] = useState(false);
+  const [selectedPresetId, setSelectedPresetId] = useState<string>(PILOT_PRESETS[0].id);
+  const [focusedVariable, setFocusedVariable] = useState<ModelVariableKey>('geff');
 
   const profile = AEROBATIC_PROFILES[selectedProfileId];
+  const selectedPreset = useMemo(
+    () => PILOT_PRESETS.find((preset) => preset.id === selectedPresetId) ?? PILOT_PRESETS[0],
+    [selectedPresetId]
+  );
+
+  const profileDisplayName = useMemo(
+    () => selectedProfileId.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase()),
+    [selectedProfileId]
+  );
+
   const stats = useMemo(() => 
     profile ? calculateProfileStats(profile.samples) : null, 
     [profile]
@@ -60,12 +146,16 @@ export const DashboardPage: React.FC = () => {
   // Run simulation for selected profile
   const result = useMemo<CGEMResult | null>(() => {
     if (!profile) return null;
+    const countermeasures: Countermeasures = {
+      ...DEFAULT_COUNTERMEASURES,
+      ...selectedPreset.countermeasureOverrides,
+    };
     const config: PilotConfig = {
-      who_profile: 2, // Default median male
-      countermeasures: DEFAULT_COUNTERMEASURES,
+      who_profile: selectedPreset.whoProfile,
+      countermeasures,
     };
     return simulateCGEMResult(profile, config);
-  }, [profile]);
+  }, [profile, selectedPreset]);
 
   const durations = useMemo(() => {
     if (!result) return null;
@@ -197,13 +287,61 @@ export const DashboardPage: React.FC = () => {
         <div className="mt-6 flex items-center gap-4">
           <ProfileSelector
             selectedProfileId={selectedProfileId}
-            onSelect={(id) => {
-              setIsLoading(true);
-              setSelectedProfileId(id);
-              setTimeout(() => setIsLoading(false), 300);
-            }}
+            onSelect={setSelectedProfileId}
             className="max-w-md"
           />
+          <div className="hidden xl:flex items-center gap-2 px-3 py-2 rounded-xl border border-surface-700/60 bg-surface-900/70">
+            <Shield className="w-4 h-4 text-primary-300" />
+            <div>
+              <p className="text-xs text-surface-500">Pilot preset</p>
+              <p className="text-sm text-surface-200 font-medium">{selectedPreset.label}</p>
+            </div>
+          </div>
+        </div>
+      </motion.div>
+
+      {/* Premium Preset Selection */}
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="glass rounded-2xl p-5"
+      >
+        <div className="flex items-center justify-between gap-3 mb-4">
+          <div>
+            <h3 className="text-lg font-semibold text-white flex items-center gap-2">
+              <Star className="w-4 h-4 text-warning-300" />
+              Elite Profile Presets
+            </h3>
+            <p className="text-xs text-surface-400 mt-1">
+              Switch physiology + countermeasure contexts for high-fidelity comparison.
+            </p>
+          </div>
+          <div className="text-xs text-surface-500">
+            Selected maneuver: <span className="text-surface-300">{profileDisplayName}</span>
+          </div>
+        </div>
+        <div className="grid sm:grid-cols-2 xl:grid-cols-4 gap-3">
+          {PILOT_PRESETS.map((preset) => {
+            const isSelected = preset.id === selectedPresetId;
+            return (
+              <button
+                key={preset.id}
+                onClick={() => setSelectedPresetId(preset.id)}
+                className={cn(
+                  'text-left rounded-xl border p-3 transition-all duration-200',
+                  isSelected
+                    ? PRESET_STYLES[preset.tag]
+                    : 'border-surface-700/60 bg-surface-900/55 hover:border-surface-600 text-surface-300'
+                )}
+              >
+                <div className="flex items-center justify-between gap-2">
+                  <p className="text-sm font-semibold">{preset.label}</p>
+                  <span className="text-[10px] uppercase tracking-wide">WHO {preset.whoProfile}</span>
+                </div>
+                <p className="text-xs mt-2 leading-relaxed text-surface-300/90">{preset.summary}</p>
+              </button>
+            );
+          })}
         </div>
       </motion.div>
 
@@ -248,6 +386,47 @@ export const DashboardPage: React.FC = () => {
           size="sm"
           color={result.time_to_gloc_s ? 'danger' : 'default'}
         />
+      </div>
+
+      {/* Model Dynamics Studio */}
+      <div className="grid xl:grid-cols-[minmax(0,1.75fr)_minmax(320px,1fr)] gap-6">
+        <motion.div
+          initial={{ opacity: 0, y: 18 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="chart-container premium-panel"
+        >
+          <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
+            <div className="chart-title mb-0">
+              <Brain className="w-5 h-5 text-primary-300" />
+              Premium Model Dynamics
+            </div>
+            <span className="text-xs text-surface-500">
+              Focus variable: <span className="text-surface-300">{focusedVariable}</span>
+            </span>
+          </div>
+          <p className="text-xs text-surface-400 mb-3">
+            Coupled visualization of CGEM internals with synchronized impairment windows for
+            greyout, blackout, and G-LOC onset analysis.
+          </p>
+          <ModelDynamicsChart
+            result={result}
+            title="Integrated Physiological Response"
+            height={430}
+            focusVariable={focusedVariable}
+          />
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 18 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.05 }}
+        >
+          <VariableInsightsPanel
+            result={result}
+            selectedVariable={focusedVariable}
+            onSelect={setFocusedVariable}
+          />
+        </motion.div>
       </div>
 
       {/* Chart Selection (Single View) */}
@@ -326,7 +505,7 @@ export const DashboardPage: React.FC = () => {
         </h4>
         <p className="text-xs text-surface-400 font-mono bg-surface-800/50 p-3 rounded-lg">
           Dashboard generated using G-Effects Safety Management System based on CGEM v1.1.0.1.
-          Model reference: Copeland, K., & Whinnery, J. E. (2023). Cerebral blood flow-based 
+          Model reference: Copeland, K., & Whinnery, J. E. (2023). Cerebral blood flow-based
           computer modeling of Gz-induced effects (DOT/FAA/AM-23/6). Office of Aerospace Medicine, 
           FAA. DOI: https://doi.org/10.21949/1524446
         </p>
