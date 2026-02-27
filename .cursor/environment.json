@@ -1,0 +1,5 @@
+{
+  "$schema": "https://www.cursor.com/schemas/environment.schema.json",
+  "name": "Frontend-ready cloud agent",
+  "install": "node --version && npm --version && npm ci --prefix frontend --include=dev --no-fund --no-audit"
+}
