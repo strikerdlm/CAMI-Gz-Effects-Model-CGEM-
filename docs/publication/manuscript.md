@@ -1,25 +1,28 @@
-# An ML-augmented framework for accelerated G-LOC prediction: surrogate emulation, out-of-distribution detection, and conformal uncertainty quantification of the CAMI G-Effects Model
+# Conformal ML emulation and OOD detection for the FAA CGEM G-LOC model
 
-**Target venue:** *Aerospace Medicine and Human Performance* (AMHP)
+<!-- Title: 75 characters including spaces; AMHP limit ≤ 100. -->
 
-**Authors:** Diego Malpica, MD (ORCID: 0000-0002-2257-4940)
-Direction of Aerospace Medicine, Colombian Aerospace Force — Aerospace Scientific Department, Bogotá, Colombia
+**Running head:** CONFORMAL CGEM EMULATION
 
-**Word count:** ~4,200 (body) + 250 (abstract)
+<!-- Running head: 26 characters including spaces; AMHP limit ≤ 30, ALL CAPS. -->
+
+**Target venue:** *Aerospace Medicine and Human Performance* (AMHP). Article type: Research Article (≤ 6,000 body words; ≤ 250-word unstructured abstract; ≤ 4 tables; ≤ 4 figures).
+
+<!-- AMHP requires a depersonalized title page. Author names, affiliations, and
+ORCIDs live in `docs/publication/author_page.md` and are uploaded as the
+"Title Page" file in Editorial Manager. -->
+
+**Word count:** 4,768 (body, Introduction → Conclusion); 250 (abstract).
+**Tables:** 4. **Figures:** 6 (3 over the AMHP ≤ 4 limit; condense in supplementary or merge panels before submission).
+**References:** 18.
 
 ---
 
-## Abstract (250 words, structured)
+## Abstract
 
-**Background —** The CAMI G-Effects Model (CGEM) is an FAA-validated Fortran physiological model that predicts +Gz tolerance. It is computationally expensive (~9 ms/row via subprocess), has no published calibrated uncertainty quantification, and can be queried with inputs outside its validation envelope without warning. We present a validated ML extension layer that addresses each gap without modifying CGEM.
+The FAA's CAMI G-Effects Model (CGEM) is a validated Fortran model of +Gz tolerance, but it is computationally expensive, lacks calibrated uncertainty, and accepts out-of-distribution inputs without warning. We built an additive ML extension that closes each gap without modifying the Fortran core. A synthetic dataset of 3,240 CGEM runs (72 maneuvers × 45 pilot configurations; seed 42; binary SHA-256 logged) trained per-target XGBoost surrogates — two-stage classifier-then-regressor for right-censored event times, single-stage for continuous targets — with Mondrian split-conformal intervals (α = 0.05) stratified by maneuver category. A robust Mahalanobis detector with distribution-free conformal abstention provided OOD warning; Sobol and Morris sensitivity ran on the emulator. The surrogate was ~180× faster than the subprocess. Classifier AUROC was ≥ 0.996 on the three censored targets; regressor R² was 0.82–0.90 on event-positive rows and 0.94–1.00 on continuous targets. Conformal coverage was within 4.6 percentage points of nominal 95 % on 4 of 5 targets, under-coverage isolated to time-to-G-LOC (0.86), and classifier expected calibration error ≤ 0.014. The OOD threshold (78.3) was about 3× the χ²(17, 0.95) cutoff, confirming heavier-than-Gaussian tails. The framework preserves the validated model while adding emulator speed, calibrated intervals, OOD abstention, and sensitivity rankings, and defers external and own-centrifuge validation to follow-up papers.
 
-**Methods —** A synthetic dataset of 3,240 CGEM runs was generated on a 72-maneuver × 45-pilot-configuration grid, with the master seed (42) and compiled binary SHA recorded. Per-target XGBoost surrogates were trained (two-stage classifier-then-regressor for right-censored event times, single-stage for continuous targets), with Mondrian split-conformal prediction intervals (α = 0.05) stratified by maneuver category. An OOD detector using Mahalanobis distance (MinCovDet robust covariance) with distribution-free conformal abstention was calibrated. Global sensitivity analysis was performed via Sobol (Saltelli) and Morris methods driven by the emulator.
-
-**Results —** The surrogate emulator achieves 180× wall-clock speedup. Classifier AUROC ≥ 0.996 across all three censored targets; regressor R² = 0.82–0.90 on event-positive rows and R² = 0.94–1.00 on continuous targets. Mondrian conformal intervals achieve empirical coverage within 4.6 pp of nominal 95 % on 4/5 targets. Expected calibration error ≤ 0.014 for classifiers and ≤ 0.108 for regressors. The conformal OOD abstention threshold (78.3) is 3× the χ² cutoff (27.6), reflecting heavier-than-Gaussian tails.
-
-**Conclusions —** This framework preserves the validated Fortran core while delivering emulator speed, calibrated prediction intervals, OOD abstention, and global sensitivity — without claiming novel physiology. The synthetic-only validation strategy is declared; external (paper 2) and own-centrifuge (paper 3) validation are named follow-ups.
-
-**Keywords:** G-LOC, acceleration physiology, surrogate modeling, conformal prediction, out-of-distribution detection, XGBoost, Sobol sensitivity analysis
+**Keywords:** G-induced loss of consciousness; acceleration physiology; surrogate modeling; conformal prediction; out-of-distribution detection
 
 ---
 
