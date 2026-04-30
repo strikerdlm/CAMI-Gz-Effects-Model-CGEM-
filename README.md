@@ -160,30 +160,31 @@ Import from `cgem_wrapper` to run any `Aerobatics_sample_inputs/` profile with a
 
 ## Supported Aerobatic Maneuvers 🛩️
 
-All maneuver inputs live in `Aerobatics_sample_inputs/` and follow the `Nz, duration_ms` format. The application currently includes:
+All maneuver inputs live in `Aerobatics_sample_inputs/` and follow the `Nz, duration_ms` format. The library currently registers **72 maneuvers** in `aerobatic_profiles.PROFILES`, organized by category in `maneuvers_catalog.py`:
 
-| Identifier | Source file | Description |
-|------------|-------------|-------------|
-| `hammerhead` | `hammerhead.txt` | Hammerhead (stall-turn): vertical climb, 180° yaw, vertical descent |
-| `horizontal_rolling_360` | `horizontalrolling360.txt` | 360° aileron roll while maintaining level flight |
-| `outside_360` | `outside360.txt` | 360° outside loop sustaining −G |
-| `outside_inside_vert8` | `outsideinsidevertical8.txt` | Vertical figure-of-eight – outside loop bottom, inside loop top |
-| `quarter_down_roll` | `quarterdownroll.txt` | Quarter outside loop followed by a downline snap roll |
-| `snap_45deg_down_roll` | `snap45degdownroll.txt` | 45° downline with a snap roll |
-| `half_vert_roll_neg_pull` | `halfverticalrollwnegpullout.txt` | ½ vertical roll ending with a negative G pull-out |
-| `triple_push_pull_loop` | `triple_push_pull_loop.txt` | Triple push–pull loop: repeated push (−G) then pull (+G) ×3 |
-| `triple_push_pull_immelmann` | `triple_push_pull_immelmann.txt` | Triple push–pull Immelmann: push–pull + half-roll repeated ×3 |
-| `triple_push_pull_split_s` | `triple_push_pull_split_s.txt` | Triple push–pull Split S: three consecutive push–pull Split S entries |
-| `high_g_turn` | `high_g_turn.txt` | Sustained high-G level turn with 6–7 G plateau and on/off modulation |
-| `loop_standard` | `loop_standard.txt` | Standard loop with 3–5 G pull-up and pull-out phases |
-| `immelmann_turn` | `immelmann_turn.txt` | Half-loop to half-roll Immelmann with high +G pull-up |
-| `split_s` | `split_s.txt` | Split-S: roll inverted then descending half-loop with high +G pull-out |
-| `cuban_eight` | `cuban_eight.txt` | Cuban Eight: two looping segments joined by half-rolls |
-| `vertical_eight` | `vertical_eight.txt` | Vertical figure eight with repeated +G exposures and brief −G transitions |
+- **Championship (Aresti / IAC catalogue)** — 35 maneuvers covering families 1, 2, 5, 6, 7, 8, 9: hammerhead, loop, Cuban eight, Immelmann, split-S, vertical eight, outside loop, half-vertical roll, quarter-down roll, 45° snap, horizontal rolling 360, avalanche, tailslide ±, humpty bump ±, square loop, reverse Cuban, snap roll (level / vertical / outside), hesitation roll (4-point / 8-point), slow roll, inverted spin, flat spin, inverted flat spin, English bunt, torque roll, knife-edge pass, double Immelmann, quarter clover, reverse half-Cuban, lazy eight.
+- **Military ACM / BFM** — 22 maneuvers calibrated to F-16 / F-15 / F/A-18 / Su-27 doctrine: high-G turn, defensive break (9 G), sustained 9-G turn, corner velocity turn, high/low yo-yo, barrel-roll attack, lag pursuit, flat & rolling scissors, defensive jink, last-ditch break, combat Immelmann / split-S, defensive break with chaff/flare, strike-turn strafing pull-out, push-pull missile evasion, defensive spiral, rate fight (sustained 8 G/22 s), vertical climb evasion, helicopter (low-energy) bug-out, slatted high-AOA turn.
+- **Extreme / post-stall** — 12 maneuvers including Pugachev's Cobra, Kulbit, Lomcovák, Lomcovák repeats, Herbst / J-turn, Russian helicopter ('Bell'), falling leaf, snake-modulated falling leaf, tailslide → tumble, inverted Cobra, inverted spin recovery, Bell tailslide.
+- **Conceptual** — 3 push-pull stress-test demo profiles (triple push-pull Loop / Immelmann / Split-S).
+
+Each entry in `maneuvers_catalog.py` carries Aresti family number, peak ±Gz, onset rate, sustained-G plateau, hemodynamic concern, and source citation. New profiles added in this extension are kinematic-phase reconstructions calibrated against the canonical CGEM samples and standard aerobatic / fighter-doctrine references (FAI/CIVA Aresti catalogue, FAA-H-8083-9 Aerobatic Flying Handbook, Shaw 1985 *Fighter Combat*, Newman & Callister 2009 DOI:10.3357/asem.2361.2009); see `tools/extension_profiles.py` for per-maneuver source notes.
+
+### Batch CGEM runner and hemodynamics report
+
+```bash
+# Run every maneuver across multiple pilot configurations
+python run_cgem_batch.py --maneuvers all --who 2 --configs all
+
+# Generate per-maneuver Markdown report
+python tools/build_hemodynamics_report.py
+# → docs/MANEUVER_HEMODYNAMICS.md
+```
+
+Available `--configs`: `no_countermeasures`, `gsuit_only`, `agsm_only`, `full_countermeasures`, `dehydrated`. `--who` accepts any of the six standard subject profiles (1–6) or `all`. Outputs land in `data/batch_results/` as per-run JSON time-series plus a `summary.json` / `summary.parquet` rollup.
 
 Notes:
 
-- Some entries are conceptual/demo profiles intended for physiology and risk visualization rather than flight training guidance. You can add your own maneuvers by dropping a properly formatted file into `Aerobatics_sample_inputs/` and updating the mapping in `aerobatic_profiles.py`.
+- Some entries are conceptual/demo profiles intended for physiology and risk visualization rather than flight training guidance. You can add your own maneuvers by dropping a properly formatted file into `Aerobatics_sample_inputs/` and updating the mapping in `aerobatic_profiles.py` (and the corresponding `register(...)` call in `maneuvers_catalog.py`).
 
 ---
 
