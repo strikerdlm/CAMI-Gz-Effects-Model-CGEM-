@@ -1,0 +1,18 @@
+{
+  "package_version": "0.1.0",
+  "dataset": "cgem_synthetic_v1.parquet",
+  "seed": 42,
+  "fixed_who_profile": "custom",
+  "sobol_n_base": 1024,
+  "sobol_n_evaluations_per_target": 20480,
+  "morris_n_trajectories": 200,
+  "morris_n_evaluations_per_target": 2000,
+  "n_targets": 5,
+  "wall_clock_s": 38.22,
+  "outputs": {
+    "sobol_first_total": "data/results/sensitivity/sobol_first_total.csv",
+    "sobol_second_order": "data/results/sensitivity/sobol_second_order.csv",
+    "morris": "data/results/sensitivity/morris.csv"
+  },
+  "generation_timestamp_utc": "2026-04-30T13:29:34Z"
+}
