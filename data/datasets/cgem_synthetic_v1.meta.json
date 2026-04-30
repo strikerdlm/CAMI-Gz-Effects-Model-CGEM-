@@ -1,0 +1,59 @@
+{
+  "run_id": "45e8dc24dce14afaa09dd604df21805e",
+  "master_seed": 42,
+  "binary_sha256": "a6f57c67616b78f5fee757cb066f356bd8ea9856cd1a941cc304c343334b7da7",
+  "package_version": "0.1.0",
+  "rows_total": 3240,
+  "rows_ok": 3240,
+  "rows_error": 0,
+  "wall_clock_s": 27.32,
+  "host": "asterphysiology",
+  "python": "3.14.3",
+  "smoke": false,
+  "maneuvers_count": 72,
+  "arms": [
+    "standard",
+    "custom"
+  ],
+  "tier_definitions": {
+    "DEHYDRATION_LEVELS": {
+      "none": 0.0,
+      "mild": 0.3,
+      "severe": 0.7
+    },
+    "COUNTERMEASURES_LEVELS": {
+      "none": {
+        "gsuit_max_psi": 0.0,
+        "gsuit_coverage_fraction": 0.0,
+        "agsm_effectiveness": 0.0,
+        "pbg_max_mmhg": 0.0
+      },
+      "agsm": {
+        "gsuit_max_psi": 0.0,
+        "gsuit_coverage_fraction": 0.0,
+        "agsm_effectiveness": 0.6,
+        "pbg_max_mmhg": 0.0
+      },
+      "suit_agsm": {
+        "gsuit_max_psi": 10.0,
+        "gsuit_coverage_fraction": 0.7,
+        "agsm_effectiveness": 0.8,
+        "pbg_max_mmhg": 15.0
+      }
+    },
+    "G_TOLERANCE_TIERS": {
+      "low": 0.85,
+      "nominal": 1.0,
+      "high": 1.15
+    },
+    "WHO_PROFILES": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ]
+  },
+  "generation_timestamp_utc": "2026-04-30T12:00:00Z"
+}
