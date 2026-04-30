@@ -1,0 +1,148 @@
+# OSF Pre-Registration — Paper 1 (AMHP Methods Paper)
+
+> **Title**: An ML-augmented framework for accelerated G-LOC prediction:
+> surrogate emulation, out-of-distribution detection, and conformal
+> uncertainty quantification of the CAMI G-Effects Model.
+
+> **Status**: DRAFT — to be posted to OSF before any test-set evaluation
+> in Phase 3 (surrogate training).
+>
+> **OSF DOI**: TBD (will be inserted here at posting time and committed).
+>
+> **Pre-registered on**: TBD (target: end of Phase 1, before Phase 2/3
+> begin).
+
+This document locks the validation protocol for paper 1. After the OSF post is timestamped, **no field below may change in the published paper without an explicit deviation statement in the Methods section**. That contract is what makes the synthetic-only validation defensible to reviewers.
+
+---
+
+## 1. Hypotheses
+
+We pre-register the following testable hypotheses, all evaluated on the held-out test set drawn from the synthetic dataset `cgem_synthetic_v1` (sidecar `data/datasets/cgem_synthetic_v1.meta.json`, master seed 42, binary SHA-256 logged):
+
+- **H1 (emulator accuracy)**: For each per-target XGBoost surrogate trained on the train + validation split, the held-out test-set coefficient of determination is `R² ≥ 0.95` and the root-mean-squared error in physical units is reported with a 95 % bootstrap confidence interval.
+- **H2 (conformal calibration)**: Empirical coverage of the Mondrian split-conformal 95 % prediction intervals is within ±2 % of the nominal 95 % across maneuver categories.
+- **H3 (OOD detection)**: Mahalanobis-distance OOD detector reaches `AUROC ≥ 0.85` on `leave_one_group_out("extreme_post_stall")` and `≥ 0.80` on `leave_one_group_out("military_acm")` and `leave_one_group_out("championship")`.
+- **H4 (sensitivity stability)**: First-order Sobol indices computed via the surrogate are stable across two independent Saltelli samples (10⁴ each) — Spearman rank correlation of the per-target rankings ≥ 0.90.
+
+Failure of any individual hypothesis does **not** invalidate the paper; it triggers the failure-handling protocol in §6.
+
+---
+
+## 2. Dataset
+
+- **Name**: `cgem_synthetic_v1`.
+- **Path**: `data/datasets/cgem_synthetic_v1.parquet`.
+- **Sidecar**: `data/datasets/cgem_synthetic_v1.meta.json`.
+- **Datasheet**: `docs/data/datasheet.md` (Gebru et al. 2018).
+- **Generation seed**: master seed `42` (per-row seeds derived deterministically; see datasheet §Reproducibility).
+- **Compiled binary**: SHA-256 hash recorded in the sidecar; CI verifies the hash matches before any model is trained.
+- **Total rows**: 3,240 (1,296 standard arm + 1,944 custom arm; 45 rows per maneuver across 72 maneuvers).
+- **Status filter**: pre-registered to drop `status != "ok"` rows before splitting (`drop_status_error=True` in `cgem_ext.data.splits.stratified_split`).
+
+---
+
+## 3. Splits
+
+### 3.1 Stratified 70 / 15 / 15
+
+- Implementation: `cgem_ext.data.splits.stratified_split(df, seed=42, train_frac=0.70, val_frac=0.15, test_frac=0.15, drop_status_error=True)`.
+- Stratification key: `maneuver_category` (championship, military_acm, extreme_post_stall, conceptual; "training" is empty in v1).
+- Per-category proportions in train must lie within ±5 percentage points of the overall proportions (verified by `tests/test_data.py::test_stratified_split_preserves_category_proportions`).
+- Test set may be inspected **only once**, after H1–H4 have been evaluated and reported. No test-set tuning is permitted — see §5.
+
+### 3.2 Leave-one-group-out
+
+- Implementation: `cgem_ext.data.splits.leave_one_group_out(df)`.
+- One `GroupSplit` per maneuver category; train = all rows from other categories, test = all rows from the held-out category.
+- Drives H3 (OOD AUROC) and the leave-one-group-out R² robustness metric.
+- Iteration order is alphabetical and deterministic.
+
+---
+
+## 4. Models
+
+### 4.1 Surrogate (per target)
+
+- **Targets**: `time_to_greyout_s`, `time_to_blackout_s`, `time_to_gloc_s`, `hlap_min`, `c_bank_min`. Censored time targets handled via two-stage classifier-then-regressor (the classifier is fit on the binary `event_*` flag; the regressor is fit on rows with `event_* == 1` only).
+- **Backbone**: XGBoost regressor (or classifier for the gating stage). Sanity baseline: scikit-learn `RandomForestRegressor`.
+- **Monotonicity constraints**: applied where physiologically required (e.g., `g_peak_abs` ↑ → `time_to_gloc_s` ↓, monotone-decreasing).
+- **Hyperparameter search**: Optuna with stratified k-fold CV (`k=5`) on the train split. Search space frozen at OSF posting time (recorded as `docs/publication/osf_search_spaces.json`).
+- **Calibration**: split-conformal Mondrian intervals stratified by `maneuver_category`, calibrated on the validation split, evaluated on the test split. Reliability diagrams + ECE reported as supplementary.
+
+### 4.2 OOD detector
+
+- **Backbone**: `sklearn.covariance.MinCovDet` over the input feature space `{g_peak_abs, dgdt_max_g_per_s, profile_duration_s, who_profile (one-hot), countermeasures (ordinal: none<agsm<suit_agsm), dehydration_level, g_tolerance_multiplier}`.
+- **Threshold**: χ²(df, 0.95) on squared Mahalanobis distance.
+- **Conformal abstention**: split-conformal threshold tuned to nominal abstention rate α = 0.05 on the validation split.
+- **Comparison baseline**: `sklearn.ensemble.IsolationForest` with default hyperparameters.
+
+### 4.3 Sensitivity analysis
+
+- **Backbone**: SALib `saltelli.sample` (10⁴ base samples) → `sobol.analyze`.
+- **Driver**: the trained per-target XGBoost surrogate.
+- **Outputs**: first-order, total-order, and second-order Sobol indices with bootstrap confidence intervals.
+- **Stability check** (H4): two independent Saltelli samples; Spearman rank correlation of per-target rankings ≥ 0.90.
+
+---
+
+## 5. Hold-out discipline
+
+- The test split is sealed before training begins. Split indices are written to `docs/publication/osf_split_indices.parquet` at OSF posting time and never modified.
+- **No test-set tuning** is permitted. The validation split drives all hyperparameter and calibration decisions.
+- The test split is loaded exactly once in the final paper-1 evaluation script (`scripts/evaluate_paper1.py`, to be added in Phase 3).
+- Model artifacts and metrics are versioned via MLflow with the dataset hash logged in every run. The `experiment_id` for the paper-1 run is recorded here at OSF posting.
+
+---
+
+## 6. Failure-handling protocol
+
+If any of H1–H4 fail on the test split, the following protocol applies *and* is reported in the paper:
+
+1. The failure is reported transparently in Results (no cherry-picking, no re-splitting).
+2. **No** post-hoc adjustment to the surrogate, OOD detector, or sensitivity protocol is permitted before reporting.
+3. Permitted post-failure actions:
+   - Diagnostic analysis on the validation split to characterise where the failure originates.
+   - Adding a new model variant *as a separate experiment* (logged as a distinct MLflow run, reported as exploratory in the Discussion).
+   - Re-running with a freshly drawn test split *only if* a new dataset version (`cgem_synthetic_v2`) is generated and a new pre-registration is filed.
+4. Failure of H1 or H2 implies the framework is not yet ready for paper-1 publication; we either iterate on the model architecture (new pre-registration) or scope the paper down (e.g., accept lower R² with explicit limitation reporting).
+5. Failure of H3 alone is acceptable as a published limitation; the OOD detector becomes a "future work" item rather than a contribution.
+6. Failure of H4 alone is acceptable; the sensitivity rankings are reported but with explicit instability caveats.
+
+---
+
+## 7. Reporting standards
+
+- TRIPOD-AI checklist for ML-in-medicine reporting (supplementary).
+- Datasheet (`docs/data/datasheet.md`).
+- Model cards: `docs/models/emulator_card.md`, `docs/models/ood_card.md`.
+- All figures rendered at journal resolution via the `echarts` and `publication-visuals` skills.
+- Open code (this repository, MIT license) and open synthetic dataset (Zenodo DOI) at submission time.
+
+---
+
+## 8. Authorship and AI disclosure
+
+Sole author of all code, manuscript, and pre-registration: **Dr. Diego Malpica, MD** (ORCID 0000-0002-2257-4940).
+
+AI assistants were used for code scaffolding, documentation drafts, and editorial assistance. The use of AI tools is disclosed at the paper level (Methods and/or Acknowledgments sections), not at the commit level — every git commit on this repository is sole-authored by `strikerdlm`.
+
+---
+
+## 9. Posting checklist
+
+Before posting to OSF:
+
+- [ ] Dataset hash logged in `data/datasets/cgem_synthetic_v1.meta.json` matches the parquet on disk.
+- [ ] `tests/test_data.py` passes on Python 3.10 / 3.11 / 3.12.
+- [ ] `tests/test_contract.py` passes (pulse-sim contract intact).
+- [ ] Hyperparameter search spaces frozen and committed to `docs/publication/osf_search_spaces.json`.
+- [ ] Stratified split indices frozen and committed to `docs/publication/osf_split_indices.parquet`.
+- [ ] OSF page created, this document uploaded as the registration plan.
+- [ ] OSF DOI inserted at the top of this document and committed.
+- [ ] Pre-registration date recorded.
+
+After posting:
+
+- [ ] Phase 2 (OOD) and Phase 3 (surrogate) work begins.
+- [ ] No commits modifying this file are permitted unless documenting a deviation.
