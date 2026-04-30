@@ -17,7 +17,7 @@ The full architectural rationale lives in `docs/architecture/ML_LAYER.md`. The p
 | 2 | OOD detector | 1 week | ✅ done |
 | 3 | Surrogate emulator | 2 weeks | ✅ core done (Optuna/SHAP/MLflow polish deferred) |
 | 4 | Global sensitivity analysis | 1 week | ✅ done |
-| 5 | FastAPI service | 1 week | ⬜ blocked on Phase 3 |
+| 5 | FastAPI service | 1 week | ✅ done (Prometheus /metrics deferred) |
 | 6 | Frontend integration | 2 weeks | ⬜ blocked on Phase 5 |
 | 7 | Paper 1 — AMHP methods paper | 2–3 weeks | ⬜ blocked on Phases 2–6 |
 | 8 | Paper 2 — external re-analysis | scoped only | ⬜ post-paper-1 |
@@ -101,12 +101,14 @@ Polish (deferred to follow-up commits, do not block Phase 4–7):
 
 ## Phase 5 — FastAPI service
 
-- [ ] `cgem_ext/api/main.py` — `/predict`, `/sweep`, `/run-cgem`, `/sensitivity/{target}`, `/healthz`, `/version`
-- [ ] `cgem_ext/api/schemas.py` — Pydantic v2 models mirroring v2.2.0 `CGEMRun` JSON contract
-- [ ] OpenAPI spec committed to `docs/api/openapi.json`
-- [ ] `cgem_ext/api/Dockerfile` + `docker-compose.yml`
-- [ ] Structured logging + `/metrics` Prometheus endpoint
-- [ ] `tests/test_api.py`
+- [x] `cgem_ext/api/schemas.py` — Pydantic v2 models. `CGEMRunResponse` mirrors the v2.2.0 contract pulse-sim's `cgem_bridge.load_cgem_json` reads (verified by `test_run_cgem_response_matches_pulse_sim_schema`).
+- [x] `cgem_ext/api/state.py` — `AppState` lifespan-managed model store: trains 5 surrogates + OOD detector + per-target Mondrian conformal layers at startup (~30 s wall-clock), so each `/predict` call is sub-millisecond.
+- [x] `cgem_ext/api/main.py` — FastAPI app exposing `/`, `/healthz`, `/version`, `/sensitivity/{target}`, `/predict`, `/sweep`, `/run-cgem`. CORS open by default for local frontend dev.
+- [x] `cgem_ext/api/Dockerfile` — single-stage Python 3.12-slim image bundling the cgem binary + dataset + sensitivity CSVs. Uvicorn entrypoint, healthcheck on `/healthz`.
+- [x] `docs/api/openapi.json` — 911-line auto-generated spec for frontend codegen (`scripts/export_openapi.py`).
+- [x] `tests/test_api.py` — 11 tests against `FastAPI.TestClient`. Module-scoped fixture amortises the 30s startup cost across all tests in the file.
+- [ ] Structured logging (`structlog`) + `/metrics` Prometheus endpoint — deferred to a follow-up commit; not blocking Phase 6.
+- [ ] `docker-compose.yml` — deferred; the Dockerfile alone covers single-container local dev.
 
 ## Phase 6 — Frontend integration
 
