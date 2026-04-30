@@ -18,7 +18,7 @@ The full architectural rationale lives in `docs/architecture/ML_LAYER.md`. The p
 | 3 | Surrogate emulator | 2 weeks | ✅ core done (Optuna/SHAP/MLflow polish deferred) |
 | 4 | Global sensitivity analysis | 1 week | ✅ done |
 | 5 | FastAPI service | 1 week | ✅ done (Prometheus /metrics deferred) |
-| 6 | Frontend integration | 2 weeks | ⬜ blocked on Phase 5 |
+| 6 | Frontend integration | 2 weeks | ✅ done (Playwright e2e deferred) |
 | 7 | Paper 1 — AMHP methods paper | 2–3 weeks | ⬜ blocked on Phases 2–6 |
 | 8 | Paper 2 — external re-analysis | scoped only | ⬜ post-paper-1 |
 | 9 | Paper 3 — own-centrifuge validation | scoped only | ⬜ blocked on subject data |
@@ -112,14 +112,17 @@ Polish (deferred to follow-up commits, do not block Phase 4–7):
 
 ## Phase 6 — Frontend integration
 
-- [ ] `npx openapi-typescript docs/api/openapi.json -o frontend/src/services/types.ts`
-- [ ] `frontend/src/services/cgemApi.ts` (axios + React Query)
-- [ ] `PredictionPage.tsx` → `usePrediction()`; show OOD warning banner
-- [ ] `BatchPage.tsx` → `/sweep`
-- [ ] `AnalysisPage.tsx` → `/sensitivity`
-- [ ] `DashboardPage.tsx` → live aggregation
-- [ ] Loading/error/retry states
-- [ ] `frontend/e2e/` Playwright golden-path test
+- [x] `frontend/src/main.tsx` — `QueryClientProvider` wrap with shared cache + retry policy
+- [x] `frontend/src/services/types.ts` — hand-maintained TypeScript wire contract mirroring `cgem_ext.api.schemas` (regenerable via `npx openapi-typescript ../docs/api/openapi.json`)
+- [x] `frontend/src/services/cgemApi.ts` — typed axios client + React Query hooks (`useHealth`, `useVersion`, `useSensitivity`, `usePredict`, `useSweep`, `useRunCgem`); base URL via `VITE_API_URL`
+- [x] `frontend/src/components/ui/OODBanner.tsx` — emerald "in-envelope" / amber "OOD" banner sourced from the `/predict` response
+- [x] `frontend/src/components/ui/PredictionTable.tsx` — per-target table (point + 95 % conformal CI; censored rows show P(event) + expected E[t])
+- [x] `frontend/src/components/charts/SensitivityChart.tsx` — Sobol S1 + ST bar chart per target driven by `useSensitivity`
+- [x] `PredictionPage` rewired: `usePredict` (surrogate, fast) + `useRunCgem` (Fortran subprocess, authoritative), OOD banner, conformal table, /version status header, error states with `apiErrorMessage`
+- [x] `BatchPage` rewired: `useSweep` over all 72 maneuvers in a single round-trip; sortable table; OOD-first sort; summary cards (total / in-envelope / OOD / high-G-LOC)
+- [x] `AnalysisPage`: appended a Sobol-sensitivity panel with target picker (5 targets); preserves the existing maneuver-explanation tree
+- [x] `DashboardPage`: API status banner showing `/version` (package version + binary SHA prefix + dataset seed)
+- [ ] `frontend/e2e/` Playwright golden-path test — deferred; the unit-test surface lives in the Python tests at `tests/test_api.py`
 
 ## Phase 7 — Paper 1 (AMHP methods paper)
 
