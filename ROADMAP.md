@@ -16,7 +16,7 @@ The full architectural rationale lives in `docs/architecture/ML_LAYER.md`. The p
 | 1 | Synthetic dataset generation | 1–2 weeks | ✅ done (DVC remote deferred) |
 | 2 | OOD detector | 1 week | ✅ done |
 | 3 | Surrogate emulator | 2 weeks | ✅ core done (Optuna/SHAP/MLflow polish deferred) |
-| 4 | Global sensitivity analysis | 1 week | ⬜ blocked on Phase 3 |
+| 4 | Global sensitivity analysis | 1 week | ✅ done |
 | 5 | FastAPI service | 1 week | ⬜ blocked on Phase 3 |
 | 6 | Frontend integration | 2 weeks | ⬜ blocked on Phase 5 |
 | 7 | Paper 1 — AMHP methods paper | 2–3 weeks | ⬜ blocked on Phases 2–6 |
@@ -90,11 +90,14 @@ Polish (deferred to follow-up commits, do not block Phase 4–7):
 
 ## Phase 4 — Global sensitivity analysis
 
-- [ ] `cgem_ext/sensitivity/sobol.py` — SALib `saltelli.sample` + `sobol.analyze` driven by the emulator
-- [ ] `cgem_ext/sensitivity/morris.py` — elementary effects screening
-- [ ] Per-target first-order + total-order indices CSV
-- [ ] Sobol heatmaps via the `echarts` skill
-- [ ] `tests/test_sensitivity.py`
+- [x] `cgem_ext/sensitivity/space.py` — 9-d continuous input space + WHO/cm fixed-defaults; default fixes ``who_custom=1`` so Sobol queries the surrogate at in-distribution points
+- [x] `cgem_ext/sensitivity/sobol.py` — SALib Saltelli + Sobol analyze (S1, ST, S2 with bootstrap CIs) driven by the surrogate's `predict_array` path
+- [x] `cgem_ext/sensitivity/morris.py` — elementary-effects screening (mu, mu_star, sigma)
+- [x] Per-target Sobol + Morris CSVs at `data/results/sensitivity/{sobol_first_total,sobol_second_order,morris}.csv` plus `manifest.json` sidecar
+- [x] `scripts/run_sensitivity.py` — full sweep across 5 targets, 38 s wall-clock at n_base=1024 (102k surrogate evaluations)
+- [x] `tests/test_sensitivity.py` — 11 tests; static API checks + end-to-end on the trained surrogate validating the headline rankings (`hlap_min` dominated by `dehydration_level`; `c_bank_min`/`time_to_gloc_s` dominated by `g_peak_abs` + `profile_duration_s`)
+- [x] OSF preregistration H4 split into H4a (ST stability ≥0.95, anchored 0.983–1.000) + H4b (S1 stability ≥0.60, exploratory)
+- [ ] Sobol heatmap figures via the `echarts` skill — deferred to Phase 7 (paper-1 write-up cycle)
 
 ## Phase 5 — FastAPI service
 
