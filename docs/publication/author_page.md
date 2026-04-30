@@ -72,9 +72,11 @@ interpretation.
 - Title: 67 characters including spaces (limit ≤ 100).
 - Running head: 26 characters (limit ≤ 30, ALL CAPS).
 - Abstract: 250 words (limit ≤ 250).
-- Body (Introduction → Conclusion): ≈ 3,146 words after the Phase-7
-  reference cleanup and ¶rephrase that dropped two unverified
-  references (limit ≤ 6,000 for Research Article).
+- Body (Introduction → Conclusion): ≈ 3,888 words after the Phase-7
+  reference cleanup, the proper-scientific-reporting revision (bootstrap
+  CIs added to Tables 1, 3, 4; Table 2 strata annotated with *n*; Sobol
+  finite-sample noise flagged) (limit ≤ 6,000 for AMHP Research Article;
+  no fixed cap at CBM/CMPB/AIM).
 - References: 16.
 - Tables: 4 (limit ≤ 4).
 - Figures: 6 — exceeds AMHP ≤ 4 limit. Figures 3 (calibration) and 4
