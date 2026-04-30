@@ -131,7 +131,18 @@ class XGBSurrogate:
         if self._fit_info is None:
             raise RuntimeError("XGBSurrogate is not fitted")
         feats = extract_features(df)
-        return np.asarray(self._regressor.predict(feats.to_numpy(dtype=float)), dtype=float)
+        return self.predict_array(feats.to_numpy(dtype=float))
+
+    def predict_array(self, x: np.ndarray) -> np.ndarray:
+        """Predict from an already-encoded FEATURE_COLUMNS-aligned matrix.
+
+        Used by sensitivity / SHAP runners that build the feature matrix
+        themselves (e.g. via ``cgem_ext.sensitivity._build_inference_matrix``)
+        and don't have raw dataset columns to feed ``extract_features``.
+        """
+        if self._fit_info is None:
+            raise RuntimeError("XGBSurrogate is not fitted")
+        return np.asarray(self._regressor.predict(np.asarray(x, dtype=float)), dtype=float)
 
     @property
     def fit_info(self) -> FitInfo:
@@ -212,17 +223,31 @@ class TwoStageXGBSurrogate:
         if self._fit_info is None:
             raise RuntimeError("TwoStageXGBSurrogate is not fitted")
         feats = extract_features(df)
-        x = feats.to_numpy(dtype=float)
-        proba = self._classifier.predict_proba(x)
-        # XGBClassifier with binary target returns shape (n, 2); column 1 is P(y=1).
-        return np.asarray(proba[:, 1], dtype=float)
+        return self.predict_event_probability_array(feats.to_numpy(dtype=float))
 
     def predict(self, df: pd.DataFrame) -> np.ndarray:
         """Return E[time | event=1] per row (conditional on the event)."""
         if self._fit_info is None:
             raise RuntimeError("TwoStageXGBSurrogate is not fitted")
         feats = extract_features(df)
-        return np.asarray(self._regressor.predict(feats.to_numpy(dtype=float)), dtype=float)
+        return self.predict_array(feats.to_numpy(dtype=float))
+
+    def predict_array(self, x: np.ndarray) -> np.ndarray:
+        """Conditional time E[time | event=1] from a FEATURE_COLUMNS-aligned matrix."""
+        if self._fit_info is None:
+            raise RuntimeError("TwoStageXGBSurrogate is not fitted")
+        return np.asarray(self._regressor.predict(np.asarray(x, dtype=float)), dtype=float)
+
+    def predict_event_probability_array(self, x: np.ndarray) -> np.ndarray:
+        """P(event=1) from a FEATURE_COLUMNS-aligned matrix."""
+        if self._fit_info is None:
+            raise RuntimeError("TwoStageXGBSurrogate is not fitted")
+        proba = self._classifier.predict_proba(np.asarray(x, dtype=float))
+        return np.asarray(proba[:, 1], dtype=float)
+
+    def predict_expected_time_array(self, x: np.ndarray) -> np.ndarray:
+        """E[time] = P(event) * E[time | event=1] from a FEATURE_COLUMNS-aligned matrix."""
+        return self.predict_event_probability_array(x) * self.predict_array(x)
 
     def predict_expected_time(self, df: pd.DataFrame) -> np.ndarray:
         """Return E[time] = P(event) * E[time | event=1] per row.
