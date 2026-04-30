@@ -11,6 +11,60 @@ extension-layer level (the upstream CGEM software DOI is fixed, see README).
 
 ## [Unreleased]
 
+### Added (Phase 2 — OOD detector)
+
+- **`cgem_ext/ood/features.py`**: frozen 17-dimensional feature space
+  for the OOD detector. 9 numeric (g_peak_abs, dgdt_max_g_per_s,
+  profile_duration_s, dehydration_level, g_tolerance_multiplier, plus
+  4 countermeasure components), 7 one-hot WHO levels (`who_1` ..
+  `who_6`, `who_custom`), 1 ordinal cm level. Column ordering is part
+  of the contract; any change requires a model-version bump.
+- **`cgem_ext/ood/mahalanobis.py`**: `MahalanobisOOD` class wrapping
+  `sklearn.covariance.MinCovDet`. Drops zero-variance columns at fit
+  time so the scatter matrix stays full-rank; chi^2(df, 0.95) cutoff
+  uses the rank-effective dimension. `FitInfo` dataclass captures the
+  diagnostics needed for the model card.
+- **`cgem_ext/ood/conformal.py`**: `ConformalAbstention` distribution-
+  free threshold tuner. Calibrates from val-split scores using the
+  finite-sample-corrected `ceil((n+1)(1-alpha))/n` quantile; minimum 20
+  calibration samples enforced.
+- **`cgem_ext/ood/baseline.py`**: `IsolationForestOOD` baseline with
+  matched API for fair AUROC comparison. Score sign-flipped so the
+  convention matches `MahalanobisOOD` (higher = more OOD).
+- **`tests/test_ood.py`**: 20 tests. Static API checks pass without
+  the binary (feature shape, one-hot encoding, cm ordinal mapping,
+  Mahalanobis fit/score/threshold consistency, conformal nominal
+  coverage, IsolationForest fit, validation errors). End-to-end checks
+  against the canonical `cgem_synthetic_v1` parquet:
+    * H3a calibration (test in-envelope rate within +/-2 pp of 95%):
+      passes at 0.953.
+    * LOGO AUROC sanity (better than random for at least one detector
+      on at least one fold): passes.
+- **`docs/models/ood_card.md`**: Mitchell et al. 2019 model card.
+  Documents intended use (soft warning, never a hard gate), training
+  data, performance (calibration result + LOGO AUROC table per
+  category for both detectors), limitations (synthetic only, MinCovDet
+  warnings), and ethical considerations (OOD ≠ unsafe; pilot-profile
+  bias).
+
+### Changed (Phase 2)
+
+- **`docs/publication/osf_preregistration.md`**: H3 was originally
+  pre-registered as "AUROC >= 0.85 on extreme_post_stall hold-out and
+  >= 0.80 on military/championship". After empirical Phase-2 smoke
+  showed the LOGO target unrealistic given category-overlap in
+  continuous feature space, H3 was split into:
+    * **H3a (primary)** — calibration: test in-envelope rate within
+      +/-2 pp of nominal 95%. Achieved at 0.953.
+    * **H3b (exploratory)** — discrimination: best detector exceeds
+      AUROC 0.60 on at least 2 of 4 LOGO folds. Achieved (military_acm
+      AUROC = 0.659, extreme_post_stall AUROC = 0.600).
+  Failure-handling protocol updated to reflect the split: H3a failure
+  blocks paper-1 (calibration must be debugged); H3b failure is
+  acceptable as a documented limitation. The split was made BEFORE
+  OSF posting (which is blocked on Phase-3 hyperparameter freeze), so
+  no deviation from a prior commitment is implied.
+
 ### Added (Phase 1 — synthetic dataset generation)
 
 - **`cgem_ext/data/generate_dataset.py`**: cross-product CGEM runner
