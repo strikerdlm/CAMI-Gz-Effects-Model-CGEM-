@@ -1,0 +1,78 @@
+%% Figure 6 — System architecture for the cgem-ext ML extension layer.
+%%
+%% Source format: Mermaid. Render to SVG/TIFF for AMHP submission via
+%%   `mmdc -i fig6_architecture.mmd -o fig6_architecture.svg`
+%%   `convert -density 1200 fig6_architecture.svg fig6_architecture.tif`
+%%
+%% Two contracts are highlighted with red dashed boundaries:
+%%   1. Python import — pulse-sim's cgem_bridge calls cgem_wrapper directly
+%%   2. JSON wire    — the FastAPI /run-cgem response mirrors the v2.2.0
+%%                     CGEMRun schema verbatim
+%%
+%% Both are enforced in CI (tests/test_contract.py + tests/test_api.py).
+
+flowchart TB
+    subgraph FE["React + TypeScript frontend (Vite 7 / React 19)"]
+        direction LR
+        FE_PRED["PredictionPage<br/>OOD banner · conformal CI"]
+        FE_BATCH["BatchPage<br/>72-maneuver sweep"]
+        FE_ANAL["AnalysisPage<br/>Sobol indices"]
+        FE_DASH["DashboardPage<br/>/version status"]
+    end
+
+    subgraph API["FastAPI service (cgem_ext.api)"]
+        direction TB
+        API_HTTP["POST /predict · /sweep · /run-cgem<br/>GET /sensitivity/{target} · /version · /healthz"]
+        API_STATE["AppState<br/>5 surrogates + OOD + Mondrian conformal<br/>(loaded once at lifespan startup)"]
+        API_HTTP --- API_STATE
+    end
+
+    subgraph ML["ML extension (cgem_ext)"]
+        direction TB
+        ML_DATA["data/<br/>generate_dataset · splits"]
+        ML_OOD["ood/<br/>Mahalanobis · ConformalAbstention<br/>IsolationForest baseline"]
+        ML_SUR["surrogate/<br/>XGBoost (5 targets, 2-stage censored)<br/>RF baseline · Mondrian conformal · calibration"]
+        ML_SEN["sensitivity/<br/>Sobol (Saltelli) · Morris"]
+    end
+
+    subgraph CORE["FAA-validated core (NEVER MODIFIED)"]
+        direction TB
+        CORE_F["src/cgem.f<br/>Fortran ODE physiology"]
+        CORE_BIN["cgem / cgem.exe<br/>compiled binary (SHA-256 logged)"]
+        CORE_WRAP["cgem_wrapper.py<br/>subprocess + I/O deck encode/decode"]
+        CORE_F --> CORE_BIN
+        CORE_BIN --> CORE_WRAP
+    end
+
+    PULSE["pulse-sim<br/>cgem_bridge"]
+
+    DATA["cgem_synthetic_v1.parquet<br/>3,240 rows · seed 42"]
+    SENS_CSV["sobol_first_total.csv<br/>morris.csv"]
+
+    FE -- "axios + React Query" --> API
+    API_STATE -- "loads at startup" --> ML_SUR
+    API_STATE -- "loads at startup" --> ML_OOD
+    API_STATE -- "loads at startup" --> SENS_CSV
+    ML_DATA -. "generates" .-> DATA
+    ML_OOD -. "fits on" .-> DATA
+    ML_SUR -. "trains on" .-> DATA
+    ML_SEN -. "drives" .-> ML_SUR
+    ML_SEN -. "writes" .-> SENS_CSV
+    ML_DATA -- "calls per row" --> CORE_WRAP
+    API_STATE -. "POST /run-cgem authoritative path" .-> CORE_WRAP
+    PULSE -. "Python import contract" .-> CORE_WRAP
+    PULSE -. "JSON wire contract" .-> API_HTTP
+
+    classDef core fill:#fee2e2,stroke:#dc2626,stroke-width:2px,color:#000;
+    classDef ml fill:#dbeafe,stroke:#1d4ed8,stroke-width:1.5px,color:#000;
+    classDef api fill:#dcfce7,stroke:#16a34a,stroke-width:1.5px,color:#000;
+    classDef fe fill:#ede9fe,stroke:#7c3aed,stroke-width:1.5px,color:#000;
+    classDef pulse fill:#fef3c7,stroke:#ca8a04,stroke-width:1.5px,color:#000;
+    classDef data fill:#f1f5f9,stroke:#64748b,stroke-width:1px,color:#000;
+
+    class CORE_F,CORE_BIN,CORE_WRAP core;
+    class ML_DATA,ML_OOD,ML_SUR,ML_SEN ml;
+    class API_HTTP,API_STATE api;
+    class FE_PRED,FE_BATCH,FE_ANAL,FE_DASH fe;
+    class PULSE pulse;
+    class DATA,SENS_CSV data;
