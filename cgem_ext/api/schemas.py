@@ -19,10 +19,7 @@ schema:
 
 from __future__ import annotations
 
-from typing import Optional
-
 from pydantic import BaseModel, ConfigDict, Field
-
 
 # ──────────────────────────────────────────────────────────────────────
 # Liveness / version
@@ -31,7 +28,7 @@ from pydantic import BaseModel, ConfigDict, Field
 
 class HealthResponse(BaseModel):
     status: str = Field(default="ok")
-    detail: Optional[str] = None
+    detail: str | None = None
 
 
 class VersionResponse(BaseModel):
@@ -53,7 +50,7 @@ class PilotConfigRequest(BaseModel):
     the few extras the Fortran model honours when ``who_profile`` is
     set)."""
 
-    who_profile: Optional[int] = Field(
+    who_profile: int | None = Field(
         default=2,
         ge=1,
         le=6,
@@ -81,15 +78,15 @@ class ManeuverDescriptors(BaseModel):
     from the registered profile.
     """
 
-    maneuver: Optional[str] = Field(
+    maneuver: str | None = Field(
         default=None,
         description="Identifier from `aerobatic_profiles.PROFILES`. If "
                     "present, the service computes g_peak_abs / "
                     "dgdt_max_g_per_s / profile_duration_s itself.",
     )
-    g_peak_abs: Optional[float] = Field(default=None, ge=0.0, le=15.0)
-    dgdt_max_g_per_s: Optional[float] = Field(default=None, ge=0.0, le=60.0)
-    profile_duration_s: Optional[float] = Field(default=None, ge=0.0, le=120.0)
+    g_peak_abs: float | None = Field(default=None, ge=0.0, le=15.0)
+    dgdt_max_g_per_s: float | None = Field(default=None, ge=0.0, le=60.0)
+    profile_duration_s: float | None = Field(default=None, ge=0.0, le=120.0)
 
 
 # ──────────────────────────────────────────────────────────────────────
@@ -131,15 +128,15 @@ class TargetPrediction(BaseModel):
             "Censored: E[time | event=1]."
         )
     )
-    lo: Optional[float] = Field(default=None, description="Conformal lower bound on `point`.")
-    hi: Optional[float] = Field(default=None, description="Conformal upper bound on `point`.")
-    event_probability: Optional[float] = Field(
+    lo: float | None = Field(default=None, description="Conformal lower bound on `point`.")
+    hi: float | None = Field(default=None, description="Conformal upper bound on `point`.")
+    event_probability: float | None = Field(
         default=None,
         description="P(event=1) for censored time targets.",
         ge=0.0,
         le=1.0,
     )
-    expected_time_s: Optional[float] = Field(
+    expected_time_s: float | None = Field(
         default=None,
         description="Convenience: P(event) * point for censored time targets.",
     )
@@ -218,9 +215,9 @@ class CGEMRunResponse(BaseModel):
     maneuver: str
     pilot_profile: str
     duration_s: float
-    time_to_greyout_s: Optional[float]
-    time_to_blackout_s: Optional[float]
-    time_to_gloc_s: Optional[float]
+    time_to_greyout_s: float | None
+    time_to_blackout_s: float | None
+    time_to_gloc_s: float | None
     data: CGEMRunData
 
 

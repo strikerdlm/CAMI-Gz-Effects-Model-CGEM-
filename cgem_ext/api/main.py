@@ -20,8 +20,8 @@ development; production deployments should narrow ``allow_origins``.
 
 from __future__ import annotations
 
+from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
-from typing import AsyncIterator
 
 import numpy as np
 import pandas as pd
@@ -44,8 +44,7 @@ from cgem_ext.api.schemas import (
     VersionResponse,
 )
 from cgem_ext.api.state import AppState
-from cgem_ext.surrogate import TARGETS, get_target
-
+from cgem_ext.surrogate import TARGETS
 
 # ── Lifespan: build app state once on startup ────────────────────────
 
@@ -149,7 +148,7 @@ def _predict_one(state: AppState, req: PredictionRequest) -> PredictionResponse:
         model = state.surrogates[spec.name]
         cp = state.conformals.get(spec.name)
         if spec.censored:
-            event_p = float(model.predict_event_probability(df)[0])
+            event_p = float(model.predict_event_probability(df)[0])  # type: ignore[union-attr]
             cond_t = float(model.predict(df)[0])
             # `point` is the conditional time so lo/hi are on the same scale.
             # The frontend composes `expected_time_s` = event_p * cond_t.
@@ -229,7 +228,7 @@ def _register_routes(app: FastAPI) -> None:
         try:
             _ = _state(request)
             return HealthResponse(status="ok")
-        except Exception as exc:  # noqa: BLE001
+        except Exception as exc:
             return HealthResponse(status="degraded", detail=str(exc))
 
     @app.get("/version", response_model=VersionResponse, tags=["meta"])
@@ -309,7 +308,7 @@ def _register_routes(app: FastAPI) -> None:
         try:
             cfg = PilotConfig(**cfg_kwargs)
             result, _run_dir = run_cgem_for_profile(req.maneuver, cfg)
-        except Exception as exc:  # noqa: BLE001
+        except Exception as exc:
             raise HTTPException(status_code=500, detail=f"cgem failed: {exc}") from exc
 
         # Build the v2.2.0 CGEMRun JSON shape
@@ -322,7 +321,7 @@ def _register_routes(app: FastAPI) -> None:
             return [int(v) for v in (values or [0] * n)][:n] if n else []
 
         data = CGEMRunData(
-            **{
+            **{  # type: ignore[arg-type]
                 "Time(s)": _ts(result.times_s),
                 "G": _ts(result.g_values),
                 "G_eff": _ts(result.geff_values),

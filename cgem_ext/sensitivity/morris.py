@@ -21,16 +21,14 @@ API mirrors :class:`cgem_ext.sensitivity.SobolAnalyzer`.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Optional
 
 import numpy as np
 import pandas as pd
 from SALib.analyze.morris import analyze as _morris_analyze
 from SALib.sample.morris import sample as _morris_sample
 
-from cgem_ext.sensitivity.space import SENSITIVITY_FEATURES, SOBOL_PROBLEM
 from cgem_ext.sensitivity.sobol import _build_inference_matrix, _surrogate_predict_array
-
+from cgem_ext.sensitivity.space import SENSITIVITY_FEATURES, SOBOL_PROBLEM
 
 DEFAULT_N_TRAJECTORIES = 200  # ~ 200 * (d + 1) evals; d=9 -> 2,000 evals
 DEFAULT_NUM_LEVELS = 8
@@ -75,7 +73,7 @@ class MorrisAnalyzer:
         self,
         surrogate,
         *,
-        target: Optional[str] = None,
+        target: str | None = None,
         n_trajectories: int = DEFAULT_N_TRAJECTORIES,
         num_levels: int = DEFAULT_NUM_LEVELS,
         seed: int = 42,
@@ -84,7 +82,9 @@ class MorrisAnalyzer:
         cm_ordinal: float = 0.0,
     ) -> None:
         self.surrogate = surrogate
-        self.target = target or getattr(getattr(surrogate, "spec", None), "name", "<unknown>")
+        self.target: str = str(
+            target or getattr(getattr(surrogate, "spec", None), "name", "<unknown>")
+        )
         self.n_trajectories = int(n_trajectories)
         self.num_levels = int(num_levels)
         self.seed = int(seed)
@@ -127,8 +127,8 @@ class MorrisAnalyzer:
 
 
 __all__ = [
-    "DEFAULT_N_TRAJECTORIES",
     "DEFAULT_NUM_LEVELS",
+    "DEFAULT_N_TRAJECTORIES",
     "MorrisAnalyzer",
     "MorrisFitInfo",
     "MorrisResults",

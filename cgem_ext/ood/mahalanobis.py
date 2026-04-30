@@ -23,7 +23,6 @@ is the canonical robust setting from Rousseeuw and Van Driessen (1999).
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Optional
 
 import numpy as np
 import pandas as pd
@@ -64,14 +63,14 @@ class MahalanobisOOD:
             raise ValueError(f"alpha must be in (0, 1); got {alpha}")
         self.alpha = float(alpha)
         self.random_state = int(random_state)
-        self._mcd: Optional[MinCovDet] = None
-        self._threshold: Optional[float] = None
-        self._fit_info: Optional[FitInfo] = None
-        self._effective_columns: Optional[tuple[str, ...]] = None
+        self._mcd: MinCovDet | None = None
+        self._threshold: float | None = None
+        self._fit_info: FitInfo | None = None
+        self._effective_columns: tuple[str, ...] | None = None
 
     # ── Fit / score ─────────────────────────────────────────────────
 
-    def fit(self, df: pd.DataFrame) -> "MahalanobisOOD":
+    def fit(self, df: pd.DataFrame) -> MahalanobisOOD:
         """Fit the robust covariance on the in-distribution slice ``df``.
 
         Constant columns (zero variance) are dropped from the feature
@@ -99,7 +98,7 @@ class MahalanobisOOD:
         self._threshold = float(chi2.ppf(1 - self.alpha, df=df_eff))
         self._fit_info = FitInfo(
             n_train=int(x.shape[0]),
-            n_features=int(len(FEATURE_COLUMNS)),
+            n_features=len(FEATURE_COLUMNS),
             rank_effective=df_eff,
             threshold_chi2=self._threshold,
             support_fraction=float(getattr(mcd, "support_fraction", float("nan")) or 0.0),

@@ -40,9 +40,9 @@ from cgem_ext.surrogate.xgb import (
 
 __all__ = [
     "FEATURE_COLUMNS",
+    "TARGETS",
     "MondrianSplitConformal",
     "RFSurrogate",
-    "TARGETS",
     "TargetSpec",
     "TwoStageRFSurrogate",
     "TwoStageXGBSurrogate",

@@ -21,14 +21,13 @@ import numpy as np
 import pandas as pd
 import pytest
 
-
 # ──────────────────────────────────────────────────────────────────────
 # Static space + template checks
 # ──────────────────────────────────────────────────────────────────────
 
 
 def test_sobol_problem_shape():
-    from cgem_ext.sensitivity import SOBOL_PROBLEM, SENSITIVITY_FEATURES
+    from cgem_ext.sensitivity import SENSITIVITY_FEATURES, SOBOL_PROBLEM
 
     assert SOBOL_PROBLEM["num_vars"] == len(SENSITIVITY_FEATURES) == 9
     assert list(SOBOL_PROBLEM["names"]) == list(SENSITIVITY_FEATURES)

@@ -14,11 +14,10 @@ that the v2.2.0 ``CGEMRun`` JSON keys are present and well-typed.
 from __future__ import annotations
 
 import warnings
-from typing import Iterator
+from collections.abc import Iterator
 
 import pytest
 from fastapi.testclient import TestClient
-
 
 # ──────────────────────────────────────────────────────────────────────
 # Session-wide TestClient

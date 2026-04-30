@@ -14,7 +14,6 @@ contribution.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Optional
 
 import numpy as np
 import pandas as pd
@@ -60,16 +59,16 @@ class RFSurrogate:
         self.spec: TargetSpec = spec
         params = {**_DEFAULT_REGRESSOR, **rf_kwargs}
         self._regressor = RandomForestRegressor(**params)
-        self._fit_info: Optional[FitInfo] = None
+        self._fit_info: FitInfo | None = None
 
-    def fit(self, df: pd.DataFrame) -> "RFSurrogate":
+    def fit(self, df: pd.DataFrame) -> RFSurrogate:
         feats = extract_features(df)
         y = df[self.spec.name].astype(float).to_numpy()
         if np.isnan(y).any():
             raise ValueError(f"Target {self.spec.name!r} has NaNs.")
         self._regressor.fit(feats.to_numpy(dtype=float), y)
         self._fit_info = FitInfo(
-            target=self.spec.name, censored=False, n_train=int(len(df)), n_train_event=-1
+            target=self.spec.name, censored=False, n_train=len(df), n_train_event=-1
         )
         return self
 
@@ -98,9 +97,9 @@ class TwoStageRFSurrogate:
         reg_params = {**_DEFAULT_REGRESSOR, **rf_kwargs.get("regressor_kwargs", {})}
         self._classifier = RandomForestClassifier(**cls_params)
         self._regressor = RandomForestRegressor(**reg_params)
-        self._fit_info: Optional[FitInfo] = None
+        self._fit_info: FitInfo | None = None
 
-    def fit(self, df: pd.DataFrame) -> "TwoStageRFSurrogate":
+    def fit(self, df: pd.DataFrame) -> TwoStageRFSurrogate:
         if self.spec.event_column is None:  # pragma: no cover
             raise ValueError(f"{self.spec.name!r} has no event_column declared")
         feats = extract_features(df)
@@ -117,7 +116,7 @@ class TwoStageRFSurrogate:
         self._fit_info = FitInfo(
             target=self.spec.name,
             censored=True,
-            n_train=int(len(df)),
+            n_train=len(df),
             n_train_event=int(mask.sum()),
         )
         return self

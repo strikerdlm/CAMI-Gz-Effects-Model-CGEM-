@@ -14,7 +14,6 @@ import numpy as np
 import pandas as pd
 import pytest
 
-
 # ──────────────────────────────────────────────────────────────────────
 # Splitter tests — synthetic fixture, no CGEM binary needed
 # ──────────────────────────────────────────────────────────────────────
@@ -73,7 +72,7 @@ def test_stratified_split_preserves_category_proportions():
     df = _fixture_df(counts)
     sp = stratified_split(df, seed=0)
 
-    train_df, _, test_df = sp.apply(df)
+    train_df, _, _test_df = sp.apply(df)
     overall = df["maneuver_category"].value_counts(normalize=True)
     train_props = train_df["maneuver_category"].value_counts(normalize=True)
 

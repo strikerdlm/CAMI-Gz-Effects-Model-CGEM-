@@ -21,7 +21,6 @@ import numpy as np
 import pandas as pd
 import pytest
 
-
 # ──────────────────────────────────────────────────────────────────────
 # Synthetic fixtures — no CGEM binary needed
 # ──────────────────────────────────────────────────────────────────────
@@ -70,7 +69,7 @@ def _row(
 def _fixture_df(n=200, seed=0):
     rng = np.random.default_rng(seed)
     rows = []
-    for i in range(n):
+    for _ in range(n):
         rows.append(
             _row(
                 who_profile=int(rng.integers(1, 7)),

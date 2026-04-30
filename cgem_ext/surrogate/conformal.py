@@ -26,11 +26,9 @@ Confidence Machine*; and the modern reformulation in Romano, Patterson
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Optional
 
 import numpy as np
 import pandas as pd
-
 
 DEFAULT_ALPHA = 0.05
 
@@ -74,7 +72,7 @@ class MondrianSplitConformal:
         if not 0 < alpha < 1:
             raise ValueError(f"alpha must be in (0, 1); got {alpha}")
         self.alpha = float(alpha)
-        self._fit: Optional[MondrianFit] = None
+        self._fit: MondrianFit | None = None
         self._stratum_to_q: dict[str, float] = {}
 
     def fit(
@@ -84,7 +82,7 @@ class MondrianSplitConformal:
         cal_targets: np.ndarray | pd.Series,
         cal_strata: np.ndarray | pd.Series,
         min_per_stratum: int = 20,
-    ) -> "MondrianSplitConformal":
+    ) -> MondrianSplitConformal:
         cal_predictions = np.asarray(cal_predictions, dtype=float)
         cal_targets = np.asarray(cal_targets, dtype=float)
         cal_strata = np.asarray(cal_strata)

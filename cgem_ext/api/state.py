@@ -17,23 +17,20 @@ from __future__ import annotations
 import json
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Optional
 
-import numpy as np
 import pandas as pd
 
-import cgem_ext  # noqa: F401  triggers sys.path injection
+import cgem_ext
 from cgem_ext.data.splits import stratified_split
 from cgem_ext.ood import ConformalAbstention, MahalanobisOOD
 from cgem_ext.surrogate import (
-    MondrianSplitConformal,
     TARGETS,
+    MondrianSplitConformal,
     TargetSpec,
     TwoStageXGBSurrogate,
     XGBSurrogate,
     build_surrogate,
 )
-
 
 # ── Resolved paths ───────────────────────────────────────────────────
 
@@ -52,7 +49,7 @@ def _resolve_dataset(repo_root: Path) -> Path:
     return path
 
 
-def _resolve_sensitivity_csv(repo_root: Path) -> Optional[Path]:
+def _resolve_sensitivity_csv(repo_root: Path) -> Path | None:
     path = repo_root / "data" / "results" / "sensitivity" / "sobol_first_total.csv"
     return path if path.is_file() else None
 
@@ -68,15 +65,15 @@ class AppState:
     master_seed: int
     surrogates: dict[str, XGBSurrogate | TwoStageXGBSurrogate] = field(default_factory=dict)
     conformals: dict[str, MondrianSplitConformal] = field(default_factory=dict)
-    ood_detector: Optional[MahalanobisOOD] = None
-    ood_abstainer: Optional[ConformalAbstention] = None
-    sensitivity_df: Optional[pd.DataFrame] = None
-    sensitivity_manifest: Optional[dict] = None
+    ood_detector: MahalanobisOOD | None = None
+    ood_abstainer: ConformalAbstention | None = None
+    sensitivity_df: pd.DataFrame | None = None
+    sensitivity_manifest: dict | None = None
 
     # ── Building ────────────────────────────────────────────────────
 
     @classmethod
-    def build(cls) -> "AppState":
+    def build(cls) -> AppState:
         """Train all models from the canonical dataset.
 
         Wall-clock at startup: ~30 s for the full 5-target surrogate
@@ -134,7 +131,7 @@ class AppState:
         model: XGBSurrogate | TwoStageXGBSurrogate,
         spec: TargetSpec,
         val_df: pd.DataFrame,
-    ) -> Optional[MondrianSplitConformal]:
+    ) -> MondrianSplitConformal | None:
         if spec.censored:
             event_col = spec.event_column
             assert event_col is not None  # spec.censored implies event_column

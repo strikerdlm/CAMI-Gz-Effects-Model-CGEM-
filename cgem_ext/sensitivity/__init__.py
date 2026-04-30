@@ -30,11 +30,11 @@ from cgem_ext.sensitivity.space import (
 )
 
 __all__ = [
-    "MorrisAnalyzer",
-    "MorrisResults",
     "SENSITIVITY_BOUNDS",
     "SENSITIVITY_FEATURES",
     "SOBOL_PROBLEM",
+    "MorrisAnalyzer",
+    "MorrisResults",
     "SobolAnalyzer",
     "SobolResults",
     "fixed_feature_template",

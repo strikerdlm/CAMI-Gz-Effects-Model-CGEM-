@@ -13,7 +13,6 @@ stacked on top of this detector identically.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Optional
 
 import numpy as np
 import pandas as pd
@@ -45,10 +44,10 @@ class IsolationForestOOD:
         self.n_estimators = int(n_estimators)
         self.contamination = contamination
         self.random_state = int(random_state)
-        self._model: Optional[IsolationForest] = None
-        self._fit_info: Optional[BaselineFitInfo] = None
+        self._model: IsolationForest | None = None
+        self._fit_info: BaselineFitInfo | None = None
 
-    def fit(self, df: pd.DataFrame) -> "IsolationForestOOD":
+    def fit(self, df: pd.DataFrame) -> IsolationForestOOD:
         feats = extract_features(df)
         x = feats.to_numpy(dtype=float)
         model = IsolationForest(
@@ -77,14 +76,14 @@ class IsolationForestOOD:
         x = feats.to_numpy(dtype=float)
         # decision_function is positive for inliers and negative for outliers;
         # negate so the convention matches MahalanobisOOD (higher = more OOD).
-        return -np.asarray(self._model.decision_function(x), dtype=float)  # type: ignore[union-attr]
+        return -np.asarray(self._model.decision_function(x), dtype=np.float64)  # type: ignore[union-attr]
 
     def is_in_envelope(self, df: pd.DataFrame) -> np.ndarray:
         """Boolean per row using IsolationForest's own predict (1 = inlier)."""
         self._check_fitted()
         feats = extract_features(df)
         x = feats.to_numpy(dtype=float)
-        return np.asarray(self._model.predict(x), dtype=int) == 1  # type: ignore[union-attr]
+        return np.asarray(self._model.predict(x), dtype=np.int64) == 1  # type: ignore[union-attr]
 
     @property
     def fit_info(self) -> BaselineFitInfo:

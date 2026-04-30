@@ -34,7 +34,6 @@ from __future__ import annotations
 
 import pandas as pd
 
-
 # ── Stable column ordering ─────────────────────────────────────────────
 
 NUMERIC_FEATURES: tuple[str, ...] = (
@@ -74,7 +73,7 @@ def _encode_who(who: object) -> dict[str, float]:
         out["who_custom"] = 1.0
         return out
     try:
-        i = int(who)
+        i = int(who)  # type: ignore[call-overload]
     except (TypeError, ValueError):
         out["who_custom"] = 1.0
         return out

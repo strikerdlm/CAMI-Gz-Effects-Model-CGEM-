@@ -25,7 +25,6 @@ arrays unchanged.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Optional
 
 import numpy as np
 import pandas as pd
@@ -33,7 +32,6 @@ from xgboost import XGBClassifier, XGBRegressor
 
 from cgem_ext.surrogate.features import extract_features
 from cgem_ext.surrogate.targets import TargetSpec, get_target
-
 
 # ── Default hyperparameters ──────────────────────────────────────────
 
@@ -107,9 +105,9 @@ class XGBSurrogate:
         params = _default_regressor_params(spec.monotonicity)
         params.update(xgb_kwargs)
         self._regressor = XGBRegressor(**params)
-        self._fit_info: Optional[FitInfo] = None
+        self._fit_info: FitInfo | None = None
 
-    def fit(self, df: pd.DataFrame) -> "XGBSurrogate":
+    def fit(self, df: pd.DataFrame) -> XGBSurrogate:
         feats = extract_features(df)
         y = df[self.spec.name].astype(float).to_numpy()
         if np.isnan(y).any():
@@ -121,7 +119,7 @@ class XGBSurrogate:
         self._fit_info = FitInfo(
             target=self.spec.name,
             censored=False,
-            n_train=int(len(df)),
+            n_train=len(df),
             n_train_event=-1,
             feature_columns=tuple(feats.columns.tolist()),
         )
@@ -185,9 +183,9 @@ class TwoStageXGBSurrogate:
         reg_params.update(xgb_kwargs.get("regressor_kwargs", {}))
         self._classifier = XGBClassifier(**cls_params)
         self._regressor = XGBRegressor(**reg_params)
-        self._fit_info: Optional[FitInfo] = None
+        self._fit_info: FitInfo | None = None
 
-    def fit(self, df: pd.DataFrame) -> "TwoStageXGBSurrogate":
+    def fit(self, df: pd.DataFrame) -> TwoStageXGBSurrogate:
         if self.spec.event_column is None:  # pragma: no cover  (defensive)
             raise ValueError(f"{self.spec.name!r} has no event_column declared")
         feats = extract_features(df)
@@ -212,7 +210,7 @@ class TwoStageXGBSurrogate:
         self._fit_info = FitInfo(
             target=self.spec.name,
             censored=True,
-            n_train=int(len(df)),
+            n_train=len(df),
             n_train_event=int(mask.sum()),
             feature_columns=tuple(feats.columns.tolist()),
         )

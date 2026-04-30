@@ -18,7 +18,6 @@ import numpy as np
 import pandas as pd
 import pytest
 
-
 # ──────────────────────────────────────────────────────────────────────
 # Targets catalogue
 # ──────────────────────────────────────────────────────────────────────
@@ -127,10 +126,7 @@ def _fixture_df(n=300, seed=0):
         hlap = 110 - 4 * g_peak
         c_bank = max(0.5, 12 - 0.8 * g_peak)
         # Greyout occurs when g_peak > 5; time inversely related to g_peak.
-        if g_peak > 5:
-            ttg = max(0.5, 6 - 0.4 * g_peak + rng.normal(0, 0.2))
-        else:
-            ttg = None
+        ttg = max(0.5, 6 - 0.4 * g_peak + rng.normal(0, 0.2)) if g_peak > 5 else None
         rows.append(
             _row(
                 g_peak=g_peak,

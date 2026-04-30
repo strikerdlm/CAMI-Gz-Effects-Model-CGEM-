@@ -184,20 +184,20 @@ def stratified_split(
     test_parts: list[np.ndarray] = []
 
     for _category, sub in df.groupby("maneuver_category", sort=True):
-        idx = sub.index.to_numpy()
+        # ``.to_numpy()`` returns a read-only view on numpy>=2; copy so ``rng.shuffle`` can mutate.
+        idx = sub.index.to_numpy(copy=True)
         rng.shuffle(idx)
         n = len(idx)
         if n == 0:
             continue
-        n_train = max(1, int(round(n * train_frac))) if n >= 1 else 0
+        n_train = max(1, round(n * train_frac)) if n >= 1 else 0
         # Distribute the remainder between val/test proportionally.
         remainder = n - n_train
         if remainder > 0:
-            n_val = max(1, int(round(remainder * val_frac / (val_frac + test_frac))))
+            n_val = max(1, round(remainder * val_frac / (val_frac + test_frac)))
             n_val = min(n_val, remainder)
-            n_test = remainder - n_val
         else:
-            n_val = n_test = 0
+            n_val = 0
 
         train_parts.append(idx[:n_train])
         val_parts.append(idx[n_train : n_train + n_val])

@@ -28,7 +28,7 @@ API:
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Optional, Protocol
+from typing import Protocol
 
 import numpy as np
 import pandas as pd
@@ -41,7 +41,6 @@ from cgem_ext.sensitivity.space import (
     SOBOL_PROBLEM,
     fixed_feature_template,
 )
-
 
 DEFAULT_N_BASE = 1024
 DEFAULT_NUM_RESAMPLES = 100  # bootstrap replicates for SALib confidence intervals
@@ -78,8 +77,8 @@ class SobolResults:
     s1_conf: np.ndarray
     st: np.ndarray
     st_conf: np.ndarray
-    s2: Optional[np.ndarray]  # (d, d), nan on the diagonal
-    s2_conf: Optional[np.ndarray]
+    s2: np.ndarray | None  # (d, d), nan on the diagonal
+    s2_conf: np.ndarray | None
     feature_names: tuple[str, ...]
 
     def dataframe(self) -> pd.DataFrame:
@@ -192,7 +191,7 @@ class SobolAnalyzer:
         self,
         surrogate,
         *,
-        target: Optional[str] = None,
+        target: str | None = None,
         n_base: int = DEFAULT_N_BASE,
         seed: int = 42,
         calc_second_order: bool = True,
@@ -201,7 +200,9 @@ class SobolAnalyzer:
         cm_ordinal: float = 0.0,
     ) -> None:
         self.surrogate = surrogate
-        self.target = target or getattr(getattr(surrogate, "spec", None), "name", "<unknown>")
+        self.target: str = str(
+            target or getattr(getattr(surrogate, "spec", None), "name", "<unknown>")
+        )
         self.n_base = int(n_base)
         self.seed = int(seed)
         self.calc_second_order = bool(calc_second_order)
@@ -250,8 +251,8 @@ class SobolAnalyzer:
 
 
 __all__ = [
-    "DEFAULT_N_BASE",
     "DEFAULT_NUM_RESAMPLES",
+    "DEFAULT_N_BASE",
     "SobolAnalyzer",
     "SobolFitInfo",
     "SobolResults",

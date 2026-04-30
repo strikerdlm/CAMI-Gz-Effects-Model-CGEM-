@@ -49,14 +49,14 @@ import shutil
 import sys
 import time
 import uuid
+from collections.abc import Iterator
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Iterator, Optional
 
 import numpy as np
 import pandas as pd
 
-import cgem_ext  # noqa: F401  side-effect: injects repo root onto sys.path
+import cgem_ext
 from aerobatic_profiles import PROFILES, load_profile
 from cgem_wrapper import PilotConfig, run_cgem_for_profile
 
@@ -206,7 +206,7 @@ def _maneuver_summary(maneuver: str) -> dict:
         "g_max": g_max,
         "dgdt_max_g_per_s": dgdt_max,
         "profile_duration_s": profile_duration,
-        "num_profile_samples": int(len(samples)),
+        "num_profile_samples": len(samples),
     }
 
 
@@ -220,7 +220,7 @@ class RowSpec:
     row_id: str
     maneuver: str
     arm: str  # "standard" | "custom"
-    who_profile: Optional[int]
+    who_profile: int | None
     g_tolerance_multiplier: float
     dehydration_label: str
     dehydration_level: float
@@ -280,9 +280,9 @@ def _run_single(spec: RowSpec) -> dict:
         cfg_kwargs["g_tolerance_multiplier"] = spec.g_tolerance_multiplier
 
     try:
-        cfg = PilotConfig(**cfg_kwargs)
+        cfg = PilotConfig(**cfg_kwargs)  # type: ignore[arg-type]
         result, run_dir = run_cgem_for_profile(spec.maneuver, cfg)
-    except Exception as exc:  # noqa: BLE001  surface as row status, never crash the pool
+    except Exception as exc:
         return {**base_row, "status": "error", "error_msg": f"{type(exc).__name__}: {exc}"}
     finally:
         # run_cgem_for_profile creates its own tempdir; clean it eagerly.
@@ -323,7 +323,7 @@ def _spec_from_levels(
     *,
     maneuver: str,
     arm: str,
-    who_profile: Optional[int],
+    who_profile: int | None,
     gtm: float,
     deh_label: str,
     deh_value: float,
@@ -506,7 +506,7 @@ def generate(
         "master_seed": master_seed,
         "binary_sha256": binary_sha,
         "package_version": getattr(cgem_ext, "__version__", "unknown"),
-        "rows_total": int(len(df)),
+        "rows_total": len(df),
         "rows_ok": int((df["status"] == "ok").sum()),
         "rows_error": int((df["status"] == "error").sum()),
         "wall_clock_s": round(elapsed, 2),

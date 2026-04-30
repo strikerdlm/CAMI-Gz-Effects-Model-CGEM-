@@ -42,7 +42,7 @@ from cgem_wrapper import (  # noqa: E402  (path injected above)
     run_cgem_for_profile,
 )
 
-__all__ = ["PilotConfig", "run_cgem_for_profile", "REPO_ROOT", "__version__"]
+__all__ = ["REPO_ROOT", "PilotConfig", "__version__", "run_cgem_for_profile"]
 
 REPO_ROOT: _Path = _REPO_ROOT
 __version__ = "0.1.0"

@@ -28,10 +28,8 @@ References (cited in the paper):
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Optional
 
 import numpy as np
-
 
 DEFAULT_ALPHA = 0.05
 
@@ -60,10 +58,10 @@ class ConformalAbstention:
         if not 0 < alpha < 1:
             raise ValueError(f"alpha must be in (0, 1); got {alpha}")
         self.alpha = float(alpha)
-        self._threshold: Optional[float] = None
-        self._info: Optional[CalibrationInfo] = None
+        self._threshold: float | None = None
+        self._info: CalibrationInfo | None = None
 
-    def calibrate(self, calibration_scores: np.ndarray) -> "ConformalAbstention":
+    def calibrate(self, calibration_scores: np.ndarray) -> ConformalAbstention:
         """Pick the (1 - alpha) empirical quantile as the threshold.
 
         ``calibration_scores`` should be the OOD scores produced by the
@@ -100,7 +98,7 @@ class ConformalAbstention:
         """Boolean per score: ``True`` iff score ≤ calibrated threshold."""
         self._check_calibrated()
         scores = np.asarray(scores, dtype=float)
-        return scores <= self._threshold  # type: ignore[operator]
+        return scores <= self._threshold
 
     @property
     def threshold(self) -> float:
@@ -114,7 +112,7 @@ class ConformalAbstention:
 
 
 __all__ = [
+    "DEFAULT_ALPHA",
     "CalibrationInfo",
     "ConformalAbstention",
-    "DEFAULT_ALPHA",
 ]
