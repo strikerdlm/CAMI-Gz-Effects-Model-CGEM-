@@ -19,7 +19,7 @@ The full architectural rationale lives in `docs/architecture/ML_LAYER.md`. The p
 | 4 | Global sensitivity analysis | 1 week | ✅ done |
 | 5 | FastAPI service | 1 week | ✅ done (Prometheus /metrics deferred) |
 | 6 | Frontend integration | 2 weeks | ✅ done (Playwright e2e deferred) |
-| 7 | Paper 1 — AMHP methods paper | 2–3 weeks | ⬜ blocked on Phases 2–6 |
+| 7 | Paper 1 — AMHP methods paper | 2–3 weeks | 🚧 in progress (manuscript ≈ portal-ready; OSF posting + form scans pending) |
 | 8 | Paper 2 — external re-analysis | scoped only | ⬜ post-paper-1 |
 | 9 | Paper 3 — own-centrifuge validation | scoped only | ⬜ blocked on subject data |
 
@@ -126,12 +126,21 @@ Polish (deferred to follow-up commits, do not block Phase 4–7):
 
 ## Phase 7 — Paper 1 (AMHP methods paper)
 
-- [ ] `docs/publication/Q1_PAPER_PLAN.md` filled out (IMRaD, target metrics, figure list)
-- [ ] Manuscript drafted (use `amhp-submit` skill)
-- [ ] All figures rendered via `echarts` skill at journal-quality
-- [ ] TRIPOD-AI checklist completed and attached as supplementary
-- [ ] OSF pre-print posted at submission time
-- [ ] Submitted via Editorial Manager
+- [x] `docs/publication/Q1_PAPER_PLAN.md` filled out (IMRaD, target metrics, figure list) — Phase 0
+- [x] Manuscript drafted — `docs/publication/manuscript.md` (16 refs, ~3,150 body words, 250-word abstract)
+- [x] AMHP compliance pass — title 67/100 chars, running head `CONFORMAL CGEM EMULATION` (26/30), depersonalized title page in `author_page.md`, abstract 250/250, keywords 5/5
+- [x] Figure data + 5 ECharts option JSONs committed at `data/results/figures/`
+- [x] Figure 6 architecture source (Mermaid) at `data/results/figures/fig6_architecture.mmd`
+- [x] Cover letter `docs/publication/cover_letter.md` addressing all 11 AMHP §3–§12 elements
+- [x] TRIPOD-AI reporting checklist `docs/publication/tripod_ai_checklist.md`
+- [x] Suggested reviewers `docs/publication/suggested_reviewers.md` (6 candidates + 3 backups)
+- [x] Reference verification + cleanup — 18→16 refs, two FAA technical-report placeholders resolved, one likely-fabricated reference dropped
+- [x] Pandoc render pipeline — `scripts/render_manuscript.py` produces 7 .docx + .html outputs from the markdown sources
+- [x] Render checklist `docs/publication/render_checklist.md` for the manual Word edits AMHP requires (double-spacing, page numbers, superscript citation conversion, table numbering)
+- [ ] Render Figs 1–5 to SVG via Node ECharts CLI; Fig 6 via `mmdc`; convert to TIFF at 1200 dpi (line art) / 600 dpi (combination halftone)
+- [ ] Post OSF pre-registration; capture DOI for the cover letter
+- [ ] Sign and scan AMHP forms (Author Checklist, Copyright Release, COI)
+- [ ] Submit via Editorial Manager (`https://www.editorialmanager.com/AMHP/`)
 
 ## Phase 8 — Paper 2 (external re-analysis, scoped only)
 
