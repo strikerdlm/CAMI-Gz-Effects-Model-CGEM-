@@ -12,8 +12,8 @@ The full architectural rationale lives in `docs/architecture/ML_LAYER.md`. The p
 
 | Phase | Title | Estimate | Status |
 |------|-------|----------|--------|
-| 0 | Foundation & contract preservation | 1–2 weeks | 🚧 in progress |
-| 1 | Synthetic dataset generation | 1–2 weeks | ⬜ blocked on Phase 0 |
+| 0 | Foundation & contract preservation | 1–2 weeks | ✅ done (CI workflow file pending PAT scope) |
+| 1 | Synthetic dataset generation | 1–2 weeks | 🚧 in progress |
 | 2 | OOD detector | 1 week | ⬜ blocked on Phase 1 |
 | 3 | Surrogate emulator | 2 weeks | ⬜ blocked on Phase 1 |
 | 4 | Global sensitivity analysis | 1 week | ⬜ blocked on Phase 3 |
@@ -38,25 +38,25 @@ Goal: stand up the new repository skeleton without breaking any existing consume
 - [x] `cgem_ext/__init__.py` re-exports `run_cgem_for_profile` and `PilotConfig`
 - [x] `pyproject.toml` (package metadata, ruff/mypy/pytest config, optional-dep extras)
 - [x] `requirements.txt` updated for the union of Streamlit-legacy + `cgem_ext`
-- [ ] `tests/test_contract.py` (regression test enforcing the pulse-sim contract)
-- [ ] `.github/workflows/ci.yml` (pytest + ruff + mypy on push/PR)
-- [ ] `README.md` updated to reflect new architecture; pointer to ROADMAP
-- [ ] `CHANGELOG.md` `[Unreleased]` entry for Phase 0
-- [ ] `ROADMAP.md`, `docs/architecture/ML_LAYER.md`, `docs/publication/Q1_PAPER_PLAN.md` (this file + companions)
-- [ ] Verify `pulse-sim`'s `cgem_bridge.py` still imports cleanly when its `CGEM_REPO` points at this branch
+- [x] `tests/test_contract.py` (regression test enforcing the pulse-sim contract)
+- [ ] `.github/workflows/ci.yml` (pytest + ruff + mypy on push/PR) — pending PAT `workflow` scope; deferred to a follow-up commit
+- [x] `README.md` updated to reflect new architecture; pointer to ROADMAP
+- [x] `CHANGELOG.md` `[Unreleased]` entry for Phase 0
+- [x] `ROADMAP.md`, `docs/architecture/ML_LAYER.md`, `docs/publication/Q1_PAPER_PLAN.md` (this file + companions)
+- [x] Verify `pulse-sim`'s `cgem_bridge.py` still imports cleanly when its `CGEM_REPO` points at this branch
 
 **Phase 0 exit criterion**: `pytest` green; pulse-sim's `cgem_bridge.py` imports unchanged.
 
 ## Phase 1 — Synthetic dataset generation
 
-- [ ] `cgem_ext/data/generate_dataset.py` — cross-product of 72 maneuvers × 6 `who_profile` × 3 G-tolerance × 3 dehydration × 3 countermeasure tiers ≈ 11,664 rows
-- [ ] `multiprocessing.Pool` parallelization with isolated temp dirs per worker
-- [ ] Output: `data/datasets/cgem_synthetic_v1.parquet`
-- [ ] `cgem_ext/data/splits.py` — stratified 70/15/15 + leave-one-group-out by maneuver category
-- [ ] DVC initialization; track parquet (full file in object storage; hash committed)
-- [ ] `docs/data/datasheet.md` per Gebru et al. 2018
-- [ ] OSF pre-registration of the validation protocol
-- [ ] `tests/test_data.py`
+- [x] `cgem_ext/data/generate_dataset.py` — cross-product runner. Empirical grid is **3,240 rows** (1,296 standard arm + 1,944 custom arm; 45 rows per maneuver across 72 maneuvers). Reduced from the 11,664-row plan after empirical verification that the Fortran model ignores `dehydration_level` and `g_tolerance_multiplier` when `who_profile` is set, so varying them in the standard arm produces redundant rows. The custom arm covers their effects.
+- [x] `multiprocessing.Pool` parallelization with isolated temp dirs per worker
+- [x] Output: `data/datasets/cgem_synthetic_v1.parquet` (3,240 rows / 60 columns / 27 s wall-clock with `cpu_count - 1` workers)
+- [x] `cgem_ext/data/splits.py` — stratified 70/15/15 + leave-one-group-out by maneuver category
+- [ ] DVC initialization; track parquet (full file in object storage; hash committed) — deferred to a separate commit when the DVC remote is provisioned
+- [x] `docs/data/datasheet.md` per Gebru et al. 2018
+- [x] `docs/publication/osf_preregistration.md` — draft committed; OSF posting blocked on hyperparameter-search-space freeze (Phase 3 prep)
+- [x] `tests/test_data.py` (13 tests; splitter checks + binary-gated smoke + determinism)
 
 ## Phase 2 — OOD detector
 
