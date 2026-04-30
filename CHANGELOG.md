@@ -11,6 +11,65 @@ extension-layer level (the upstream CGEM software DOI is fixed, see README).
 
 ## [Unreleased]
 
+### Added (Phase 5 — FastAPI service)
+
+- **`cgem_ext/api/schemas.py`**: Pydantic v2 wire-contract models.
+  Headlining `CGEMRunResponse` mirrors the v2.2.0 `CGEMRun.to_json()`
+  shape that pulse-sim's `cgem_bridge.load_cgem_json` consumes
+  (column aliases preserve `Time(s)` / `HLAP(mmHg)` / etc verbatim).
+  `TargetPrediction` reports point + lo/hi on the same scale (the
+  earlier draft mixed expected-time and conditional-time bounds);
+  `event_probability` and `expected_time_s` are reported separately
+  for censored time targets so the frontend can compose UX without
+  scale ambiguity.
+- **`cgem_ext/api/state.py`**: `AppState` dataclass loaded once at
+  app startup. Trains 5 surrogates + OOD detector + per-target
+  Mondrian conformal layers (~30 s total wall-clock); reads the
+  precomputed Sobol CSV; exposes `/predict`-ready handles.
+- **`cgem_ext/api/main.py`**: FastAPI app with lifespan-managed
+  AppState. Endpoints:
+    * GET  `/`                       landing JSON pointing at /docs
+    * GET  `/healthz`                liveness probe
+    * GET  `/version`                package + binary SHA + dataset metadata
+    * GET  `/sensitivity/{target}`   Sobol indices loaded from the CSV
+    * POST `/predict`                surrogate prediction + conformal CI + OOD flag
+    * POST `/sweep`                  batched predictions (max 10,000)
+    * POST `/run-cgem`               authoritative Fortran subprocess; returns
+                                     v2.2.0 CGEMRun JSON
+  CORS wide-open for local frontend dev (production deployments
+  must narrow `allow_origins`).
+- **`cgem_ext/api/Dockerfile`**: single-stage python:3.12-slim image
+  with libgfortran5 runtime, cgem binary, dataset parquet, and
+  sensitivity CSVs baked in. Uvicorn entrypoint, healthcheck on
+  `/healthz` with 90-second startup grace.
+- **`scripts/export_openapi.py`**: writes the OpenAPI spec to
+  `docs/api/openapi.json` (911 lines, ~25 KB) without going through
+  the lifespan. Consumed by the frontend codegen
+  (`npx openapi-typescript`).
+- **`tests/test_api.py`**: 11 tests via `FastAPI.TestClient`. Module-
+  scoped fixture amortises the 30 s startup. Coverage: liveness,
+  /version, /predict (named maneuver + inline descriptors + invalid
+  request), /sweep, /sensitivity (target match + 404), /run-cgem
+  (executes + matches the v2.2.0 schema verbatim).
+
+### Notable behaviour: pulse-sim contract preserved
+
+`cgem_ext/api/schemas.py:CGEMRunResponse` is the second wire-level
+contract pulse-sim depends on (the first being the upstream
+`cgem_wrapper` import path). `tests/test_api.py::test_run_cgem_response_matches_pulse_sim_schema`
+asserts every key name and column heading the bridge reads, so any
+future schema drift breaks CI.
+
+### Phase 5 polish — deferred to follow-up commits
+
+- structlog structured logging
+- Prometheus /metrics endpoint
+- docker-compose.yml (single Dockerfile is enough for now)
+- GHCR image push automation
+
+These do not block Phase 6 (frontend integration) or Phase 7
+(paper-1 submission); they will land alongside the deployment work.
+
 ### Added (Phase 4 — global sensitivity analysis)
 
 - **`cgem_ext/sensitivity/space.py`**: 9-d continuous input space
