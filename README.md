@@ -169,8 +169,8 @@ The validated FAA Fortran binary is invoked unchanged through `cgem_wrapper.run_
 | 3 | Surrogate emulator (XGBoost, 5 targets, conformal intervals) | ✅ Core done |
 | 4 | Global sensitivity analysis (Sobol + Morris) | ✅ Done |
 | 5 | FastAPI service (7 endpoints, Dockerfile, OpenAPI spec) | ✅ Done |
-| 6 | Frontend integration (React ↔ FastAPI) | ⬜ Next |
-| 7 | Paper 1 — AMHP methods paper | ⬜ Blocked on Phase 6 |
+| 6 | Frontend integration (React ↔ FastAPI; OOD banner, Sobol panel, sweep table) | ✅ Done |
+| 7 | Paper 1 — AMHP methods paper | ⬜ Next |
 | 8 | Paper 2 — external re-analysis vs centrifuge literature | ⬜ Post paper 1 |
 | 9 | Paper 3 — own-centrifuge validation (subjects) | ⬜ Requires ethics + subjects |
 
@@ -229,13 +229,24 @@ docker run --rm -p 8000:8000 cgem-ext-api:0.1.0
 # Healthcheck on /healthz with a 90 s start grace.
 ```
 
-### React + TypeScript frontend (mock data; Phase 6 wires it to FastAPI)
+### React + TypeScript frontend (Phase 6, wired to FastAPI)
+
+The frontend talks to the FastAPI service exclusively. Set
+`VITE_API_URL` if the backend isn't on the default `http://localhost:8000`.
 
 ```bash
 cd frontend
 npm install
 npm run dev
+# → http://localhost:5173
 ```
+
+What lights up:
+
+- **Prediction page** — surrogate `/predict` (~50 ms) with conformal CI + OOD banner, plus authoritative `/run-cgem` (~3 s) for full Fortran time-series.
+- **Batch page** — a single `POST /sweep` over all 72 maneuvers; sortable table with per-row OOD score and event probability.
+- **Analysis page** — Sobol indices panel (S1 + ST bars) per target, served from the precomputed CSV via `/sensitivity/{target}`; the existing maneuver-explanation tree is preserved.
+- **Dashboard** — `/version` status header showing package version + binary SHA + dataset seed.
 
 ### Legacy Streamlit demos (deprecated, still work)
 
