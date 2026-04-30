@@ -126,6 +126,75 @@ PROFILES: Dict[str, Tuple[str, str]] = {
     "split_s": ("split_s.txt", "Split-S: roll inverted then descending half-loop with high +G pull-out"),
     "cuban_eight": ("cuban_eight.txt", "Cuban Eight: two looping segments joined by half-rolls"),
     "vertical_eight": ("vertical_eight.txt", "Vertical figure eight with repeated +G exposures and brief −G transitions"),
+
+    # ------------------------------------------------------------------------
+    # Championship extension (Aresti / IAC families 1, 6, 7, 8, 9)
+    # See maneuvers_catalog.py for category, peak G, onset, and source metadata.
+    # ------------------------------------------------------------------------
+    "avalanche": ("avalanche.txt", "Inside loop with a horizontal positive snap roll at the apex; adds asymmetric high-G transient."),
+    "tailslide_positive": ("tailslide_positive.txt", "Vertical climb to zero airspeed, brief rearward slide, canopy-back nose-over with positive-G recovery."),
+    "tailslide_negative": ("tailslide_negative.txt", "Vertical climb, rearward slide, canopy-forward nose-over with negative-G recovery."),
+    "humpty_bump_positive": ("humpty_bump_positive.txt", "Quarter-loop up, vertical line, half-loop forward (positive over the top), vertical line down, quarter-loop pull."),
+    "humpty_bump_negative": ("humpty_bump_negative.txt", "Quarter-loop up, pushed (outside) half-loop over the top loading the pilot negatively, vertical down."),
+    "square_loop": ("square_loop.txt", "Four 90° corner pulls (~5–6 G) linked by 1-G straight lines."),
+    "reverse_cuban_eight": ("reverse_cuban_eight.txt", "Mirror of standard Cuban eight: 5/8-loop entry then 45° upline half-rolls and pulls."),
+    "snap_roll_level": ("snap_roll_level.txt", "Autorotative aileron-rudder snap on level line; brief asymmetric high-G spike."),
+    "vertical_snap_upline": ("vertical_snap_upline.txt", "Quarter-loop pull to vertical, snap roll executed during the climb at decaying airspeed."),
+    "outside_snap_level": ("outside_snap_level.txt", "Snap roll initiated by forward stick (negative AOA stall); brief negative-G spike."),
+    "hesitation_roll_4pt": ("hesitation_roll_4pt.txt", "Aileron roll executed in four 90° increments with brief stops."),
+    "hesitation_roll_8pt": ("hesitation_roll_8pt.txt", "Eight-stop slow roll (45° increments)."),
+    "slow_roll_level": ("slow_roll_level.txt", "Continuous full-360° aileron roll on level line; smooth Nz transition through ±1 G."),
+    "inverted_spin": ("inverted_spin.txt", "Sustained autorotation at negative AOA; -1.5 to -2.5 G sustained, +G recovery pull."),
+    "flat_spin_positive": ("flat_spin_positive.txt", "High-AOA flat-attitude spin; modest +Gz dominated by centripetal yaw rate."),
+    "inverted_flat_spin": ("inverted_flat_spin.txt", "Flat spin in inverted attitude; sustained -1.5 to -2.5 G."),
+    "english_bunt": ("english_bunt.txt", "Full outside loop pushed from level upright; sustained negative G throughout."),
+    "torque_roll": ("torque_roll.txt", "Vertical zero-airspeed rotation under engine torque; ~0 G hang then recovery."),
+    "knife_edge_pass_highg": ("knife_edge_pass_highg.txt", "High-G level turn into 90° bank knife-edge with rudder; sustained +G then sudden offload."),
+    "double_immelmann": ("double_immelmann.txt", "Two consecutive Immelmann turns flown back-to-back without level segment between."),
+    "quarter_clover": ("quarter_clover.txt", "Looping segment combined with 90° heading change; classical clover-leaf training figure."),
+    "reverse_half_cuban": ("reverse_half_cuban.txt", "Half-Cuban entered from the top: pull up to 45° upline, half-roll to inverted, then 5/8 loop."),
+    "lazy_eight": ("lazy_eight.txt", "Gentle commercial-pilot/training maneuver: undulating coordinated turns in horizontal figure-eight."),
+
+    # ------------------------------------------------------------------------
+    # Military ACM / BFM extension
+    # ------------------------------------------------------------------------
+    "defensive_break_9g": ("military_defensive_break_9g.txt", "Maximum-performance 9-G defensive break turn to spoil a bandit's tracking solution."),
+    "sustained_9g_turn": ("military_sustained_9g_turn.txt", "9-G structural-limit turn held for 25–30 s (qualification SACM standard)."),
+    "corner_velocity_turn": ("military_corner_velocity_turn.txt", "Brief instantaneous-rate turn at corner velocity (max G/min radius) with rapid energy bleed."),
+    "high_yoyo_offensive": ("military_high_yoyo.txt", "Offensive 3-D maneuver: climb out of plane, trade airspeed, dive back into bandit's plane."),
+    "low_yoyo_offensive": ("military_low_yoyo.txt", "Offensive maneuver: roll-and-dive below bandit's plane to gain closure, then hard pull-up."),
+    "barrel_roll_attack": ("military_barrel_roll_attack.txt", "Rolling, vertically-displaced helical maneuver to control closure on a slower bandit."),
+    "lag_pursuit_roll": ("military_lag_pursuit_roll.txt", "Rolling-displacement maneuver to convert excess closure into angles."),
+    "flat_scissors_defensive": ("military_flat_scissors.txt", "Defensive horizontal-plane rolling reversals to force bandit overshoot."),
+    "rolling_scissors": ("military_rolling_scissors.txt", "Vertical scissors with rolling component; sustained 3–5 G alternating."),
+    "defensive_jink": ("military_defensive_jink.txt", "Rapid out-of-plane G excursions to defeat tracking-gun / IR-missile lock-on."),
+    "last_ditch_break": ("military_last_ditch_break.txt", "Final maximum-G out-of-plane break ~1.5–3 s before missile impact, often combined with chaff/flare."),
+    "combat_immelmann": ("military_combat_immelmann.txt", "Combat-power half-loop with half-roll on top; 6–7 G entry pull."),
+    "combat_split_s": ("military_combat_split_s.txt", "Inverted half-loop reversal at low altitude with 7–8 G pull-out."),
+    "defensive_break_chaff_flare": ("military_defensive_break_chaff_flare.txt", "Max-G break with brief unload at decoy release to favor seduction, then re-pull."),
+    "strike_turn_strafing_pullout": ("military_strike_pullout.txt", "Ground-attack profile: shallow dive at -1 G push, strafing pass, 7 G pull-out."),
+    "push_pull_missile_evasion": ("military_push_pull_evasion.txt", "Negative-G push to displace velocity vector, immediately followed by max +G inside pull."),
+    "defensive_spiral": ("military_defensive_spiral.txt", "Descending high-G spiral (corkscrew) to bleed bandit's energy."),
+    "rate_fight_sustained": ("military_rate_fight.txt", "Two-circle sustained turning engagement at corner velocity; 7–8 G plateau for 22 s."),
+    "vertical_climb_missile_evasion": ("military_vertical_climb_evasion.txt", "Zoom climb to drag missile into thin air; high-G pull-up then near-1 G climb."),
+    "helicopter_bugout": ("military_helicopter_bugout.txt", "Low-energy disengagement: nose-high, decelerate, pivot and pitch over into dive."),
+    "slatted_high_aoa_turn": ("military_slatted_high_aoa_turn.txt", "Sustained 7-G turn at high AOA with leading-edge slats deployed."),
+
+    # ------------------------------------------------------------------------
+    # Extreme / post-stall extension (Cobra, Kulbit, Lomcovak, Herbst, etc.)
+    # ------------------------------------------------------------------------
+    "pugachev_cobra": ("pugachev_cobra.txt", "Dynamic post-stall pitch-up to ~110–120° AOA, decelerate, pitch forward and recover."),
+    "kulbit": ("kulbit.txt", "Cobra continued through full 360° backflip about pitch axis at low translational velocity."),
+    "lomcovak": ("lomcovak.txt", "Czech autorotative tumbling maneuver; gyroscopically coupled rotation about all three body axes."),
+    "herbst_jturn": ("herbst_jturn.txt", "Post-stall yaw-reversal: pitch-up to ~70° AOA, 180° body-axis yaw, pitch-down recovery."),
+    "helicopter_maneuver": ("helicopter_maneuver.txt", "Near-vertical attitude at low airspeed (Russian 'Bell'); rearward drift, nose-over, recovery."),
+    "falling_leaf": ("falling_leaf.txt", "Sustained high-AOA flight with alternating yaw/pitch oscillations resembling a falling leaf."),
+    "tailslide_tumble": ("tailslide_tumble.txt", "Tailslide entering autorotative tumble during recovery; compound sustained-G then alternating ±G."),
+    "inverted_cobra": ("inverted_cobra.txt", "Theoretical negative-G mirror of Pugachev's Cobra; sustained -Gz spike and recovery from inverted."),
+    "lomcovak_repeats": ("lomcovak_repeats.txt", "Two to three Lomcováks back-to-back; cumulative axis-switching ±G."),
+    "inverted_spin_recovery": ("inverted_spin_recovery.txt", "Developed inverted spin → 2–3 s -G recovery dive → hard symmetric +G pull."),
+    "bell_tailslide": ("bell_tailslide.txt", "Vertical climb, full backslide, negative-G nose-over at apex, forward dive recovery."),
+    "snake_modulated": ("snake_modulated.txt", "Falling leaf with intentional pitch-rate forcing producing phased ±G modulation."),
 }
 
 
