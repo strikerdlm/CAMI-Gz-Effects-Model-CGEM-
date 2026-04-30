@@ -11,6 +11,81 @@ extension-layer level (the upstream CGEM software DOI is fixed, see README).
 
 ## [Unreleased]
 
+### Added (Phase 6 — frontend integration)
+
+- **`frontend/src/main.tsx`**: wraps the app in `QueryClientProvider`
+  with a 5-minute stale time and bounded retry policy. Single source
+  of truth for HTTP cache + loading state across pages.
+- **`frontend/src/services/types.ts`**: hand-maintained TypeScript
+  wire contract mirroring `cgem_ext.api.schemas` (`PredictionRequest`,
+  `PredictionResponse`, `TargetPrediction`, `SweepRequest/Response`,
+  `RunCGEMRequest`, `CGEMRunResponse` + `CGEMRunData`,
+  `SensitivityResponse` + `SobolFeatureIndex`, `VersionResponse`,
+  `HealthResponse`). Regenerable from the committed
+  `docs/api/openapi.json` via
+  `npx openapi-typescript ../docs/api/openapi.json -o src/services/types.ts`.
+- **`frontend/src/services/cgemApi.ts`**: axios client + React Query
+  hooks. Base URL comes from `VITE_API_URL` (default
+  `http://localhost:8000`). Public surface: `useHealth`, `useVersion`,
+  `useSensitivity(target)`, `usePredict()`, `useSweep()`,
+  `useRunCgem()`, plus an `apiErrorMessage` helper that surfaces the
+  FastAPI `detail` field cleanly.
+- **`frontend/src/components/ui/OODBanner.tsx`**: emerald
+  "in envelope" / amber "out-of-distribution" banner sourced from the
+  `/predict` response. Explains the calibrated 95% threshold and
+  points users at `/run-cgem` for an authoritative answer.
+- **`frontend/src/components/ui/PredictionTable.tsx`**: per-target
+  table with point + 95 % conformal CI on the same scale. Censored
+  rows show P(event) and expected time as separate columns; a
+  small footer explains the conditional/expected-time semantics.
+- **`frontend/src/components/charts/SensitivityChart.tsx`**: Sobol
+  S1 + ST bar chart per target via `GET /sensitivity/{target}`.
+  Sorted by ST descending; falls back to a friendly message when
+  the precomputed CSV is absent.
+
+### Changed (Phase 6)
+
+- **`frontend/src/pages/PredictionPage.tsx`**: rewired from
+  `simulateCGEMResult` to twin API paths — `usePredict` (surrogate,
+  ~50 ms) and `useRunCgem` (Fortran subprocess, ~3 s). The form
+  (profile picker + pilot config + countermeasures) drives both.
+  Adds OOD banner, prediction table, conformal CI display, /version
+  status header, and per-mutation error states with retry guidance.
+- **`frontend/src/pages/BatchPage.tsx`**: rewired from a per-profile
+  loop over the local mock to a single `POST /sweep` call covering
+  all 72 maneuvers in one round-trip. Sortable table (G-LOC / blackout
+  / greyout / OOD-first / profile name); summary cards for total /
+  in-envelope / OOD-flagged / high-G-LOC counts.
+- **`frontend/src/pages/AnalysisPage.tsx`**: appended a Sobol
+  sensitivity panel with a per-target picker (5 targets). The
+  existing maneuver-explanation tree (description, physiological
+  effects, risks, mitigations) is preserved unchanged.
+- **`frontend/src/pages/DashboardPage.tsx`**: added a top-of-page
+  API status banner showing `/version` data — base URL, package
+  version, binary SHA prefix, dataset master seed.
+- **`frontend/src/components/ui/index.ts`** + `charts/index.ts`:
+  re-export the new components.
+
+### Notable behaviour
+
+The frontend talks to the FastAPI service exclusively for any
+prediction-bearing UI; the legacy mock data in
+`frontend/src/services/mockData.ts` is retained only for two purposes:
+(1) profile metadata (`AEROBATIC_PROFILES`) used by the form's
+ProfileSelector and the legacy G-force chart, and (2) Vitest fixtures
+once unit tests land. The CGEM Fortran binary is reached either
+through `cgem_wrapper` (Python consumers) or through `POST /run-cgem`
+(any HTTP client). Both paths are covered by the contract tests in
+`tests/test_contract.py` and `tests/test_api.py`.
+
+### Phase 6 polish — deferred to follow-up commits
+
+- Playwright e2e golden-path test under `frontend/e2e/` (the unit-
+  test surface lives in the Python TestClient suite).
+- OpenAPI codegen as a CI step (we'll wire `openapi-typescript`
+  alongside the GHCR push automation in the deployment workstream).
+- ECharts SVG export buttons (Phase-7 paper-prep).
+
 ### Added (Phase 5 — FastAPI service)
 
 - **`cgem_ext/api/schemas.py`**: Pydantic v2 wire-contract models.
