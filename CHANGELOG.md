@@ -11,6 +11,84 @@ extension-layer level (the upstream CGEM software DOI is fixed, see README).
 
 ## [Unreleased]
 
+### Phase 7 — AMHP submission package (2026-04-30)
+
+Built on top of the Phase-7 stages 1–3 work (manuscript draft, figure
+data products, calibration module) shipped in `f0baa4f`. This second
+pass brings the package up to AMHP Feb-2026 compliance:
+
+- **Manuscript metadata** (`docs/publication/manuscript.md`):
+  - Title shortened from 180 → 67 characters (AMHP limit ≤ 100).
+  - Running head added: `CONFORMAL CGEM EMULATION` (26 chars, ALL CAPS).
+  - Title page depersonalized; author block moved to a separate
+    `docs/publication/author_page.md`.
+  - Abstract trimmed from 297 → 250 words (limit ≤ 250) and switched
+    from labelled four-paragraph structure to AMHP's required
+    unstructured single paragraph.
+  - Keywords reduced from 7 → 5 (limit 3–5).
+  - Front-matter declares article type, exact word counts, table count,
+    figure count (with the 6 → 4 plan documented).
+- **Title Page** (`docs/publication/author_page.md`): single-author
+  ICMJE statement covering all four ICMJE criteria; AI tool
+  disclosure acknowledging code scaffolding / reference formatting /
+  editorial review only; no funding; no conflicts.
+- **Cover letter** (`docs/publication/cover_letter.md`) addressing
+  the 11 AMHP §3–§12 required elements: originality, thesis
+  disclosure, preprint disclosure, author approval, ICMJE
+  authorship, generative-AI policy, statistical expertise, suggested
+  reviewers, figure colour intent, conflicts of interest, funding.
+- **TRIPOD-AI reporting checklist**
+  (`docs/publication/tripod_ai_checklist.md`) mapping every
+  TRIPOD-AI item to the manuscript section / line. Includes an
+  AMHP-specific subsection covering the clinical-decision-making
+  boundary and the AI-disclosure crosswalk.
+- **Suggested reviewers**
+  (`docs/publication/suggested_reviewers.md`): 6 candidates
+  (Copeland, Whinnery, Bondarenko, Castleberry, Sariola, Aliverti)
+  with no-conflict declarations and pre-submission verification
+  checklist; 3 backups; AMHP EIC explicitly excluded.
+- **Reference cleanup** (`docs/publication/manuscript.md` +
+  `references_verification.md`):
+  - Replaced the placeholder `DOT/FAA/AM-20/XX` (ref [7]) with the
+    canonical Copeland & Whinnery 2023, DOT/FAA/AM-23/6,
+    `doi:10.21949/1524446`.
+  - Replaced the second placeholder `DOT/FAA/AM-18/XX` (ref [8])
+    with the Copeland 2021 *CGEM User's Guide*, DOT/FAA/AM-23/5,
+    `doi:10.21949/1524438`.
+  - Dropped ref [9] (Whinnery & Copeland 2019 — unverifiable) and
+    rephrased Discussion §4.3 ¶1 to cite [5–8].
+  - Dropped ref [16] (Melis 2021 — unverifiable; likely fabricated by
+    an earlier draft pass) and rephrased Discussion §4.3 ¶2.
+  - Renumbered remaining references; in-text citations 18 → 16.
+  - Books and conference proceedings now carry ISBN / DOI / PMLR
+    pointers where available.
+- **Figure 6 source** (`data/results/figures/fig6_architecture.mmd`):
+  Mermaid flowchart for the system-architecture figure referenced
+  in §2.8 Methods, with both pulse-sim contracts (Python import
+  and JSON wire) called out.
+- **Render pipeline** (`scripts/render_manuscript.py`): one-line
+  `python -m scripts.render_manuscript` produces 7 .docx + .html
+  outputs at `docs/publication/rendered/` from the markdown
+  sources. Outputs are gitignored (regenerable); Pandoc 3.1.3
+  required.
+- **Render checklist** (`docs/publication/render_checklist.md`):
+  manual Word/LibreOffice edits AMHP requires — double-spacing,
+  ragged-right, upper-right page numbers, `[N]` → superscript Arabic
+  citation conversion, Roman table numbering, figure TIFF resolution
+  targets (1200/600 dpi), four signed-form workflow.
+
+### Outstanding submission gates
+
+These are user-side actions; not blockers on the manuscript itself:
+
+1. Render Figs 1–5 to SVG via Node ECharts CLI; Fig 6 via `mmdc`;
+   convert to TIFF.
+2. Post the OSF pre-registration; capture DOI for the cover letter.
+3. Sign and scan AMHP forms (Author Checklist, Copyright Release,
+   one COI per author).
+4. Apply the manual Word edits per `docs/publication/render_checklist.md`.
+5. Submit via Editorial Manager (https://www.editorialmanager.com/AMHP/).
+
 ### CI hardening (post-Phase 6, 2026-04-30)
 
 First green CI run on the project. Two commits land the work
