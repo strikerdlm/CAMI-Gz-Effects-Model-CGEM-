@@ -1,0 +1,158 @@
+{
+  "grid": {
+    "left": 120,
+    "right": 40,
+    "bottom": 120,
+    "top": 50
+  },
+  "legend": {
+    "data": [
+      "championship",
+      "conceptual",
+      "extreme_post_stall",
+      "military_acm"
+    ],
+    "top": 5
+  },
+  "xAxis": {
+    "type": "category",
+    "data": [
+      "hlap_min",
+      "c_bank_min",
+      "time_to_greyout_s_classifier",
+      "time_to_greyout_s_regressor",
+      "time_to_blackout_s_classifier",
+      "time_to_blackout_s_regressor",
+      "time_to_gloc_s_classifier",
+      "time_to_gloc_s_regressor"
+    ],
+    "axisLabel": {
+      "rotate": 30,
+      "fontSize": 9,
+      "interval": 0
+    }
+  },
+  "yAxis": {
+    "type": "value",
+    "name": "Empirical Coverage",
+    "nameLocation": "middle",
+    "nameGap": 48,
+    "min": 0.6,
+    "max": 1.05
+  },
+  "series": [
+    {
+      "name": "championship",
+      "type": "bar",
+      "data": [
+        0.9279661016949152,
+        0.9661016949152542,
+        0.9788135593220338,
+        1.0,
+        0.961864406779661,
+        1.0,
+        0.9576271186440678,
+        1.0
+      ],
+      "itemStyle": {
+        "color": "#0072B2",
+        "opacity": 0.85
+      }
+    },
+    {
+      "name": "conceptual",
+      "type": "bar",
+      "data": [
+        0.7142857142857143,
+        0.9523809523809523,
+        1.0,
+        0,
+        1.0,
+        0,
+        1.0,
+        0
+      ],
+      "itemStyle": {
+        "color": "#D55E00",
+        "opacity": 0.85
+      }
+    },
+    {
+      "name": "extreme_post_stall",
+      "type": "bar",
+      "data": [
+        0.9506172839506173,
+        0.9135802469135802,
+        0.9382716049382716,
+        1.0,
+        0.9012345679012346,
+        0,
+        0.9135802469135802,
+        0
+      ],
+      "itemStyle": {
+        "color": "#009E73",
+        "opacity": 0.85
+      }
+    },
+    {
+      "name": "military_acm",
+      "type": "bar",
+      "data": [
+        0.9463087248322147,
+        0.9395973154362416,
+        0.959731543624161,
+        1.0,
+        0.959731543624161,
+        1.0,
+        0.9194630872483222,
+        0.8571428571428571
+      ],
+      "itemStyle": {
+        "color": "#CC79A7",
+        "opacity": 0.85
+      }
+    },
+    {
+      "name": "Nominal 95%",
+      "type": "line",
+      "data": [
+        0.95,
+        0.95,
+        0.95,
+        0.95,
+        0.95,
+        0.95,
+        0.95,
+        0.95
+      ],
+      "showSymbol": false,
+      "silent": true,
+      "lineStyle": {
+        "width": 2,
+        "type": "dashed",
+        "color": "#000000"
+      },
+      "markLine": {
+        "silent": true,
+        "symbol": "none",
+        "lineStyle": {
+          "type": "dashed",
+          "color": "#000000",
+          "width": 1.5
+        },
+        "data": [
+          {
+            "yAxis": 0.95,
+            "label": {
+              "formatter": "Nominal 95%"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "tooltip": {
+    "trigger": "axis"
+  }
+}
