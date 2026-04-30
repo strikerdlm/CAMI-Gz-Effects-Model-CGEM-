@@ -39,7 +39,7 @@ Goal: stand up the new repository skeleton without breaking any existing consume
 - [x] `pyproject.toml` (package metadata, ruff/mypy/pytest config, optional-dep extras)
 - [x] `requirements.txt` updated for the union of Streamlit-legacy + `cgem_ext`
 - [x] `tests/test_contract.py` (regression test enforcing the pulse-sim contract)
-- [ ] `.github/workflows/ci.yml` (pytest + ruff + mypy on push/PR) — pending PAT `workflow` scope; deferred to a follow-up commit
+- [x] `.github/workflows/ci.yml` (pytest + ruff + mypy on push/PR)
 - [x] `README.md` updated to reflect new architecture; pointer to ROADMAP
 - [x] `CHANGELOG.md` `[Unreleased]` entry for Phase 0
 - [x] `ROADMAP.md`, `docs/architecture/ML_LAYER.md`, `docs/publication/Q1_PAPER_PLAN.md` (this file + companions)
