@@ -85,6 +85,15 @@ data/results/*
 !data/results/sensitivity/
 !data/results/sensitivity/*.csv
 !data/results/sensitivity/manifest.json
+
+# Exception: ship the Phase-7 figure source files (ECharts option
+# JSONs + Mermaid architecture diagram) so paper-1 reviewers can
+# re-render the publication figures from the committed inputs.
+!data/results/figures/
+!data/results/figures/*.json
+!data/results/figures/*.mmd
+!data/results/figures/echarts_options/
+!data/results/figures/echarts_options/*.json
 cgem_ext/**/__pycache__/
 
 # Build artifacts
