@@ -72,9 +72,10 @@ interpretation.
 - Title: 67 characters including spaces (limit ≤ 100).
 - Running head: 26 characters (limit ≤ 30, ALL CAPS).
 - Abstract: 250 words (limit ≤ 250).
-- Body (Introduction → Conclusion): ≈ 4,768 words (limit ≤ 6,000 for
-  Research Article).
-- References: 18.
+- Body (Introduction → Conclusion): ≈ 3,146 words after the Phase-7
+  reference cleanup and ¶rephrase that dropped two unverified
+  references (limit ≤ 6,000 for Research Article).
+- References: 16.
 - Tables: 4 (limit ≤ 4).
 - Figures: 6 — exceeds AMHP ≤ 4 limit. Figures 3 (calibration) and 4
   (OOD score distribution) will be moved to supplementary materials at
