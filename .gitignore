@@ -94,6 +94,12 @@ data/results/*
 !data/results/figures/*.mmd
 !data/results/figures/echarts_options/
 !data/results/figures/echarts_options/*.json
+
+# Pandoc-rendered submission outputs are regenerable from the
+# markdown sources via `python -m scripts.render_manuscript`. The
+# binaries are large and re-render on every edit; keeping them out
+# of git avoids noise.
+docs/publication/rendered/
 cgem_ext/**/__pycache__/
 
 # Build artifacts
