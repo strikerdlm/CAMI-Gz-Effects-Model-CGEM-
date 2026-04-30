@@ -68,6 +68,12 @@ mlruns/
 .dvc/tmp/
 data/datasets/*.parquet
 data/results/
+
+# Exception: ship the canonical paper-1 synthetic dataset and its
+# sidecar metadata so reviewers can clone and re-run analyses without
+# regenerating from the Fortran binary.
+!data/datasets/cgem_synthetic_v1.parquet
+!data/datasets/cgem_synthetic_v1.meta.json
 cgem_ext/**/__pycache__/
 
 # Build artifacts
