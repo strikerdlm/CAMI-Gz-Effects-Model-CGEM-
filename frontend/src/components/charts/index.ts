@@ -11,3 +11,4 @@ export { StateDurationsChart } from './StateDurationsChart';
 export { CerebralFlowChart } from './CerebralFlowChart';
 export { ModelDynamicsChart } from './ModelDynamicsChart';
 export type { ModelVariableKey } from './ModelDynamicsChart';
+export { SensitivityChart } from './SensitivityChart';
