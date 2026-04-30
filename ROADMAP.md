@@ -12,7 +12,7 @@ The full architectural rationale lives in `docs/architecture/ML_LAYER.md`. The p
 
 | Phase | Title | Estimate | Status |
 |------|-------|----------|--------|
-| 0 | Foundation & contract preservation | 1–2 weeks | ✅ done (CI workflow file pending PAT scope) |
+| 0 | Foundation & contract preservation | 1–2 weeks | ✅ done |
 | 1 | Synthetic dataset generation | 1–2 weeks | ✅ done (DVC remote deferred) |
 | 2 | OOD detector | 1 week | ✅ done |
 | 3 | Surrogate emulator | 2 weeks | ✅ core done (Optuna/SHAP/MLflow polish deferred) |
