@@ -53,6 +53,10 @@ Thumbs.db
 *.log
 **/.pytest_cache/
 
+# Generated intermediates from tools/generate_extension.py
+tools/_profiles_snippet.py
+tools/_catalog_snippet.py
+
 # Gantt charts and exports
 # Ignore all documentation and protocol outputs
 docs/
