@@ -33,6 +33,7 @@ import {
 } from '../components/charts';
 import { AEROBATIC_PROFILES, simulateCGEMResult } from '../services/mockData';
 import { DEFAULT_COUNTERMEASURES } from '../utils/constants';
+import { cgemApiBaseURL, useVersion } from '../services/cgemApi';
 import { calculateProfileStats, computeStateDurations } from '../utils/calculations';
 import { cn } from '../utils';
 import type { CGEMResult, Countermeasures, PilotConfig } from '../types';
@@ -118,6 +119,42 @@ const PRESET_STYLES: Record<PilotPreset['tag'], string> = {
   aggressive: 'border-warning-500/35 bg-warning-500/10 text-warning-300',
   protected: 'border-accent-500/35 bg-accent-500/10 text-accent-300',
   degraded: 'border-danger-500/35 bg-danger-500/10 text-danger-300',
+};
+
+const ApiStatusBanner: React.FC = () => {
+  const versionQuery = useVersion();
+  const status = versionQuery.isLoading
+    ? { label: 'connecting…', color: 'text-amber-400 border-amber-500/30' }
+    : versionQuery.isError
+    ? { label: 'unreachable', color: 'text-rose-400 border-rose-500/30' }
+    : { label: 'online', color: 'text-emerald-400 border-emerald-500/30' };
+  return (
+    <div className={`glass-light rounded-xl p-3 text-xs border flex items-center justify-between gap-3 ${status.color}`}>
+      <div className="text-surface-400">
+        <span className="text-surface-500">CGEM API:</span>{' '}
+        <code className="text-surface-300">{cgemApiBaseURL}</code>{' '}
+        <span className="text-surface-500">·</span>{' '}
+        <span className={status.color.split(' ')[0]}>{status.label}</span>
+        {versionQuery.data && (
+          <>
+            {' '}
+            <span className="text-surface-500">·</span>{' '}
+            <span className="text-surface-300">
+              v{versionQuery.data.package_version}
+            </span>{' '}
+            <span className="text-surface-500">·</span>{' '}
+            <span className="text-surface-400">
+              binary {versionQuery.data.cgem_binary_sha256.slice(0, 8)}…
+            </span>{' '}
+            <span className="text-surface-500">·</span>{' '}
+            <span className="text-surface-400">
+              dataset seed {versionQuery.data.dataset_master_seed}
+            </span>
+          </>
+        )}
+      </div>
+    </div>
+  );
 };
 
 export const DashboardPage: React.FC = () => {
@@ -230,6 +267,8 @@ export const DashboardPage: React.FC = () => {
 
   return (
     <div className="space-y-6">
+      <ApiStatusBanner />
+
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}

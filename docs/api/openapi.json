@@ -1,0 +1,912 @@
+{
+  "components": {
+    "schemas": {
+      "CGEMRunData": {
+        "description": "Time-series payload \u2014 the per-column lists pulse-sim's bridge\nconsumes verbatim. Field aliases preserve the original column\nnames with units in parentheses (e.g. ``Time(s)``).",
+        "properties": {
+          "Blackout": {
+            "items": {
+              "type": "integer"
+            },
+            "title": "Blackout",
+            "type": "array"
+          },
+          "Conscious": {
+            "items": {
+              "type": "integer"
+            },
+            "title": "Conscious",
+            "type": "array"
+          },
+          "F_bo(dl/min)": {
+            "items": {
+              "type": "number"
+            },
+            "title": "F Bo(Dl/Min)",
+            "type": "array"
+          },
+          "F_con(dl/min)": {
+            "items": {
+              "type": "number"
+            },
+            "title": "F Con(Dl/Min)",
+            "type": "array"
+          },
+          "F_vis(dl/min)": {
+            "items": {
+              "type": "number"
+            },
+            "title": "F Vis(Dl/Min)",
+            "type": "array"
+          },
+          "G": {
+            "items": {
+              "type": "number"
+            },
+            "title": "G",
+            "type": "array"
+          },
+          "G_eff": {
+            "items": {
+              "type": "number"
+            },
+            "title": "G Eff",
+            "type": "array"
+          },
+          "Greyout": {
+            "items": {
+              "type": "integer"
+            },
+            "title": "Greyout",
+            "type": "array"
+          },
+          "HLAP(mmHg)": {
+            "items": {
+              "type": "number"
+            },
+            "title": "Hlap(Mmhg)",
+            "type": "array"
+          },
+          "Time(s)": {
+            "items": {
+              "type": "number"
+            },
+            "title": "Time(S)",
+            "type": "array"
+          },
+          "bo_bank(s)": {
+            "items": {
+              "type": "number"
+            },
+            "title": "Bo Bank(S)",
+            "type": "array"
+          },
+          "c_bank(s)": {
+            "items": {
+              "type": "number"
+            },
+            "title": "C Bank(S)",
+            "type": "array"
+          }
+        },
+        "required": [
+          "Time(s)",
+          "G",
+          "G_eff",
+          "HLAP(mmHg)",
+          "F_con(dl/min)",
+          "F_vis(dl/min)",
+          "F_bo(dl/min)",
+          "c_bank(s)",
+          "bo_bank(s)",
+          "Conscious",
+          "Greyout",
+          "Blackout"
+        ],
+        "title": "CGEMRunData",
+        "type": "object"
+      },
+      "CGEMRunResponse": {
+        "description": "Mirrors the v2.2.0 `CGEMRun.to_json()` shape used by pulse-sim's\n`cgem_bridge.load_cgem_json`. Any change here breaks the contract;\n`tests/test_api.py::test_run_cgem_matches_pulse_sim_schema`\nenforces this.",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/CGEMRunData"
+          },
+          "duration_s": {
+            "title": "Duration S",
+            "type": "number"
+          },
+          "maneuver": {
+            "title": "Maneuver",
+            "type": "string"
+          },
+          "pilot_profile": {
+            "title": "Pilot Profile",
+            "type": "string"
+          },
+          "time_to_blackout_s": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Time To Blackout S"
+          },
+          "time_to_gloc_s": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Time To Gloc S"
+          },
+          "time_to_greyout_s": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Time To Greyout S"
+          }
+        },
+        "required": [
+          "maneuver",
+          "pilot_profile",
+          "duration_s",
+          "time_to_greyout_s",
+          "time_to_blackout_s",
+          "time_to_gloc_s",
+          "data"
+        ],
+        "title": "CGEMRunResponse",
+        "type": "object"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "title": "Detail",
+            "type": "array"
+          }
+        },
+        "title": "HTTPValidationError",
+        "type": "object"
+      },
+      "HealthResponse": {
+        "properties": {
+          "detail": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Detail"
+          },
+          "status": {
+            "default": "ok",
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "title": "HealthResponse",
+        "type": "object"
+      },
+      "ManeuverDescriptors": {
+        "description": "Maneuver-summary features the surrogate consumes directly.\n\nProvided either by the caller (already known) or implicitly by\nnaming an existing maneuver and letting the service compute them\nfrom the registered profile.",
+        "properties": {
+          "dgdt_max_g_per_s": {
+            "anyOf": [
+              {
+                "maximum": 60.0,
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Dgdt Max G Per S"
+          },
+          "g_peak_abs": {
+            "anyOf": [
+              {
+                "maximum": 15.0,
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "G Peak Abs"
+          },
+          "maneuver": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Identifier from `aerobatic_profiles.PROFILES`. If present, the service computes g_peak_abs / dgdt_max_g_per_s / profile_duration_s itself.",
+            "title": "Maneuver"
+          },
+          "profile_duration_s": {
+            "anyOf": [
+              {
+                "maximum": 120.0,
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Profile Duration S"
+          }
+        },
+        "title": "ManeuverDescriptors",
+        "type": "object"
+      },
+      "PilotConfigRequest": {
+        "description": "Pilot-side inputs. Mirrors `cgem_wrapper.PilotConfig`'s\noperational subset (i.e. the fields the surrogate consumes plus\nthe few extras the Fortran model honours when ``who_profile`` is\nset).",
+        "properties": {
+          "agsm_effectiveness": {
+            "default": 0.0,
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Agsm Effectiveness",
+            "type": "number"
+          },
+          "countermeasures_label": {
+            "default": "none",
+            "description": "one of \"none\", \"agsm\", \"suit_agsm\"",
+            "title": "Countermeasures Label",
+            "type": "string"
+          },
+          "dehydration_level": {
+            "default": 0.0,
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Dehydration Level",
+            "type": "number"
+          },
+          "g_tolerance_multiplier": {
+            "default": 1.0,
+            "maximum": 2.0,
+            "minimum": 0.5,
+            "title": "G Tolerance Multiplier",
+            "type": "number"
+          },
+          "gsuit_coverage_fraction": {
+            "default": 0.0,
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Gsuit Coverage Fraction",
+            "type": "number"
+          },
+          "gsuit_max_psi": {
+            "default": 0.0,
+            "maximum": 20.0,
+            "minimum": 0.0,
+            "title": "Gsuit Max Psi",
+            "type": "number"
+          },
+          "pbg_max_mmhg": {
+            "default": 0.0,
+            "maximum": 60.0,
+            "minimum": 0.0,
+            "title": "Pbg Max Mmhg",
+            "type": "number"
+          },
+          "who_profile": {
+            "anyOf": [
+              {
+                "maximum": 6.0,
+                "minimum": 1.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": 2,
+            "description": "FAA standard subject 1..6, or None for a custom subject (custom-arm path that exercises g_tolerance_multiplier and dehydration_level).",
+            "title": "Who Profile"
+          }
+        },
+        "title": "PilotConfigRequest",
+        "type": "object"
+      },
+      "PredictionRequest": {
+        "description": "Single-row prediction request \u2014 surrogate path (fast).",
+        "properties": {
+          "maneuver": {
+            "$ref": "#/components/schemas/ManeuverDescriptors"
+          },
+          "pilot": {
+            "$ref": "#/components/schemas/PilotConfigRequest",
+            "default": {
+              "agsm_effectiveness": 0.0,
+              "countermeasures_label": "none",
+              "dehydration_level": 0.0,
+              "g_tolerance_multiplier": 1.0,
+              "gsuit_coverage_fraction": 0.0,
+              "gsuit_max_psi": 0.0,
+              "pbg_max_mmhg": 0.0,
+              "who_profile": 2
+            }
+          }
+        },
+        "required": [
+          "maneuver"
+        ],
+        "title": "PredictionRequest",
+        "type": "object"
+      },
+      "PredictionResponse": {
+        "additionalProperties": false,
+        "description": "Complete `/predict` response.",
+        "properties": {
+          "cgem_binary_sha256": {
+            "title": "Cgem Binary Sha256",
+            "type": "string"
+          },
+          "in_envelope": {
+            "title": "In Envelope",
+            "type": "boolean"
+          },
+          "model_version": {
+            "title": "Model Version",
+            "type": "string"
+          },
+          "ood": {
+            "title": "Ood",
+            "type": "boolean"
+          },
+          "ood_score": {
+            "title": "Ood Score",
+            "type": "number"
+          },
+          "source": {
+            "default": "surrogate",
+            "description": "\"surrogate\" or \"fortran\".",
+            "title": "Source",
+            "type": "string"
+          },
+          "targets": {
+            "items": {
+              "$ref": "#/components/schemas/TargetPrediction"
+            },
+            "title": "Targets",
+            "type": "array"
+          }
+        },
+        "required": [
+          "targets",
+          "ood",
+          "ood_score",
+          "in_envelope",
+          "model_version",
+          "cgem_binary_sha256"
+        ],
+        "title": "PredictionResponse",
+        "type": "object"
+      },
+      "RunCGEMRequest": {
+        "description": "Authoritative path: invoke the Fortran subprocess directly.",
+        "properties": {
+          "maneuver": {
+            "description": "Identifier from aerobatic_profiles.PROFILES.",
+            "title": "Maneuver",
+            "type": "string"
+          },
+          "pilot": {
+            "$ref": "#/components/schemas/PilotConfigRequest",
+            "default": {
+              "agsm_effectiveness": 0.0,
+              "countermeasures_label": "none",
+              "dehydration_level": 0.0,
+              "g_tolerance_multiplier": 1.0,
+              "gsuit_coverage_fraction": 0.0,
+              "gsuit_max_psi": 0.0,
+              "pbg_max_mmhg": 0.0,
+              "who_profile": 2
+            }
+          }
+        },
+        "required": [
+          "maneuver"
+        ],
+        "title": "RunCGEMRequest",
+        "type": "object"
+      },
+      "SensitivityResponse": {
+        "description": "Sobol indices for one target, loaded from the committed CSV.",
+        "properties": {
+          "censored": {
+            "title": "Censored",
+            "type": "boolean"
+          },
+          "fixed_who_profile": {
+            "title": "Fixed Who Profile",
+            "type": "string"
+          },
+          "indices": {
+            "items": {
+              "$ref": "#/components/schemas/SobolFeatureIndex"
+            },
+            "title": "Indices",
+            "type": "array"
+          },
+          "sobol_n_base": {
+            "title": "Sobol N Base",
+            "type": "integer"
+          },
+          "target": {
+            "title": "Target",
+            "type": "string"
+          }
+        },
+        "required": [
+          "target",
+          "censored",
+          "fixed_who_profile",
+          "sobol_n_base",
+          "indices"
+        ],
+        "title": "SensitivityResponse",
+        "type": "object"
+      },
+      "SobolFeatureIndex": {
+        "properties": {
+          "S1": {
+            "title": "S1",
+            "type": "number"
+          },
+          "S1_conf": {
+            "title": "S1 Conf",
+            "type": "number"
+          },
+          "ST": {
+            "title": "St",
+            "type": "number"
+          },
+          "ST_conf": {
+            "title": "St Conf",
+            "type": "number"
+          },
+          "feature": {
+            "title": "Feature",
+            "type": "string"
+          }
+        },
+        "required": [
+          "feature",
+          "S1",
+          "S1_conf",
+          "ST",
+          "ST_conf"
+        ],
+        "title": "SobolFeatureIndex",
+        "type": "object"
+      },
+      "SweepRequest": {
+        "description": "Batched sweep \u2014 same surrogate path applied to N inputs.",
+        "properties": {
+          "inputs": {
+            "items": {
+              "$ref": "#/components/schemas/PredictionRequest"
+            },
+            "maxItems": 10000,
+            "minItems": 1,
+            "title": "Inputs",
+            "type": "array"
+          }
+        },
+        "required": [
+          "inputs"
+        ],
+        "title": "SweepRequest",
+        "type": "object"
+      },
+      "SweepResponse": {
+        "properties": {
+          "results": {
+            "items": {
+              "$ref": "#/components/schemas/PredictionResponse"
+            },
+            "title": "Results",
+            "type": "array"
+          }
+        },
+        "required": [
+          "results"
+        ],
+        "title": "SweepResponse",
+        "type": "object"
+      },
+      "TargetPrediction": {
+        "description": "Per-target output.\n\nFor continuous targets:\n    point         \u2014 direct surrogate prediction\n    lo, hi        \u2014 Mondrian conformal interval (95%) on `point`\nFor censored time targets:\n    point         \u2014 E[time | event=1] (regressor stage)\n    lo, hi        \u2014 conformal interval on E[time | event=1]\n    event_probability \u2014 P(event=1) from the classifier stage\n    expected_time_s   \u2014 P(event) \u00d7 E[time | event=1] (convenience)\n\nThe point + lo/hi pair is therefore *always* on the same scale,\nwhich simplifies the frontend rendering. Frontends that want the\nexpected-time scalar use `expected_time_s`; frontends that want\nto display a probability badge alongside the conditional time use\n`event_probability`.",
+        "properties": {
+          "censored": {
+            "title": "Censored",
+            "type": "boolean"
+          },
+          "event_probability": {
+            "anyOf": [
+              {
+                "maximum": 1.0,
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "P(event=1) for censored time targets.",
+            "title": "Event Probability"
+          },
+          "expected_time_s": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Convenience: P(event) * point for censored time targets.",
+            "title": "Expected Time S"
+          },
+          "hi": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Conformal upper bound on `point`.",
+            "title": "Hi"
+          },
+          "lo": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Conformal lower bound on `point`.",
+            "title": "Lo"
+          },
+          "point": {
+            "description": "Point estimate. Continuous: direct surrogate output. Censored: E[time | event=1].",
+            "title": "Point",
+            "type": "number"
+          },
+          "target": {
+            "title": "Target",
+            "type": "string"
+          }
+        },
+        "required": [
+          "target",
+          "censored",
+          "point"
+        ],
+        "title": "TargetPrediction",
+        "type": "object"
+      },
+      "ValidationError": {
+        "properties": {
+          "ctx": {
+            "title": "Context",
+            "type": "object"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "title": "Location",
+            "type": "array"
+          },
+          "msg": {
+            "title": "Message",
+            "type": "string"
+          },
+          "type": {
+            "title": "Error Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError",
+        "type": "object"
+      },
+      "VersionResponse": {
+        "properties": {
+          "cgem_binary_sha256": {
+            "title": "Cgem Binary Sha256",
+            "type": "string"
+          },
+          "dataset_master_seed": {
+            "title": "Dataset Master Seed",
+            "type": "integer"
+          },
+          "dataset_name": {
+            "title": "Dataset Name",
+            "type": "string"
+          },
+          "package_version": {
+            "title": "Package Version",
+            "type": "string"
+          },
+          "targets": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Targets",
+            "type": "array"
+          }
+        },
+        "required": [
+          "package_version",
+          "cgem_binary_sha256",
+          "dataset_name",
+          "dataset_master_seed",
+          "targets"
+        ],
+        "title": "VersionResponse",
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "description": "ML-augmented framework for CAMI G-Effects Model: surrogate emulator, OOD detection, conformal prediction intervals, global sensitivity analysis, and authoritative subprocess path. The Fortran physiology core is unchanged; this API is additive.",
+    "title": "CGEM ML Extension API",
+    "version": "0.1.0"
+  },
+  "openapi": "3.1.0",
+  "paths": {
+    "/healthz": {
+      "get": {
+        "operationId": "healthz_healthz_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Healthz",
+        "tags": [
+          "meta"
+        ]
+      }
+    },
+    "/predict": {
+      "post": {
+        "operationId": "predict_predict_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PredictionRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PredictionResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Predict",
+        "tags": [
+          "inference"
+        ]
+      }
+    },
+    "/run-cgem": {
+      "post": {
+        "operationId": "run_cgem_run_cgem_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RunCGEMRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CGEMRunResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Run Cgem",
+        "tags": [
+          "inference"
+        ]
+      }
+    },
+    "/sensitivity/{target}": {
+      "get": {
+        "operationId": "sensitivity_sensitivity__target__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "target",
+            "required": true,
+            "schema": {
+              "title": "Target",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SensitivityResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Sensitivity",
+        "tags": [
+          "analysis"
+        ]
+      }
+    },
+    "/sweep": {
+      "post": {
+        "operationId": "sweep_sweep_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SweepRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SweepResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Sweep",
+        "tags": [
+          "inference"
+        ]
+      }
+    },
+    "/version": {
+      "get": {
+        "operationId": "version_version_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VersionResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Version",
+        "tags": [
+          "meta"
+        ]
+      }
+    }
+  }
+}

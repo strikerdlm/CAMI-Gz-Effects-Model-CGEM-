@@ -17,10 +17,12 @@ import {
 } from 'lucide-react';
 
 import { ProfileSelector } from '../components/ui';
+import { SensitivityChart } from '../components/charts';
 import { AEROBATIC_PROFILES } from '../services/mockData';
 import { MANEUVER_EXPLANATIONS } from '../utils/constants';
 import { calculateProfileStats } from '../utils/calculations';
 import { cn } from '../utils';
+import { TARGET_NAMES, type TargetName } from '../services/types';
 
 interface SectionHeaderProps {
   id: string;
@@ -60,6 +62,7 @@ export const AnalysisPage: React.FC = () => {
   const [expandedSections, setExpandedSections] = useState<Set<string>>(
     new Set(['description', 'effects'])
   );
+  const [sobolTarget, setSobolTarget] = useState<TargetName>('time_to_gloc_s');
 
   const profile = AEROBATIC_PROFILES[selectedProfileId];
   const explanation = MANEUVER_EXPLANATIONS[selectedProfileId];
@@ -96,6 +99,42 @@ export const AnalysisPage: React.FC = () => {
           onSelect={setSelectedProfileId}
           className="max-w-xl"
         />
+      </motion.div>
+
+      {/* Global sensitivity (Phase-4 Sobol indices, served by /sensitivity) */}
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="glass rounded-2xl p-6"
+      >
+        <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
+          <div>
+            <h3 className="text-lg font-semibold text-white">
+              Global sensitivity (Sobol indices)
+            </h3>
+            <p className="text-sm text-surface-400 max-w-2xl">
+              First-order (S1) and total-order (ST) Sobol indices computed via
+              the surrogate at <code>n_base = 1024</code> on the custom-arm
+              input space. Loaded from{' '}
+              <code className="text-surface-300">
+                data/results/sensitivity/sobol_first_total.csv
+              </code>{' '}
+              via <code>GET /sensitivity/{'{target}'}</code>.
+            </p>
+          </div>
+          <select
+            value={sobolTarget}
+            onChange={(e) => setSobolTarget(e.target.value as TargetName)}
+            className="bg-surface-800/60 border border-surface-700 rounded-md px-3 py-2 text-sm text-surface-200"
+          >
+            {TARGET_NAMES.map((t) => (
+              <option key={t} value={t}>
+                {t}
+              </option>
+            ))}
+          </select>
+        </div>
+        <SensitivityChart target={sobolTarget} height={380} />
       </motion.div>
 
       <div className="grid lg:grid-cols-3 gap-6">

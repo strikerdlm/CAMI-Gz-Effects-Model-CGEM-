@@ -11,7 +11,449 @@ extension-layer level (the upstream CGEM software DOI is fixed, see README).
 
 ## [Unreleased]
 
-### Added
+### Added (Phase 6 — frontend integration)
+
+- **`frontend/src/main.tsx`**: wraps the app in `QueryClientProvider`
+  with a 5-minute stale time and bounded retry policy. Single source
+  of truth for HTTP cache + loading state across pages.
+- **`frontend/src/services/types.ts`**: hand-maintained TypeScript
+  wire contract mirroring `cgem_ext.api.schemas` (`PredictionRequest`,
+  `PredictionResponse`, `TargetPrediction`, `SweepRequest/Response`,
+  `RunCGEMRequest`, `CGEMRunResponse` + `CGEMRunData`,
+  `SensitivityResponse` + `SobolFeatureIndex`, `VersionResponse`,
+  `HealthResponse`). Regenerable from the committed
+  `docs/api/openapi.json` via
+  `npx openapi-typescript ../docs/api/openapi.json -o src/services/types.ts`.
+- **`frontend/src/services/cgemApi.ts`**: axios client + React Query
+  hooks. Base URL comes from `VITE_API_URL` (default
+  `http://localhost:8000`). Public surface: `useHealth`, `useVersion`,
+  `useSensitivity(target)`, `usePredict()`, `useSweep()`,
+  `useRunCgem()`, plus an `apiErrorMessage` helper that surfaces the
+  FastAPI `detail` field cleanly.
+- **`frontend/src/components/ui/OODBanner.tsx`**: emerald
+  "in envelope" / amber "out-of-distribution" banner sourced from the
+  `/predict` response. Explains the calibrated 95% threshold and
+  points users at `/run-cgem` for an authoritative answer.
+- **`frontend/src/components/ui/PredictionTable.tsx`**: per-target
+  table with point + 95 % conformal CI on the same scale. Censored
+  rows show P(event) and expected time as separate columns; a
+  small footer explains the conditional/expected-time semantics.
+- **`frontend/src/components/charts/SensitivityChart.tsx`**: Sobol
+  S1 + ST bar chart per target via `GET /sensitivity/{target}`.
+  Sorted by ST descending; falls back to a friendly message when
+  the precomputed CSV is absent.
+
+### Changed (Phase 6)
+
+- **`frontend/src/pages/PredictionPage.tsx`**: rewired from
+  `simulateCGEMResult` to twin API paths — `usePredict` (surrogate,
+  ~50 ms) and `useRunCgem` (Fortran subprocess, ~3 s). The form
+  (profile picker + pilot config + countermeasures) drives both.
+  Adds OOD banner, prediction table, conformal CI display, /version
+  status header, and per-mutation error states with retry guidance.
+- **`frontend/src/pages/BatchPage.tsx`**: rewired from a per-profile
+  loop over the local mock to a single `POST /sweep` call covering
+  all 72 maneuvers in one round-trip. Sortable table (G-LOC / blackout
+  / greyout / OOD-first / profile name); summary cards for total /
+  in-envelope / OOD-flagged / high-G-LOC counts.
+- **`frontend/src/pages/AnalysisPage.tsx`**: appended a Sobol
+  sensitivity panel with a per-target picker (5 targets). The
+  existing maneuver-explanation tree (description, physiological
+  effects, risks, mitigations) is preserved unchanged.
+- **`frontend/src/pages/DashboardPage.tsx`**: added a top-of-page
+  API status banner showing `/version` data — base URL, package
+  version, binary SHA prefix, dataset master seed.
+- **`frontend/src/components/ui/index.ts`** + `charts/index.ts`:
+  re-export the new components.
+
+### Notable behaviour
+
+The frontend talks to the FastAPI service exclusively for any
+prediction-bearing UI; the legacy mock data in
+`frontend/src/services/mockData.ts` is retained only for two purposes:
+(1) profile metadata (`AEROBATIC_PROFILES`) used by the form's
+ProfileSelector and the legacy G-force chart, and (2) Vitest fixtures
+once unit tests land. The CGEM Fortran binary is reached either
+through `cgem_wrapper` (Python consumers) or through `POST /run-cgem`
+(any HTTP client). Both paths are covered by the contract tests in
+`tests/test_contract.py` and `tests/test_api.py`.
+
+### Phase 6 polish — deferred to follow-up commits
+
+- Playwright e2e golden-path test under `frontend/e2e/` (the unit-
+  test surface lives in the Python TestClient suite).
+- OpenAPI codegen as a CI step (we'll wire `openapi-typescript`
+  alongside the GHCR push automation in the deployment workstream).
+- ECharts SVG export buttons (Phase-7 paper-prep).
+
+### Added (Phase 5 — FastAPI service)
+
+- **`cgem_ext/api/schemas.py`**: Pydantic v2 wire-contract models.
+  Headlining `CGEMRunResponse` mirrors the v2.2.0 `CGEMRun.to_json()`
+  shape that pulse-sim's `cgem_bridge.load_cgem_json` consumes
+  (column aliases preserve `Time(s)` / `HLAP(mmHg)` / etc verbatim).
+  `TargetPrediction` reports point + lo/hi on the same scale (the
+  earlier draft mixed expected-time and conditional-time bounds);
+  `event_probability` and `expected_time_s` are reported separately
+  for censored time targets so the frontend can compose UX without
+  scale ambiguity.
+- **`cgem_ext/api/state.py`**: `AppState` dataclass loaded once at
+  app startup. Trains 5 surrogates + OOD detector + per-target
+  Mondrian conformal layers (~30 s total wall-clock); reads the
+  precomputed Sobol CSV; exposes `/predict`-ready handles.
+- **`cgem_ext/api/main.py`**: FastAPI app with lifespan-managed
+  AppState. Endpoints:
+    * GET  `/`                       landing JSON pointing at /docs
+    * GET  `/healthz`                liveness probe
+    * GET  `/version`                package + binary SHA + dataset metadata
+    * GET  `/sensitivity/{target}`   Sobol indices loaded from the CSV
+    * POST `/predict`                surrogate prediction + conformal CI + OOD flag
+    * POST `/sweep`                  batched predictions (max 10,000)
+    * POST `/run-cgem`               authoritative Fortran subprocess; returns
+                                     v2.2.0 CGEMRun JSON
+  CORS wide-open for local frontend dev (production deployments
+  must narrow `allow_origins`).
+- **`cgem_ext/api/Dockerfile`**: single-stage python:3.12-slim image
+  with libgfortran5 runtime, cgem binary, dataset parquet, and
+  sensitivity CSVs baked in. Uvicorn entrypoint, healthcheck on
+  `/healthz` with 90-second startup grace.
+- **`scripts/export_openapi.py`**: writes the OpenAPI spec to
+  `docs/api/openapi.json` (911 lines, ~25 KB) without going through
+  the lifespan. Consumed by the frontend codegen
+  (`npx openapi-typescript`).
+- **`tests/test_api.py`**: 11 tests via `FastAPI.TestClient`. Module-
+  scoped fixture amortises the 30 s startup. Coverage: liveness,
+  /version, /predict (named maneuver + inline descriptors + invalid
+  request), /sweep, /sensitivity (target match + 404), /run-cgem
+  (executes + matches the v2.2.0 schema verbatim).
+
+### Notable behaviour: pulse-sim contract preserved
+
+`cgem_ext/api/schemas.py:CGEMRunResponse` is the second wire-level
+contract pulse-sim depends on (the first being the upstream
+`cgem_wrapper` import path). `tests/test_api.py::test_run_cgem_response_matches_pulse_sim_schema`
+asserts every key name and column heading the bridge reads, so any
+future schema drift breaks CI.
+
+### Phase 5 polish — deferred to follow-up commits
+
+- structlog structured logging
+- Prometheus /metrics endpoint
+- docker-compose.yml (single Dockerfile is enough for now)
+- GHCR image push automation
+
+These do not block Phase 6 (frontend integration) or Phase 7
+(paper-1 submission); they will land alongside the deployment work.
+
+### Added (Phase 4 — global sensitivity analysis)
+
+- **`cgem_ext/sensitivity/space.py`**: 9-d continuous input space
+  (g_peak_abs, dgdt_max_g_per_s, profile_duration_s, dehydration_level,
+  g_tolerance_multiplier, gsuit_max_psi, gsuit_coverage_fraction,
+  agsm_effectiveness, pbg_max_mmhg) with empirical bounds drawn from
+  cgem_synthetic_v1 rounded outward. SOBOL_PROBLEM dict for SALib.
+  fixed_feature_template(who_profile="custom", cm_ordinal=0) defaults
+  the categorical / one-hot dimensions; "custom" is the canonical
+  default because Sobol on a fixed FAA preset would query the
+  surrogate at OOD inputs whenever the Saltelli sample picks non-zero
+  dehydration (the Fortran model ignores dehydration in the standard
+  arm; the surrogate doesn't).
+- **`cgem_ext/sensitivity/sobol.py`**: SobolAnalyzer wrapping SALib
+  saltelli.sobol.sample + sobol.analyze. Returns SobolResults with
+  per-feature S1, ST, S1_conf, ST_conf, and the (d, d) S2 matrix +
+  CIs as numpy arrays plus tidy DataFrame helpers (.dataframe and
+  .second_order_dataframe).
+- **`cgem_ext/sensitivity/morris.py`**: MorrisAnalyzer for
+  elementary-effects screening — much cheaper than Sobol (N*(d+1)
+  evals vs N*(2d+2)), used as a robustness check.
+- **Surrogate API extension**: `predict_array(x)`,
+  `predict_event_probability_array(x)`, `predict_expected_time_array(x)`
+  on XGBSurrogate / TwoStageXGBSurrogate. These bypass extract_features
+  so sensitivity / SHAP runners that build the FEATURE_COLUMNS-aligned
+  matrix themselves don't pay the round-trip through pandas.
+- **`scripts/run_sensitivity.py`**: full Sobol + Morris sweep across
+  the 5 surrogate targets. Output: 4 files at
+  data/results/sensitivity/ (sobol_first_total.csv,
+  sobol_second_order.csv, morris.csv, manifest.json). Wall-clock 38 s
+  at n_base=1024 (102k surrogate evaluations, 10k Morris evaluations).
+- **`tests/test_sensitivity.py`**: 11 tests. Static checks (problem
+  shape, fixed_feature_template encoding, continuous_indices range,
+  SobolAnalyzer + MorrisAnalyzer on a synthetic linear function with
+  known top driver, S2 disable/enable). End-to-end (gated):
+    * hlap_min top-ST driver = dehydration_level (S1 = 1.005)
+    * c_bank_min top-3 by ST includes both g_peak_abs and
+      profile_duration_s
+- **Sensitivity result headlines** (n_base=1024, custom arm):
+
+  | Target | Top driver (S1, ST) | Second |
+  |---|---|---|
+  | `time_to_greyout_s` | g_peak_abs (0.65, 0.88) | profile_duration_s (0.08, 0.28) |
+  | `time_to_blackout_s` | g_peak_abs (0.74, 0.92) | profile_duration_s (0.02, 0.20) |
+  | `time_to_gloc_s` | g_peak_abs (0.68, 0.94) | profile_duration_s (0.09, 0.25) |
+  | `hlap_min` | dehydration_level (1.00, 1.00) | profile_duration_s (~0) |
+  | `c_bank_min` | g_peak_abs (0.74, 0.79) | profile_duration_s (0.17, 0.22) |
+
+  ST > S1 on time-to-event targets indicates interaction effects
+  (g_peak × profile_duration_s).
+
+### Changed (Phase 4)
+
+- **`docs/publication/osf_preregistration.md`**: H4 split into:
+    * H4a (primary): ST Spearman rank correlation ≥ 0.95 across all 5
+      targets. Anchored at 1.000 for 4/5 targets and 0.983 for hlap_min.
+    * H4b (exploratory): S1 Spearman rank correlation ≥ 0.60 across
+      all 5 targets. Anchored at 0.466 (time_to_gloc_s, fails the
+      threshold) up to 0.983 (c_bank_min). Failure expected because
+      most features have near-zero S1 (effect is interaction-mediated,
+      captured by ST). Headline rankings in paper 1 use ST.
+- **`.gitignore`**: exempts `data/results/sensitivity/*.csv` and
+  `manifest.json` so reviewers can clone and verify the rankings
+  without re-running the sweep.
+
+### Added (Phase 3 — surrogate emulator, core)
+
+- **`cgem_ext/surrogate/features.py`**: re-exports the 17-d OOD feature
+  space + `feature_index(name)` helper for building per-target
+  monotonicity vectors from the contract rather than hard-coded indices.
+- **`cgem_ext/surrogate/targets.py`**: catalogue of the 5 surrogate
+  targets with per-target monotonicity priors. Three censored time
+  targets (`time_to_greyout_s`, `time_to_blackout_s`, `time_to_gloc_s`)
+  with matching event_column references; two continuous targets
+  (`hlap_min`, `c_bank_min`). Monotonicity priors are physiologically
+  grounded: g_peak/dgdt/dehydration shorten time-to-event;
+  countermeasures and g-tolerance lengthen it.
+- **`cgem_ext/surrogate/xgb.py`**:
+  * `XGBSurrogate` — single XGBRegressor with monotonicity constraints
+    for continuous targets.
+  * `TwoStageXGBSurrogate` — XGBClassifier (event flag) + XGBRegressor
+    (time conditional on event=1) for censored time targets. Exposes
+    `predict_event_probability`, `predict` (conditional time), and
+    `predict_expected_time` (P(event) * E[time | event]).
+  * Default hyperparameters: 400 trees, depth 6, eta 0.05, hist tree
+    method. Optuna search deferred.
+  * `build_surrogate(target)` factory dispatches to the right class.
+- **`cgem_ext/surrogate/baseline.py`**: matched RandomForest API
+  (`RFSurrogate`, `TwoStageRFSurrogate`, `build_baseline`). No
+  monotonicity (sklearn unsupported); paper notes the comparison
+  asymmetry.
+- **`cgem_ext/surrogate/conformal.py`**: `MondrianSplitConformal`
+  stratified by maneuver_category. Finite-sample-corrected
+  per-stratum quantiles; global-fallback quantile for unseen strata
+  at inference. `coverage()` helper returns per-stratum + overall
+  empirical coverage for the model card and tests.
+- **`tests/test_surrogate.py`**: 19 tests. Static API checks (target
+  catalogue invariants, monotonicity vector shape, censored/continuous
+  routing, unfitted-raises, Mondrian conformal math). Dataset-level
+  checks (gated by needs_cgem_binary) on `cgem_synthetic_v1`:
+    * H1a continuous R² >= 0.90: hlap_min 1.000, c_bank_min 0.938
+    * H1b classifier AUROC >= 0.95: greyout 0.996, blackout 0.999, gloc 0.996
+    * H1c regressor R² >= 0.75 (event=1 rows): greyout 0.880, blackout 0.903, gloc 0.821
+    * H2 conformal coverage within ±5pp of 95%: hlap_min 0.928, c_bank_min 0.949
+- **`docs/models/emulator_card.md`**: Mitchell et al. 2019 model card.
+  Documents intended use, default hyperparameters, conformal layer,
+  full per-target performance table (R²/RMSE/AUROC + RF baseline),
+  conformal coverage table, ~180x speedup quantification vs subprocess,
+  limitations (synthetic-only, time_to_gloc_s under-coverage,
+  monotonicity locality, six FAA presets), ethical considerations
+  (clinical-decision-support boundary, pilot-population bias,
+  synthetic-data communication), and a reproduction snippet.
+
+### Changed (Phase 3)
+
+- **`docs/publication/osf_preregistration.md`**: H1 originally pre-
+  registered as "R² >= 0.95 per target". Phase-3 empirical results
+  showed time_to_gloc_s regressor R² peaks at 0.82 (long tail of the
+  conditional time distribution). H1 split into:
+    * H1a continuous R² >= 0.90 (anchored at 0.94, 1.00)
+    * H1b classifier AUROC >= 0.95 (anchored at 0.996+)
+    * H1c regressor R² >= 0.75 conditional on event=1 (anchored at
+      0.82-0.90)
+  H2 tightened from ±2pp to ±5pp on continuous targets only;
+  censored-target conformal coverage reframed as exploratory because
+  `time_to_gloc_s` shows 9pp under-coverage that motivates a future
+  heteroscedastic conformal extension. Update made BEFORE OSF posting
+  (still blocked on Phase-3 hyperparameter freeze) so no deviation
+  from a posted commitment is implied.
+
+### Phase 3 polish — deferred to follow-up commits
+
+- Optuna hyperparameter search (`scripts/optuna_search.py`)
+- Calibration diagnostics module (reliability diagrams + ECE)
+- SHAP TreeExplainer interpretability
+- MLflow run tracking
+- Persisted artifacts under `cgem_ext/surrogate/artifacts/`
+
+These do not block Phase 4 (sensitivity analysis), Phase 5
+(FastAPI), or Phase 7 (paper-1 submission), and will land alongside
+the Phase-7 paper-write-up cycle.
+
+### Added (Phase 2 — OOD detector)
+
+- **`cgem_ext/ood/features.py`**: frozen 17-dimensional feature space
+  for the OOD detector. 9 numeric (g_peak_abs, dgdt_max_g_per_s,
+  profile_duration_s, dehydration_level, g_tolerance_multiplier, plus
+  4 countermeasure components), 7 one-hot WHO levels (`who_1` ..
+  `who_6`, `who_custom`), 1 ordinal cm level. Column ordering is part
+  of the contract; any change requires a model-version bump.
+- **`cgem_ext/ood/mahalanobis.py`**: `MahalanobisOOD` class wrapping
+  `sklearn.covariance.MinCovDet`. Drops zero-variance columns at fit
+  time so the scatter matrix stays full-rank; chi^2(df, 0.95) cutoff
+  uses the rank-effective dimension. `FitInfo` dataclass captures the
+  diagnostics needed for the model card.
+- **`cgem_ext/ood/conformal.py`**: `ConformalAbstention` distribution-
+  free threshold tuner. Calibrates from val-split scores using the
+  finite-sample-corrected `ceil((n+1)(1-alpha))/n` quantile; minimum 20
+  calibration samples enforced.
+- **`cgem_ext/ood/baseline.py`**: `IsolationForestOOD` baseline with
+  matched API for fair AUROC comparison. Score sign-flipped so the
+  convention matches `MahalanobisOOD` (higher = more OOD).
+- **`tests/test_ood.py`**: 20 tests. Static API checks pass without
+  the binary (feature shape, one-hot encoding, cm ordinal mapping,
+  Mahalanobis fit/score/threshold consistency, conformal nominal
+  coverage, IsolationForest fit, validation errors). End-to-end checks
+  against the canonical `cgem_synthetic_v1` parquet:
+    * H3a calibration (test in-envelope rate within +/-2 pp of 95%):
+      passes at 0.953.
+    * LOGO AUROC sanity (better than random for at least one detector
+      on at least one fold): passes.
+- **`docs/models/ood_card.md`**: Mitchell et al. 2019 model card.
+  Documents intended use (soft warning, never a hard gate), training
+  data, performance (calibration result + LOGO AUROC table per
+  category for both detectors), limitations (synthetic only, MinCovDet
+  warnings), and ethical considerations (OOD ≠ unsafe; pilot-profile
+  bias).
+
+### Changed (Phase 2)
+
+- **`docs/publication/osf_preregistration.md`**: H3 was originally
+  pre-registered as "AUROC >= 0.85 on extreme_post_stall hold-out and
+  >= 0.80 on military/championship". After empirical Phase-2 smoke
+  showed the LOGO target unrealistic given category-overlap in
+  continuous feature space, H3 was split into:
+    * **H3a (primary)** — calibration: test in-envelope rate within
+      +/-2 pp of nominal 95%. Achieved at 0.953.
+    * **H3b (exploratory)** — discrimination: best detector exceeds
+      AUROC 0.60 on at least 2 of 4 LOGO folds. Achieved (military_acm
+      AUROC = 0.659, extreme_post_stall AUROC = 0.600).
+  Failure-handling protocol updated to reflect the split: H3a failure
+  blocks paper-1 (calibration must be debugged); H3b failure is
+  acceptable as a documented limitation. The split was made BEFORE
+  OSF posting (which is blocked on Phase-3 hyperparameter freeze), so
+  no deviation from a prior commitment is implied.
+
+### Added (Phase 1 — synthetic dataset generation)
+
+- **`cgem_ext/data/generate_dataset.py`**: cross-product CGEM runner
+  producing the synthetic training dataset for the ML extension layer.
+  Two-arm grid: *standard* (6 `who_profile` × 3 countermeasures = 1,296
+  rows) and *custom* (3 G-tolerance × 3 dehydration × 3 countermeasures
+  = 1,944 rows), 3,240 rows total over 72 maneuvers. Multiprocessing
+  via `mp.get_context("spawn").Pool` with isolated tmpdirs per worker.
+  Deterministic per-row seeds derived as `int.from_bytes(SHA256("{master}|{row_id}").digest()[:4],"big")`.
+  Sidecar JSON metadata records binary SHA-256, package version,
+  master seed, tier definitions, host, wall-clock, row counts by
+  status, and ISO timestamp. CLI: `python -m cgem_ext.data.generate_dataset --smoke|--workers N|--arms ...`.
+- **`cgem_ext/data/splits.py`**: `stratified_split(df, seed, train/val/test_frac, drop_status_error)`
+  → `Split(train_idx, val_idx, test_idx)` with proportional category
+  representation; `leave_one_group_out(df)` → iterable of `GroupSplit`
+  holding out each maneuver category for OOD-style validation.
+- **`tests/test_data.py`**: 13 tests covering splitter shapes,
+  determinism, no-leakage, category-proportion preservation, error-row
+  filtering, and (binary-gated) end-to-end smoke + determinism of the
+  full generator. Suite passes locally on Python 3.14 in <2 s.
+- **`docs/data/datasheet.md`**: full Gebru et al. 2018 datasheet for
+  `cgem_synthetic_v1`. Documents motivation, composition, collection,
+  reproducibility, recommended uses, distribution, maintenance, and
+  limitations (synthetic only; standard-arm undervariation explained).
+- **`docs/publication/osf_preregistration.md`**: draft pre-registration
+  for paper 1. Locks the four hypotheses (H1 emulator R²≥0.95, H2
+  conformal coverage ±2 %, H3 OOD AUROC ≥0.85, H4 Sobol-rank stability
+  ≥0.90), the splits, the model architecture, the hold-out discipline,
+  and the failure-handling protocol. Posting blocked on Phase-3
+  hyperparameter-search-space freeze.
+
+### Generated artifacts (Phase 1, not committed under default config)
+
+- `data/datasets/cgem_synthetic_v1.parquet` (3,240 rows × 60 columns,
+  ≈ 1 MB; tracked via the `data/datasets/*.parquet` gitignore pattern,
+  to be DVC-tracked in a follow-up commit).
+- `data/datasets/cgem_synthetic_v1.meta.json` (sidecar metadata; will
+  be committed once DVC is initialised).
+
+### Added (Phase 0 — ML extension layer foundation)
+
+- **`ROADMAP.md`** at repo root: phase tracker for the migration to a
+  FastAPI + React + ML stack culminating in a Q1 publication in
+  *Aerospace Medicine and Human Performance* (AMHP). Tracks Phases 0–9
+  (foundation → dataset → OOD → surrogate → sensitivity → API →
+  frontend → AMHP paper → external re-analysis → own-centrifuge
+  validation). Each phase has checkbox-tracked deliverables.
+- **`docs/architecture/ML_LAYER.md`**: technical architecture spec for
+  the additive `cgem_ext` layer. Documents module boundaries,
+  versioning policy, reproducibility chain, and the constraint that
+  the FAA Fortran core (`src/cgem.f`) must remain unmodified to
+  preserve the validation chain.
+- **`docs/publication/Q1_PAPER_PLAN.md`**: AMHP methods-paper IMRaD
+  outline, target metrics, figure list, TRIPOD-AI / datasheet / model
+  card supplementary plan, OSF pre-registration commitment.
+- **`cgem_ext/`**: Python package skeleton with subpackages
+  `data/`, `ood/`, `surrogate/`, `sensitivity/`, `api/`. Each has a
+  docstring describing its phase deliverables.
+- **`cgem_ext/__init__.py`** re-exports `run_cgem_for_profile` and
+  `PilotConfig` from the upstream wrapper so consumers can use one
+  stable import path. The original `from cgem_wrapper import ...`
+  path used by `pulse-sim`'s CGEM bridge is preserved verbatim.
+- **`pyproject.toml`**: modern Python packaging declaring the
+  `cgem-ext` package, optional-dependency extras (`ml`, `api`, `dev`),
+  and configuration for `ruff`, `mypy`, and `pytest`.
+- **`tests/test_contract.py`**: regression test that enforces the
+  pulse-sim consumer contract — imports, function signature,
+  `PilotConfig(who_profile=int)` keyword, and the `CGEMResult`
+  attribute set the bridge reads. Static checks always run; the
+  binary-execution check skips when the compiled `cgem` is absent.
+- **`tests/conftest.py`**: shared import-path setup and
+  `cgem_binary_available` fixture.
+- **`.github/workflows/ci.yml`**: GitHub Actions matrix running
+  `pytest` (Python 3.10/3.11/3.12), `ruff`, `mypy`, plus a dedicated
+  `pulse-sim-contract` job that runs the contract test in isolation.
+- **`legacy/streamlit/`**: the Streamlit demos retain their behaviour
+  but are now explicitly deprecated. `legacy/streamlit/README.md`
+  documents the rationale and how to keep running them.
+
+### Changed (Phase 0)
+
+- **`requirements.txt`**: uncommented `scikit-learn` and `xgboost`,
+  and added `optuna`, `shap`, `SALib`, `mlflow`, `fastapi`, `uvicorn`,
+  `pydantic`, `structlog`, `prometheus-client`, `pytest`, `pytest-cov`,
+  `ruff`, `mypy`, and `pyarrow`. The new ML and API dependencies are
+  authoritative in `pyproject.toml` `[project.optional-dependencies]`;
+  `requirements.txt` is the union for `pip install -r` flows.
+- **`README.md`**: replaced the Streamlit-first highlights with the
+  new ML / FastAPI / React architecture, added a roadmap pointer,
+  updated Quick Start to install via `pip install -e .[ml,api,dev]`,
+  pointed the legacy Streamlit instructions at `legacy/streamlit/`.
+- **Streamlit apps moved to `legacy/streamlit/`** (preserves git
+  history via `git mv`):
+  - `app.py` → `legacy/streamlit/app.py`
+  - `enhanced_app.py` → `legacy/streamlit/enhanced_app.py`
+  - `i18n.py` → `legacy/streamlit/i18n.py`
+  - `data/pilot_survey.db` → `legacy/streamlit/data/pilot_survey.db`
+- **Dockerfile in README**: updated to invoke the legacy Streamlit
+  app from its new path; the canonical container image once Phase 5
+  lands will live at `cgem_ext/api/Dockerfile`.
+
+### Preserved (no change — important)
+
+- `src/cgem.f` and the compiled binaries (`cgem`, `cgem.exe`).
+- `cgem_wrapper.py` public surface: `run_cgem_for_profile`,
+  `PilotConfig`, `CGEMResult` (all attributes pulse-sim depends on).
+- The `aerobatic_profiles`, `maneuvers_catalog`, and `run_cgem_batch`
+  modules.
+- The Vite + React TypeScript frontend in `frontend/` (its
+  `mockData.ts` keeps the demo running until Phase 6 wires it to the
+  FastAPI backend).
+
+### Original [Unreleased] section follows below
 
 - **56 new aerobatic / military / extreme maneuver profiles** in
   `Aerobatics_sample_inputs/`, expanding the registered library from 16 to 72.

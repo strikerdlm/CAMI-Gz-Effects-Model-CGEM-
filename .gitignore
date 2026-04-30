@@ -61,3 +61,41 @@ tools/_catalog_snippet.py
 # Ignore all documentation and protocol outputs
 docs/Protocolo/
 cronograma_cgem_*.html
+
+# ML extension layer (cgem_ext) — generated artifacts
+mlruns/
+.dvc/cache/
+.dvc/tmp/
+data/datasets/*.parquet
+# Glob, not directory: ignore the *contents* of data/results so the
+# negation rules below can selectively un-ignore specific files. (A
+# bare `data/results/` would short-circuit and prevent git from
+# descending into the directory at all.)
+data/results/*
+
+# Exception: ship the canonical paper-1 synthetic dataset and its
+# sidecar metadata so reviewers can clone and re-run analyses without
+# regenerating from the Fortran binary.
+!data/datasets/cgem_synthetic_v1.parquet
+!data/datasets/cgem_synthetic_v1.meta.json
+
+# Exception: ship the Phase-4 sensitivity CSVs + manifest so paper-1
+# reviewers can verify the Sobol / Morris rankings without re-running
+# the full sweep. Regenerable via `python -m scripts.run_sensitivity`.
+!data/results/sensitivity/
+!data/results/sensitivity/*.csv
+!data/results/sensitivity/manifest.json
+cgem_ext/**/__pycache__/
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# IDE
+.idea/
+.vscode/
+*.swp
