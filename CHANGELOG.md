@@ -11,6 +11,88 @@ extension-layer level (the upstream CGEM software DOI is fixed, see README).
 
 ## [Unreleased]
 
+### CI hardening (post-Phase 6, 2026-04-30)
+
+First green CI run on the project. Two commits land the work
+(`1215300` + `fca23ae`); GitHub Actions run [`25175252249`][green-ci]
+is the first ✅ across all five jobs.
+
+[green-ci]: https://github.com/strikerdlm/CAMI-Gz-Effects-Model-CGEM-/actions/runs/25175252249
+
+#### Real bugs fixed
+
+- **`cgem_ext/data/splits.py`**: `sub.index.to_numpy()` returns a
+  read-only view under numpy ≥ 2.x, which made `rng.shuffle(idx)`
+  raise `ValueError: array is read-only` and break every
+  `stratified_split` call. Fixed by passing `copy=True` so the array
+  is owned and mutable. Affects all stratified splits used by the
+  surrogate and OOD test fixtures.
+
+#### CI / tooling
+
+- **`.github/workflows/ci.yml`**: bumped `actions/checkout@v4 → @v5`
+  and `actions/setup-python@v5 → @v6` to silence the GitHub Node.js
+  20 deprecation warnings and run on Node.js 24.
+- **`pyproject.toml`** dev deps: added `httpx` (FastAPI's TestClient
+  imports it lazily, so `tests/test_api.py` collection failed in CI
+  without it) and `pandas-stubs` (lets `mypy` resolve pandas types).
+- **`pyproject.toml`** ruff config: `allowed-confusables = ["×", "−", "α"]`
+  so the intentional mathematical symbols in the `cgem_ext.api.schemas`,
+  `cgem_ext.data.generate_dataset`, and `cgem_ext.surrogate.conformal`
+  docstrings stop tripping `RUF002`.
+- **`pyproject.toml`** mypy overrides: `ignore_missing_imports = true`
+  for `SALib.*`, `sklearn.*`, `xgboost.*`, `shap.*`, `optuna.*`,
+  `mlflow.*` — these libraries don't ship type stubs and are not
+  forks we control.
+
+#### Lint cleanup
+
+- 100 ruff findings auto-fixed across `cgem_ext/` and `tests/`:
+  `Optional[X] → X | None` (PEP 604), import block sorting (`I001`),
+  `__all__` sorting (`RUF022`), unused `# noqa: BLE001` directives
+  (`RUF100`), one stale unused import (`get_target` in
+  `cgem_ext/api/main.py`).
+- Manual ruff fixes: `int(round(...))` → `round(...)` in
+  `splits.py` (`RUF046`), removed the unused `n_test` assignment
+  (`F841`), renamed `test_df → _test_df` in `tests/test_data.py`
+  (`RUF059`), renamed `for i in range(n)` → `for _ in range(n)` in
+  `tests/test_ood.py` (`B007`), collapsed an `if/else` to a ternary
+  in `tests/test_surrogate.py` (`SIM108`).
+
+#### Surgical mypy fixes
+
+- `cgem_ext/sensitivity/sobol.py` and `cgem_ext/sensitivity/morris.py`:
+  the `target` attribute is now explicitly `str` (was `str | Any | None`
+  due to the `target or getattr(...)` fallback), so `SobolFitInfo`
+  and `MorrisFitInfo` constructors type-check.
+- `cgem_ext/ood/baseline.py`: switched bare `dtype=float` /
+  `dtype=int` to `np.float64` / `np.int64` so mypy's stricter
+  numpy ≥ 2 stubs accept them.
+- `cgem_ext/ood/conformal.py`: dropped a now-stale
+  `# type: ignore[operator]` (newer mypy resolves
+  `np.ndarray <= float | None` correctly when the prior
+  `_check_calibrated()` narrows the optional).
+- Three narrow `# type: ignore` comments where kwarg-unpacking
+  cannot be statically typed: `PilotConfig(**cfg_kwargs)` in
+  `cgem_ext/data/generate_dataset.py`,
+  `model.predict_event_probability(...)` in `cgem_ext/api/main.py`,
+  and `CGEMRunData(**{...})` in `cgem_ext/api/main.py`.
+
+#### Result
+
+| Job | Status | Wall-clock |
+|---|---|---|
+| Lint (ruff + mypy) | ✅ | 1 m 18 s |
+| pytest (Python 3.10) | ✅ | 1 m 05 s |
+| pytest (Python 3.11) | ✅ | 1 m 08 s |
+| pytest (Python 3.12) | ✅ | 1 m 11 s |
+| Verify pulse-sim CGEM contract is intact | ✅ | 34 s |
+
+80 tests collected, 80 passing. The pulse-sim contract job (which
+depends on the test matrix) is the first CI gate explicitly
+guarding the FAA Fortran wrapper boundary — every future change
+must keep this green.
+
 ### Added (Phase 6 — frontend integration)
 
 - **`frontend/src/main.tsx`**: wraps the app in `QueryClientProvider`

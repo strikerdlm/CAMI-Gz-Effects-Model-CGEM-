@@ -174,8 +174,9 @@ The validated FAA Fortran binary is invoked unchanged through `cgem_wrapper.run_
 | 8 | Paper 2 — external re-analysis vs centrifuge literature | ⬜ Post paper 1 |
 | 9 | Paper 3 — own-centrifuge validation (subjects) | ⬜ Requires ethics + subjects |
 
-**Test coverage**: 80 tests across all phases, all green (~4:16 wall-clock).
-**Pulse-sim contract**: preserved at two wire levels (Python import + JSON), enforced in CI.
+**Test coverage**: 80 tests across all phases, all green (~16 s locally; CI matrix on Python 3.10 / 3.11 / 3.12 finishes in ~1 min 20 s per leg).
+**CI status**: GitHub Actions (`.github/workflows/ci.yml`) runs `ruff` + `mypy` + `pytest` matrix + the pulse-sim contract job on every push and pull request. All five jobs currently green.
+**Pulse-sim contract**: preserved at two wire levels (Python import + JSON), enforced as a dedicated CI job that depends on the test matrix.
 
 ---
 
