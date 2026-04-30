@@ -11,7 +11,80 @@ extension-layer level (the upstream CGEM software DOI is fixed, see README).
 
 ## [Unreleased]
 
-### Added
+### Added (Phase 0 — ML extension layer foundation)
+
+- **`ROADMAP.md`** at repo root: phase tracker for the migration to a
+  FastAPI + React + ML stack culminating in a Q1 publication in
+  *Aerospace Medicine and Human Performance* (AMHP). Tracks Phases 0–9
+  (foundation → dataset → OOD → surrogate → sensitivity → API →
+  frontend → AMHP paper → external re-analysis → own-centrifuge
+  validation). Each phase has checkbox-tracked deliverables.
+- **`docs/architecture/ML_LAYER.md`**: technical architecture spec for
+  the additive `cgem_ext` layer. Documents module boundaries,
+  versioning policy, reproducibility chain, and the constraint that
+  the FAA Fortran core (`src/cgem.f`) must remain unmodified to
+  preserve the validation chain.
+- **`docs/publication/Q1_PAPER_PLAN.md`**: AMHP methods-paper IMRaD
+  outline, target metrics, figure list, TRIPOD-AI / datasheet / model
+  card supplementary plan, OSF pre-registration commitment.
+- **`cgem_ext/`**: Python package skeleton with subpackages
+  `data/`, `ood/`, `surrogate/`, `sensitivity/`, `api/`. Each has a
+  docstring describing its phase deliverables.
+- **`cgem_ext/__init__.py`** re-exports `run_cgem_for_profile` and
+  `PilotConfig` from the upstream wrapper so consumers can use one
+  stable import path. The original `from cgem_wrapper import ...`
+  path used by `pulse-sim`'s CGEM bridge is preserved verbatim.
+- **`pyproject.toml`**: modern Python packaging declaring the
+  `cgem-ext` package, optional-dependency extras (`ml`, `api`, `dev`),
+  and configuration for `ruff`, `mypy`, and `pytest`.
+- **`tests/test_contract.py`**: regression test that enforces the
+  pulse-sim consumer contract — imports, function signature,
+  `PilotConfig(who_profile=int)` keyword, and the `CGEMResult`
+  attribute set the bridge reads. Static checks always run; the
+  binary-execution check skips when the compiled `cgem` is absent.
+- **`tests/conftest.py`**: shared import-path setup and
+  `cgem_binary_available` fixture.
+- **`.github/workflows/ci.yml`**: GitHub Actions matrix running
+  `pytest` (Python 3.10/3.11/3.12), `ruff`, `mypy`, plus a dedicated
+  `pulse-sim-contract` job that runs the contract test in isolation.
+- **`legacy/streamlit/`**: the Streamlit demos retain their behaviour
+  but are now explicitly deprecated. `legacy/streamlit/README.md`
+  documents the rationale and how to keep running them.
+
+### Changed (Phase 0)
+
+- **`requirements.txt`**: uncommented `scikit-learn` and `xgboost`,
+  and added `optuna`, `shap`, `SALib`, `mlflow`, `fastapi`, `uvicorn`,
+  `pydantic`, `structlog`, `prometheus-client`, `pytest`, `pytest-cov`,
+  `ruff`, `mypy`, and `pyarrow`. The new ML and API dependencies are
+  authoritative in `pyproject.toml` `[project.optional-dependencies]`;
+  `requirements.txt` is the union for `pip install -r` flows.
+- **`README.md`**: replaced the Streamlit-first highlights with the
+  new ML / FastAPI / React architecture, added a roadmap pointer,
+  updated Quick Start to install via `pip install -e .[ml,api,dev]`,
+  pointed the legacy Streamlit instructions at `legacy/streamlit/`.
+- **Streamlit apps moved to `legacy/streamlit/`** (preserves git
+  history via `git mv`):
+  - `app.py` → `legacy/streamlit/app.py`
+  - `enhanced_app.py` → `legacy/streamlit/enhanced_app.py`
+  - `i18n.py` → `legacy/streamlit/i18n.py`
+  - `data/pilot_survey.db` → `legacy/streamlit/data/pilot_survey.db`
+- **Dockerfile in README**: updated to invoke the legacy Streamlit
+  app from its new path; the canonical container image once Phase 5
+  lands will live at `cgem_ext/api/Dockerfile`.
+
+### Preserved (no change — important)
+
+- `src/cgem.f` and the compiled binaries (`cgem`, `cgem.exe`).
+- `cgem_wrapper.py` public surface: `run_cgem_for_profile`,
+  `PilotConfig`, `CGEMResult` (all attributes pulse-sim depends on).
+- The `aerobatic_profiles`, `maneuvers_catalog`, and `run_cgem_batch`
+  modules.
+- The Vite + React TypeScript frontend in `frontend/` (its
+  `mockData.ts` keeps the demo running until Phase 6 wires it to the
+  FastAPI backend).
+
+### Original [Unreleased] section follows below
 
 - **56 new aerobatic / military / extreme maneuver profiles** in
   `Aerobatics_sample_inputs/`, expanding the registered library from 16 to 72.
