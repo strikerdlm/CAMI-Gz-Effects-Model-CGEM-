@@ -59,6 +59,5 @@ tools/_catalog_snippet.py
 
 # Gantt charts and exports
 # Ignore all documentation and protocol outputs
-docs/
 docs/Protocolo/
 cronograma_cgem_*.html
