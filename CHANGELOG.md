@@ -11,6 +11,45 @@ extension-layer level (the upstream CGEM software DOI is fixed, see README).
 
 ## [Unreleased]
 
+### Added (Phase 1 — synthetic dataset generation)
+
+- **`cgem_ext/data/generate_dataset.py`**: cross-product CGEM runner
+  producing the synthetic training dataset for the ML extension layer.
+  Two-arm grid: *standard* (6 `who_profile` × 3 countermeasures = 1,296
+  rows) and *custom* (3 G-tolerance × 3 dehydration × 3 countermeasures
+  = 1,944 rows), 3,240 rows total over 72 maneuvers. Multiprocessing
+  via `mp.get_context("spawn").Pool` with isolated tmpdirs per worker.
+  Deterministic per-row seeds derived as `int.from_bytes(SHA256("{master}|{row_id}").digest()[:4],"big")`.
+  Sidecar JSON metadata records binary SHA-256, package version,
+  master seed, tier definitions, host, wall-clock, row counts by
+  status, and ISO timestamp. CLI: `python -m cgem_ext.data.generate_dataset --smoke|--workers N|--arms ...`.
+- **`cgem_ext/data/splits.py`**: `stratified_split(df, seed, train/val/test_frac, drop_status_error)`
+  → `Split(train_idx, val_idx, test_idx)` with proportional category
+  representation; `leave_one_group_out(df)` → iterable of `GroupSplit`
+  holding out each maneuver category for OOD-style validation.
+- **`tests/test_data.py`**: 13 tests covering splitter shapes,
+  determinism, no-leakage, category-proportion preservation, error-row
+  filtering, and (binary-gated) end-to-end smoke + determinism of the
+  full generator. Suite passes locally on Python 3.14 in <2 s.
+- **`docs/data/datasheet.md`**: full Gebru et al. 2018 datasheet for
+  `cgem_synthetic_v1`. Documents motivation, composition, collection,
+  reproducibility, recommended uses, distribution, maintenance, and
+  limitations (synthetic only; standard-arm undervariation explained).
+- **`docs/publication/osf_preregistration.md`**: draft pre-registration
+  for paper 1. Locks the four hypotheses (H1 emulator R²≥0.95, H2
+  conformal coverage ±2 %, H3 OOD AUROC ≥0.85, H4 Sobol-rank stability
+  ≥0.90), the splits, the model architecture, the hold-out discipline,
+  and the failure-handling protocol. Posting blocked on Phase-3
+  hyperparameter-search-space freeze.
+
+### Generated artifacts (Phase 1, not committed under default config)
+
+- `data/datasets/cgem_synthetic_v1.parquet` (3,240 rows × 60 columns,
+  ≈ 1 MB; tracked via the `data/datasets/*.parquet` gitignore pattern,
+  to be DVC-tracked in a follow-up commit).
+- `data/datasets/cgem_synthetic_v1.meta.json` (sidecar metadata; will
+  be committed once DVC is initialised).
+
 ### Added (Phase 0 — ML extension layer foundation)
 
 - **`ROADMAP.md`** at repo root: phase tracker for the migration to a
