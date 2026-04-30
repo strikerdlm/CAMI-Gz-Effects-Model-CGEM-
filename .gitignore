@@ -61,3 +61,24 @@ tools/_catalog_snippet.py
 # Ignore all documentation and protocol outputs
 docs/Protocolo/
 cronograma_cgem_*.html
+
+# ML extension layer (cgem_ext) — generated artifacts
+mlruns/
+.dvc/cache/
+.dvc/tmp/
+data/datasets/*.parquet
+data/results/
+cgem_ext/**/__pycache__/
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# IDE
+.idea/
+.vscode/
+*.swp
