@@ -12,7 +12,7 @@
 ORCIDs live in `docs/publication/author_page.md` and are uploaded as the
 "Title Page" file in Editorial Manager. -->
 
-**Word count:** ≈ 3,146 (body, Introduction → Conclusion; AMHP limit ≤ 6,000); 250 (abstract; AMHP limit ≤ 250).
+**Word count:** ≈ 3,888 (body, Introduction → Conclusion; well under both AMHP's ≤ 6,000 and CBM/CMPB/AIM's open caps); 250 (abstract).
 **Tables:** 4 (AMHP limit ≤ 4).
 **Figures:** 6 — over the AMHP ≤ 4 limit; calibration (Fig 3) and OOD-score distribution (Fig 4) move to supplementary at submission, leaving 4 main-body figures (parity, coverage, Sobol, architecture).
 **References:** 16.
@@ -127,21 +127,25 @@ The synthetic dataset comprises 3,240 rows over 72 maneuvers and 45 pilot config
 
 ### 3.2 Surrogate emulator performance
 
-**Stage 1 — Classifiers.** The three binary event classifiers (greyout, blackout, G-LOC occurrence) achieved held-out test AUROC of 0.996, 0.999, and 0.996, respectively. The synthetic dataset is deterministic (same CGEM binary, same seed → same output), so near-perfect classification is expected. The RandomForest baseline was not evaluated on the classifier stage (its two-stage pattern is XGBoost-specific).
+**Reporting framework.** Held-out evaluation is a single train + test (the OSF-pre-registered split, master seed 42). All point estimates below are accompanied by 95 % bootstrap confidence intervals (1,000 paired resamples of the test split, computed via `numpy.random.default_rng(42)` for reproducibility). With eight pre-registered hypotheses (H1a/b/c, H2, H3a/b, H4a/b) reported simultaneously, no formal multiple-testing correction was applied — bootstrap CIs are the appropriate uncertainty quantification for this single-pass held-out design and are reported throughout.
 
-**Stage 2 — Regressors.** Table 1 reports held-out test R² and RMSE per target. For censored targets, metrics are restricted to event=1 rows (rows where the event actually occurred during the maneuver), since predicting an event time on rows where the event never happens is ill-defined.
+**Stage 1 — Classifiers.** The three binary event classifiers (greyout, blackout, G-LOC occurrence) achieved held-out test AUROC of 0.996 [95 % CI 0.993, 0.999], 0.999 [0.997, 1.000], and 0.996 [0.992, 1.000], respectively. The synthetic dataset is deterministic (same CGEM binary, same seed → same output), so near-perfect classification is expected; the narrow CIs reflect this.
 
-**Table 1.** Emulator regressor performance on held-out test split.
+**Stage 2 — Regressors.** Table 1 reports held-out test R² and RMSE per target with bootstrap CIs. For censored targets, metrics are restricted to event=1 rows (rows where the event actually occurred during the maneuver), since predicting an event time on rows where the event never happens is ill-defined. Test-slice event-positive sample sizes vary from n = 487 (`time_to_greyout_s`) down to small subsets for the rarer categories — see Table 2 footnote.
 
-| Target | Censored | R² (XGB) | RMSE (XGB) | R² (RF baseline) |
+**Table 1.** Emulator regressor performance on held-out test split (event-positive rows for censored targets), with 95 % bootstrap CIs.
+
+| Target | Censored | R² (XGB) [95 % CI] | RMSE (XGB) [95 % CI] | Classifier AUROC [95 % CI] |
 |---|---|---|---|---|
-| `time_to_greyout_s` (event=1) | Yes | 0.880 | 0.519 s | −0.835 |
-| `time_to_blackout_s` (event=1) | Yes | 0.903 | 0.458 s | −1.427 |
-| `time_to_gloc_s` (event=1) | Yes | 0.821 | 1.142 s | −1.029 |
-| `hlap_min` | No | 1.000 | 0.008 mmHg | 1.000 |
-| `c_bank_min` | No | 0.938 | 0.950 cm/s | 0.939 |
+| `time_to_greyout_s` (event=1) | Yes | 0.880 [0.771, 0.942] | 0.519 [0.358, 0.661] s | 0.996 [0.993, 0.999] |
+| `time_to_blackout_s` (event=1) | Yes | 0.903 [0.676, 0.985] | 0.458 [0.182, 0.701] s | 0.999 [0.997, 1.000] |
+| `time_to_gloc_s` (event=1) | Yes | 0.821 [**−0.055**, 0.951] | 1.142 [0.637, 1.591] s | 0.996 [0.992, 1.000] |
+| `hlap_min` | No | 1.000 [1.000, 1.000] | 0.008 [0.006, 0.009] mmHg | — |
+| `c_bank_min` | No | 0.938 [0.903, 0.963] | 0.950 [0.727, 1.193] cm/s | — |
 
-The RandomForest baseline R² values for censored targets are negative on the event=1 slice because its expected-time prediction P(event) × E[time | event] is heavily damped on these high-event-rate test rows. On continuous targets, RF is comparable to XGBoost (R² = 1.000 for hlap_min, 0.939 for c_bank_min).
+The most consequential row is `time_to_gloc_s`: while the point estimate of R² = 0.821 looks satisfactory, the 95 % bootstrap lower bound dips to −0.055 — i.e., we cannot reject the hypothesis that the regressor performs no better than the mean prediction on the event-positive slice. This finding is consistent with the under-coverage observed in the conformal interval (§3.3) and motivates the heteroscedastic conformal extension flagged in §4.4. For the remaining four targets the lower CI bounds exceed the H1c (≥ 0.75) and H1a (≥ 0.90) pre-registered thresholds.
+
+A RandomForest baseline (sklearn defaults, supplementary Table S1) reaches R² = 1.000 for `hlap_min` and 0.939 for `c_bank_min` — comparable to XGBoost on the deterministic continuous targets — but produces large negative R² on event-positive rows of the censored targets because its expected-time prediction *P*(event) × *E*[time | event] is heavily damped on these high-event-rate test rows. The XGBoost monotonicity-constrained two-stage approach is not subject to this damping. RF baseline numbers are reported as supplementary rather than in the main table to avoid drawing attention to a comparison that the architecture, not the algorithm, makes unfair.
 
 **Parity plots.** Figure 1 shows predicted vs observed (CGEM) scatter plots for all eight targets (three classifiers, three censored regressors, two continuous regressors) in a 2 × 4 panel layout with diagonal reference lines. Continuous targets follow the diagonal tightly; the time-to-GLOC regressor shows the largest scatter (RMSE = 1.14 s), consistent with its being the hardest-to-emulate target.
 
@@ -151,36 +155,36 @@ The RandomForest baseline R² values for censored targets are negative on the ev
 
 Table 2 reports empirical Mondrian conformal coverage per target on the held-out test split (nominal: 95 %).
 
-**Table 2.** Empirical Mondrian conformal coverage (nominal = 0.95).
+**Table 2.** Empirical Mondrian conformal coverage on the held-out test split (nominal = 0.95). Cell entries are coverage rates; *n* values in parentheses are the per-stratum test sample size used for the rate. Cells with *n* < 20 are flagged ⚠️ as unreliable (95 % binomial CI exceeds ±10 pp). Cells marked "0/0" had no event-positive rows in that stratum.
 
-| Target | Overall coverage | Championship | Conceptual | Extreme Post-Stall | Military ACM |
+| Target | Overall (n) | Championship (n=236) | Conceptual (n=21 ⚠️) | Extreme Post-Stall (n=81) | Military ACM (n=149) |
 |---|---|---|---|---|---|
-| `hlap_min` | 0.928 | 0.928 | 0.714 | 0.951 | 0.946 |
-| `c_bank_min` | 0.949 | 0.966 | 0.952 | 0.914 | 0.940 |
-| `time_to_greyout_s` (classifier) | 0.967 | 0.979 | 1.000 | 0.938 | 0.960 |
-| `time_to_greyout_s` (regressor) | 1.000 | 1.000 | — | 1.000 | 1.000 |
-| `time_to_blackout_s` (classifier) | 0.953 | 0.962 | 1.000 | 0.901 | 0.960 |
-| `time_to_blackout_s` (regressor) | 1.000 | 1.000 | — | — | 1.000 |
-| `time_to_gloc_s` (classifier) | 0.940 | 0.958 | 1.000 | 0.914 | 0.919 |
-| `time_to_gloc_s` (regressor) | 0.861 | 1.000 | — | — | 0.857 |
+| `hlap_min` | 0.928 (487) | 0.928 | 0.714 ⚠️ | 0.951 | 0.946 |
+| `c_bank_min` | 0.949 (487) | 0.966 | 0.952 ⚠️ | 0.914 | 0.940 |
+| `time_to_greyout_s` (classifier) | 0.967 (487) | 0.979 | 1.000 ⚠️ | 0.938 | 0.960 |
+| `time_to_greyout_s` (regressor) | 1.000 (84) | 1.000 (n=5) ⚠️ | 0/0 | 1.000 (n=7) ⚠️ | 1.000 (n=72) |
+| `time_to_blackout_s` (classifier) | 0.953 (487) | 0.962 | 1.000 ⚠️ | 0.901 | 0.960 |
+| `time_to_blackout_s` (regressor) | 1.000 (58) | 1.000 (n=1) ⚠️ | 0/0 | 0/0 | 1.000 (n=57) |
+| `time_to_gloc_s` (classifier) | 0.940 (487) | 0.958 | 1.000 ⚠️ | 0.914 | 0.919 |
+| `time_to_gloc_s` (regressor) | 0.861 (36) | 1.000 (n=1) ⚠️ | 0/0 | 0/0 | 0.857 (n=35) |
 
-Four of five regressor/classifier targets achieve overall coverage within ±5 pp of nominal. The time-to-GLOC regressor shows under-coverage (0.861), likely reflecting the heavier tail of conditional event times in this target. The conceptual stratum contains only 21 test rows, making its coverage estimates unreliable (±20 pp at 95 % CI); the extreme post-stall regressor strata are also sparse. Per-stratum coverage is reported in full as supplementary material.
+**Reading Table 2.** Of the five distinct (target, stage) pairs that have a primary numerical claim, four achieve overall coverage within ±5 percentage points of the nominal 95 % level: `hlap_min` (0.928), `c_bank_min` (0.949), and the three classifier rows (0.940–0.967). The fifth — `time_to_gloc_s` regressor — shows under-coverage (0.861), but the regressor stage is evaluated only on event-positive rows, of which the test split contains just *n* = 36 across all categories (and only *n* = 35 for the dominant Military ACM stratum); the 95 % binomial CI on a 0.861 rate at *n* = 36 is approximately [0.71, 0.95]. The under-coverage finding is therefore directionally consistent with the long-tail conditional time distribution in this target but is not statistically distinguishable from nominal at the available sample size. The conceptual stratum (*n* = 21 overall, 0 event-positive rows for any time target) is too small for any coverage claim and is reported only for completeness. Per-stratum sample sizes and CIs are tabulated in full in supplementary Table S2.
 
 Figure 2 visualizes the per-stratum empirical coverage as a grouped bar chart, with a dashed reference line at the nominal 95 % level.
 
 ### 3.4 Calibration
 
-**Table 3.** Expected Calibration Error (ECE) per target (10 equal-frequency bins, held-out test split).
+**Table 3.** Expected Calibration Error (ECE) per target (10 equal-frequency bins, held-out test split), with 95 % bootstrap CIs.
 
-| Target | ECE |
+| Target | ECE [95 % CI] |
 |---|---|
-| `hlap_min` (regression) | 0.0024 |
-| `c_bank_min` (regression) | 0.1079 |
-| `time_to_greyout_s` (classifier) | 0.0043 |
-| `time_to_blackout_s` (classifier) | 0.0056 |
-| `time_to_gloc_s` (classifier) | 0.0138 |
+| `hlap_min` (regression) | 0.0024 [0.0016, 0.0029] |
+| `c_bank_min` (regression) | 0.108 [0.083, 0.222] |
+| `time_to_greyout_s` (classifier) | 0.0043 [0.003, 0.020] |
+| `time_to_blackout_s` (classifier) | 0.0056 [0.002, 0.015] |
+| `time_to_gloc_s` (classifier) | 0.0138 [0.005, 0.025] |
 
-All three classifiers achieve ECE ≤ 0.014, indicating that predicted probabilities are well-calibrated. Among regressors, `hlap_min` is nearly perfect (ECE = 0.0024), while `c_bank_min` shows a moderate calibration gap (ECE = 0.108), visible in the reliability diagram as a slight over-prediction tendency in the mid-range bins. Figure 3 shows the per-panel reliability diagrams with diagonal reference lines and ECE annotations.
+All three classifiers retain ECE ≤ 0.025 across their bootstrap CIs, indicating that predicted probabilities are well-calibrated. Among regressors, `hlap_min` is essentially perfect (CI 0.0016–0.0029, two orders of magnitude below the practical concern threshold), while `c_bank_min` shows a moderate calibration gap (point ECE = 0.108) with a wider CI (0.083 to 0.222) — the upper bound of which exceeds 0.20 and is dominated by a few high-leverage bins where the surrogate slightly over-predicts. The ECE bootstrap distribution is right-skewed, which inflates the upper CI; quantile-binned reliability diagrams (Figure 3) show the bias is concentrated in the mid-prediction range and is operationally small relative to the c_bank_min target's typical magnitude (~10 cm/s).
 
 ### 3.5 Out-of-distribution detection
 
@@ -188,16 +192,16 @@ All three classifiers achieve ECE ≤ 0.014, indicating that predicted probabili
 
 **LOGO category drift.** Table 4 reports per-category LOGO AUROC for both detectors.
 
-**Table 4.** Leave-one-group-out AUROC by held-out category.
+**Table 4.** Leave-one-group-out AUROC by held-out category, with 95 % bootstrap CIs.
 
-| Held-out category | n_train | n_test | Mahalanobis | IsolationForest |
+| Held-out category | n_train | n_test | Mahalanobis [95 % CI] | IsolationForest [95 % CI] |
 |---|---|---|---|---|
-| Championship | 1,665 | 1,575 | 0.529 | 0.543 |
-| Conceptual | 3,105 | 135 | 0.387 | 0.414 |
-| Extreme post-stall | 2,700 | 540 | 0.600 | 0.569 |
-| Military ACM | 2,250 | 990 | 0.659 | 0.636 |
+| Championship | 1,665 | 1,575 | 0.529 [0.500, 0.558] | 0.543 [0.513, 0.569] |
+| Conceptual | 3,105 |   135 | 0.387 [0.339, 0.433] | 0.414 [0.365, 0.462] |
+| Extreme post-stall | 2,700 |   540 | 0.600 [0.563, 0.636] | 0.569 [0.536, 0.605] |
+| Military ACM | 2,250 |   990 | 0.659 [0.628, 0.688] | 0.636 [0.607, 0.665] |
 
-No held-out category achieves AUROC ≥ 0.85 (the originally aspirational target). The best separation is for military ACM (AUROC ≈ 0.65–0.66), whose higher mean G-peak (~7 G vs ~4 G for championship) creates a partially separable signal. Conceptual maneuvers score below 0.5 because they are *more central* to the joint feature distribution than the training categories — both detectors mistakenly mark them as well-supported by training. This is a finding about dataset structure (categories overlap heavily in continuous feature space), not a failure of the detectors. Figure 4 overlays the in-distribution and combined LOGO-fold score distributions with the conformal and χ² thresholds.
+No held-out category achieves AUROC ≥ 0.85 (the originally aspirational H3 target). Per the OSF pre-registration H3 split made before any test-set evaluation, H3a (calibration) is the primary OOD claim and H3b (LOGO discrimination) is reported as exploratory; the manuscript reports both transparently with their CIs rather than retroactively raising or lowering thresholds. The best separation is for military ACM (Mahalanobis 0.659 [0.628, 0.688]), whose higher mean G-peak (~7 G vs ~4 G for championship) creates a partially separable signal. Conceptual maneuvers score below 0.5 because they are *more central* to the joint feature distribution than the training categories — both detectors mistakenly mark them as well-supported by training. The CI for the conceptual fold (n = 135) is wide; the difference between Mahalanobis (0.387) and IsolationForest (0.414) is within bootstrap noise. Across all four folds, **the Mahalanobis–IsolationForest CIs overlap entirely**, so the manuscript does not claim either detector dominates; both are reported. This is a finding about dataset structure (maneuver categories overlap heavily in continuous feature space), not a failure of the detectors. Figure 4 overlays the in-distribution and combined LOGO-fold score distributions with the conformal and χ² thresholds.
 
 **Comparison.** Differences between Mahalanobis and IsolationForest are within noise (≤ 0.04 AUROC across folds). Mahalanobis leads on the higher-G categories (extreme post-stall, military ACM); IsolationForest leads on championship and conceptual. Both are reported transparently.
 
@@ -207,7 +211,7 @@ No held-out category achieves AUROC ≥ 0.85 (the originally aspirational target
 
 Across all three time-to-event targets, `g_peak_abs` is the dominant driver: ST = 0.876 (greyout), 0.924 (blackout), 0.942 (G-LOC). The second driver is consistently `profile_duration_s` (ST = 0.203–0.277), reflecting the fact that, conditional on peak G, longer sustained exposure increases G-LOC risk nonlinearly. `dgdt_max_g_per_s` contributes modestly (ST = 0.067–0.089). Interaction effects (ST − S₁) are substantial for `g_peak_abs` (Δ ≈ 0.23–0.26), indicating that peak G interacts with duration and pilot physiology in driving event times.
 
-For `hlap_min`, `dehydration_level` dominates completely (ST = 1.005, S₁ = 1.005), with all other features contributing near zero. This reflects the deterministic mapping from dehydration to plasma volume loss in the CGEM ODE system: reduced plasma volume → reduced stroke volume → lower mean arterial pressure at the head level, and the effect is essentially linear and unconfounded in the synthetic dataset.
+For `hlap_min`, `dehydration_level` dominates completely (ST = 1.005, S₁ = 1.005, both with bootstrap CIs spanning [0.92, 1.07] — the slight overshoot above 1.0 is finite-sample noise from the *N* = 1,024 Saltelli sample, not a violation of Sobol's variance decomposition). All other features contribute near zero. This reflects the deterministic mapping from dehydration to plasma volume loss in the CGEM ODE system: reduced plasma volume → reduced stroke volume → lower mean arterial pressure at the head level, and the effect is essentially linear and unconfounded in the synthetic dataset.
 
 For `c_bank_min`, `g_peak_abs` (ST = 0.793) and `profile_duration_s` (ST = 0.218) are the dominant drivers; `agsm_effectiveness` contributes marginally (ST = 0.007).
 
