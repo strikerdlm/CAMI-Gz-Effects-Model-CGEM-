@@ -1,0 +1,67 @@
+{
+  "alpha": 0.05,
+  "nominal_coverage": 0.95,
+  "split": "test",
+  "seed": 42,
+  "targets": {
+    "hlap_min": {
+      "championship": 0.9279661016949152,
+      "conceptual": 0.7142857142857143,
+      "extreme_post_stall": 0.9506172839506173,
+      "military_acm": 0.9463087248322147,
+      "_overall": 0.9281314168377823,
+      "_nominal": 0.95
+    },
+    "c_bank_min": {
+      "championship": 0.9661016949152542,
+      "conceptual": 0.9523809523809523,
+      "extreme_post_stall": 0.9135802469135802,
+      "military_acm": 0.9395973154362416,
+      "_overall": 0.9486652977412731,
+      "_nominal": 0.95
+    },
+    "time_to_greyout_s_classifier": {
+      "championship": 0.9788135593220338,
+      "conceptual": 1.0,
+      "extreme_post_stall": 0.9382716049382716,
+      "military_acm": 0.959731543624161,
+      "_overall": 0.9671457905544147,
+      "_nominal": 0.95
+    },
+    "time_to_greyout_s_regressor": {
+      "championship": 1.0,
+      "extreme_post_stall": 1.0,
+      "military_acm": 1.0,
+      "_overall": 1.0,
+      "_nominal": 0.95
+    },
+    "time_to_blackout_s_classifier": {
+      "championship": 0.961864406779661,
+      "conceptual": 1.0,
+      "extreme_post_stall": 0.9012345679012346,
+      "military_acm": 0.959731543624161,
+      "_overall": 0.9527720739219713,
+      "_nominal": 0.95
+    },
+    "time_to_blackout_s_regressor": {
+      "championship": 1.0,
+      "military_acm": 1.0,
+      "_overall": 1.0,
+      "_nominal": 0.95
+    },
+    "time_to_gloc_s_classifier": {
+      "championship": 0.9576271186440678,
+      "conceptual": 1.0,
+      "extreme_post_stall": 0.9135802469135802,
+      "military_acm": 0.9194630872483222,
+      "_overall": 0.9404517453798767,
+      "_nominal": 0.95
+    },
+    "time_to_gloc_s_regressor": {
+      "championship": 1.0,
+      "military_acm": 0.8571428571428571,
+      "_overall": 0.8611111111111112,
+      "_nominal": 0.95
+    }
+  }
+}
