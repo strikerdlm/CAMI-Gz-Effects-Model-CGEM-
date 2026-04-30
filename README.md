@@ -170,7 +170,7 @@ The validated FAA Fortran binary is invoked unchanged through `cgem_wrapper.run_
 | 4 | Global sensitivity analysis (Sobol + Morris) | ✅ Done |
 | 5 | FastAPI service (7 endpoints, Dockerfile, OpenAPI spec) | ✅ Done |
 | 6 | Frontend integration (React ↔ FastAPI; OOD banner, Sobol panel, sweep table) | ✅ Done |
-| 7 | Paper 1 — AMHP methods paper | ⬜ Next |
+| 7 | Paper 1 — AMHP methods paper | 🚧 Manuscript portal-ready; OSF + form scans pending |
 | 8 | Paper 2 — external re-analysis vs centrifuge literature | ⬜ Post paper 1 |
 | 9 | Paper 3 — own-centrifuge validation (subjects) | ⬜ Requires ethics + subjects |
 
