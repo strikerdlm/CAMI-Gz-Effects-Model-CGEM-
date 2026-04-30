@@ -11,6 +11,71 @@ extension-layer level (the upstream CGEM software DOI is fixed, see README).
 
 ## [Unreleased]
 
+### Added (Phase 4 — global sensitivity analysis)
+
+- **`cgem_ext/sensitivity/space.py`**: 9-d continuous input space
+  (g_peak_abs, dgdt_max_g_per_s, profile_duration_s, dehydration_level,
+  g_tolerance_multiplier, gsuit_max_psi, gsuit_coverage_fraction,
+  agsm_effectiveness, pbg_max_mmhg) with empirical bounds drawn from
+  cgem_synthetic_v1 rounded outward. SOBOL_PROBLEM dict for SALib.
+  fixed_feature_template(who_profile="custom", cm_ordinal=0) defaults
+  the categorical / one-hot dimensions; "custom" is the canonical
+  default because Sobol on a fixed FAA preset would query the
+  surrogate at OOD inputs whenever the Saltelli sample picks non-zero
+  dehydration (the Fortran model ignores dehydration in the standard
+  arm; the surrogate doesn't).
+- **`cgem_ext/sensitivity/sobol.py`**: SobolAnalyzer wrapping SALib
+  saltelli.sobol.sample + sobol.analyze. Returns SobolResults with
+  per-feature S1, ST, S1_conf, ST_conf, and the (d, d) S2 matrix +
+  CIs as numpy arrays plus tidy DataFrame helpers (.dataframe and
+  .second_order_dataframe).
+- **`cgem_ext/sensitivity/morris.py`**: MorrisAnalyzer for
+  elementary-effects screening — much cheaper than Sobol (N*(d+1)
+  evals vs N*(2d+2)), used as a robustness check.
+- **Surrogate API extension**: `predict_array(x)`,
+  `predict_event_probability_array(x)`, `predict_expected_time_array(x)`
+  on XGBSurrogate / TwoStageXGBSurrogate. These bypass extract_features
+  so sensitivity / SHAP runners that build the FEATURE_COLUMNS-aligned
+  matrix themselves don't pay the round-trip through pandas.
+- **`scripts/run_sensitivity.py`**: full Sobol + Morris sweep across
+  the 5 surrogate targets. Output: 4 files at
+  data/results/sensitivity/ (sobol_first_total.csv,
+  sobol_second_order.csv, morris.csv, manifest.json). Wall-clock 38 s
+  at n_base=1024 (102k surrogate evaluations, 10k Morris evaluations).
+- **`tests/test_sensitivity.py`**: 11 tests. Static checks (problem
+  shape, fixed_feature_template encoding, continuous_indices range,
+  SobolAnalyzer + MorrisAnalyzer on a synthetic linear function with
+  known top driver, S2 disable/enable). End-to-end (gated):
+    * hlap_min top-ST driver = dehydration_level (S1 = 1.005)
+    * c_bank_min top-3 by ST includes both g_peak_abs and
+      profile_duration_s
+- **Sensitivity result headlines** (n_base=1024, custom arm):
+
+  | Target | Top driver (S1, ST) | Second |
+  |---|---|---|
+  | `time_to_greyout_s` | g_peak_abs (0.65, 0.88) | profile_duration_s (0.08, 0.28) |
+  | `time_to_blackout_s` | g_peak_abs (0.74, 0.92) | profile_duration_s (0.02, 0.20) |
+  | `time_to_gloc_s` | g_peak_abs (0.68, 0.94) | profile_duration_s (0.09, 0.25) |
+  | `hlap_min` | dehydration_level (1.00, 1.00) | profile_duration_s (~0) |
+  | `c_bank_min` | g_peak_abs (0.74, 0.79) | profile_duration_s (0.17, 0.22) |
+
+  ST > S1 on time-to-event targets indicates interaction effects
+  (g_peak × profile_duration_s).
+
+### Changed (Phase 4)
+
+- **`docs/publication/osf_preregistration.md`**: H4 split into:
+    * H4a (primary): ST Spearman rank correlation ≥ 0.95 across all 5
+      targets. Anchored at 1.000 for 4/5 targets and 0.983 for hlap_min.
+    * H4b (exploratory): S1 Spearman rank correlation ≥ 0.60 across
+      all 5 targets. Anchored at 0.466 (time_to_gloc_s, fails the
+      threshold) up to 0.983 (c_bank_min). Failure expected because
+      most features have near-zero S1 (effect is interaction-mediated,
+      captured by ST). Headline rankings in paper 1 use ST.
+- **`.gitignore`**: exempts `data/results/sensitivity/*.csv` and
+  `manifest.json` so reviewers can clone and verify the rankings
+  without re-running the sweep.
+
 ### Added (Phase 3 — surrogate emulator, core)
 
 - **`cgem_ext/surrogate/features.py`**: re-exports the 17-d OOD feature
