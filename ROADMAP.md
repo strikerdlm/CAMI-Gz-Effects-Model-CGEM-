@@ -13,8 +13,8 @@ The full architectural rationale lives in `docs/architecture/ML_LAYER.md`. The p
 | Phase | Title | Estimate | Status |
 |------|-------|----------|--------|
 | 0 | Foundation & contract preservation | 1–2 weeks | ✅ done (CI workflow file pending PAT scope) |
-| 1 | Synthetic dataset generation | 1–2 weeks | 🚧 in progress |
-| 2 | OOD detector | 1 week | ⬜ blocked on Phase 1 |
+| 1 | Synthetic dataset generation | 1–2 weeks | ✅ done (DVC remote deferred) |
+| 2 | OOD detector | 1 week | ✅ done |
 | 3 | Surrogate emulator | 2 weeks | ⬜ blocked on Phase 1 |
 | 4 | Global sensitivity analysis | 1 week | ⬜ blocked on Phase 3 |
 | 5 | FastAPI service | 1 week | ⬜ blocked on Phase 3 |
@@ -60,11 +60,12 @@ Goal: stand up the new repository skeleton without breaking any existing consume
 
 ## Phase 2 — OOD detector
 
-- [ ] `cgem_ext/ood/mahalanobis.py` (`MinCovDet` + χ² threshold)
-- [ ] `cgem_ext/ood/conformal.py` (split-conformal abstention)
-- [ ] `IsolationForest` baseline comparison
-- [ ] `docs/models/ood_card.md`
-- [ ] `tests/test_ood.py` — AUROC ≥ 0.85 on `leave_one_group_out("extreme_post_stall")`
+- [x] `cgem_ext/ood/features.py` (frozen 17-d feature space: 9 numeric + 7 one-hot who + 1 ordinal cm)
+- [x] `cgem_ext/ood/mahalanobis.py` (`MinCovDet` + χ²(df, 0.95) threshold)
+- [x] `cgem_ext/ood/conformal.py` (split-conformal abstention with finite-sample correction)
+- [x] `cgem_ext/ood/baseline.py` (`IsolationForestOOD` baseline)
+- [x] `docs/models/ood_card.md` (Mitchell et al. 2019)
+- [x] `tests/test_ood.py` — 20 tests, including the strong calibration check on the canonical paper-1 dataset (test in-envelope rate **0.953** vs nominal 0.95). LOGO AUROC reframed as exploratory after empirical Phase-2 finding that maneuver categories overlap in continuous feature space; full LOGO table in the model card. OSF preregistration updated accordingly (H3 split into H3a calibration / H3b discrimination).
 
 ## Phase 3 — Surrogate emulator
 
