@@ -114,15 +114,16 @@
 
 ## Action items before portal upload
 
-| # | Action | Severity |
-|---|---|---|
-| 1 | Replace ref [7] with the real Copeland & Whinnery 2023 (DOT/FAA/AM-23/6, doi:10.21949/1524446) | 🔴 Blocker |
-| 2 | Verify ref [8] technical-report number, or drop the citation and rephrase Methods §2.1 / §4.3 | 🔴 Blocker |
-| 3 | Verify ref [16] (Melis 2021); replace with a confirmed surrogate-aerospace citation if cannot be found | 🟠 High |
-| 4 | Verify refs [1], [4], [5], [6], [9], [13], [15], [18] via PubMed / DOI lookup; add DOIs where available | 🟡 Standard |
-| 5 | Confirm AMHP's preferred journal-name abbreviations (NLM catalog) for all journal references | 🟡 Standard |
-| 6 | Convert in-text citations from `[N]` bracketed format to superscript Arabic in the final Word/PDF render | 🟡 Standard |
-| 7 | Add ISBNs to refs [2], [3], [12] (book references) | 🟡 Standard |
+| # | Action | Severity | Status |
+|---|---|---|---|
+| 1 | Replace ref [7] with Copeland & Whinnery 2023 (DOT/FAA/AM-23/6, doi:10.21949/1524446) | 🔴 Blocker | ✅ Resolved (commit `c690c32` and follow-ups) |
+| 2 | Resolve ref [8]: replaced placeholder DOT/FAA/AM-18/XX with the canonical CGEM User's Guide (DOT/FAA/AM-23/5, doi:10.21949/1524438) | 🔴 Blocker | ✅ Resolved |
+| 3 | Drop ref [16] (Melis 2021) — could not be confirmed; §4.3 ¶2 was rephrased to cite [14] (Kissas et al.) only | 🟠 High | ✅ Resolved |
+| 4 | Drop ref [9] (Whinnery & Copeland 2019) — could not be confirmed against AMHP archive; §4.3 ¶1 was rephrased to cite [5–8] instead | 🟠 High | ✅ Resolved |
+| 5 | Verify refs [1], [4], [5], [6], [12], [14], [16] via PubMed / DOI lookup; add DOIs where available | 🟡 Standard | ⏳ Pending |
+| 6 | Confirm AMHP's preferred journal-name abbreviations (NLM catalog) for all journal references | 🟡 Standard | ⏳ Pending |
+| 7 | Convert in-text citations from `[N]` bracketed format to superscript Arabic in the final Word/PDF render — see `docs/publication/render_checklist.md` §3 | 🟡 Standard | ⏳ Render-time |
+| 8 | Add ISBNs to refs [2], [3] (book references); ref [11] (Vovk) ISBN already added | 🟡 Standard | ⏳ Pending |
 
 ## Verification workflow
 
@@ -141,5 +142,33 @@
 ## Final deliverable for submission
 
 A clean reference list in NLM format, with no `XX` or other
-placeholders, is required for portal upload. The AMHP submission is
-**blocked** on actions 1 and 2 above.
+placeholders, is required for portal upload. As of the resolved
+actions above, the manuscript is **no longer blocked** by the
+reference list — only the ⏳ Standard / Render-time items remain.
+
+## Final reference list snapshot (manuscript v2)
+
+After the Phase-7 cleanup the manuscript has 16 references:
+
+```
+[1]  Lyons et al. 1992              — G-LOC accidents, USAF [verify]
+[2]  Newman 2015                    — High G flight book [verify ISBN]
+[3]  Green 2016                     — Ernsting's chapter [verify ISBN]
+[4]  Whinnery & Whinnery 1990       — EEG response to +Gz [verify]
+[5]  Burns & Kruger 1997            — G-LOC onset model [verify]
+[6]  Copeland, Knarr & Whinnery 2000 — +Gz tolerance model [verify]
+[7]  Copeland & Whinnery 2023       — CGEM (DOT/FAA/AM-23/6, doi:10.21949/1524446) ✅
+[8]  Copeland 2021                  — CGEM User's Guide (DOT/FAA/AM-23/5, doi:10.21949/1524438) ✅
+[9]  Aresti System / FAI/CIVA 2019  — Aerobatic figure catalogue ✅ (URL added)
+[10] Gebru et al. 2018              — Datasheets for datasets ✅
+[11] Vovk, Gammerman & Shafer 2005  — Algorithmic Learning ✅ (ISBN added)
+[12] Boström et al. 2018            — Mondrian conformal (PMLR 91:24-38) ✅
+[13] Lundberg & Lee 2017            — SHAP (NeurIPS 30:4765-4774) ✅
+[14] Kissas et al. 2020             — PINN cardiovascular (doi:10.1016/j.cma.2019.112623) ✅
+[15] Romano, Patterson & Candès 2019 — Conformalized QR (NeurIPS 32:3543-3553) ✅
+[16] Convertino 1991                — Blood volume / orthostatic [verify]
+```
+
+✅ = canonical citation form, DOI/ISBN/URL present.
+[verify] = NLM citation form is plausible; cross-check against PubMed
+before final upload but does not block submission.
