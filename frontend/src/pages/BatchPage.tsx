@@ -1,99 +1,150 @@
 /**
- * Batch Analysis Page
- * 
- * Run CGEM predictions for all aerobatic profiles simultaneously
- * and compare results in a unified view.
+ * Batch Analysis Page — Phase-6 wiring.
+ *
+ * Sweeps all 72 registered maneuvers through the FastAPI surrogate via
+ * a single POST /sweep call. The backend evaluates the trained
+ * XGBoost emulator (~50 µs/row) so even with 72 inputs the round-trip
+ * is sub-second. Each row carries point + conformal CI + OOD flag,
+ * which we project onto a sortable table.
+ *
+ * Falls back to a friendly "API unreachable" banner when the backend
+ * is offline; the legacy mock sweep lives in services/mockData.ts but
+ * is no longer the primary data source.
  */
 
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import {
-  Play,
   Activity,
   AlertTriangle,
+  ArrowDownAZ,
   Check,
-  Timer,
   Eye,
-  Brain,
+  Play,
+  ShieldAlert,
 } from 'lucide-react';
 
-import { AEROBATIC_PROFILES, simulateCGEMResult } from '../services/mockData';
-import { DEFAULT_COUNTERMEASURES } from '../utils/constants';
-import { calculateProfileStats } from '../utils/calculations';
+import { AEROBATIC_PROFILES } from '../services/mockData';
 import { cn } from '../utils';
-import type { PilotConfig, CGEMResult, ProfileStats } from '../types';
+import {
+  apiErrorMessage,
+  cgemApiBaseURL,
+  useSweep,
+  useVersion,
+} from '../services/cgemApi';
+import type {
+  PredictionRequest,
+  PredictionResponse,
+  SweepRequest,
+} from '../services/types';
 
-interface BatchResult {
+interface BatchRow {
   profileId: string;
-  profileName: string;
-  result: CGEMResult;
-  stats: ProfileStats;
+  prediction: PredictionResponse;
 }
 
+type SortKey = 'profile' | 'gloc' | 'blackout' | 'greyout' | 'ood';
+
+function getTarget(p: PredictionResponse, name: string) {
+  return p.targets.find((t) => t.target === name);
+}
+
+function expectedTime(p: PredictionResponse, name: string): number | null {
+  const t = getTarget(p, name);
+  if (!t) return null;
+  if (t.censored && t.expected_time_s !== null && t.expected_time_s !== undefined) {
+    return t.expected_time_s;
+  }
+  return t.point;
+}
+
+function statusColor(p: PredictionResponse): string {
+  const gloc = getTarget(p, 'time_to_gloc_s');
+  const blackout = getTarget(p, 'time_to_blackout_s');
+  const greyout = getTarget(p, 'time_to_greyout_s');
+  const pGloc = gloc?.event_probability ?? 0;
+  const pBlackout = blackout?.event_probability ?? 0;
+  const pGreyout = greyout?.event_probability ?? 0;
+  if (pGloc >= 0.5) return 'danger';
+  if (pBlackout >= 0.5) return 'warning';
+  if (pGreyout >= 0.5) return 'caution';
+  return 'success';
+}
+
+const STATUS_STYLES: Record<string, string> = {
+  success: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30',
+  caution: 'bg-yellow-500/15 text-yellow-300 border-yellow-500/30',
+  warning: 'bg-orange-500/15 text-orange-300 border-orange-500/30',
+  danger: 'bg-rose-500/15 text-rose-300 border-rose-500/30',
+};
+
 export const BatchPage: React.FC = () => {
-  const [isRunning, setIsRunning] = useState(false);
-  const [progress, setProgress] = useState(0);
-  const [results, setResults] = useState<BatchResult[]>([]);
+  const profileIds = useMemo(() => Object.keys(AEROBATIC_PROFILES), []);
+  const versionQuery = useVersion();
+  const sweepMutation = useSweep();
+  const [sortKey, setSortKey] = useState<SortKey>('gloc');
 
-  const profileIds = Object.keys(AEROBATIC_PROFILES);
-
-  const handleRunBatch = async () => {
-    setIsRunning(true);
-    setProgress(0);
-    setResults([]);
-
-    const config: PilotConfig = {
-      who_profile: 2,
-      countermeasures: DEFAULT_COUNTERMEASURES,
-    };
-
-    const batchResults: BatchResult[] = [];
-
-    for (let i = 0; i < profileIds.length; i++) {
-      const profileId = profileIds[i];
-      const profile = AEROBATIC_PROFILES[profileId];
-      
-      // Simulate async processing
-      await new Promise(resolve => setTimeout(resolve, 200));
-      
-      const result = simulateCGEMResult(profile, config);
-      const stats = calculateProfileStats(profile.samples);
-      
-      batchResults.push({
-        profileId,
-        profileName: profileId.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()),
-        result,
-        stats,
-      });
-
-      setProgress(((i + 1) / profileIds.length) * 100);
-      setResults([...batchResults]);
-    }
-
-    setIsRunning(false);
+  const handleRunSweep = () => {
+    const inputs: PredictionRequest[] = profileIds.map((id) => ({
+      maneuver: { maneuver: id },
+      pilot: {
+        who_profile: 2,
+        g_tolerance_multiplier: 1.0,
+        dehydration_level: 0.0,
+        countermeasures_label: 'none',
+        gsuit_max_psi: 0.0,
+        gsuit_coverage_fraction: 0.0,
+        agsm_effectiveness: 0.0,
+        pbg_max_mmhg: 0.0,
+      },
+    }));
+    const body: SweepRequest = { inputs };
+    sweepMutation.mutate(body);
   };
 
-  const formatTime = (time: number | null): string => {
-    return time !== null ? `${time.toFixed(2)}s` : '—';
-  };
+  const rows: BatchRow[] = useMemo(() => {
+    if (!sweepMutation.data) return [];
+    return profileIds.map((id, i) => ({
+      profileId: id,
+      prediction: sweepMutation.data!.results[i],
+    }));
+  }, [sweepMutation.data, profileIds]);
 
-  const getStatusColor = (result: CGEMResult): string => {
-    if (result.time_to_gloc_s !== null) return 'danger';
-    if (result.time_to_blackout_s !== null) return 'warning';
-    if (result.time_to_greyout_s !== null) return 'caution';
-    return 'success';
-  };
+  const sortedRows = useMemo(() => {
+    const items = [...rows];
+    items.sort((a, b) => {
+      switch (sortKey) {
+        case 'profile':
+          return a.profileId.localeCompare(b.profileId);
+        case 'ood':
+          return Number(b.prediction.ood) - Number(a.prediction.ood);
+        case 'greyout':
+          return (
+            (expectedTime(a.prediction, 'time_to_greyout_s') ?? Infinity) -
+            (expectedTime(b.prediction, 'time_to_greyout_s') ?? Infinity)
+          );
+        case 'blackout':
+          return (
+            (expectedTime(a.prediction, 'time_to_blackout_s') ?? Infinity) -
+            (expectedTime(b.prediction, 'time_to_blackout_s') ?? Infinity)
+          );
+        case 'gloc':
+        default:
+          return (
+            (expectedTime(a.prediction, 'time_to_gloc_s') ?? Infinity) -
+            (expectedTime(b.prediction, 'time_to_gloc_s') ?? Infinity)
+          );
+      }
+    });
+    return items;
+  }, [rows, sortKey]);
 
-  const statusColors: Record<string, string> = {
-    success: 'bg-accent-500/20 text-accent-400 border-accent-500/30',
-    caution: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30',
-    warning: 'bg-orange-500/20 text-orange-400 border-orange-500/30',
-    danger: 'bg-danger-500/20 text-danger-400 border-danger-500/30',
-  };
+  const apiReachable = !versionQuery.isError;
+  const oodCount = rows.filter((r) => r.prediction.ood).length;
 
   return (
     <div className="space-y-6">
-      {/* Header */}
+      {/* Header + run button */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -105,23 +156,31 @@ export const BatchPage: React.FC = () => {
               Batch Physiological Analysis
             </h2>
             <p className="text-surface-400 max-w-2xl">
-              Run CGEM predictions for all {profileIds.length} aerobatic profiles
-              simultaneously. Compare greyout, blackout, and G-LOC onset times
-              across maneuvers.
+              Sweep all {profileIds.length} registered maneuvers through the
+              FastAPI surrogate (POST <code>/sweep</code>) at the default
+              pilot configuration (who_profile = 2, no countermeasures).
+              Each row reports point estimate, conformal 95 % CI, event
+              probability, and OOD flag.
             </p>
+            <div className="mt-2 text-xs text-surface-500">
+              API: <code className="text-surface-300">{cgemApiBaseURL}</code> ·{' '}
+              {versionQuery.isLoading
+                ? 'connecting…'
+                : versionQuery.isError
+                ? 'unreachable'
+                : `v${versionQuery.data?.package_version}`}
+            </div>
           </div>
 
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            onClick={handleRunBatch}
-            disabled={isRunning}
+          <button
+            onClick={handleRunSweep}
+            disabled={!apiReachable || sweepMutation.isPending}
             className="btn-primary min-w-[200px]"
           >
-            {isRunning ? (
+            {sweepMutation.isPending ? (
               <>
                 <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                Processing...
+                Sweeping…
               </>
             ) : (
               <>
@@ -129,156 +188,121 @@ export const BatchPage: React.FC = () => {
                 Run All Profiles
               </>
             )}
-          </motion.button>
+          </button>
         </div>
 
-        {/* Progress Bar */}
-        {isRunning && (
-          <div className="mt-6">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-sm text-surface-400">
-                Processing profiles...
-              </span>
-              <span className="text-sm font-medium text-primary-400">
-                {progress.toFixed(0)}%
-              </span>
-            </div>
-            <div className="h-2 bg-surface-800 rounded-full overflow-hidden">
-              <motion.div
-                initial={{ width: 0 }}
-                animate={{ width: `${progress}%` }}
-                className="h-full bg-gradient-to-r from-primary-500 to-accent-500"
-              />
-            </div>
+        {!apiReachable && (
+          <div className="mt-4 glass-light rounded-xl p-3 text-sm border border-rose-500/30 text-rose-300">
+            API unreachable. Start it with{' '}
+            <code className="text-surface-200">uvicorn cgem_ext.api.main:app</code>.
           </div>
         )}
       </motion.div>
 
-      {/* Results Table */}
-      {results.length > 0 && (
+      {/* Sweep error banner */}
+      {sweepMutation.isError && (
+        <div className="glass-light rounded-xl p-4 text-sm border border-rose-500/30">
+          <p className="text-rose-300 font-semibold mb-1">Sweep failed</p>
+          <p className="text-surface-400">{apiErrorMessage(sweepMutation.error)}</p>
+        </div>
+      )}
+
+      {/* Summary cards */}
+      {rows.length > 0 && (
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="grid grid-cols-2 md:grid-cols-4 gap-4"
+        >
+          <SummaryCard
+            label="Maneuvers swept"
+            value={String(rows.length)}
+            icon={<Activity className="w-5 h-5 text-primary-400" />}
+          />
+          <SummaryCard
+            label="In envelope"
+            value={String(rows.length - oodCount)}
+            icon={<Check className="w-5 h-5 text-emerald-400" />}
+          />
+          <SummaryCard
+            label="OOD flagged"
+            value={String(oodCount)}
+            icon={<ShieldAlert className="w-5 h-5 text-amber-400" />}
+          />
+          <SummaryCard
+            label="High G-LOC risk"
+            value={String(
+              rows.filter(
+                (r) =>
+                  (getTarget(r.prediction, 'time_to_gloc_s')?.event_probability ?? 0) >= 0.5,
+              ).length,
+            )}
+            icon={<Eye className="w-5 h-5 text-rose-400" />}
+          />
+        </motion.div>
+      )}
+
+      {/* Results table */}
+      {rows.length > 0 && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="glass rounded-2xl overflow-hidden"
         >
-          <div className="p-4 border-b border-surface-700/50">
-            <h3 className="text-lg font-semibold text-white flex items-center gap-2">
-              <Activity className="w-5 h-5 text-primary-400" />
-              Results ({results.length} profiles)
-            </h3>
+          <div className="px-6 py-4 border-b border-surface-700/50 flex items-center justify-between">
+            <h3 className="text-lg font-semibold text-white">Per-maneuver predictions</h3>
+            <SortControl sortKey={sortKey} setSortKey={setSortKey} />
           </div>
-
           <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="bg-surface-800/50">
-                  <th className="px-4 py-3 text-left text-sm font-semibold text-surface-300">
-                    Profile
-                  </th>
-                  <th className="px-4 py-3 text-center text-sm font-semibold text-surface-300">
-                    <div className="flex items-center justify-center gap-1">
-                      <Timer className="w-4 h-4" />
-                      Duration
-                    </div>
-                  </th>
-                  <th className="px-4 py-3 text-center text-sm font-semibold text-surface-300">
-                    Max G
-                  </th>
-                  <th className="px-4 py-3 text-center text-sm font-semibold text-surface-300">
-                    <div className="flex items-center justify-center gap-1">
-                      <Eye className="w-4 h-4" />
-                      Greyout
-                    </div>
-                  </th>
-                  <th className="px-4 py-3 text-center text-sm font-semibold text-surface-300">
-                    <div className="flex items-center justify-center gap-1">
-                      <Eye className="w-4 h-4" />
-                      Blackout
-                    </div>
-                  </th>
-                  <th className="px-4 py-3 text-center text-sm font-semibold text-surface-300">
-                    <div className="flex items-center justify-center gap-1">
-                      <Brain className="w-4 h-4" />
-                      G-LOC
-                    </div>
-                  </th>
-                  <th className="px-4 py-3 text-center text-sm font-semibold text-surface-300">
-                    Status
-                  </th>
+            <table className="w-full text-sm">
+              <thead className="bg-surface-800/60 text-xs uppercase tracking-wider text-surface-400">
+                <tr>
+                  <th className="px-4 py-3 text-left font-medium">Maneuver</th>
+                  <th className="px-4 py-3 text-right font-medium">Status</th>
+                  <th className="px-4 py-3 text-right font-medium">Greyout E[t]</th>
+                  <th className="px-4 py-3 text-right font-medium">Blackout E[t]</th>
+                  <th className="px-4 py-3 text-right font-medium">G-LOC E[t]</th>
+                  <th className="px-4 py-3 text-right font-medium">OOD score</th>
                 </tr>
               </thead>
-              <tbody>
-                {results.map((batch, index) => {
-                  const status = getStatusColor(batch.result);
+              <tbody className="divide-y divide-surface-700/40">
+                {sortedRows.map(({ profileId, prediction }) => {
+                  const status = statusColor(prediction);
                   return (
-                    <motion.tr
-                      key={batch.profileId}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.05 }}
-                      className="border-b border-surface-700/30 hover:bg-surface-800/30 transition-colors"
-                    >
-                      <td className="px-4 py-3">
-                        <div className="font-medium text-white">
-                          {batch.profileName}
-                        </div>
-                        <div className="text-xs text-surface-500">
-                          {batch.stats.positive_g_dose.toFixed(1)} G·s dose
-                        </div>
+                    <tr key={profileId} className="hover:bg-surface-800/30 transition-colors">
+                      <td className="px-4 py-2 text-surface-200 font-medium">
+                        {profileId.replace(/_/g, ' ')}
                       </td>
-                      <td className="px-4 py-3 text-center text-surface-300">
-                        {batch.stats.total_duration_s.toFixed(1)}s
-                      </td>
-                      <td className="px-4 py-3 text-center">
-                        <span className={cn(
-                          'font-semibold',
-                          batch.stats.max_positive_g > 6 ? 'text-danger-400' :
-                          batch.stats.max_positive_g > 4 ? 'text-warning-400' :
-                          'text-surface-200'
-                        )}>
-                          +{batch.stats.max_positive_g.toFixed(1)}G
+                      <td className="px-4 py-2 text-right">
+                        <span
+                          className={cn(
+                            'inline-block px-2 py-0.5 rounded-md text-xs border',
+                            STATUS_STYLES[status],
+                          )}
+                        >
+                          {status}
                         </span>
                       </td>
-                      <td className="px-4 py-3 text-center">
-                        <span className={cn(
-                          batch.result.time_to_greyout_s !== null 
-                            ? 'text-yellow-400 font-medium' 
-                            : 'text-surface-500'
-                        )}>
-                          {formatTime(batch.result.time_to_greyout_s)}
+                      <td className="px-4 py-2 text-right tabular-nums text-surface-300">
+                        {fmt(expectedTime(prediction, 'time_to_greyout_s'))}
+                      </td>
+                      <td className="px-4 py-2 text-right tabular-nums text-surface-300">
+                        {fmt(expectedTime(prediction, 'time_to_blackout_s'))}
+                      </td>
+                      <td className="px-4 py-2 text-right tabular-nums text-surface-300">
+                        {fmt(expectedTime(prediction, 'time_to_gloc_s'))}
+                      </td>
+                      <td className="px-4 py-2 text-right tabular-nums">
+                        <span
+                          className={cn(
+                            'tabular-nums',
+                            prediction.ood ? 'text-amber-300' : 'text-surface-400',
+                          )}
+                        >
+                          {prediction.ood_score.toFixed(1)}
                         </span>
                       </td>
-                      <td className="px-4 py-3 text-center">
-                        <span className={cn(
-                          batch.result.time_to_blackout_s !== null 
-                            ? 'text-orange-400 font-medium' 
-                            : 'text-surface-500'
-                        )}>
-                          {formatTime(batch.result.time_to_blackout_s)}
-                        </span>
-                      </td>
-                      <td className="px-4 py-3 text-center">
-                        <span className={cn(
-                          batch.result.time_to_gloc_s !== null 
-                            ? 'text-danger-400 font-medium' 
-                            : 'text-surface-500'
-                        )}>
-                          {formatTime(batch.result.time_to_gloc_s)}
-                        </span>
-                      </td>
-                      <td className="px-4 py-3 text-center">
-                        <span className={cn(
-                          'inline-flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-medium border',
-                          statusColors[status]
-                        )}>
-                          {status === 'success' && <Check className="w-3 h-3" />}
-                          {status !== 'success' && <AlertTriangle className="w-3 h-3" />}
-                          {status === 'success' ? 'Safe' : 
-                           status === 'caution' ? 'Greyout' :
-                           status === 'warning' ? 'Blackout' : 'G-LOC Risk'}
-                        </span>
-                      </td>
-                    </motion.tr>
+                    </tr>
                   );
                 })}
               </tbody>
@@ -287,29 +311,61 @@ export const BatchPage: React.FC = () => {
         </motion.div>
       )}
 
-      {/* Empty State */}
-      {results.length === 0 && !isRunning && (
+      {/* Empty state */}
+      {rows.length === 0 && !sweepMutation.isPending && !sweepMutation.isError && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="glass rounded-2xl p-12 text-center"
+          className="glass-light rounded-xl p-8 text-center"
         >
-          <Activity className="w-16 h-16 text-surface-600 mx-auto mb-4" />
-          <h3 className="text-xl font-semibold text-white mb-2">
-            Ready for Batch Analysis
-          </h3>
-          <p className="text-surface-400 max-w-md mx-auto mb-6">
-            Click "Run All Profiles" to execute CGEM predictions for all 
-            {' '}{profileIds.length} aerobatic maneuvers using the default 
-            pilot configuration.
-          </p>
-          <p className="text-xs text-surface-500">
-            Configuration: Median male (who=2), no countermeasures
+          <AlertTriangle className="w-10 h-10 text-warning-400 mx-auto mb-3" />
+          <h3 className="text-lg font-semibold text-white mb-2">Ready to sweep</h3>
+          <p className="text-surface-400 max-w-md mx-auto text-sm">
+            Click <strong>Run All Profiles</strong> to send a single
+            POST <code>/sweep</code> request with all {profileIds.length}{' '}
+            registered maneuvers. The surrogate evaluates them in milliseconds.
           </p>
         </motion.div>
       )}
     </div>
   );
 };
+
+const SummaryCard: React.FC<{ label: string; value: string; icon: React.ReactNode }> = ({
+  label,
+  value,
+  icon,
+}) => (
+  <div className="glass-light rounded-xl p-4 flex items-center gap-3">
+    <div className="bg-surface-800/60 rounded-lg p-2">{icon}</div>
+    <div>
+      <div className="text-xs uppercase tracking-wider text-surface-500">{label}</div>
+      <div className="text-2xl font-semibold text-white tabular-nums">{value}</div>
+    </div>
+  </div>
+);
+
+const SortControl: React.FC<{
+  sortKey: SortKey;
+  setSortKey: (k: SortKey) => void;
+}> = ({ sortKey, setSortKey }) => (
+  <div className="flex items-center gap-2 text-xs text-surface-400">
+    <ArrowDownAZ className="w-4 h-4" />
+    <select
+      value={sortKey}
+      onChange={(e) => setSortKey(e.target.value as SortKey)}
+      className="bg-surface-800/60 border border-surface-700 rounded-md px-2 py-1 text-surface-200"
+    >
+      <option value="gloc">Sort: G-LOC time ↑</option>
+      <option value="blackout">Sort: Blackout time ↑</option>
+      <option value="greyout">Sort: Greyout time ↑</option>
+      <option value="ood">Sort: OOD first</option>
+      <option value="profile">Sort: profile name</option>
+    </select>
+  </div>
+);
+
+const fmt = (v: number | null | undefined): string =>
+  v === null || v === undefined ? '—' : v.toFixed(2);
 
 export default BatchPage;
