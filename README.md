@@ -134,18 +134,28 @@ cgem-ext/
 │   │   ├── space.py            # 9-d Sobol problem definition
 │   │   ├── sobol.py            # SobolAnalyzer (SALib Saltelli)
 │   │   └── morris.py           # MorrisAnalyzer (elementary effects)
-│   └── api/                    # FastAPI service (Phase 5 — in progress)
+│   └── api/
+│       ├── schemas.py          # Pydantic v2 wire contract (preserves
+│       │                       #   pulse-sim CGEMRun JSON shape)
+│       ├── state.py            # Lifespan-managed AppState model store
+│       ├── main.py             # FastAPI app: 7 endpoints
+│       └── Dockerfile          # python:3.12-slim + cgem binary baked in
 │
 ├── frontend/                   # Vite 7 · React 19 · TS 5.9 · ECharts 5.6
 ├── legacy/streamlit/           # Deprecated Streamlit demos (still run)
-├── tests/                      # 63 tests across all phases
+├── data/
+│   ├── datasets/               # cgem_synthetic_v1.parquet + sidecar
+│   └── results/sensitivity/    # Sobol + Morris CSVs + manifest
+├── scripts/                    # run_sensitivity.py · export_openapi.py
+├── tests/                      # 80 tests across all phases (all green)
 └── docs/
+    ├── api/openapi.json        # Auto-exported OpenAPI spec
     ├── models/                 # Model cards (Mitchell et al. 2019)
     ├── publication/            # OSF pre-registration + paper plan
     └── data/                   # Datasheet (Gebru et al. 2018)
 ```
 
-The validated FAA Fortran binary is invoked unchanged through `cgem_wrapper.run_cgem_for_profile`. A regression test in `tests/test_contract.py` enforces this contract in CI on every push.
+The validated FAA Fortran binary is invoked unchanged through `cgem_wrapper.run_cgem_for_profile`, **and** the FastAPI `/run-cgem` response mirrors the v2.2.0 `CGEMRun` JSON shape that pulse-sim's `cgem_bridge.load_cgem_json` consumes. Both contracts are enforced by regression tests in `tests/test_contract.py` and `tests/test_api.py` on every push.
 
 ---
 
@@ -158,11 +168,14 @@ The validated FAA Fortran binary is invoked unchanged through `cgem_wrapper.run_
 | 2 | OOD detector (Mahalanobis + conformal abstention) | ✅ Done |
 | 3 | Surrogate emulator (XGBoost, 5 targets, conformal intervals) | ✅ Core done |
 | 4 | Global sensitivity analysis (Sobol + Morris) | ✅ Done |
-| 5 | FastAPI service | ⬜ Next |
-| 6 | Frontend integration (React ↔ FastAPI) | ⬜ Blocked on Phase 5 |
-| 7 | Paper 1 — AMHP methods paper | ⬜ Blocked on Phases 5–6 |
+| 5 | FastAPI service (7 endpoints, Dockerfile, OpenAPI spec) | ✅ Done |
+| 6 | Frontend integration (React ↔ FastAPI) | ⬜ Next |
+| 7 | Paper 1 — AMHP methods paper | ⬜ Blocked on Phase 6 |
 | 8 | Paper 2 — external re-analysis vs centrifuge literature | ⬜ Post paper 1 |
 | 9 | Paper 3 — own-centrifuge validation (subjects) | ⬜ Requires ethics + subjects |
+
+**Test coverage**: 80 tests across all phases, all green (~4:16 wall-clock).
+**Pulse-sim contract**: preserved at two wire levels (Python import + JSON), enforced in CI.
 
 ---
 
@@ -179,17 +192,44 @@ sudo apt-get install -y libgfortran5
 # 2. Install with all extras
 pip install -e .[ml,api,dev]
 
-# 3. Run the test suite (63 tests, ~100 s on an 8-core CPU)
+# 3. Run the test suite (80 tests, ~4:16 on an 8-core CPU)
 pytest tests/ -v
 ```
 
-### FastAPI service (Phase 5, not yet shipped)
+### FastAPI service
+
+The Phase-5 API service exposes the surrogate, OOD detector, conformal CIs, sensitivity rankings, and the authoritative Fortran subprocess behind seven endpoints. Lifespan startup trains all five surrogates + OOD + per-target Mondrian conformal layers (~30 s on first boot); each request afterwards is sub-millisecond per row.
 
 ```bash
 uvicorn cgem_ext.api.main:app --reload
+# → http://localhost:8000
+# → http://localhost:8000/docs    (Swagger UI)
+# → http://localhost:8000/openapi.json
 ```
 
-### React + TypeScript frontend (mock data, fully functional)
+| Endpoint | Method | Purpose |
+|---|---|---|
+| `/`                       | GET  | Landing payload |
+| `/healthz`                | GET  | Liveness probe |
+| `/version`                | GET  | Package version + binary SHA-256 + dataset metadata |
+| `/sensitivity/{target}`   | GET  | Precomputed Sobol indices for one target |
+| `/predict`                | POST | One-row prediction (surrogate + conformal CI + OOD flag) |
+| `/sweep`                  | POST | Batched predictions (1..10,000 rows) |
+| `/run-cgem`               | POST | Authoritative Fortran subprocess; returns the v2.2.0 pulse-sim `CGEMRun` JSON shape verbatim |
+
+A frozen OpenAPI spec is committed at [`docs/api/openapi.json`](docs/api/openapi.json) for frontend codegen.
+
+### Docker
+
+```bash
+docker build -f cgem_ext/api/Dockerfile -t cgem-ext-api:0.1.0 .
+docker run --rm -p 8000:8000 cgem-ext-api:0.1.0
+# Single-stage python:3.12-slim image with libgfortran5, the cgem binary,
+# the canonical dataset, and the precomputed sensitivity CSVs baked in.
+# Healthcheck on /healthz with a 90 s start grace.
+```
+
+### React + TypeScript frontend (mock data; Phase 6 wires it to FastAPI)
 
 ```bash
 cd frontend
@@ -201,14 +241,6 @@ npm run dev
 
 ```bash
 streamlit run legacy/streamlit/enhanced_app.py
-```
-
-### Docker
-
-```bash
-docker build -t cgem-app:latest .
-docker run --rm -p 8501:8501 cgem-app:latest
-# → http://localhost:8501  (legacy Streamlit; FastAPI Dockerfile lands in Phase 5)
 ```
 
 ---
@@ -266,8 +298,33 @@ t_expect = two.predict_expected_time(test_df)        # P(event) × E[t | event]
 from cgem_ext.ood import MahalanobisOOD, ConformalAbstention
 
 ood = MahalanobisOOD().fit(train_df)
-abstain = ConformalAbstention(alpha=0.05).fit(ood.score(val_df))
-flags = abstain.predict(ood.score(test_df))   # True → in-distribution
+abstain = ConformalAbstention(alpha=0.05).calibrate(ood.score(val_df))
+in_envelope = abstain.is_in_envelope(ood.score(test_df))   # True → in-distribution
+```
+
+### FastAPI client (post Phase 5)
+
+```python
+import httpx
+
+with httpx.Client(base_url="http://localhost:8000") as c:
+    r = c.post("/predict", json={
+        "maneuver": {"maneuver": "high_g_turn"},
+        "pilot": {
+            "who_profile": 2,
+            "countermeasures_label": "agsm",
+            "agsm_effectiveness": 0.6,
+        },
+    })
+    out = r.json()
+    print("OOD:", out["ood"], "score:", round(out["ood_score"], 1))
+    for t in out["targets"]:
+        if t["censored"]:
+            print(f"{t['target']:22s} P(event)={t['event_probability']:.3f} "
+                  f"E[t|ev]={t['point']:.2f}s CI=[{t['lo']:.2f}, {t['hi']:.2f}]s")
+        else:
+            print(f"{t['target']:22s} {t['point']:.3f} ± "
+                  f"({t['lo']:.3f}, {t['hi']:.3f})")
 ```
 
 ---
