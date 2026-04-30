@@ -1,76 +1,64 @@
 # G-Effects Model by Civil Aerospace Medicine Institute 🚀
 
-[![Python](https://img.shields.io/badge/Python-3.9%2B-3776AB?logo=python&logoColor=white)](https://www.python.org)
+[![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)](https://www.python.org)
 [![Platform](https://img.shields.io/badge/Platform-Linux%20%7C%20macOS%20%7C%20Windows-lightgrey)](https://en.wikipedia.org/wiki/Cross-platform)
-[![Streamlit](https://img.shields.io/badge/UI-Streamlit-FF4B4B?logo=streamlit&logoColor=white)](https://streamlit.io)
+[![Frontend](https://img.shields.io/badge/Frontend-React%20%2B%20TypeScript-3178C6?logo=react&logoColor=white)](https://react.dev)
+[![API](https://img.shields.io/badge/API-FastAPI-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
 [![Status](https://img.shields.io/badge/Status-Research-blueviolet)](https://en.wikipedia.org/wiki/Research)
 [![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
 
-Modern, stylish, and professional toolkit for modeling G-induced loss of consciousness (G-LOC) and visualizing aerospace physiology using the FAA’s CGEM foundations. This repository brings together computational models, simulations, and interactive visualizations to support training, safety analysis, and research in aerospace medicine.
+Research platform for modelling G-induced loss of consciousness (G-LOC) on the FAA CAMI G-Effects Model (CGEM) with a modern ML extension layer. The validated FAA Fortran physiology core is preserved unchanged; an additive Python extension (`cgem_ext/`) wraps it with a fast surrogate emulator, out-of-distribution (OOD) detection, global sensitivity analysis, and conformal uncertainty quantification, all served behind a FastAPI service that backs a Vite + React + TypeScript frontend.
 
-Forked from the original FAA AAM-631 CGEM project ("CAMI-Gz-Effects-Model-CGEM-") and extended with modern visualization and configuration tools.
+Forked from the original FAA AAM-631 CGEM project and extended for aerospace-medicine research. Developed by **Dr. Diego Malpica** (Direction of Aerospace Medicine, Colombian Aerospace Force, Aerospace Scientific Department). ORCID: [0000-0002-2257-4940](https://orcid.org/0000-0002-2257-4940).
 
-Developed by **Dr. Diego Malpica** (Direction of Aerospace Medicine, Colombian Aerospace Force, Aerospace Scientific Department). ORCID: [0000-0002-2257-4940](https://orcid.org/0000-0002-2257-4940).
+> **Roadmap**: see [`ROADMAP.md`](ROADMAP.md) for the phase-by-phase plan; the current focus is the AMHP methods paper (Phase 7). The Streamlit dashboards have been moved to [`legacy/streamlit/`](legacy/streamlit/) and are deprecated in favour of the FastAPI + React stack.
 
 ## Highlights
 
-- **Physiology-aware modeling 🧬**: CGEM-based computations for greyout, blackout, and G-LOC risk.
-- **Interactive visualizations 📊**: Streamlit dashboards for scenarios, thresholds, timelines, and maneuver profiles.
-- **Reproducible workflows 🔁**: Notebooks and scripts for demos and experiments.
-- **Extensible 🧩**: Modular code to customize models, parameters, and data pipelines.
+- **Validated physiology core preserved**: the FAA Fortran binary is invoked unchanged through `cgem_wrapper.run_cgem_for_profile`. No changes to `src/cgem.f`. Downstream consumers (e.g. `pulse-sim`'s CGEM bridge) keep their existing import path; a regression test in `tests/test_contract.py` enforces this in CI.
+- **ML extension layer (`cgem_ext/`)**: surrogate emulator (~10⁵× faster than direct CGEM), Mahalanobis + conformal OOD detection, global sensitivity analysis (Sobol / Morris), Mondrian split-conformal prediction intervals.
+- **FastAPI service**: typed Pydantic schemas mirror the v2.2.0 `CGEMRun` JSON contract; OpenAPI spec auto-generated and consumed by the frontend.
+- **TypeScript frontend** (`frontend/`): Vite 7 · React 19 · TS 5.9 · ECharts 5.6 with glass-morphism design.
+- **Reproducibility**: DVC-tracked synthetic dataset, MLflow-tracked emulator runs, Docker images on GHCR pinned to artifact versions, OSF pre-registration of the validation protocol.
 
 ---
 
 ## Quick Start ⚡
 
-1. Set up the environment
+### Run the API + frontend (current path)
 
 ```bash
+# 1. Python environment for the API and ML layer
 python -m venv .venv
 source .venv/bin/activate  # Windows: .venv\Scripts\activate
-pip install -r requirements.txt
+pip install -e .[ml,api,dev]
 # Linux users: if CGEM fails to run, install the Fortran runtime
 # sudo apt-get update && sudo apt-get install -y libgfortran5
+
+# 2. Start the FastAPI service
+uvicorn cgem_ext.api.main:app --reload  # available once Phase 5 ships
+
+# 3. Frontend
+cd frontend
+npm install
+npm run dev
 ```
 
-1. Launch the interactive visualization app
+### Run the legacy Streamlit demos
+
+The Streamlit dashboards still work but are deprecated. They live under `legacy/streamlit/` and import the same `cgem_wrapper` interface:
 
 ```bash
-streamlit run enhanced_app.py
+streamlit run legacy/streamlit/enhanced_app.py
 ```
 
-1. Run the aerobatic profiles demo (optional)
+See [`legacy/streamlit/README.md`](legacy/streamlit/README.md) for the deprecation note.
+
+### Aerobatic profiles demo (no UI)
 
 ```bash
 python demo_example.py
 ```
-
-1. Explore notebooks
-
-- Open `aerobatic_profiles_demo.ipynb` or `aerobatic_maneuvers_simulation.ipynb` in your favorite environment.
-
-### TypeScript Frontend (New!)
-
-A modern TypeScript frontend with publication-quality ECharts visualizations is also available:
-
-```bash
-# Install dependencies
-cd frontend
-npm install
-
-# Run development server
-npm run dev
-
-# Build for production
-npm run build
-```
-
-The frontend provides:
-- Interactive G-force profile visualization with physiological zones
-- CGEM model simulation with configurable pilot parameters
-- Scientific dashboard with 6+ ECharts visualizations
-- Batch analysis for comparing all aerobatic profiles
-- Modern glass-morphism UI optimized for presentations and publications
 
 ---
 
@@ -85,25 +73,32 @@ The frontend provides:
   - Batch analysis for comparing all aerobatic maneuvers
   - All DOI references verifiable for journal publication
 
-- Interactive visualization suite (Streamlit)
-  - 2D Plotly charts: G vs time with safety zones; G_eff vs thresholds (greyout, blackout, G-LOC)
-  - 3D Plotly trajectory: time × G × G_eff with state coloring
-  - Animated timeline playback for physiological response
-  - Scientific dashboard (ECharts): Lines, Heatmap (flags), Histogram (G distribution), Radar (summary metrics), Scatter (state-colored), Durations (time-in-state), Flows (F_con/F_vis/F_bo), Banks (consciousness/blackout), HLAP, and 3D (ECharts GL)
-- Pilot physiology configuration
+- ML extension layer (`cgem_ext/`, see [`docs/architecture/ML_LAYER.md`](docs/architecture/ML_LAYER.md))
+  - Surrogate emulator: per-target XGBoost models with monotonicity constraints; ~10⁵× faster than direct CGEM
+  - Mondrian split-conformal prediction intervals, stratified by maneuver category
+  - SHAP TreeExplainer for per-prediction interpretability
+  - OOD detection: Mahalanobis distance + split-conformal abstention; abstains on inputs outside CGEM's published validation envelope
+  - Global sensitivity analysis: SALib Sobol indices and Morris elementary effects, computed against the emulator
+- FastAPI service (`cgem_ext.api/`)
+  - `/predict`, `/sweep`, `/run-cgem`, `/sensitivity/{target}`, `/healthz`, `/version` endpoints
+  - OpenAPI auto-spec; consumed by the TS frontend through codegen
+- TypeScript frontend (`frontend/`)
+  - Vite 7 · React 19 · TS 5.9 · ECharts 5.6 with glass-morphism design
+  - Pages: Overview, Prediction (single run), Batch (parametric sweeps), Analysis (sensitivity), Dashboard
+- Pilot physiology configuration (preserved from upstream `cgem_wrapper.PilotConfig`)
   - Standard physiology presets (`who=1..6`) or fully custom inputs (sex, height, BP ranges, cerebral flow thresholds, heart-response tau, reserve banks)
   - Countermeasures and state: G-suit pressure/coverage, AGSM effectiveness, pressure-breathing, other muscle strain, non-AGSM tensing limit, seat tilt, drug-induced HR delay, dehydration level
-  - Result caching per (maneuver × pilot configuration)
 - Maneuver library and batch analysis
-  - Select any included aerobatic profile; view stats and descriptive analysis
-  - Batch run across all maneuvers for comparative metrics and charts
+  - 72 registered aerobatic / military / extreme maneuvers
+  - Batch runner produces labelled CGEM datasets used by the ML layer
 - Centrifuge experiment mode
   - Internal ramp-up/ramp-down experiment driver (G0, Gmax, hold@Gmax, dG/dt up/down)
-- CGEM integration
+- CGEM integration (preserved from upstream)
   - Wrapper collects times, G, G_eff, consciousness/vision/blackout flags, time-to-events, flows (F_con/F_vis/F_bo), reserve banks (c_bank/bo_bank), and HLAP series
-- Cross-platform research app
-  - Streamlit UI; works on Windows, macOS, Linux; Docker recipe included
-  - Figures can be downloaded via Plotly/ECharts built-in exporters for reporting
+- Reproducibility
+  - DVC-tracked synthetic dataset, MLflow-tracked emulator runs, Docker images with frozen artifact versions
+- Legacy Streamlit demos (deprecated; under [`legacy/streamlit/`](legacy/streamlit/))
+  - Retained so existing demonstrations keep running while the new stack reaches feature parity
 
 ---
 
@@ -382,15 +377,17 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the rest of the repo
 COPY . .
 
-# Streamlit configuration (optional)
+# Streamlit configuration (legacy demos under legacy/streamlit/)
 ENV STREAMLIT_SERVER_HEADLESS=true \
     STREAMLIT_BROWSER_GATHER_USAGE_STATS=false
 
 # Expose Streamlit default port
 EXPOSE 8501
 
-# Default command runs the Streamlit app
-CMD ["streamlit", "run", "enhanced_app.py", "--server.port=8501", "--server.address=0.0.0.0"]
+# Default command runs the legacy Streamlit app
+# (the canonical Docker image once Phase 5 lands is cgem_ext/api/Dockerfile,
+# which serves the FastAPI app on port 8000 instead)
+CMD ["streamlit", "run", "legacy/streamlit/enhanced_app.py", "--server.port=8501", "--server.address=0.0.0.0"]
 ```
 
 Then build:
