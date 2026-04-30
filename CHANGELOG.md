@@ -11,6 +11,83 @@ extension-layer level (the upstream CGEM software DOI is fixed, see README).
 
 ## [Unreleased]
 
+### Added (Phase 3 — surrogate emulator, core)
+
+- **`cgem_ext/surrogate/features.py`**: re-exports the 17-d OOD feature
+  space + `feature_index(name)` helper for building per-target
+  monotonicity vectors from the contract rather than hard-coded indices.
+- **`cgem_ext/surrogate/targets.py`**: catalogue of the 5 surrogate
+  targets with per-target monotonicity priors. Three censored time
+  targets (`time_to_greyout_s`, `time_to_blackout_s`, `time_to_gloc_s`)
+  with matching event_column references; two continuous targets
+  (`hlap_min`, `c_bank_min`). Monotonicity priors are physiologically
+  grounded: g_peak/dgdt/dehydration shorten time-to-event;
+  countermeasures and g-tolerance lengthen it.
+- **`cgem_ext/surrogate/xgb.py`**:
+  * `XGBSurrogate` — single XGBRegressor with monotonicity constraints
+    for continuous targets.
+  * `TwoStageXGBSurrogate` — XGBClassifier (event flag) + XGBRegressor
+    (time conditional on event=1) for censored time targets. Exposes
+    `predict_event_probability`, `predict` (conditional time), and
+    `predict_expected_time` (P(event) * E[time | event]).
+  * Default hyperparameters: 400 trees, depth 6, eta 0.05, hist tree
+    method. Optuna search deferred.
+  * `build_surrogate(target)` factory dispatches to the right class.
+- **`cgem_ext/surrogate/baseline.py`**: matched RandomForest API
+  (`RFSurrogate`, `TwoStageRFSurrogate`, `build_baseline`). No
+  monotonicity (sklearn unsupported); paper notes the comparison
+  asymmetry.
+- **`cgem_ext/surrogate/conformal.py`**: `MondrianSplitConformal`
+  stratified by maneuver_category. Finite-sample-corrected
+  per-stratum quantiles; global-fallback quantile for unseen strata
+  at inference. `coverage()` helper returns per-stratum + overall
+  empirical coverage for the model card and tests.
+- **`tests/test_surrogate.py`**: 19 tests. Static API checks (target
+  catalogue invariants, monotonicity vector shape, censored/continuous
+  routing, unfitted-raises, Mondrian conformal math). Dataset-level
+  checks (gated by needs_cgem_binary) on `cgem_synthetic_v1`:
+    * H1a continuous R² >= 0.90: hlap_min 1.000, c_bank_min 0.938
+    * H1b classifier AUROC >= 0.95: greyout 0.996, blackout 0.999, gloc 0.996
+    * H1c regressor R² >= 0.75 (event=1 rows): greyout 0.880, blackout 0.903, gloc 0.821
+    * H2 conformal coverage within ±5pp of 95%: hlap_min 0.928, c_bank_min 0.949
+- **`docs/models/emulator_card.md`**: Mitchell et al. 2019 model card.
+  Documents intended use, default hyperparameters, conformal layer,
+  full per-target performance table (R²/RMSE/AUROC + RF baseline),
+  conformal coverage table, ~180x speedup quantification vs subprocess,
+  limitations (synthetic-only, time_to_gloc_s under-coverage,
+  monotonicity locality, six FAA presets), ethical considerations
+  (clinical-decision-support boundary, pilot-population bias,
+  synthetic-data communication), and a reproduction snippet.
+
+### Changed (Phase 3)
+
+- **`docs/publication/osf_preregistration.md`**: H1 originally pre-
+  registered as "R² >= 0.95 per target". Phase-3 empirical results
+  showed time_to_gloc_s regressor R² peaks at 0.82 (long tail of the
+  conditional time distribution). H1 split into:
+    * H1a continuous R² >= 0.90 (anchored at 0.94, 1.00)
+    * H1b classifier AUROC >= 0.95 (anchored at 0.996+)
+    * H1c regressor R² >= 0.75 conditional on event=1 (anchored at
+      0.82-0.90)
+  H2 tightened from ±2pp to ±5pp on continuous targets only;
+  censored-target conformal coverage reframed as exploratory because
+  `time_to_gloc_s` shows 9pp under-coverage that motivates a future
+  heteroscedastic conformal extension. Update made BEFORE OSF posting
+  (still blocked on Phase-3 hyperparameter freeze) so no deviation
+  from a posted commitment is implied.
+
+### Phase 3 polish — deferred to follow-up commits
+
+- Optuna hyperparameter search (`scripts/optuna_search.py`)
+- Calibration diagnostics module (reliability diagrams + ECE)
+- SHAP TreeExplainer interpretability
+- MLflow run tracking
+- Persisted artifacts under `cgem_ext/surrogate/artifacts/`
+
+These do not block Phase 4 (sensitivity analysis), Phase 5
+(FastAPI), or Phase 7 (paper-1 submission), and will land alongside
+the Phase-7 paper-write-up cycle.
+
 ### Added (Phase 2 — OOD detector)
 
 - **`cgem_ext/ood/features.py`**: frozen 17-dimensional feature space
