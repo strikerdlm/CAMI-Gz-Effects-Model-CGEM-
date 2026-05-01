@@ -1,109 +1,73 @@
-# Cover letter — *Aerospace Medicine and Human Performance*
+# Cover letter — *Computer Methods and Programs in Biomedicine*
 
 [Date: TBD at submission]
 
-David G. Newman, AM, MBBS, DAvMed, MBA, PhD
-Editor-in-Chief, *Aerospace Medicine and Human Performance*
-Aerospace Medical Association
-[AMHPJournal@asma.org](mailto:AMHPJournal@asma.org)
+Filippo Molinari, PhD
+Editor-in-Chief, *Computer Methods and Programs in Biomedicine*
+Polytechnic of Turin, Department of Electronics and Telecommunications
+Turin, Italy
+
+*Submitted via Editorial Manager*
 
 ---
 
-Dear Dr. Newman,
+Dear Prof. Molinari,
 
-I am pleased to submit the enclosed manuscript, **"Conformal ML
-emulation and OOD detection for the FAA CGEM G-LOC model,"** for
-consideration as a Research Article in *Aerospace Medicine and Human
-Performance*.
+I am pleased to submit the manuscript **"Conformal ML emulation and OOD detection
+for the FAA CGEM G-LOC model"** for consideration as a Full Length Article in
+*Computer Methods and Programs in Biomedicine*.
 
-The work presents an additive machine-learning extension to the FAA
-Civil Aerospace Medical Institute G-Effects Model (CGEM). The Fortran
-core that operationally defines CGEM is preserved byte-for-byte; the
-extension wraps it with (1) a fast XGBoost surrogate emulator that
-runs ~180× faster than the subprocess, (2) Mondrian split-conformal
-prediction intervals stratified by maneuver category, (3) a robust
-Mahalanobis out-of-distribution detector with distribution-free
-conformal abstention, and (4) global sensitivity analysis (Sobol +
-Morris) driven by the surrogate. Together these capabilities address
-three operational gaps in CGEM: computational cost, lack of calibrated
-uncertainty, and acceptance of out-of-envelope inputs without warning.
+**Why CMPB.** The manuscript addresses a class of problem that sits squarely in
+CMPB's scope: a validated mechanistic model embedded in a regulatory framework
+is wrapped with a formal computing layer — without modifying the validated core —
+to gain emulation speed, calibrated uncertainty, and input-envelope safety. The
+specific model is the FAA's Civil Aerospace Medical Institute G-Effects Model
+(CGEM), a Fortran-based ODE simulator of cardiovascular and cerebrovascular
+response under +Gz acceleration stress. The ML extension layer comprises:
+(1) per-target XGBoost surrogate emulators (~180× faster than the Fortran
+subprocess), (2) Mondrian split-conformal prediction intervals (α = 0.05)
+stratified by maneuver category, (3) a robust Mahalanobis out-of-distribution
+detector with distribution-free conformal abstention, and (4) global Sobol
+and Morris sensitivity analysis driven by the emulator. The framework is
+delivered as an open Python package (`cgem_ext`, MIT licence), a FastAPI service
+with a React/TypeScript frontend, and a Docker image — assets that align with
+CMPB's stated aim to stimulate research into application software design.
 
-Empirical anchors on the held-out test split: classifier AUROC ≥ 0.996
-on all three censored time targets; regressor R² 0.82–0.90 on
-event-positive rows and 0.94–1.00 on continuous targets; conformal
-coverage within 4.6 percentage points of nominal 95 % on 4 of 5
-targets; OOD calibration within 0.3 percentage points of nominal 95 %.
-The framework is suitable for parametric mission planning, real-time
-G-LOC risk advisory prototyping, and as the computational backbone for
-future Bayesian per-pilot calibration studies.
+**Key empirical anchors** on the pre-registered held-out test split: classifier
+AUROC ≥ 0.996 on all three right-censored event targets; regressor R² 0.82–0.90
+on event-positive rows and 0.94–1.00 on continuous targets; Mondrian conformal
+empirical coverage within 4.6 pp of nominal 95 % on 4 of 5 targets; OOD
+conformal calibration within 0.3 pp of nominal 95 %. The surrogate enables a
+full 20,480-evaluation Sobol sensitivity analysis in ~38 s (vs. days via direct
+subprocess). The validation protocol was pre-registered on OSF before any
+test-set evaluation.
 
-I attest to the following points required by the AMHP Instructions for
-Authors (February 2026 revision):
+**Generalizability.** Although the application is aerospace physiology, the
+surrogate + conformal + OOD pattern generalises immediately to any validated
+ODE physiological model — cardiovascular haemodynamics simulators, pharmacokinetic
+compartment models, thermoregulatory or respiratory system models — that must be
+made computationally tractable and uncertainty-aware for operational research use.
+Paper 2 (in preparation) will quantify the discrepancy between the CGEM-emulator
+stack and published centrifuge datasets; paper 3 will validate against own-centrifuge
+subjects. All three papers are pre-registered on OSF.
 
-1. **Originality.** The manuscript reports original work that has not
-   been published or accepted for publication elsewhere, in whole or
-   in part, and is not under consideration by another journal.
+**Declarations:**
 
-2. **Thesis or dissertation disclosure.** The work is not derived
-   from a thesis or dissertation. (AMHP §3.)
-
-3. **Preprint disclosure.** The manuscript will be posted to OSF as a
-   pre-print at the time of AMHP submission (the OSF pre-registration,
-   covering split indices and success thresholds, was timestamped
-   before any test-set evaluation). The OSF DOI will be supplied as
-   soon as it is minted. The manuscript has not been posted to bioRxiv,
-   arXiv, or any other preprint server.
-
-4. **Author approval.** The single author has read and approved the
-   final manuscript as submitted.
-
-5. **ICMJE authorship.** The single author meets all four ICMJE
-   authorship criteria: substantial contributions to design, data
-   acquisition, analysis, and interpretation; drafting the manuscript;
-   final approval; and accountability for all aspects of the work.
-   The detailed contribution statement is on the Title Page file.
-
-6. **Generative AI policy (AMHP §5).** Generative AI tools were used
-   solely for code scaffolding, reference formatting, and editorial
-   review of drafts. The AI tools did not generate scientific claims,
-   study design, analyses, or interpretation. All scientific content
-   was authored, reviewed, and approved by the human author. The AI
-   contribution is disclosed in the Methods section and acknowledged
-   on the Title Page.
-
-7. **Statistical expertise.** All statistical analyses (XGBoost
-   training, Mondrian split-conformal calibration, ECE, AUROC,
-   bootstrap intervals, Sobol decomposition) were performed by the
-   author, who holds a medical degree and has formal training in
-   statistical methods, machine learning, and aerospace medicine
-   research design. Detailed methods, including software versions and
-   random seeds, are documented in §2 of the manuscript and in the
-   accompanying code repository.
-
-8. **Suggested reviewers.** Six suggested reviewers, each with
-   verified institutional affiliation and email, are provided in the
-   accompanying file `suggested_reviewers.md`. None has co-authored
-   work with the author in the past three years; none shares a
-   current institution with the author; and none has previously
-   reviewed any version of this manuscript.
-
-9. **Figure color.** All figures are intended for grayscale print and
-   color online. No color print is requested; the Color Surcharge
-   Form is therefore not submitted.
-
-10. **Conflicts of interest.** The author declares no conflicts of
-    interest. A signed COI form is enclosed.
-
-11. **Funding.** No external funding was received for this work.
-    The research is self-funded.
-
-The package includes a depersonalized manuscript file, the title page
-file with author identity, six figure files, the
-TRIPOD-AI reporting checklist (supplementary), a datasheet for the
-synthetic dataset (Gebru et al. 2018, supplementary), model cards for
-the surrogate and OOD detector (Mitchell et al. 2019, supplementary),
-the OSF pre-registration (timestamp linked), and signed Author
-Checklist, Copyright Release, and Conflict of Interest forms.
+- **Originality.** The manuscript reports original work not published or accepted
+  elsewhere and not under concurrent consideration by another journal.
+- **AI disclosure.** Generative AI tools were used solely for code scaffolding,
+  reference formatting, and editorial review of drafts. No AI tool generated
+  scientific claims, study design, analyses, or interpretation. All scientific
+  content was authored, reviewed, and approved by the human author. This is
+  disclosed in §2.8.
+- **Conflicts of interest.** None declared.
+- **Funding.** No external funding. Self-funded research.
+- **Data and code availability.** Full code (MIT licence) at
+  `github.com/strikerdlm/CAMI-Gz-Effects-Model-CGEM-`; dataset at Zenodo
+  (DOI: TBD at submission); Docker image at GHCR.
+- **Suggested reviewers.** Five candidates are listed in the accompanying file
+  `suggested_reviewers.md`. None has co-authored work with the corresponding
+  author in the past three years; none shares an institution with the author.
 
 I look forward to the editorial decision.
 
@@ -112,5 +76,5 @@ Sincerely,
 Diego Malpica, MD
 Direction of Aerospace Medicine, Aerospace Scientific Department,
 Colombian Aerospace Force, Bogotá, Colombia.
-ORCID: 0000-0002-2257-4940
+ORCID: [0000-0002-2257-4940](https://orcid.org/0000-0002-2257-4940)
 [dlmalpica@yahoo.com](mailto:dlmalpica@yahoo.com)

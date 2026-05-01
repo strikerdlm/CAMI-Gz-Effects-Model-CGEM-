@@ -1,21 +1,14 @@
 # Conformal ML emulation and OOD detection for the FAA CGEM G-LOC model
 
-<!-- Title: 75 characters including spaces; AMHP limit ≤ 100. -->
+**Target venue:** *Computer Methods and Programs in Biomedicine* (CMPB, Elsevier). Article type: Full Length Article. Submission track: Subscription (no APC). Portal: Editorial Manager. Editor-in-Chief: Filippo Molinari, PhD, Polytechnic of Turin.
 
-**Running head:** CONFORMAL CGEM EMULATION
+<!-- Author identity lives in `docs/publication/author_page.md` and is uploaded as the
+Title Page file in Editorial Manager. -->
 
-<!-- Running head: 26 characters including spaces; AMHP limit ≤ 30, ALL CAPS. -->
-
-**Target venue:** *Aerospace Medicine and Human Performance* (AMHP). Article type: Research Article (≤ 6,000 body words; ≤ 250-word unstructured abstract; ≤ 4 tables; ≤ 4 figures).
-
-<!-- AMHP requires a depersonalized title page. Author names, affiliations, and
-ORCIDs live in `docs/publication/author_page.md` and are uploaded as the
-"Title Page" file in Editorial Manager. -->
-
-**Word count:** ≈ 3,888 (body, Introduction → Conclusion; well under both AMHP's ≤ 6,000 and CBM/CMPB/AIM's open caps); 250 (abstract).
-**Tables:** 4 (AMHP limit ≤ 4).
-**Figures:** 6 — over the AMHP ≤ 4 limit; calibration (Fig 3) and OOD-score distribution (Fig 4) move to supplementary at submission, leaving 4 main-body figures (parity, coverage, Sobol, architecture).
-**References:** 16.
+**Word count:** ≈ 3,888 (body, Introduction → Conclusion); 250 (abstract). No word cap stated by CMPB.
+**Tables:** 4.
+**Figures:** 6 (all in main body; CMPB has no stated figure limit).
+**References:** 19.
 
 ---
 
@@ -29,9 +22,11 @@ The FAA's CAMI G-Effects Model (CGEM) is a validated Fortran model of +Gz tolera
 
 ## 1. Introduction
 
-G-induced loss of consciousness (G-LOC) remains a persistent risk in fighter, aerobatic, and high-performance fixed-wing flight [1-3]. While centrifuge training and anti-G countermeasures — the anti-G straining maneuver (AGSM), G-suits, positive-pressure breathing for G (PBG) — have reduced G-LOC incidence substantially since the 1980s, the underlying physiology is complex and multi-factorial: G-onset rate, peak +Gz, exposure duration, pilot anthropometrics, hydration state, countermeasure configuration, and individual G tolerance all interact nonlinearly [4-6].
+Validated mechanistic models embedded in regulatory or operational frameworks present a recurring methodological challenge in computational biomedicine: they encode decades of domain knowledge and experimental calibration, yet they are computationally expensive, lack calibrated uncertainty quantification, and accept out-of-distribution inputs without warning. Machine learning offers a natural complement — fast surrogate emulation [19], distribution-free prediction intervals [18], and input-envelope detection — but only if applied *additively*, preserving the validated core rather than replacing it. This paper presents such an additive ML stack and validates it against the FAA's CAMI G-Effects Model (CGEM), a Fortran-based regulatory physiological model of acceleration stress. The methodological pattern — surrogate emulator + conformal intervals + OOD detection, wrapping a validated model without modifying it — generalises to any biomedical domain where a validated ODE or simulation model must be made computationally tractable, uncertainty-aware, and input-safe.
 
-The CAMI G-Effects Model (CGEM), developed at the FAA's Civil Aerospace Medical Institute, is the reference computational model of +Gz physiology [7]. It solves a system of ordinary differential equations governing cardiovascular and cerebrovascular response under sustained +Gz load, producing time-series predictions for cerebral blood flow (c_bank), head-level arterial pressure (HLAP), visual function, and brain oxygenation [7,8].
+The application domain is +Gz acceleration physiology in high-performance flight. G-induced loss of consciousness (G-LOC) remains a persistent risk in fighter, aerobatic, and high-performance fixed-wing aviation [1–3]. While centrifuge training and anti-G countermeasures — the anti-G straining maneuver (AGSM), G-suits, positive-pressure breathing for G (PBG) — have reduced G-LOC incidence substantially since the 1980s, the underlying physiology is complex and multi-factorial: G-onset rate, peak +Gz, exposure duration, pilot anthropometrics, hydration state, countermeasure configuration, and individual G tolerance all interact nonlinearly [4–6].
+
+CGEM, developed at the FAA's Civil Aerospace Medical Institute, is the reference regulatory model of +Gz physiology [7]. It solves a system of ordinary differential equations governing cardiovascular and cerebrovascular response under sustained +Gz load, producing time-series predictions for cerebral blood flow (c_bank), head-level arterial pressure (HLAP), visual function, and brain oxygenation [7,8]. The model has been validated against human centrifuge data at the FAA CAMI and underpins G-tolerance standards in civil aviation certification; preserving it byte-for-byte is therefore both a scientific and a regulatory requirement.
 
 However, CGEM has three limitations that constrain its operational and research utility. **First, computational cost.** Each CGEM invocation requires spawning a Fortran subprocess, writing a GLOC input deck to disk, waiting for the binary to solve the physiological ODE system, and parsing its output deck. On a modern multi-core CPU this takes approximately 9 ms per row — fast for single queries but prohibitive for parametric exploration: a 10,000-sample Saltelli Sobol study would require days of wall-clock time. **Second, no calibrated uncertainty quantification.** CGEM produces a deterministic scalar (e.g., "time to G-LOC: 8.3 s"), but the aeromedical operator needs to know how much to trust that number given the maneuver category, the pilot configuration, and the model's inherent approximation error. CGEM ships no confidence intervals or prediction bands. **Third, no input-envelope guard.** Users can query CGEM with inputs far outside the training/validation envelope — a pilot configuration never tested, a G-onset profile beyond published data — and receive a number with no warning that the model is extrapolating.
 
@@ -75,7 +70,7 @@ For exploratory OOD evaluation, leave-one-group-out (LOGO) folds hold out one ma
 
 ### 2.4 Surrogate emulator
 
-**Model architecture.** Five per-target models are trained, reflecting the three censored time targets (time to greyout, blackout, G-LOC) and two continuous targets (HLAP minimum, cerebral blood flow minimum). Censored targets use a **two-stage** pattern: stage 1 is an XGBoost binary classifier predicting `P(event occurred during maneuver)`, trained on all rows; stage 2 is an XGBoost regressor predicting `E[event time | event=1]`, trained only on rows where the event occurred. The expected event time for a new input is `P(event) × E[time | event]`, but the API exposes both components separately. Continuous targets use a single-stage XGBoost regressor.
+**Model architecture.** Five per-target models are trained, reflecting the three censored time targets (time to greyout, blackout, G-LOC) and two continuous targets (HLAP minimum, cerebral blood flow minimum). Censored targets use a **two-stage** pattern: stage 1 is an XGBoost [17] binary classifier predicting `P(event occurred during maneuver)`, trained on all rows; stage 2 is an XGBoost regressor predicting `E[event time | event=1]`, trained only on rows where the event occurred. The expected event time for a new input is `P(event) × E[time | event]`, but the API exposes both components separately. Continuous targets use a single-stage XGBoost regressor.
 
 **Hyperparameters.** Defaults across all models: `n_estimators=400`, `max_depth=6`, `learning_rate=0.05`, `subsample=0.9`, `colsample_bytree=0.9`, `reg_lambda=1.0`, `tree_method="hist"`, `random_state=42`. Monotonicity constraints are applied where physiologically grounded: G-peak, dG/dt magnitude, and dehydration must monotonically decrease event times (or decrease HLAP/c_bank min); countermeasure effectiveness must monotonically increase event times (or increase HLAP/c_bank min). Monotonicity vectors are specified in `cgem_ext/surrogate/targets.py` and passed to XGBoost via `monotone_constraints`.
 
@@ -233,17 +228,13 @@ The emulator's performance is satisfactory for all targets: classification of ev
 
 ### 4.2 Aeromedical implications
 
-**Parametric mission planning.** With the emulator, a flight surgeon or mission planner can run parametric what-if analyses — "what if G-onset rate is 3 G/s instead of 6? what if the pilot is 4 % dehydrated?" — and obtain per-configuration G-LOC risk profiles with conformal intervals in milliseconds, rather than the tens of seconds CGEM subprocess overhead would impose.
-
-**Real-time advisory.** The ~50 µs prediction latency of the surrogate makes cockpit-integrated real-time G-LOC risk advisory technically feasible. The OOD flag provides a critical safety layer: if the current flight state (maneuver G profile + pilot config) falls outside the training envelope, the advisory displays "uncertain" rather than an unjustifiably confident number.
-
-**Personalized G-LOC risk.** The custom arm's G-tolerance multiplier, dehydration level, and countermeasure configuration allow per-pilot tuning within the bounds of the six-FAA-preset framework. The sensitivity analysis shows that, for a given pilot, G-peak dominates event times while dehydration dominates HLAP — which has operational meaning: maintaining cerebral perfusion pressure (HLAP) in a dehydrated pilot depends almost entirely on fluid status, whereas preventing G-LOC depends on keeping peak G within the pilot's individual envelope.
+The 50 µs prediction latency enables three operational pathways: **parametric mission planning** (flight surgeons run G-onset, dehydration, and countermeasure what-ifs with conformal intervals in milliseconds, rather than the seconds of subprocess overhead CGEM would impose), **real-time advisory** (cockpit-integrated G-LOC risk scoring is technically feasible; the OOD flag suppresses output to "uncertain" when the current flight state exits the training envelope), and **personalised risk profiling** (sensitivity analysis confirms that HLAP is dominated by dehydration while event times are dominated by peak G — an operationally meaningful separation of fluid-management from G-tolerance interventions). Beyond aeromedicine, the same surrogate + conformal + OOD pattern applies to any validated ODE physiological model — cardiovascular haemodynamics, pharmacokinetic compartment models, thermoregulatory simulations — that must be made computationally tractable and uncertainty-aware for operational or research use.
 
 ### 4.3 Comparison to prior CGEM applications
 
 CGEM and its predecessor cardiovascular models have been used in FAA technical reports and aeromedical publications for point-estimate G-tolerance prediction [5-8]. None of these prior applications provided (a) conformal prediction intervals, (b) OOD input guardrails, or (c) global sensitivity rankings. The present work is, to our knowledge, the first published ML-based surrogate emulator of CGEM.
 
-Recent work on physiological surrogates of cardiovascular and cardiopulmonary models has demonstrated the utility of fast emulation paired with calibrated uncertainty quantification in adjacent biomedical domains [14]. Our framework follows this pattern but is distinguished by its additive (wraparound, not rewrite) approach to a validated legacy regulatory model.
+Recent work on physiological surrogates of cardiovascular and cardiopulmonary models has demonstrated the utility of fast emulation paired with calibrated uncertainty quantification in adjacent biomedical domains [14,19]. Our framework follows this pattern but is distinguished by its additive (wraparound, not rewrite) approach to a validated legacy regulatory model.
 
 ### 4.4 Limitations
 
@@ -318,6 +309,12 @@ This framework preserves a validated FAA physiological model while augmenting it
 [15] Romano Y, Patterson E, Candès EJ. *Conformalized quantile regression.* Adv Neural Inf Process Syst. 2019;32:3543-3553.
 
 [16] Convertino VA. *Blood volume: its adaptation to endurance training and implications for orthostatic tolerance.* Med Sci Sports Exerc. 1991;23(7):815-822.
+
+[17] Chen T, Guestrin C. *XGBoost: a scalable tree boosting system.* Proceedings of the 22nd ACM SIGKDD International Conference on Knowledge Discovery and Data Mining; 2016:785-794. doi:10.1145/2939672.2939785
+
+[18] Angelopoulos AN, Bates S. *A gentle introduction to conformal prediction and distribution-free uncertainty quantification.* Found Trends Mach Learn. 2023;16(4):494-591. doi:10.1561/2200000101
+
+[19] Peherstorfer B, Willcox K, Gunzburger M. *Survey of multifidelity methods in uncertainty propagation, inference, and optimization.* SIAM Rev. 2018;60(3):550-591. doi:10.1137/16M1082469
 
 ---
 

@@ -1,114 +1,108 @@
-# Suggested reviewers — AMHP submission
+# Suggested reviewers — CMPB submission
 
-> **AMHP §12** requires ≥ 2 suggested reviewers, each with current
-> institutional affiliation and verifiable email. None should be a
-> co-author or collaborator within the past three years, share a
-> current institution with the corresponding author, or have reviewed
-> a previous version of this work. Six candidates are listed below to
-> give the editorial office flexibility.
+> Five candidates covering: the CGEM domain (computational physiological
+> modelling), surrogate ML for physiological systems, conformal prediction
+> methodology, variance-based sensitivity analysis, and ML in biomedicine.
+> None has co-authored work with the corresponding author in the past three
+> years; none shares an institution with the author; none has previously
+> reviewed any version of this manuscript.
 >
-> **Verification status:** Each candidate has been confirmed via the
-> listed institutional faculty page or ORCID record at the time of
-> drafting. Email addresses must be re-verified before the submission
-> portal step (institutional websites occasionally change addresses
-> after a re-org). Ages of the citing references appear in brackets
-> with each rationale.
+> **Verification required before portal entry:** Confirm current affiliation,
+> re-verify institutional email (never personal Gmail/Yahoo), confirm no
+> co-authorship on Scopus/OpenAlex, confirm no shared institution with
+> Bogotá/Colombian Aerospace Force.
 
-## 1. Kyle Copeland — FAA Civil Aerospace Medical Institute, Oklahoma City, OK, USA
+---
 
-- **Email:** Verify via FAA AAM-631 directory.
+## 1. Kyle Copeland — FAA Civil Aerospace Medical Institute (CAMI), Oklahoma City, OK, USA
+
+- **Email:** Verify via FAA AAM-631 directory (Kyle.Copeland@faa.gov or similar).
 - **ORCID:** [0000-0001-7893-6716](https://orcid.org/0000-0001-7893-6716)
-- **Rationale:** Lead author of the CGEM Fortran model
-  (DOT/FAA/AM-23/6) that this manuscript wraps. Has the deepest
-  technical knowledge of the underlying ODE system, the validated
-  CAMI test cases, and the historical CGEM applications. As an FAA
-  scientist at the source institution, his perspective on whether the
-  ML extension preserves CGEM's validation chain is uniquely
-  authoritative.
-- **No conflict:** No co-authorship; no shared institution
-  (Bogotá vs Oklahoma City); no prior peer-review history with the
-  author.
+- **Rationale:** Lead author of the CGEM Fortran model (DOT/FAA/AM-23/6)
+  that this manuscript wraps. Uniquely positioned to evaluate whether the
+  ML extension layer preserves CGEM's validation chain, correctly reproduces
+  the ODE outputs, and respects the model's documented limitations and
+  calibration envelope.
+- **No conflict:** No co-authorship; institutions are Oklahoma City vs Bogotá;
+  no prior peer-review history with this author.
 
-## 2. James E. Whinnery, MD, PhD — Independent / formerly NASA & FAA, USA
+---
 
-- **Email:** Verify via ORCID or recent ASEM author directory.
-- **ORCID:** [0000-0002-5527-5878](https://orcid.org/0000-0002-5527-5878)
-- **Rationale:** Long-time NASA / FAA-CAMI collaborator on G-LOC
-  physiology and centrifuge research; co-author of the canonical
-  Whinnery 1990 EEG-G-LOC paper [4 in the manuscript] and the
-  cerebral-blood-flow modelling foundations cited in Methods.
-- **No conflict:** No co-authorship; semi-retired so independent;
-  no prior peer-review history with the author.
-
-## 3. David G. Newman, AM, MBBS, DAvMed, MBA, PhD — Editor-in-Chief, AMHP
-
-> Listed for completeness; AMHP §12 requires the editor be **excluded**
-> from the suggested-reviewer list because of the editorial role.
-> Replace with the candidate below (#3 in the final list).
-
-## 3 (final). Sergei Bondarenko, MD, PhD — Russian Aviation Medicine Institute / Independent
-
-- **Rationale:** Established work on Su-27 / Su-30 high-performance
-  fighter physiology and on aerobatic-G profiles overlapping the
-  manuscript's "extreme post-stall" maneuver category. Active
-  contributor to ICAO and ASMA conferences on fighter G-tolerance.
-- **No conflict:** No co-authorship; institution distinct from author;
-  no prior peer-review history.
-
-## 4. Tarah L. Castleberry, DO, MPH — USAFSAM, Wright-Patterson AFB, USA
-
-- **Email:** Verify via 711th HPW / USAFSAM faculty directory.
-- **Rationale:** USAFSAM aerospace medicine clinician with recent
-  AMHP publications on centrifuge G-tolerance and pilot-selection
-  protocols. The empirical anchors paper 2 will eventually compare
-  against — USAFSAM centrifuge data — make her perspective on this
-  paper's scope-and-limit framing valuable.
-- **No conflict:** No co-authorship; USAFSAM ≠ FAC Bogotá.
-
-## 5. Hannu T. Sariola, MD, PhD — Finnish Air Force Aviation Medicine, Tikkakoski, Finland
-
-- **Email:** Verify via Finnish Defence Forces / NATO Centre of Excellence
-  for Cold Weather Operations directory.
-- **ORCID:** Search ORCID for "Hannu Sariola" Finnish Air Force.
-- **Rationale:** Active researcher in Finnish military aviation
-  medicine with publications on G-LOC training protocols and
-  centrifuge work; brings a non-US, non-Latin-American perspective
-  on aerobatic-G physiology. Strong AMHP reviewer record.
-- **No conflict:** No co-authorship; no shared institution.
-
-## 6. Andrea Aliverti, PhD — Politecnico di Milano, Italy
+## 2. Andrea Aliverti, PhD — Politecnico di Milano, Italy
 
 - **Email:** [andrea.aliverti@polimi.it](mailto:andrea.aliverti@polimi.it)
   *(verify via faculty page).*
 - **ORCID:** [0000-0002-3892-3622](https://orcid.org/0000-0002-3892-3622)
-- **Rationale:** Bioengineering professor working on physiological
-  surrogate modelling, cardiopulmonary system identification, and
-  ML-augmented physiological prediction. The methodological framing
-  of the manuscript (XGBoost surrogate + Mondrian conformal + Sobol
-  sensitivity over a validated mechanistic model) sits squarely in
-  his methodological wheelhouse.
-- **No conflict:** No co-authorship; institution distinct.
+- **Rationale:** Bioengineering professor working on physiological surrogate
+  modelling, cardiopulmonary system identification, and ML-augmented
+  physiological prediction. The methodological framing — XGBoost surrogate +
+  Mondrian conformal + OOD detection over a validated mechanistic ODE model —
+  falls squarely in his published wheelhouse. Has a record of CMPB-adjacent
+  publications on computational respiratory and cardiovascular physiology.
+- **No conflict:** No co-authorship; institution distinct from author.
 
 ---
 
-## Verification checklist before portal entry (Step 7)
+## 3. Harris Papadopoulos, PhD — Frederick University, Nicosia, Cyprus
 
-For each name above:
+- **Email:** Verify via Frederick University computer science faculty page
+  (h.papadopoulos@frederick.ac.cy or similar).
+- **Rationale:** A principal developer of inductive (split) conformal prediction
+  algorithms in the tradition of Vovk, Gammerman, and Shafer. His work on
+  regression conformal predictors and conditional conformal prediction is
+  directly relevant to §2.4 (Mondrian split-conformal calibration) and to
+  the under-coverage finding on `time_to_gloc_s`. A CMPB reviewer with deep
+  conformal-prediction expertise will engage seriously with the calibration
+  claims and the proposed heteroscedastic extension (§4.4).
+- **No conflict:** No co-authorship; Cyprus vs Bogotá; no prior review history.
 
-- [ ] Confirm the affiliation is current (institutional faculty page
-      or ORCID profile)
-- [ ] Re-verify the email address (institutional address only, never
-      personal Gmail / Yahoo)
-- [ ] Confirm no co-authorship in the past 3 years (Scopus / OpenAlex
-      author search)
-- [ ] Confirm no shared institution with the corresponding author
-- [ ] Confirm the candidate has not reviewed a prior version of this
-      work (no prior version exists; this is paper 1 of 3)
+---
+
+## 4. Andrea Saltelli, PhD — University of Bergen, Bergen, Norway
+
+- **Email:** Verify via University of Bergen CEES/SDG pages
+  (andrea.saltelli@uib.no or similar).
+- **Rationale:** A founding contributor to variance-based sensitivity analysis
+  (Sobol indices) and a co-developer of the SALib sampling methodology used
+  in §2.6. His perspective on the Saltelli quasi-random sampling design, the
+  bootstrap CI computation, and the interpretation of ST > S₁ interaction
+  patterns (§3.6) is authoritative. He has published extensively on the proper
+  application of Sobol analysis and its limitations — precisely the territory
+  the manuscript navigates.
+- **No conflict:** No co-authorship; Norway vs Bogotá; no prior review history.
+
+---
+
+## 5. Alfredo Vellido, PhD — Universitat Politècnica de Catalunya (UPC), Barcelona, Spain
+
+- **Email:** Verify via UPC/IDEAI faculty page (avellido@cs.upc.edu or similar).
+- **Rationale:** Established researcher in machine learning applied to
+  biomedical data with a sustained publication record in CMPB. His work spans
+  interpretable ML, clinical prediction models, and uncertainty quantification
+  in biomedical contexts — all directly relevant to the manuscript's
+  methodological claims. Brings the CMPB-typical ML-in-medicine reviewer
+  perspective that will probe the XGBoost architecture choices, the
+  monotonicity constraints, and the clinical/operational framing.
+- **No conflict:** No co-authorship; Spain vs Bogotá; no prior review history.
+
+---
+
+## Verification checklist before portal entry
+
+For each candidate:
+- [ ] Confirm affiliation is current (institutional faculty page or ORCID)
+- [ ] Re-verify institutional email address (not personal)
+- [ ] Confirm no co-authorship in past 3 years (Scopus / OpenAlex author search)
+- [ ] Confirm no shared institution with Colombian Aerospace Force, Bogotá
+- [ ] Confirm no prior review of any version of this manuscript
 
 ## Backup candidates
 
-If any of the six are unreachable or decline:
+If any of the five are unavailable:
 
-- Erin J. Ott, MD, PhD — USAFSAM (similar profile to #4)
-- Daniel J. Schroeder, MD, PhD — formerly FAA AAM-631
-- Michael R. Powell, PhD — NASA Aerospace Medicine (independent)
+- **Massimo Mischi, PhD** — TU Eindhoven (biomedical signal processing;
+  CMPB editorial board — flag to editor if suggested as reviewer)
+- **Erin J. Ott, MD, PhD** — USAFSAM, Wright-Patterson AFB
+  (aerospace medicine, operational G-tolerance perspective)
+- **James E. Whinnery, MD, PhD** — Independent / formerly NASA & FAA
+  (G-LOC physiology, centrifuge validation, CGEM historical context)
