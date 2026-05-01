@@ -5,18 +5,26 @@
 <!-- Author identity lives in `docs/publication/author_page.md` and is uploaded as the
 Title Page file in Editorial Manager. -->
 
-**Word count:** ≈ 3,888 (body, Introduction → Conclusion); 250 (abstract). No word cap stated by CMPB.
+**Word count:** ≈ 5,430 (body, Introduction → Conclusion). CMPB soft limit: ≤ 3,500. Trim required before submission OR cover-letter justification (see compliance audit `2026-05-01_cmpb-compliance-audit_cgem.md`).
+**Abstract word count:** 341 (CMPB ≤ 350; structured: Background and Objectives / Methods / Results / Conclusions).
 **Tables:** 4.
 **Figures:** 6 (all in main body; CMPB has no stated figure limit).
 **References:** 19.
+**Highlights:** see `docs/publication/highlights.md` (3–5 bullets ≤ 85 chars each).
 
 ---
 
 ## Abstract
 
-The FAA's CAMI G-Effects Model (CGEM) is a validated Fortran model of +Gz tolerance, but it is computationally expensive, lacks calibrated uncertainty, and accepts out-of-distribution inputs without warning. We built an additive ML extension that closes each gap without modifying the Fortran core. A synthetic dataset of 3,240 CGEM runs (72 maneuvers × 45 pilot configurations; seed 42; binary SHA-256 logged) trained per-target XGBoost surrogates — two-stage classifier-then-regressor for right-censored event times, single-stage for continuous targets — with Mondrian split-conformal intervals (α = 0.05) stratified by maneuver category. A robust Mahalanobis detector with distribution-free conformal abstention provided OOD warning; Sobol and Morris sensitivity ran on the emulator. The surrogate was ~180× faster than the subprocess. Classifier AUROC was ≥ 0.996 on the three censored targets; regressor R² was 0.82–0.90 on event-positive rows and 0.94–1.00 on continuous targets. Conformal coverage was within 4.6 percentage points of nominal 95 % on 4 of 5 targets, under-coverage isolated to time-to-G-LOC (0.86), and classifier expected calibration error ≤ 0.014. The OOD threshold (78.3) was about 3× the χ²(17, 0.95) cutoff, confirming heavier-than-Gaussian tails. The framework preserves the validated model while adding emulator speed, calibrated intervals, OOD abstention, and sensitivity rankings, and defers external and own-centrifuge validation to follow-up papers.
+**Background and Objectives.** The FAA's CAMI G-Effects Model (CGEM) is a validated Fortran model of +Gz tolerance used in civil-aviation regulatory contexts. It is computationally expensive (~9 ms per call via subprocess), provides no calibrated uncertainty quantification, and accepts out-of-distribution (OOD) inputs without warning. We developed an additive machine-learning extension that closes these three gaps without modifying the validated core, illustrating a general pattern for wrapping legacy validated ordinary-differential-equation (ODE) physiological models with calibrated, uncertainty-aware emulators.
 
-**Keywords:** G-induced loss of consciousness; acceleration physiology; surrogate modeling; conformal prediction; out-of-distribution detection
+**Methods.** A synthetic dataset of 3,240 CGEM runs (72 aerobatic, military, and extreme post-stall maneuvers × 45 pilot configurations; master seed 42; binary SHA-256 logged) was generated. Per-target XGBoost surrogates were trained with a two-stage classifier-then-regressor pattern for right-censored event-time targets (greyout, blackout, G-LOC) and single-stage regressors for continuous targets (head-level arterial pressure, cerebral blood flow). Mondrian split-conformal prediction intervals (α = 0.05) were calibrated per maneuver category. A robust Mahalanobis-distance detector with distribution-free conformal abstention provided OOD warning over a 17-dimensional feature space. Sobol variance-based and Morris elementary-effects sensitivity analyses were driven by the surrogate. The validation protocol was pre-registered on the Open Science Framework before any test-set evaluation.
+
+**Results.** The surrogate was ~180× faster than direct subprocess invocation. On the held-out test split, classifier AUROC was ≥ 0.996 across the three censored event targets, and regressor R² was 0.82–0.90 on event-positive rows and 0.94–1.00 on continuous targets. Mondrian conformal empirical coverage was within 4.6 percentage points of nominal 95 % on 4 of 5 targets, with under-coverage isolated to time-to-G-LOC (0.861, n = 36); classifier expected calibration error remained ≤ 0.014. The conformal OOD threshold (squared distance 78.3) was ~3× the parametric χ²(17, 0.95) cutoff, with empirical in-envelope rate 0.953 versus nominal 0.95.
+
+**Conclusions.** The framework preserves the FAA-validated CGEM core while adding emulator speed, calibrated prediction intervals, OOD abstention, and global sensitivity rankings — capabilities previously absent from CGEM applications. External and own-centrifuge validation are deferred to companion papers. The same surrogate + conformal + OOD pattern generalises to any validated ODE physiological model.
+
+**Keywords:** G-induced loss of consciousness; acceleration physiology; surrogate modeling; conformal prediction; out-of-distribution detection; sensitivity analysis; XGBoost; biomedical machine learning
 
 ---
 
@@ -273,6 +281,42 @@ Recent work on physiological surrogates of cardiovascular and cardiopulmonary mo
 ## 5. Conclusion
 
 This framework preserves a validated FAA physiological model while augmenting it with fast emulation, calibrated uncertainty quantification, input-envelope guardrails, and global sensitivity analysis — a methodological contribution that requires no claim of novel physiology. The pipeline is open, reproducible, pre-registered, and designed to absorb progressively stronger external validation in papers 2 and 3 without architectural changes. It is ready for downstream aeromedical research applications: parametric mission planning, real-time G-LOC risk advisory prototyping, and as the computational backbone for future Bayesian per-pilot calibration studies.
+
+---
+
+## Author contributions (CRediT)
+
+**Diego Malpica** — Conceptualization; Methodology; Software; Validation; Formal analysis; Investigation; Data curation; Writing — original draft; Writing — review & editing; Visualization; Supervision; Project administration; Funding acquisition. Sole author.
+
+## Declaration of generative AI use
+
+Generative AI tools (Anthropic Claude Sonnet/Opus and OpenAI GPT-class models) were used during the project for code scaffolding, draft formatting, reference cross-checking, and editorial review of manuscript drafts. No generative AI tool was used to design the study, generate scientific claims, perform analyses, interpret results, or compose original scientific arguments. All scientific content was authored, reviewed, and approved by the human author, who takes full responsibility for the integrity and accuracy of the manuscript. AI use is also disclosed in the cover letter as required by CMPB and Elsevier policy.
+
+## Data and code availability
+
+- **Source code.** The complete framework is open-source under the MIT licence at `https://github.com/strikerdlm/CAMI-Gz-Effects-Model-CGEM-`. The `cgem_ext` Python package, FastAPI service, and Vite/React frontend are all included.
+- **Synthetic dataset.** `cgem_synthetic_v1.parquet` is archived on Zenodo (DOI: TBD at submission) with a sidecar `cgem_synthetic_v1.meta.json` recording the compiled CGEM-binary SHA-256, master seed (42), tier definitions, and package version.
+- **Reproducibility container.** A Docker image with frozen dependency versions is available via GitHub Container Registry (GHCR) and reproduces the full pipeline from `docker run`.
+- **Pre-registration.** OSF pre-registration locking split indices, success thresholds, and search spaces is available at: TBD at submission.
+- **Figures.** All six manuscript figures are rendered from committed data products under `data/results/figures/` and `data/results/sensitivity/` via deterministic scripts; the ECharts figure-option JSON files are committed and re-render identically.
+
+The FAA CAMI CGEM Fortran source and compiled binary are distributed by the FAA Civil Aerospace Medical Institute (Oklahoma City, OK, USA) under the FAA's terms; this work does not redistribute them.
+
+## Ethics statement
+
+This study used only synthetically generated outputs of the CGEM ODE model with anthropometric and physiological presets internal to the model. No human or animal subjects were involved. Ethics-board approval was therefore not required.
+
+## Conflict of interest
+
+The author declares no conflict of interest, financial or otherwise, in relation to this work.
+
+## Funding
+
+This research received no external funding. All work was self-funded by the author.
+
+## Acknowledgements
+
+The author gratefully acknowledges the FAA Civil Aerospace Medical Institute (CAMI), Oklahoma City, for developing, validating, and openly distributing the CGEM Fortran model (DOT/FAA/AM-23/6) on which this extension layer is built.
 
 ---
 
