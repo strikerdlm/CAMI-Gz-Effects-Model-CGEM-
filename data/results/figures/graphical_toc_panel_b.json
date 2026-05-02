@@ -1,0 +1,314 @@
+{
+  "title": [
+    {
+      "text": "Speed-up:  surrogate vs CGEM Fortran",
+      "left": "2%",
+      "top": "0%",
+      "textStyle": {
+        "fontSize": 12,
+        "fontWeight": "bold",
+        "color": "#333"
+      }
+    },
+    {
+      "text": "Mondrian conformal coverage",
+      "left": "2%",
+      "top": "35%",
+      "textStyle": {
+        "fontSize": 12,
+        "fontWeight": "bold",
+        "color": "#333"
+      }
+    },
+    {
+      "text": "Conformal OOD calibration",
+      "left": "2%",
+      "top": "70%",
+      "textStyle": {
+        "fontSize": 12,
+        "fontWeight": "bold",
+        "color": "#333"
+      }
+    }
+  ],
+  "grid": [
+    {
+      "left": "5%",
+      "right": "5%",
+      "top": "10%",
+      "bottom": "70%"
+    },
+    {
+      "left": "5%",
+      "right": "5%",
+      "top": "45%",
+      "bottom": "37%"
+    },
+    {
+      "left": "5%",
+      "right": "5%",
+      "top": "80%",
+      "bottom": "5%"
+    }
+  ],
+  "xAxis": [
+    {
+      "gridIndex": 0,
+      "type": "log",
+      "min": 1e-05,
+      "max": 0.1,
+      "axisLabel": {
+        "formatter": "{value} s",
+        "fontSize": 9,
+        "color": "#333"
+      },
+      "splitLine": {
+        "show": false
+      },
+      "axisLine": {
+        "lineStyle": {
+          "color": "#333"
+        }
+      }
+    },
+    {
+      "gridIndex": 1,
+      "type": "value",
+      "min": 0.85,
+      "max": 1.0,
+      "axisLabel": {
+        "formatter": "{value}",
+        "fontSize": 9,
+        "color": "#333"
+      },
+      "splitLine": {
+        "show": false
+      },
+      "axisLine": {
+        "lineStyle": {
+          "color": "#333"
+        }
+      }
+    },
+    {
+      "gridIndex": 2,
+      "type": "value",
+      "min": 0.92,
+      "max": 0.97,
+      "axisLabel": {
+        "formatter": "{value}",
+        "fontSize": 9,
+        "color": "#333"
+      },
+      "splitLine": {
+        "show": false
+      },
+      "axisLine": {
+        "lineStyle": {
+          "color": "#333"
+        }
+      }
+    }
+  ],
+  "yAxis": [
+    {
+      "gridIndex": 0,
+      "type": "category",
+      "data": [
+        "surrogate",
+        "CGEM"
+      ],
+      "axisLabel": {
+        "fontSize": 10,
+        "color": "#333"
+      },
+      "axisLine": {
+        "lineStyle": {
+          "color": "#333"
+        }
+      }
+    },
+    {
+      "gridIndex": 1,
+      "type": "category",
+      "data": [
+        "time_to_gloc_s",
+        "time_to_blackout_s",
+        "time_to_greyout_s",
+        "c_bank_min",
+        "hlap_min"
+      ],
+      "axisLabel": {
+        "fontSize": 8,
+        "color": "#333"
+      },
+      "axisLine": {
+        "lineStyle": {
+          "color": "#333"
+        }
+      }
+    },
+    {
+      "gridIndex": 2,
+      "type": "category",
+      "data": [
+        "conformal abstention"
+      ],
+      "axisLabel": {
+        "fontSize": 10,
+        "color": "#333"
+      },
+      "axisLine": {
+        "lineStyle": {
+          "color": "#333"
+        }
+      }
+    }
+  ],
+  "series": [
+    {
+      "name": "latency",
+      "type": "bar",
+      "xAxisIndex": 0,
+      "yAxisIndex": 0,
+      "data": [
+        {
+          "value": 5e-05,
+          "itemStyle": {
+            "color": "#0072B2"
+          }
+        },
+        {
+          "value": 0.009,
+          "itemStyle": {
+            "color": "#D55E00"
+          }
+        }
+      ],
+      "label": {
+        "show": true,
+        "position": "right",
+        "fontSize": 10,
+        "color": "#333",
+        "formatter": "50 µs   ~180× faster"
+      },
+      "barCategoryGap": "30%"
+    },
+    {
+      "name": "coverage",
+      "type": "bar",
+      "xAxisIndex": 1,
+      "yAxisIndex": 1,
+      "data": [
+        {
+          "value": 0.861,
+          "itemStyle": {
+            "color": "#D55E00"
+          }
+        },
+        {
+          "value": 0.948,
+          "itemStyle": {
+            "color": "#009E73"
+          }
+        },
+        {
+          "value": 0.946,
+          "itemStyle": {
+            "color": "#009E73"
+          }
+        },
+        {
+          "value": 0.95,
+          "itemStyle": {
+            "color": "#009E73"
+          }
+        },
+        {
+          "value": 0.953,
+          "itemStyle": {
+            "color": "#009E73"
+          }
+        }
+      ],
+      "label": {
+        "show": true,
+        "position": "right",
+        "fontSize": 9,
+        "color": "#333",
+        "formatter": "{c}"
+      },
+      "markLine": {
+        "silent": true,
+        "symbol": "none",
+        "lineStyle": {
+          "color": "#999999",
+          "type": "dashed",
+          "width": 1.2
+        },
+        "label": {
+          "show": true,
+          "position": "end",
+          "formatter": "nominal 95%",
+          "fontSize": 9,
+          "color": "#999999"
+        },
+        "data": [
+          {
+            "xAxis": 0.95
+          }
+        ]
+      }
+    },
+    {
+      "name": "ood",
+      "type": "bar",
+      "xAxisIndex": 2,
+      "yAxisIndex": 2,
+      "data": [
+        {
+          "value": 0.953,
+          "itemStyle": {
+            "color": "#009E73"
+          }
+        }
+      ],
+      "label": {
+        "show": true,
+        "position": "right",
+        "fontSize": 10,
+        "color": "#333",
+        "formatter": "0.953  (nominal 0.95; +0.3 pp)"
+      },
+      "markLine": {
+        "silent": true,
+        "symbol": "none",
+        "lineStyle": {
+          "color": "#999999",
+          "type": "dashed",
+          "width": 1.2
+        },
+        "label": {
+          "show": true,
+          "position": "end",
+          "formatter": "nominal 95%",
+          "fontSize": 9,
+          "color": "#999999"
+        },
+        "data": [
+          {
+            "xAxis": 0.95
+          }
+        ]
+      }
+    }
+  ],
+  "_render_hints": {
+    "viewport": [
+      800,
+      900
+    ],
+    "background": "transparent",
+    "note": "All categorical encoding by solid colour (Okabe-Ito); grey #999 used only for the nominal-95% reference line. Compliant with the IJNMBE 'no tints' rule."
+  }
+}

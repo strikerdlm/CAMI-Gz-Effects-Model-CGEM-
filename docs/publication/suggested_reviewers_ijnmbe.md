@@ -38,25 +38,35 @@ this manuscript.
 
 ---
 
-## 2 — Jordi Alastruey, PhD (numerical methods axis — recent IJNMBE author)
+## 2 — Wouter Huberts, PhD (numerical methods axis — recent IJNMBE author)
 
 | Field | Value |
 |---|---|
-| Affiliation | School of Biomedical Engineering and Imaging Sciences, King's College London, UK |
-| Email | jordi.alastruey-arimon@kcl.ac.uk *([VERIFY] via KCL faculty page)* |
-| ORCID | [0000-0003-3742-5259](https://orcid.org/0000-0003-3742-5259) |
+| Affiliation | Department of Biomedical Engineering, CARIM School for Cardiovascular Diseases, Maastricht University, The Netherlands |
+| Email | w.huberts@maastrichtuniversity.nl *([VERIFY] via Maastricht faculty page)* |
+| ORCID | [0000-0002-6463-6105](https://orcid.org/0000-0002-6463-6105) *([VERIFY])* |
 
-**Rationale.** Co-author of the IJNMBE benchmark study of one-dimensional
-arterial blood-flow numerical schemes — directly the methodological
-neighbourhood of the present manuscript. Senior expertise in
-patient-specific cardiovascular ODE / 1-D numerical models with proven
-publication history at the journal. Will be sympathetic to the
-additive-wrapper pattern and qualified to assess whether the surrogate
-preserves the validated dynamics of the underlying ODE solver.
+**Rationale.** Co-author of the foundational IJNMBE benchmark study of
+one-dimensional arterial blood-flow numerical schemes (Boileau et al.,
+*IJNMBE* 2015; reference [21] in this manuscript) — directly the
+methodological neighbourhood of the present work. Senior expertise in
+patient-specific cardiovascular ODE / 1-D numerical models, surrogate
+modelling, and uncertainty quantification of physiological simulators.
+Will be sympathetic to the additive-wrapper pattern and qualified to
+assess whether the surrogate preserves the validated dynamics of the
+underlying ODE solver.
 
 **No conflict.** No co-authorship with Diego Malpica; no shared
-institution. **[VERIFY] — confirm not currently on the IJNMBE editorial
-board** before submission.
+institution. **Verified 2026-05-01 against the IJNMBE editorial board
+snapshot at `docs/publication/2026-05-01_ijnmbe_editorial_board.md`:
+Wouter Huberts is NOT a current IJNMBE editor or board member.**
+
+> **Replacement note (2026-05-01).** This slot was originally filled by
+> **Jordi Alastruey** (KCL), but the live editorial-board lookup revealed
+> Alastruey is currently an **Associate Editor** of IJNMBE — a conflict
+> per the journal's reviewer-suggestion policy. Huberts is a co-author of
+> the same Boileau et al. 2015 benchmark study, covers the same numerical-
+> methods + cardiovascular-ODE axis, and is **not** on the editorial board.
 
 ---
 
@@ -137,7 +147,7 @@ acceptable-citation reasoning as candidate #4.
 | Reviewer | Methodology axis | Application axis | Numerical-methods axis | Regulatory axis | Generalist axis |
 |---|---|---|---|---|---|
 | 1. Copeland | — | partial (G-LOC physiology) | — | **primary** | — |
-| 2. Alastruey | — | partial (cardiovascular) | **primary** (recent IJNMBE) | — | — |
+| 2. Huberts | — | partial (cardiovascular) | **primary** (recent IJNMBE) | — | — |
 | 3. Aliverti | partial (ML-physiology) | **primary** (bioengineering) | — | — | — |
 | 4. Angelopoulos | **primary** (conformal) | — | — | — | partial |
 | 5. Boström | **primary** (Mondrian) | — | — | — | **primary** |
@@ -159,8 +169,9 @@ Copeland (FAA/regulatory), Aliverti (bioengineering), and three CMPB-
 adjacent ML-in-medicine reviewers. The IJNMBE slate retains Copeland and
 Aliverti (axes are still relevant) and **replaces three slots** with:
 
-- **Alastruey** — adds the IJNMBE-publication credential the previous
-  list lacked.
+- **Huberts** — adds the IJNMBE-publication credential the previous list
+  lacked, via the foundational Boileau et al. 2015 IJNMBE benchmark; not
+  on the editorial board (verified 2026-05-01).
 - **Angelopoulos** — promotes conformal-prediction methodology to a
   primary axis (CMPB review pool was less specialised on this).
 - **Boström** — same, for Mondrian specifically.
@@ -169,13 +180,26 @@ The CMPB list's ML-in-medicine reviewer slot has been retired because
 IJNMBE's review pool naturally over-indexes on numerical methods and
 conformal/Bayesian UQ rather than on clinical-informatics ML.
 
+> **Editorial-board cross-check (2026-05-01).** All five candidates were
+> cross-checked against the live IJNMBE editorial-board page via Firecrawl
+> on 2026-05-01; the snapshot is committed at
+> `docs/publication/2026-05-01_ijnmbe_editorial_board.md`. Result:
+> Copeland, Huberts, Aliverti, Angelopoulos, and Boström are all clean
+> (none currently listed as Editor-in-Chief, Associate Editor, Honorary
+> Editor, or Editorial Board Member). The original draft had Alastruey
+> in slot 2 — that name was removed when the cross-check revealed his
+> Associate Editor status.
+
 ---
 
 ## Pre-portal checklist
 
 - [ ] **[VERIFY]** all five email addresses against current institutional
       directories (NEVER use Gmail / Yahoo / personal addresses).
-- [ ] **[VERIFY]** no candidate is on the current IJNMBE editorial board.
+- [x] **Editorial-board cross-check** — completed 2026-05-01 against live
+      Wiley page; snapshot at `2026-05-01_ijnmbe_editorial_board.md`. All
+      five candidates clean (Alastruey was originally slotted but removed
+      when the check revealed his Associate Editor status).
 - [ ] **[VERIFY]** no Scopus / OpenAlex co-authorship with Diego Malpica
       in the past 3 years (single-author manuscript makes this trivially
       clean for the present paper, but still worth a 30-second check

@@ -1,0 +1,32 @@
+%% IJNMBE Graphical TOC — Panel A (simplified architecture).
+%%
+%% Companion to data/results/figures/fig6_architecture.mmd (the full
+%% manuscript Figure 6). This thumbnail-readable version drops endpoint,
+%% contract, and CI-test annotations; it conveys ONLY the additive-wrapper
+%% concept (core <- wrapper <- ML layer <- deployment).
+%%
+%% Render:
+%%   npx -y @mermaid-js/mermaid-cli@latest \
+%%     -i data/results/figures/graphical_toc_panel_a.mmd \
+%%     -o data/results/figures/graphical_toc_panel_a.svg \
+%%     -b transparent --width 700 --height 900
+
+flowchart TB
+    DEPLOY["Deployment<br/>FastAPI + React frontend + Docker"]
+    ML["ML extension<br/>XGBoost surrogate · Mondrian conformal · Mahalanobis OOD · Sobol/Morris"]
+    WRAP["Python wrapper<br/>cgem_wrapper · subprocess I/O"]
+    CORE["FAA-validated CGEM<br/>(Fortran ODE, NEVER MODIFIED)"]
+
+    DEPLOY --> ML
+    ML --> WRAP
+    WRAP --> CORE
+
+    classDef core   fill:#FFF,stroke:#0072B2,stroke-width:3px,color:#0072B2,font-weight:bold;
+    classDef wrap   fill:#FFF,stroke:#0072B2,stroke-width:1.5px,color:#0072B2;
+    classDef ml     fill:#0072B2,stroke:#0072B2,stroke-width:2px,color:#FFF,font-weight:bold;
+    classDef deploy fill:#FFF,stroke:#999,stroke-width:1px,color:#333;
+
+    class CORE core;
+    class WRAP wrap;
+    class ML ml;
+    class DEPLOY deploy;

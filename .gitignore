@@ -114,3 +114,7 @@ dist/
 .idea/
 .vscode/
 *.swp
+# Node modules (npm install artefacts at the repo root, e.g., the
+# scripts/render_echarts_svg.mjs renderer pulls echarts + jsdom).
+# The frontend/ tree already gitignores its own node_modules separately.
+node_modules/

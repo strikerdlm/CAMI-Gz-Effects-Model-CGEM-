@@ -1,0 +1,165 @@
+<svg width="800" height="900" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" baseProfile="full" viewBox="0 0 800 900">
+<rect width="800" height="900" x="0" y="0" fill="none"></rect>
+<path d="M53.5 270L53.5 90" fill="none" pointer-events="visible" stroke="#333" stroke-linecap="round" class="zr0-cls-0"></path>
+<path d="M80.5 567L80.5 405" fill="none" pointer-events="visible" stroke="#333" stroke-linecap="round" class="zr0-cls-0"></path>
+<path d="M104.5 855L104.5 720" fill="none" pointer-events="visible" stroke="#333" stroke-linecap="round" class="zr0-cls-0"></path>
+<text dominant-baseline="central" text-anchor="end" style="font-size:10px;font-family:sans-serif;" transform="translate(45.4 225)" fill="#333">surrogate</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:10px;font-family:sans-serif;" transform="translate(45.4 135)" fill="#333">CGEM</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:8px;font-family:sans-serif;" transform="translate(72.2 550.8)" fill="#333">time_to_gloc_s</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:8px;font-family:sans-serif;" transform="translate(72.2 518.4)" fill="#333">time_to_blackout_s</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:8px;font-family:sans-serif;" transform="translate(72.2 486)" fill="#333">time_to_greyout_s</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:8px;font-family:sans-serif;" transform="translate(72.2 453.6)" fill="#333">c_bank_min</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:8px;font-family:sans-serif;" transform="translate(72.2 421.2)" fill="#333">hlap_min</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:10px;font-family:sans-serif;" xml:space="preserve" transform="translate(96.2 787.5)" fill="#333">conformal abstention</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:9px;font-family:sans-serif;" xml:space="preserve" y="4.5" transform="translate(53.4 278)" fill="#333">0.00001 s</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:9px;font-family:sans-serif;" xml:space="preserve" y="4.5" transform="translate(230.05 278)" fill="#333">0.00009999999999999999 s</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:9px;font-family:sans-serif;" xml:space="preserve" y="4.5" transform="translate(406.7 278)" fill="#333">0.001 s</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:9px;font-family:sans-serif;" xml:space="preserve" y="4.5" transform="translate(583.35 278)" fill="#333">0.01 s</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:9px;font-family:sans-serif;" xml:space="preserve" y="4.5" transform="translate(760 278)" fill="#333">0.1 s</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:9px;font-family:sans-serif;" y="4.5" transform="translate(80.2 575)" fill="#333">0.85</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:9px;font-family:sans-serif;" y="4.5" transform="translate(170.84 575)" fill="#333">0.87</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:9px;font-family:sans-serif;" y="4.5" transform="translate(306.8 575)" fill="#333">0.9</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:9px;font-family:sans-serif;" y="4.5" transform="translate(442.76 575)" fill="#333">0.93</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:9px;font-family:sans-serif;" y="4.5" transform="translate(578.72 575)" fill="#333">0.96</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:9px;font-family:sans-serif;" y="4.5" transform="translate(714.68 575)" fill="#333">0.99</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:9px;font-family:sans-serif;" y="4.5" transform="translate(760 575)" fill="#333">1</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:9px;font-family:sans-serif;" y="4.5" transform="translate(104.2 863)" fill="#333">0.92</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:9px;font-family:sans-serif;" y="4.5" transform="translate(235.36 863)" fill="#333">0.93</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:9px;font-family:sans-serif;" y="4.5" transform="translate(366.52 863)" fill="#333">0.94</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:9px;font-family:sans-serif;" y="4.5" transform="translate(497.68 863)" fill="#333">0.95</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:9px;font-family:sans-serif;" y="4.5" transform="translate(628.84 863)" fill="#333">0.96</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:9px;font-family:sans-serif;" y="4.5" transform="translate(760 863)" fill="#333">0.97</text>
+<path d="M760 193.5l-583.1 0l0 63l583.1 0Z" fill="#0072B2" ecmeta_series_index="0" ecmeta_data_index="0" ecmeta_ssr_type="chart" class="zr0-cls-1 zr0-cls-2"></path>
+<path d="M760 103.5l-184.7 0l0 63l184.7 0Z" fill="#D55E00" ecmeta_series_index="0" ecmeta_data_index="1" ecmeta_ssr_type="chart" class="zr0-cls-3 zr0-cls-4"></path>
+<path d="M80.2 539.6l49.9 0l0 22.4l-49.9 0Z" fill="#D55E00" ecmeta_series_index="1" ecmeta_data_index="0" ecmeta_ssr_type="chart" class="zr0-cls-5 zr0-cls-4"></path>
+<path d="M80.2 507.2l444.1 0l0 22.4l-444.1 0Z" fill="#009E73" ecmeta_series_index="1" ecmeta_data_index="1" ecmeta_ssr_type="chart" class="zr0-cls-6 zr0-cls-7"></path>
+<path d="M80.2 474.8l435.1 0l0 22.4l-435.1 0Z" fill="#009E73" ecmeta_series_index="1" ecmeta_data_index="2" ecmeta_ssr_type="chart" class="zr0-cls-8 zr0-cls-7"></path>
+<path d="M80.2 442.4l453.2 0l0 22.4l-453.2 0Z" fill="#009E73" ecmeta_series_index="1" ecmeta_data_index="3" ecmeta_ssr_type="chart" class="zr0-cls-9 zr0-cls-7"></path>
+<path d="M80.2 410l466.8 0l0 22.4l-466.8 0Z" fill="#009E73" ecmeta_series_index="1" ecmeta_data_index="4" ecmeta_ssr_type="chart" class="zr0-cls-10 zr0-cls-7"></path>
+<path d="M104.2 740.9l432.8 0l0 93.1l-432.8 0Z" fill="#009E73" ecmeta_series_index="2" ecmeta_data_index="0" ecmeta_ssr_type="chart" class="zr0-cls-11 zr0-cls-7"></path>
+<text dominant-baseline="central" text-anchor="start" style="font-size:10px;font-family:sans-serif;" xml:space="preserve" transform="translate(765 225)" fill="#333">50 µs   ~180× faster</text>
+<text dominant-baseline="central" text-anchor="start" style="font-size:10px;font-family:sans-serif;" xml:space="preserve" transform="translate(765 135)" fill="#333">50 µs   ~180× faster</text>
+<text dominant-baseline="central" text-anchor="start" style="font-size:9px;font-family:sans-serif;" transform="translate(135.052 550.8)" fill="#333">0.861</text>
+<text dominant-baseline="central" text-anchor="start" style="font-size:9px;font-family:sans-serif;" transform="translate(529.336 518.4)" fill="#333">0.948</text>
+<text dominant-baseline="central" text-anchor="start" style="font-size:9px;font-family:sans-serif;" transform="translate(520.272 486)" fill="#333">0.946</text>
+<text dominant-baseline="central" text-anchor="start" style="font-size:9px;font-family:sans-serif;" transform="translate(538.4 453.6)" fill="#333">0.95</text>
+<text dominant-baseline="central" text-anchor="start" style="font-size:9px;font-family:sans-serif;" transform="translate(551.996 421.2)" fill="#333">0.953</text>
+<text dominant-baseline="central" text-anchor="start" style="font-size:10px;font-family:sans-serif;" xml:space="preserve" transform="translate(542.028 787.5)" fill="#333">0.953  (nominal 0.95; +0.3 pp)</text>
+<path d="M533.5 567L533.5 405" fill="none" pointer-events="visible" stroke="#999999" stroke-width="1.2" stroke-dasharray="4.8,2.4" ecmeta_series_index="1" ecmeta_data_index="0" ecmeta_ssr_type="chart" ecmeta_silent="true" class="zr0-cls-0"></path>
+<path d="M497.5 855L497.5 720" fill="none" pointer-events="visible" stroke="#999999" stroke-width="1.2" stroke-dasharray="4.8,2.4" ecmeta_series_index="2" ecmeta_data_index="0" ecmeta_ssr_type="chart" ecmeta_silent="true" class="zr0-cls-0"></path>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:9px;font-family:sans-serif;" xml:space="preserve" y="-4.5" transform="translate(533.4 400)" fill="#999999">nominal 95%</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:9px;font-family:sans-serif;" xml:space="preserve" y="-4.5" transform="translate(497.68 715)" fill="#999999">nominal 95%</text>
+<path d="M-5 -5l220.1 0l0 22l-220.1 0Z" transform="translate(21 5)" fill="rgb(0,0,0)" fill-opacity="0" stroke="#3c3c41" stroke-width="0" class="zr0-cls-0"></path>
+<path d="M-5 -5l169.2 0l0 22l-169.2 0Z" transform="translate(21 320)" fill="rgb(0,0,0)" fill-opacity="0" stroke="#3c3c41" stroke-width="0" class="zr0-cls-0"></path>
+<path d="M-5 -5l154.4 0l0 22l-154.4 0Z" transform="translate(21 635)" fill="rgb(0,0,0)" fill-opacity="0" stroke="#3c3c41" stroke-width="0" class="zr0-cls-0"></path>
+<text dominant-baseline="central" text-anchor="start" style="font-size:12px;font-family:sans-serif;font-weight:bold;" xml:space="preserve" y="6" transform="translate(21 5)" fill="#333">Speed-up:  surrogate vs CGEM Fortran</text>
+<text dominant-baseline="central" text-anchor="start" style="font-size:12px;font-family:sans-serif;font-weight:bold;" xml:space="preserve" y="6" transform="translate(21 320)" fill="#333">Mondrian conformal coverage</text>
+<text dominant-baseline="central" text-anchor="start" style="font-size:12px;font-family:sans-serif;font-weight:bold;" xml:space="preserve" y="6" transform="translate(21 635)" fill="#333">Conformal OOD calibration</text>
+<style ><![CDATA[
+.zr0-cls-0:hover {
+pointer-events:none;
+}
+.zr0-cls-1 {
+animation:zr0-ani-0 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-2:hover {
+cursor:pointer;
+fill:rgba(0,125,195,1);
+}
+.zr0-cls-3 {
+animation:zr0-ani-1 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-4:hover {
+cursor:pointer;
+fill:rgba(234,103,0,1);
+}
+.zr0-cls-5 {
+animation:zr0-ani-2 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-6 {
+animation:zr0-ani-3 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-7:hover {
+cursor:pointer;
+fill:rgba(0,173,126,1);
+}
+.zr0-cls-8 {
+animation:zr0-ani-4 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-9 {
+animation:zr0-ani-5 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-10 {
+animation:zr0-ani-6 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-11 {
+animation:zr0-ani-7 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+@keyframes zr0-ani-0 {
+0% {
+d:path("M760 193.5l0 0l0 63l0 0Z");
+}
+100% {
+d:path("M760 193.5l-583.1 0l0 63l583.1 0Z");
+}
+}
+@keyframes zr0-ani-1 {
+0% {
+d:path("M760 103.5l0 0l0 63l0 0Z");
+}
+100% {
+d:path("M760 103.5l-184.7 0l0 63l184.7 0Z");
+}
+}
+@keyframes zr0-ani-2 {
+0% {
+d:path("M80.2 539.6l0 0l0 22.4l0 0Z");
+}
+100% {
+d:path("M80.2 539.6l49.9 0l0 22.4l-49.9 0Z");
+}
+}
+@keyframes zr0-ani-3 {
+0% {
+d:path("M80.2 507.2l0 0l0 22.4l0 0Z");
+}
+100% {
+d:path("M80.2 507.2l444.1 0l0 22.4l-444.1 0Z");
+}
+}
+@keyframes zr0-ani-4 {
+0% {
+d:path("M80.2 474.8l0 0l0 22.4l0 0Z");
+}
+100% {
+d:path("M80.2 474.8l435.1 0l0 22.4l-435.1 0Z");
+}
+}
+@keyframes zr0-ani-5 {
+0% {
+d:path("M80.2 442.4l0 0l0 22.4l0 0Z");
+}
+100% {
+d:path("M80.2 442.4l453.2 0l0 22.4l-453.2 0Z");
+}
+}
+@keyframes zr0-ani-6 {
+0% {
+d:path("M80.2 410l0 0l0 22.4l0 0Z");
+}
+100% {
+d:path("M80.2 410l466.8 0l0 22.4l-466.8 0Z");
+}
+}
+@keyframes zr0-ani-7 {
+0% {
+d:path("M104.2 740.9l0 0l0 93.1l0 0Z");
+}
+100% {
+d:path("M104.2 740.9l432.8 0l0 93.1l-432.8 0Z");
+}
+}
+]]>
+
+</style>
+</svg>
