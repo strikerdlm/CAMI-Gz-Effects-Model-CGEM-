@@ -1,4 +1,42 @@
-<svg width="800" height="900" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" baseProfile="full" viewBox="0 0 800 900">
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+     width="1500" height="900" viewBox="0 0 1500 900">
+  <!-- Background: pure white. -->
+  <rect width="1500" height="900" fill="#FFFFFF"/>
+
+  <!-- Frame (very faint, helps the composite read as a single graphic). -->
+  <rect x="0.5" y="0.5" width="1499" height="899"
+        fill="none" stroke="#E0E0E0" stroke-width="1"/>
+
+  <!-- Panel A (architecture, hand-coded; no Mermaid CSS dependency) -->
+  <rect x="30" y="50" width="560" height="730" fill="#FAFAFA" stroke="#E0E0E0" stroke-width="1" rx="4" ry="4"/>
+  <text x="310.0" y="72" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="14" font-weight="bold" fill="#0072B2">A. Additive ML wrapper over CGEM</text>
+  <rect x="69" y="80" width="481" height="154" rx="6" ry="6" fill="#FFFFFF" stroke="#999999" stroke-width="1.5"/>
+  <text x="309.5" y="106" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="15" font-weight="bold" fill="#333333">Deployment</text>
+  <text x="309.5" y="130" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="12" fill="#333333">FastAPI · React frontend · Docker</text>
+  <rect x="69" y="262" width="481" height="154" rx="6" ry="6" fill="#0072B2" stroke="#0072B2" stroke-width="3"/>
+  <text x="309.5" y="288" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="15" font-weight="bold" fill="#FFFFFF">ML extension</text>
+  <text x="309.5" y="312" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="12" fill="#FFFFFF">XGBoost surrogate · Mondrian conformal</text>
+  <text x="309.5" y="328" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="12" fill="#FFFFFF">Mahalanobis OOD · Sobol / Morris</text>
+  <rect x="69" y="444" width="481" height="154" rx="6" ry="6" fill="#FFFFFF" stroke="#0072B2" stroke-width="2"/>
+  <text x="309.5" y="470" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="15" font-weight="bold" fill="#0072B2">Python wrapper</text>
+  <text x="309.5" y="494" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="12" fill="#0072B2">cgem_wrapper · subprocess I/O</text>
+  <rect x="69" y="626" width="481" height="154" rx="6" ry="6" fill="#FFFFFF" stroke="#0072B2" stroke-width="3"/>
+  <text x="309.5" y="652" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="15" font-weight="bold" fill="#0072B2">FAA-validated CGEM</text>
+  <text x="309.5" y="676" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="12" fill="#0072B2">Fortran ODE physiology  (NEVER MODIFIED)</text>
+  <line x1="309.5" y1="234" x2="309.5" y2="254" stroke="#333333" stroke-width="2"/>
+  <polygon points="302.5,253 316.5,253 309.5,261" fill="#333333"/>
+  <line x1="309.5" y1="416" x2="309.5" y2="436" stroke="#333333" stroke-width="2"/>
+  <polygon points="302.5,435 316.5,435 309.5,443" fill="#333333"/>
+  <line x1="309.5" y1="598" x2="309.5" y2="618" stroke="#333333" stroke-width="2"/>
+  <polygon points="302.5,617 316.5,617 309.5,625" fill="#333333"/>
+
+  <!-- Panel B (speed + coverage + OOD; ECharts SSR SVG) -->
+  <text x="1040.0" y="42" text-anchor="middle"
+        font-family="Helvetica, Arial, sans-serif" font-size="14"
+        font-weight="bold" fill="#0072B2">B. Speed, coverage, and OOD calibration</text>
+  <g transform="translate(610, 50)">
+    <svg width="860" height="730" viewBox="0 0 800 900" preserveAspectRatio="xMidYMid meet">
 <rect width="800" height="900" x="0" y="0" fill="none"></rect>
 <path d="M144.5 270L144.5 90" fill="none" pointer-events="visible" stroke="#333" stroke-linecap="round" class="zr0-cls-0"></path>
 <path d="M160.5 567L160.5 405" fill="none" pointer-events="visible" stroke="#333" stroke-linecap="round" class="zr0-cls-0"></path>
@@ -163,4 +201,12 @@ d:path("M160 740.9l369.6 0l0 93.1l-369.6 0Z");
 ]]>
 
 </style>
+</svg>
+  </g>
+
+  <!-- Title strip -->
+  <rect x="0" y="810" width="1500" height="90" fill="#0072B2"/>
+  <text x="750.0" y="860" text-anchor="middle"
+        font-family="Helvetica, Arial, sans-serif" font-size="22"
+        font-weight="bold" fill="#FFFFFF">Conformal ML wrapper for a validated ODE physiological model — FAA CGEM case study</text>
 </svg>

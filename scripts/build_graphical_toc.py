@@ -136,7 +136,7 @@ def _panel_b_echarts() -> dict:
     return {
         "title": [
             {
-                "text": "Speed-up:  surrogate vs CGEM Fortran",
+                "text": "Speed-up:  surrogate vs CGEM Fortran  (ms)",
                 "left": "2%",
                 "top": "0%",
                 "textStyle": {"fontSize": 12, "fontWeight": "bold", "color": "#333"},
@@ -155,21 +155,21 @@ def _panel_b_echarts() -> dict:
             },
         ],
         "grid": [
-            # Row 1 — speed bar (log)
-            {"left": "5%", "right": "5%", "top": "10%", "bottom": "70%"},
+            # Row 1 — speed bar (linear ms)
+            {"left": "18%", "right": "18%", "top": "10%", "bottom": "70%"},
             # Row 2 — coverage strip
-            {"left": "5%", "right": "5%", "top": "45%", "bottom": "37%"},
+            {"left": "20%", "right": "10%", "top": "45%", "bottom": "37%"},
             # Row 3 — OOD strip
-            {"left": "5%", "right": "5%", "top": "80%", "bottom": "5%"},
+            {"left": "20%", "right": "10%", "top": "80%", "bottom": "5%"},
         ],
         "xAxis": [
             {
                 "gridIndex": 0,
-                "type": "log",
-                "min": 1e-5,
-                "max": 1e-1,
+                "type": "value",
+                "min": 0,
+                "max": 10,
                 "axisLabel": {
-                    "formatter": "{value} s",
+                    "formatter": "{value} ms",
                     "fontSize": 9,
                     "color": "#333",
                 },
@@ -236,26 +236,37 @@ def _panel_b_echarts() -> dict:
             },
         ],
         "series": [
-            # Row 1 — speed bars
+            # Row 1 — speed bars (in milliseconds; per-bar labels)
             {
                 "name": "latency",
                 "type": "bar",
                 "xAxisIndex": 0,
                 "yAxisIndex": 0,
                 "data": [
-                    {"value": 5e-5, "itemStyle": {"color": COLOUR_PRIMARY}},
-                    {"value": 9e-3, "itemStyle": {"color": COLOUR_SECONDARY}},
+                    {
+                        "value": 0.05,  # 50 us = 0.05 ms
+                        "itemStyle": {"color": COLOUR_PRIMARY},
+                        "label": {
+                            "show": True,
+                            "position": "right",
+                            "fontSize": 11,
+                            "fontWeight": "bold",
+                            "color": "#333",
+                            "formatter": "0.05 ms (50 µs)   ≈180× faster",
+                        },
+                    },
+                    {
+                        "value": 9.0,  # 9 ms
+                        "itemStyle": {"color": COLOUR_SECONDARY},
+                        "label": {
+                            "show": True,
+                            "position": "right",
+                            "fontSize": 11,
+                            "color": "#333",
+                            "formatter": "9 ms",
+                        },
+                    },
                 ],
-                "label": {
-                    "show": True,
-                    "position": "right",
-                    "fontSize": 10,
-                    "color": "#333",
-                    "formatter": [
-                        "50 µs   ~180× faster",
-                        "9 ms",
-                    ][0],  # First-bar label only; second handled below.
-                },
                 "barCategoryGap": "30%",
             },
             # Row 2 — coverage points (one per target) plus 95% nominal line.

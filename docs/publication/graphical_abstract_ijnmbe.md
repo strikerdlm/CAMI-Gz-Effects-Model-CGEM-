@@ -125,17 +125,40 @@ sky blue / `#D55E00` vermillion / `#009E73` bluish-green); the only
 greyscale (`#999`) is reference / threshold lines, never categorical
 encoding — compliant with the IJNMBE "no tints" rule.
 
-**Final composite step (manual; one short pass in a vector editor):**
+**Final composite step (now automated):**
 
-1. Open both `graphical_toc_panel_a.svg` and `graphical_toc_panel_b.svg`
-   in Inkscape (or Affinity Designer / Illustrator).
-2. Place them side-by-side on a 1500 × 900 px artboard (5:3) and add a
-   title strip at the bottom: *"Conformal ML wrapper for a validated
-   ODE physiological model — FAA CGEM case study"*.
-3. Export to `data/results/figures/graphical_toc.{pdf,png}` at 300 dpi.
+```bash
+python scripts/build_graphical_toc.py        # Panel sources + per-panel SVGs
+python scripts/composite_graphical_toc.py    # Master SVG + PDF + PNG @ 300 dpi
+```
 
-**Status (2026-05-01):** Panel A SVG and Panel B SVG **both rendered
-and committed**. The composite Inkscape pass remains as the only
-manual step before portal upload — estimated ~15 minutes. The
+The composite script (`scripts/composite_graphical_toc.py`) places Panel
+A on the left, Panel B on the right, and a title strip at the bottom on
+a 1500 × 900 px (5:3) master canvas. Outputs:
+
+- `data/results/figures/graphical_toc.svg` — master SVG
+- `data/results/figures/graphical_toc.pdf` — vector PDF (Wiley-preferred)
+- `data/results/figures/graphical_toc.png` — 4687 × 2812 px raster @ 300 dpi
+
+Implementation notes:
+
+- Panel A is hand-coded inside `composite_graphical_toc.py` (4 stacked
+  rectangles + arrows + text labels) rather than embedded from the
+  Mermaid SVG. The Mermaid render contains a `<style>@import …</style>`
+  rule for fonts that does not survive cairosvg compositing — a
+  dedicated hand-coded panel preserves all text in the final PDF and
+  PNG and lets the colour/typography stay perfectly consistent with the
+  Okabe-Ito palette and the IJNMBE "no tints" rule.
+- Panel B is the Node-rendered ECharts SVG, embedded as an `<svg>`
+  child of the master via inline XML; per-bar labels are set via the
+  ECharts `data: [{value, label, …}]` form (so the surrogate and CGEM
+  bars carry distinct, accurate annotations).
+- Final render path: `cairosvg.svg2pdf` and `cairosvg.svg2png` at 300
+  dpi; no Inkscape / GUI step required.
+
+**Status (2026-05-01):** **F4 closed.** The final composite is rendered
+and committed at `data/results/figures/graphical_toc.{svg,pdf,png}` and
+is portal-ready. Upload the PDF (or PNG fallback) at the Wiley CNM
+portal under the "Graphical Table of Contents" designation. The
 mini-abstract text in item (a) above is finalised and ready for the
 "Graphical Abstract" portal field.

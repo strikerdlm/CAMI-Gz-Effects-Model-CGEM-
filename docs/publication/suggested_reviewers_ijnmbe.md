@@ -22,7 +22,7 @@
 | Field | Value |
 |---|---|
 | Affiliation | FAA Civil Aerospace Medical Institute (CAMI), Oklahoma City, OK, USA |
-| Email | Kyle.Copeland@faa.gov *([VERIFY] via FAA AAM-631 directory)* |
+| Email | **kyle.copeland@faa.gov** *(verified 2026-05-01 from FAA technical reports DOT/FAA/AM-21/4 and DOT/FAA/AM-16/05; AAM-631, Numerical Sciences Research Team)* |
 | ORCID | [0000-0001-7893-6716](https://orcid.org/0000-0001-7893-6716) |
 
 **Rationale.** Lead author of the CGEM Fortran model
@@ -42,8 +42,8 @@ this manuscript.
 
 | Field | Value |
 |---|---|
-| Affiliation | Department of Biomedical Engineering, CARIM School for Cardiovascular Diseases, Maastricht University, The Netherlands |
-| Email | w.huberts@maastrichtuniversity.nl *([VERIFY] via Maastricht faculty page)* |
+| Affiliation | Department of Biomedical Engineering, CARIM School for Cardiovascular Diseases, Maastricht University, The Netherlands. Secondary appointment: TU Eindhoven (`research.tue.nl/en/persons/wouter-huberts/`). |
+| Email | **wouter.huberts@maastrichtuniversity.nl** *(verified 2026-05-01 from Maastricht University Systems Biology and Bioinformatics staff page)* |
 | ORCID | [0000-0002-6463-6105](https://orcid.org/0000-0002-6463-6105) *([VERIFY])* |
 
 **Rationale.** Co-author of the foundational IJNMBE benchmark study of
@@ -74,8 +74,8 @@ Wouter Huberts is NOT a current IJNMBE editor or board member.**
 
 | Field | Value |
 |---|---|
-| Affiliation | Dipartimento di Elettronica, Informazione e Bioingegneria, Politecnico di Milano, Italy |
-| Email | andrea.aliverti@polimi.it *([VERIFY] via faculty page)* |
+| Affiliation | Dipartimento di Elettronica, Informazione e Bioingegneria (DEIB), Politecnico di Milano, Italy. Confirmed Full Professor; Faculty Board, PhD in Bioengineering. |
+| Email | **andrea.aliverti@polimi.it** *(verified 2026-05-01: standard Politecnico di Milano `firstname.lastname@polimi.it` format; profile confirmed at `deib.polimi.it/eng/people/details/569774`)* |
 | ORCID | [0000-0002-3892-3622](https://orcid.org/0000-0002-3892-3622) |
 
 **Rationale.** Bioengineering chair working on physiological surrogate
@@ -95,10 +95,31 @@ no-conflict checks passed.
 
 ## 4 — Anastasios N. Angelopoulos, PhD (conformal-prediction methodology axis)
 
+> ⚠ **AFFILIATION FLAG (verified 2026-05-01).** Per his personal page
+> `angelopoulos.ai`, Angelopoulos is now **co-founder and CEO of Arena**
+> (the LMSys / Chatbot Arena spin-out), having "previously" been a
+> Postdoctoral Scholar at UC Berkeley. His EECS-Berkeley email may be
+> inactive, and Arena is a private company — IJNMBE expects an
+> *institutional* email for suggested reviewers. **Two viable paths:**
+>
+> 1. **Use his personal academic page contact** at `angelopoulos.ai`
+>    (he forwarding-aliases to whatever active address he prefers).
+> 2. **Substitute** with a Berkeley-active conformal-prediction
+>    methodologist — strongest candidate is **Stephen Bates** (his
+>    primary co-author on the *Foundations and Trends* tutorial cited as
+>    ref [18]), now Assistant Professor at MIT EECS / IDSS,
+>    `sbates@mit.edu`. Bates would cover the same conformal-methodology
+>    axis with an active institutional email.
+>
+> The default suggestion below remains Angelopoulos because he is the
+> first author of the canonical reference cited in the manuscript; the
+> portal entry should use the `angelopoulos.ai` contact form unless
+> Diego prefers the Bates substitution.
+
 | Field | Value |
 |---|---|
-| Affiliation | Department of Electrical Engineering and Computer Sciences, University of California, Berkeley, USA |
-| Email | angelopoulos@berkeley.edu *([VERIFY] via UCB EECS directory)* |
+| Affiliation | Co-founder & CEO, Arena. *(Previously: Postdoctoral Scholar, EECS, UC Berkeley.)* |
+| Email | Contact via `https://angelopoulos.ai` (active personal academic page). Berkeley-EECS address `angelopoulos@berkeley.edu` listed for completeness; **may no longer forward**. |
 | ORCID | [0000-0002-5295-5556](https://orcid.org/0000-0002-5295-5556) *([VERIFY])* |
 
 **Rationale.** First author of *"A gentle introduction to conformal
@@ -113,9 +134,21 @@ reported.
 **No conflict.** No co-authorship with Diego Malpica; no shared
 institution. Cited in the manuscript bibliography (ref [18]); IJNMBE does
 not consider citation alone a conflict, but the reviewer slate is
-deliberately diverse on this axis. **[VERIFY]** that he is reachable via
-institutional email (he is sometimes more responsive on the address
-listed on his Berkeley webpage).
+deliberately diverse on this axis. **Verified against the IJNMBE editorial
+board (2026-05-01): not a board member.**
+
+### Backup candidate (if Angelopoulos contact path fails) — Stephen Bates, PhD
+
+| Field | Value |
+|---|---|
+| Affiliation | Department of Electrical Engineering and Computer Science, IDSS, Massachusetts Institute of Technology, USA |
+| Email | sbates@mit.edu *([VERIFY] via MIT EECS directory)* |
+| ORCID | *([VERIFY])* |
+
+**Rationale.** Co-author with Angelopoulos on the *Foundations and
+Trends* tutorial (ref [18]) and on *"Conformal Risk Control"* (ICLR
+2024). Active institutional email at MIT; same methodological axis;
+clean substitute for Angelopoulos if the latter's contact path fails.
 
 ---
 
@@ -123,8 +156,8 @@ listed on his Berkeley webpage).
 
 | Field | Value |
 |---|---|
-| Affiliation | Division of Software and Computer Systems, KTH Royal Institute of Technology, Stockholm, Sweden |
-| Email | bostromh@kth.se *([VERIFY] via KTH faculty page)* |
+| Affiliation | Division of Software and Computer Systems, KTH Royal Institute of Technology, Stockholm, Sweden. Profile: `kth.se/profile/henbos`. |
+| Email | **bostromh@kth.se** *(verified 2026-05-01 from KTH profile + the same address on his published "Mondrian Conformal Regressors" PMLR 2020 and "Mondrian Conformal Predictive Distributions" PMLR 2021 papers)* |
 | ORCID | [0000-0001-8382-0300](https://orcid.org/0000-0001-8382-0300) |
 
 **Rationale.** First author of *"Mondrian conformal predictive
@@ -194,8 +227,18 @@ conformal/Bayesian UQ rather than on clinical-informatics ML.
 
 ## Pre-portal checklist
 
-- [ ] **[VERIFY]** all five email addresses against current institutional
-      directories (NEVER use Gmail / Yahoo / personal addresses).
+- [x] **Email verification** — completed 2026-05-01 via web search against
+      institutional directories and authoritative published sources:
+  - Copeland: `kyle.copeland@faa.gov` ✓ (FAA technical reports)
+  - Huberts: `wouter.huberts@maastrichtuniversity.nl` ✓ (Maastricht
+    Systems Biology / Bioinformatics staff page; **note: original draft
+    had `w.huberts@…` — corrected to the verified `wouter.huberts@…`**)
+  - Aliverti: `andrea.aliverti@polimi.it` ✓ (Politecnico standard format
+    `firstname.lastname@polimi.it`; profile at DEIB)
+  - Angelopoulos: ⚠ now CEO of Arena; **use `angelopoulos.ai` contact
+    form** OR substitute Stephen Bates (`sbates@mit.edu`) — see
+    candidate #4 box for details
+  - Boström: `bostromh@kth.se` ✓ (KTH profile + 2020/2021 PMLR papers)
 - [x] **Editorial-board cross-check** — completed 2026-05-01 against live
       Wiley page; snapshot at `2026-05-01_ijnmbe_editorial_board.md`. All
       five candidates clean (Alastruey was originally slotted but removed
@@ -206,3 +249,5 @@ conformal/Bayesian UQ rather than on clinical-informatics ML.
       because of cross-conference proceedings).
 - [ ] Confirm each reviewer's most recent active-paper date is within
       the past 3 years.
+- [ ] **Decide Angelopoulos vs. Bates** at portal-entry time based on
+      which institutional email Diego prefers to enter.
