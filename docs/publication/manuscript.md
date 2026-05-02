@@ -1,16 +1,19 @@
-# Conformal ML emulation and OOD detection for the FAA CGEM G-LOC model
+# Conformal machine-learning emulation and out-of-distribution detection for the FAA CAMI G-Effects mechanistic model of acceleration physiology
 
-**Target venue:** *Computer Methods and Programs in Biomedicine* (CMPB, Elsevier). Article type: Full Length Article. Submission track: Subscription (no APC). Portal: Editorial Manager. Editor-in-Chief: Filippo Molinari, PhD, Polytechnic of Turin.
+**Target venue:** *International Journal for Numerical Methods in Biomedical Engineering* (IJNMBE, Wiley, ISSN 2040-7947). Article type: Research Paper. Submission track: subscription / non-OA (Wiley hybrid; no APC). Portal: Wiley CNM (`https://authors.wiley.com/journal/CNM`). Editor-in-Chief: Perumal Nithiarasu, PhD, College of Engineering, Swansea University.
+
+**Short title** (≤ 70 chars; for portal entry): Conformal ML wrapper for a validated ODE physiological model.
 
 <!-- Author identity lives in `docs/publication/author_page.md` and is uploaded as the
 Title Page file in Editorial Manager. -->
 
-**Word count:** ≈ 5,430 (body, Introduction → Conclusion). CMPB soft limit: ≤ 3,500. Trim required before submission OR cover-letter justification (see compliance audit `2026-05-01_cmpb-compliance-audit_cgem.md`).
-**Abstract word count:** 341 (CMPB ≤ 350; structured: Background and Objectives / Methods / Results / Conclusions).
+**Word count:** ≈ 5,430 (body, Introduction → Conclusion). IJNMBE has no stated body-word cap; this length is consistent with recent IJNMBE Research Papers.
+**Abstract word count:** 341 (IJNMBE ≤ 400; structured *or* unstructured permitted; the structured Background and Objectives / Methods / Results / Conclusions form is retained for clarity).
 **Tables:** 4.
-**Figures:** 6 (all in main body; CMPB has no stated figure limit).
-**References:** 19.
-**Highlights:** see `docs/publication/highlights.md` (3–5 bullets ≤ 85 chars each).
+**Figures:** 6 (all in main body at submission; IJNMBE accepts inline figures at submission and requires separate files only at revision; no figure-count limit).
+**References:** 22 (incl. two IJNMBE-precedent references and one formal dataset citation per the Joint Declaration of Data Citation Principles).
+**Mandatory separate files at IJNMBE:** `cover_letter_ijnmbe.md`, `novelty_file_ijnmbe.md` (≤ 100 words), `graphical_abstract_ijnmbe.md` (mini-abstract ≤ 80 words / 3 sentences) plus the rendered Graphical Table of Contents image, `suggested_reviewers_ijnmbe.md` (5 candidates), Data Files (data + code, uploaded as the **Data Files** designation, not as Supporting Information).
+**CMPB Highlights file** (`docs/publication/highlights.md`): not used at IJNMBE — do **not** upload.
 
 ---
 
@@ -24,7 +27,7 @@ Title Page file in Editorial Manager. -->
 
 **Conclusions.** The framework preserves the FAA-validated CGEM core while adding emulator speed, calibrated prediction intervals, OOD abstention, and global sensitivity rankings — capabilities previously absent from CGEM applications. External and own-centrifuge validation are deferred to companion papers. The same surrogate + conformal + OOD pattern generalises to any validated ODE physiological model.
 
-**Keywords:** G-induced loss of consciousness; acceleration physiology; surrogate modeling; conformal prediction; out-of-distribution detection; sensitivity analysis; XGBoost; biomedical machine learning
+**Keywords** (6, IJNMBE Manuscript Style cap): physiological modelling; surrogate emulation; conformal prediction; out-of-distribution detection; global sensitivity analysis; acceleration physiology
 
 ---
 
@@ -242,7 +245,7 @@ The 50 µs prediction latency enables three operational pathways: **parametric m
 
 CGEM and its predecessor cardiovascular models have been used in FAA technical reports and aeromedical publications for point-estimate G-tolerance prediction [5-8]. None of these prior applications provided (a) conformal prediction intervals, (b) OOD input guardrails, or (c) global sensitivity rankings. The present work is, to our knowledge, the first published ML-based surrogate emulator of CGEM.
 
-Recent work on physiological surrogates of cardiovascular and cardiopulmonary models has demonstrated the utility of fast emulation paired with calibrated uncertainty quantification in adjacent biomedical domains [14,19]. Our framework follows this pattern but is distinguished by its additive (wraparound, not rewrite) approach to a validated legacy regulatory model.
+Recent work on physiological surrogates of cardiovascular and cardiopulmonary models has demonstrated the utility of fast emulation paired with calibrated uncertainty quantification in adjacent biomedical domains [14,19,20]. Kakhaia et al. [20] developed an inverse uncertainty quantification framework for a mechanical model of arterial tissue using surrogate modelling — directly the methodological neighbourhood of the present work. The numerical-methods foundation for one-dimensional arterial-flow modelling, on which much computational cardiovascular surrogate work builds, was systematically benchmarked at IJNMBE by Boileau et al. [21]. Our framework follows the surrogate-with-uncertainty pattern but is distinguished by (a) its additive (wraparound, not rewrite) approach to a validated legacy regulatory model, (b) the Mondrian split-conformal stratification by maneuver category — preserving coverage within operational input sub-populations rather than pooling — and (c) the distribution-free conformal abstention layer applied to a robust-Mahalanobis OOD score, providing an operational in-envelope guarantee that does not assume Gaussianity of the score distribution.
 
 ### 4.4 Limitations
 
@@ -295,7 +298,7 @@ Generative AI tools (Anthropic Claude Sonnet/Opus and OpenAI GPT-class models) w
 ## Data and code availability
 
 - **Source code.** The complete framework is open-source under the MIT licence at `https://github.com/strikerdlm/CAMI-Gz-Effects-Model-CGEM-`. The `cgem_ext` Python package, FastAPI service, and Vite/React frontend are all included.
-- **Synthetic dataset.** `cgem_synthetic_v1.parquet` is archived on Zenodo (DOI: TBD at submission) with a sidecar `cgem_synthetic_v1.meta.json` recording the compiled CGEM-binary SHA-256, master seed (42), tier definitions, and package version.
+- **Synthetic dataset.** `cgem_synthetic_v1.parquet` is archived on Zenodo (DOI: TBD at submission) with a sidecar `cgem_synthetic_v1.meta.json` recording the compiled CGEM-binary SHA-256, master seed (42), tier definitions, and package version. The dataset is cited formally in the reference list [22] per the Joint Declaration of Data Citation Principles.
 - **Reproducibility container.** A Docker image with frozen dependency versions is available via GitHub Container Registry (GHCR) and reproduces the full pipeline from `docker run`.
 - **Pre-registration.** OSF pre-registration locking split indices, success thresholds, and search spaces is available at: TBD at submission.
 - **Figures.** All six manuscript figures are rendered from committed data products under `data/results/figures/` and `data/results/sensitivity/` via deterministic scripts; the ECharts figure-option JSON files are committed and re-render identically.
@@ -359,6 +362,12 @@ The author gratefully acknowledges the FAA Civil Aerospace Medical Institute (CA
 [18] Angelopoulos AN, Bates S. *A gentle introduction to conformal prediction and distribution-free uncertainty quantification.* Found Trends Mach Learn. 2023;16(4):494-591. doi:10.1561/2200000101
 
 [19] Peherstorfer B, Willcox K, Gunzburger M. *Survey of multifidelity methods in uncertainty propagation, inference, and optimization.* SIAM Rev. 2018;60(3):550-591. doi:10.1137/16M1082469
+
+[20] Kakhaia S, Zun P, Ye D, Krzhizhanovskaya V. *Inverse uncertainty quantification of a mechanical model of arterial tissue with surrogate modelling.* Int J Numer Methods Biomed Eng. 2021;37(6):e3450. doi:10.1002/cnm.3450
+
+[21] Boileau E, Nithiarasu P, Blanco PJ, Müller LO, Fossan FE, Hellevik LR, Donders WP, Huberts W, Willemet M, Alastruey J. *A benchmark study of numerical schemes for one-dimensional arterial blood flow modelling.* Int J Numer Methods Biomed Eng. 2015;31(10):e02732. doi:10.1002/cnm.2732
+
+[22] Malpica D. *cgem_synthetic_v1: synthetic dataset of 3,240 CGEM simulations across 72 maneuvers and 45 pilot configurations.* Zenodo; 2026; v1.0.0; doi:TBD at submission. (Cited per the Joint Declaration of Data Citation Principles: Authors; Year; Dataset title; Repository; Version; Persistent Identifier.)
 
 ---
 
