@@ -151,6 +151,23 @@ under-covers real outcomes, that is a *finding*, not a failure of
 the paper — it directly motivates the heteroscedastic /
 fidelity-aware extensions in §4.6.
 
+**Outcome (recorded 2026-05-06, after running the H6 evaluation
+pass on the Phase A cohort via `scripts/run_h6_evaluation.py`).**
+The primary success criterion (≥ 0.90 bracket coverage of real event
+times) **was not met** on the Phase A cohort: point coverage = 0.500
+(4 / 8), interval-overlap coverage = 0.625 (5 / 8). Mean discrepancy
+δ̄ = +26.6 s (real minus surrogate median) with 95 % bootstrap CI
+[+6.3, +52.1]. The discrepancy is concentrated entirely in the
+slow-onset regime (onset ≤ 0.5 G/s), where rows show δ between +6.9
+and +81.0 s; rows for onset ≥ 1.0 G/s show no systematic bias
+(|δ| ≤ 1.3 s, all in-bracket). The pattern is consistent with the
+documented CGEM limitation that the relaxed-participant assumption
+breaks down at long durations (Copeland & Whinnery 2023 [7]); the
+framework's calibrated bracket should be treated as a lower bound on
+real outcomes in the slow-onset regime. Reported transparently in
+manuscript §3.7 (Table 5) and §4.4. The full per-row JSON is at
+`data/results/h6/discrepancy_phase_a.json`.
+
 ---
 
 ## C. New artifacts (lock list)

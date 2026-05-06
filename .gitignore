@@ -101,6 +101,12 @@ data/results/*
 !data/results/cqr/
 !data/results/cqr/*.json
 
+# Exception: ship the Scenario-B Week-2 H6 discrepancy anchor — small
+# JSON capturing per-row archival-vs-surrogate residuals reported in
+# manuscript §3.7 and in the OSF amendment's H6 hypothesis outcome.
+!data/results/h6/
+!data/results/h6/*.json
+
 # Pandoc-rendered submission outputs are regenerable from the
 # markdown sources via `python -m scripts.render_manuscript`. The
 # binaries are large and re-render on every edit; keeping them out

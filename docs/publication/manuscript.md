@@ -230,6 +230,29 @@ For `c_bank_min`, `g_peak_abs` (ST = 0.793) and `profile_duration_s` (ST = 0.218
 
 **Second-order interactions.** The strongest pairwise interaction (S₂) is consistently `g_peak_abs × profile_duration_s` (S₂ ≈ 0.04–0.12 across targets), confirming that peak G and exposure duration are not independent drivers — their combined effect on event probability is super-additive.
 
+### 3.7 External validation against archival centrifuge cohort (H6 anchor)
+
+To complement the synthetic-only validation against CGEM-as-ground-truth (§3.2–3.6), we evaluated the trained CQR surrogate against an archival validation cohort of n = 8 pooled mean ± SD records reproduced from Whinnery & Forster (2013) [5] (n_parent = 729 USN + USAF participants without anti-G countermeasures). Each record reports a fixed acceleration onset rate (0.05 to 10 G/s) and the mean ± SD time-to-loss-of-consciousness. Records were mapped to CGEM input space using the rules locked in OSF amendment 2026-05-06 §B-H6 (`who_profile = 4`, baseline countermeasures, no dehydration, `g_peak_abs` = min(9.0, 1 + onset × real_mean), `profile_duration_s` = real_mean + 5 s buffer, `maneuver_category = "military_acm"`). The full per-row table is committed at `data/results/h6/discrepancy_phase_a.json`; the evaluation script is `scripts/run_h6_evaluation.py`.
+
+**Table 5.** External validation against the Phase A archival cohort. ``surrogate_lo / hi`` is the calibrated CQR bracket; ``in_bracket`` reports whether the real mean falls inside the bracket (point coverage); ``overlap`` reports whether the surrogate bracket overlaps the real ±1 SD reference interval; ``δ = real − surrogate_median`` is the residual.
+
+| Onset (G/s) | Real mean ± SD (s) | Surrogate median (s) | Surrogate 95 % bracket (s) | In bracket | Overlap | δ (s) |
+|---:|---:|---:|---:|:---:|:---:|---:|
+| 0.05 | 95 ± 5 | 14.0 | [4.4, 18.4] | ✗ | ✗ | +81.0 |
+| 0.10 | 85 ± 10 | 13.6 | [4.3, 18.6] | ✗ | ✗ | +71.4 |
+| 0.20 | 70 ± 15 | 13.6 | [4.3, 18.6] | ✗ | ✗ | +56.4 |
+| 0.50 | 20 ± 5 | 13.1 | [3.9, 18.5] | ✗ | ✓ | +6.9 |
+| 1.00 | 12 ± 3 | 12.4 | [3.9, 17.9] | ✓ | ✓ | −0.4 |
+| 2.00 | 9 ± 2 | 10.3 | [3.9, 17.9] | ✓ | ✓ | −1.3 |
+| 5.00 | 8 ± 3 | 8.5 | [4.3, 17.9] | ✓ | ✓ | −0.5 |
+| 10.00 | 9 ± 4 | 9.6 | [3.8, 17.6] | ✓ | ✓ | −0.6 |
+
+**Headline.** Point coverage (real mean ∈ surrogate bracket) is **0.500** (4 / 8); interval-overlap coverage is **0.625** (5 / 8). The mean discrepancy δ̄ = +26.6 s with 95 % bootstrap CI [+6.3, +52.1] — i.e., real centrifuge participants tolerate +Gz, on average, **substantially longer than the CGEM-via-surrogate prediction**, and the discrepancy is statistically distinguishable from zero. **H6's primary success criterion (≥ 0.90 coverage) is therefore not met on the Phase A cohort.** This is a finding, not a failure of the methodology: it is the discrepancy term δ(x) = real(x) − CGEM(x) that the OSF-amended H6 hypothesis was designed to surface.
+
+**The discrepancy is concentrated at slow onset rates.** Rows for onset ≤ 0.5 G/s contribute the entire bias (δ̄ between +6.9 and +81.0 s); rows for onset ≥ 1.0 G/s show no systematic bias (|δ̄| ≤ 1.3 s, all in-bracket). This pattern is consistent with the CGEM literature: Copeland & Whinnery (2023) [7] note explicitly that "the underestimation of the time to loss of consciousness when compared with the data at very low onset rates suggests a completely relaxed participant may not be an accurate assumption" — gradual G onset gives relaxed participants 30 + s in which non-AGSM muscle tension (gripping, postural reflex) raises arterial pressure by up to 60 mmHg, an effect CGEM does not encode at run time. The H6 result quantifies that documented limitation rather than discovering a new failure mode of CGEM.
+
+**Operational interpretation.** The CGEM-via-surrogate framework is well-calibrated against real outcomes in the **rapid-onset regime** (onset ≥ 1 G/s, the operationally relevant regime for fighter and aerobatic flight) and systematically under-predicts time-to-LOC in the **slow-onset regime** (onset ≤ 0.5 G/s, more typical of agricultural / large-aircraft flight). Until paper-3 incorporates the missing muscle-tension term explicitly (and re-validates against own-centrifuge subjects, see §4.6), the framework's prediction intervals should be treated as **lower bounds** in the slow-onset regime — i.e., real outcomes are likely longer than the bracket's upper limit, never shorter than its lower limit. The conformal layer remains correctly calibrated against CGEM (§3.3), so the failure is a CGEM-vs-reality discrepancy, not a CQR-vs-CGEM discrepancy.
+
 ---
 
 ## 4. Discussion
@@ -254,7 +277,7 @@ Recent work on physiological surrogates of cardiovascular and cardiopulmonary mo
 
 ### 4.4 Limitations
 
-**Synthetic-only validation.** This paper validates the framework against CGEM as ground truth. Emulator R² and OOD AUROC measure how well the ML layer *reproduces CGEM*, not how well it predicts real centrifuge or in-flight outcomes. Estimating the systematic discrepancy δ(x) = real(x) − CGEM(x) requires either re-analysis of archival centrifuge datasets (Whinnery & Forster 2013 [5], n = 888 G-LOC episodes; Copeland & Whinnery 2023 [7]; Whinnery 1990 [4]) or new centrifuge subjects, and is the subject of separate work. This synthetic-only boundary is declared throughout the manuscript; readers should not interpret the reported metrics as centrifuge-validated performance.
+**Synthetic-only validation, partially closed by §3.7.** Sections 3.2–3.6 validate the framework against CGEM-as-ground-truth — the surrogate's R² and the conformal layer's coverage measure how well the ML layer reproduces CGEM, not how well CGEM predicts real outcomes. Section 3.7 partially closes this gap by evaluating the calibrated surrogate against the Phase A archival cohort (n = 8 pooled mean ± SD records from Whinnery & Forster 2013 [5], n_parent = 729 centrifuge participants) and reports the discrepancy δ̄ = +26.6 s [95 % CI +6.3, +52.1] with an explicit slow-onset bias. Phase B per-subject extraction and validation against own-centrifuge subjects are subjects of separate work and are not claimed in this manuscript.
 
 **Dataset size and coverage.** The 3,240-row grid covers a structured cross-product of 72 maneuvers × 45 pilot configurations. It is not a random sample from the space of all possible (maneuver, pilot) pairs. Maneuver categories overlap substantially in continuous feature space (G-peak, dG/dt, duration), which is why the LOGO AUROC values are low — not because the detectors fail, but because the categorical "OOD" axis is a weak signal. Real deployment-time OOD inputs (out-of-envelope maneuvers, pilots outside the FAA-preset anthropometric range) would produce stronger separation.
 
