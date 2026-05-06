@@ -170,9 +170,35 @@ The validated FAA Fortran binary is invoked unchanged through `cgem_wrapper.run_
 | 4 | Global sensitivity analysis (Sobol + Morris) | ✅ Done |
 | 5 | FastAPI service (7 endpoints, Dockerfile, OpenAPI spec) | ✅ Done |
 | 6 | Frontend integration (React ↔ FastAPI; OOD banner, Sobol panel, sweep table) | ✅ Done |
-| 7 | Paper 1 — AMHP methods paper | 🚧 Manuscript portal-ready; OSF + form scans pending |
+| 7 | Paper 1 — IJNMBE methods paper | 🚧 Manuscript revised against pre-submission self-audit (2026-05-06); OSF + Zenodo DOI minting pending |
 | 8 | Paper 2 — external re-analysis vs centrifuge literature | ⬜ Post paper 1 |
 | 9 | Paper 3 — own-centrifuge validation (subjects) | ⬜ Requires ethics + subjects |
+
+### Manuscript status (2026-05-06)
+
+**Target venue:** *International Journal for Numerical Methods in Biomedical Engineering* (IJNMBE), Wiley, ISSN 2040-7947. Article type: Research Paper. Q1 fallback if IJNMBE bounces on the *"standard procedure on standard problem"* scope filter: *PLOS Computational Biology*. Pure-Q2 fallback: *Bioengineering* (MDPI).
+
+**Latest manuscript revisions (commit [`e2aae45`](docs/publication/peer_review_2026-05-06_self_audit.md))** — applied against a pre-submission self-audit:
+
+- **Abstract.** Promoted the H6 archival-cohort result (`δ̄ = +26.6 s [95 % CI +6.3, +52.1]` slow-onset bias) to a top-level Results sentence so the only real-world validation is visible at first read. Now 397 / 400 words (IJNMBE cap).
+- **§1 Introduction.** Cited Portela, Banga & Matabuena 2025 (*PLOS Comp Biol* 21:e1013098) — the direct methodological precedent for conformal prediction on dynamic biological ODE models — and positioned the present work as its per-stratum + heteroscedastic + OOD-abstention extension.
+- **§2.4 Surrogate emulator.** Added a "Relation to conformalized survival analysis" paragraph naming Candès-Lei-Ren 2023, Gui-Hannig-Hofmann 2024 (*Biometrika*), and Davidov et al. 2025 (ICLR) as the principled successor to the present two-stage classifier-then-regressor pattern; replacement scoped to paper 2.
+- **§2.5 OOD.** Mahalanobis-on-mixed-features caveat (9 numeric + 7 binary one-hot + 1 ordinal) made explicit; conformal abstention reframed as the empirical compensation for that misspecification.
+- **§3.2 Reporting framework.** Explicit no-Bonferroni / no-FDR justification — distinct estimands, not parallel tests of the same effect.
+- **§3.3 Conformal coverage.** Added per-stratum Clopper-Pearson exact 95 % binomial CIs at the n = 35 military_acm slice; CQR result reframed as *operationally* closer to nominal rather than statistically dominant.
+- **§3.7 H6.** Clarified the n = 8 H6 evaluation set vs the n = 23 archival cohort registry (Phase A locked; Phase B narrow-range and abstract anchors not on the H6 query path); reconciled the W&F2013 729-relaxed-subject vs 888-total figure.
+- **§3.8 Multi-fidelity.** Honest reframe — MF-NARGP at n_high ≤ 50 is a catastrophic GP discrepancy over-fit (RMSE 53–56 s), not "no point-estimate gain"; MF-DNN (Meng & Karniadakis 2020, *J. Comp. Phys.* 401:109020) cited as the SOTA successor for paper 2.
+- **§4.6 Future work.** Structured 5-point list — conformalized survival, adaptive conformal (FACI / AgACI / SAOCP for streaming cockpit deployment), MF-DNN replacement of NARGP, distributional / multi-output conformal, Bayesian per-pilot calibration.
+- **References.** 22 → 27 (added Portela 2025, Candès-Lei-Ren 2023, Gui-Hannig-Hofmann 2024 *Biometrika*, Davidov et al. 2025 ICLR, Meng & Karniadakis 2020 *J. Comp. Phys.*).
+
+**Submission blockers (manual, in order):**
+
+1. Mint the **Zenodo DOI** for `cgem_synthetic_v1.parquet` and replace the "TBD at submission" placeholders.
+2. Mint the **OSF pre-registration** with the 2026-05-06 H5/H6 amendment timestamped before any further test-set runs.
+3. Re-render Figure 1 (parity plots) with CQR bracket overlays on panels (G) and (H); audit Figs 3 and 4 for greyscale tints (IJNMBE rule 6.2).
+4. Re-target the cover letter to Prof. Perumal Nithiarasu (IJNMBE Editor-in-Chief) with the IJNMBE scope-filter pre-emption paragraph.
+
+The full pre-submission self-audit is at [`docs/publication/peer_review_2026-05-06_self_audit.md`](docs/publication/peer_review_2026-05-06_self_audit.md). The IJNMBE-specific check-list is at [`docs/publication/2026-05-01_ijnmbe-status.md`](docs/publication/2026-05-01_ijnmbe-status.md).
 
 **Test coverage**: 80 tests across all phases, all green (~16 s locally; CI matrix on Python 3.10 / 3.11 / 3.12 finishes in ~1 min 20 s per leg).
 **CI status**: GitHub Actions (`.github/workflows/ci.yml`) runs `ruff` + `mypy` + `pytest` matrix + the pulse-sim contract job on every push and pull request. All five jobs currently green.
