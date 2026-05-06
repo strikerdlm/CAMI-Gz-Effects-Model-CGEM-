@@ -31,6 +31,10 @@ from cgem_ext.surrogate.cqr import (
 )
 from cgem_ext.surrogate.features import FEATURE_COLUMNS, extract_features
 from cgem_ext.surrogate.lowfi import StollGTolerance, WhinneryForsterGLOC
+from cgem_ext.surrogate.multifidelity import (
+    MultiFidelityFitInfo,
+    MultiFidelityNARGP,
+)
 from cgem_ext.surrogate.targets import (
     TARGETS,
     TargetSpec,
@@ -49,6 +53,8 @@ __all__ = [
     "TARGETS",
     "MondrianCQR",
     "MondrianSplitConformal",
+    "MultiFidelityFitInfo",
+    "MultiFidelityNARGP",
     "RFSurrogate",
     "StollGTolerance",
     "TargetSpec",

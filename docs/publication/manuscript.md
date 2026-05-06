@@ -253,6 +253,22 @@ To complement the synthetic-only validation against CGEM-as-ground-truth (§3.2�
 
 **Operational interpretation.** The CGEM-via-surrogate framework is well-calibrated against real outcomes in the **rapid-onset regime** (onset ≥ 1 G/s, the operationally relevant regime for fighter and aerobatic flight) and systematically under-predicts time-to-LOC in the **slow-onset regime** (onset ≤ 0.5 G/s, more typical of agricultural / large-aircraft flight). Until paper-3 incorporates the missing muscle-tension term explicitly (and re-validates against own-centrifuge subjects, see §4.6), the framework's prediction intervals should be treated as **lower bounds** in the slow-onset regime — i.e., real outcomes are likely longer than the bracket's upper limit, never shorter than its lower limit. The conformal layer remains correctly calibrated against CGEM (§3.3), so the failure is a CGEM-vs-reality discrepancy, not a CQR-vs-CGEM discrepancy.
 
+### 3.8 Multi-fidelity coupling (Kennedy-O'Hagan / NARGP)
+
+To probe whether a coupling between an analytical low-fidelity G-tolerance model and the high-fidelity CGEM-via-surrogate stack improves data efficiency on the `time_to_gloc_s` target, we implemented a Kennedy & O'Hagan (2000) auto-regressive scheme `z_high(x) = ρ · z_low(x) + δ(x)` where `z_low` is the Whinnery & Forster (2013) [5] piecewise analytical curve (`cgem_ext.surrogate.lowfi.WhinneryForsterGLOC`), `ρ = 1`, and `δ(x)` is a Matern-5/2 Gaussian-process discrepancy fitted on a high-fidelity training subset. The implementation (`cgem_ext.surrogate.multifidelity.MultiFidelityNARGP`) uses scikit-learn's `GaussianProcessRegressor` and adds no Cython build dependencies.
+
+**Table 6.** Multi-fidelity vs single-fidelity benchmark on `time_to_gloc_s` event-positive rows of the held-out test split (n_test = 36). The high-fidelity training subset is the first n_high rows of a seed-42 shuffle of the train-split event-positive rows (n_max = 137).
+
+| n_high | RMSE WF2013 alone (s) | RMSE MF-NARGP (s) | RMSE XGB 2-feature (s) | MF-NARGP coverage @ α = 0.05 |
+|---:|---:|---:|---:|---:|
+| 20 | 3.07 | 53.18 | 3.07 | 0.714 |
+| 50 | 3.07 | 56.38 | 2.85 | 0.821 |
+| 100 | 3.07 | 2.99 | 2.82 | 0.893 |
+
+**Reading Table 6.** The Whinnery-Forster low-fidelity curve alone achieves RMSE 3.07 s on the test split — already comparable to a single-fidelity XGBoost regressor over the same two-feature input — because the synthetic dataset is dominated by rapid-onset rows where WF2013 is well-anchored (`time_to_loc ≈ 9.10 s` for onset ≥ 1 G/s). MF-NARGP **does not improve point-estimate accuracy** in this regime: at n_high = 100 its RMSE (2.99 s) is within 0.2 s of the XGBoost baseline, and at smaller budgets (n_high ≤ 50) the GP discrepancy term over-fits and degrades RMSE. **The multi-fidelity contribution is calibrated uncertainty quantification, not point-estimate gain**: at n_high = 100 the NARGP 95 % bracket covers 0.893 of test rows — within 5.7 pp of nominal — without any conformal post-hoc step. The single-fidelity XGBoost gives a competitive point estimate but no native uncertainty.
+
+This result is consistent with the H6 finding (§3.7): in the rapid-onset regime where most synthetic event-positive rows live, CGEM, the surrogate, and the WF2013 analytical curve all give similar predictions; multi-fidelity coupling becomes operationally distinguishable from single-fidelity XGBoost only when (i) the high-fidelity budget is sufficient to identify the local discrepancy and (ii) calibrated uncertainty bands are required. Future work should extend this benchmark to the **slow-onset regime** (onset ≤ 0.5 G/s) where the H6 discrepancy concentrates — that is the regime in which a multi-fidelity scheme would be expected to deliver a clear point-estimate advantage. The full benchmark JSON is at `data/results/h6/multifidelity_benchmark.json`.
+
 ---
 
 ## 4. Discussion

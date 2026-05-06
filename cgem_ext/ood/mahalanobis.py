@@ -26,7 +26,7 @@ from dataclasses import dataclass
 
 import numpy as np
 import pandas as pd
-from scipy.stats import chi2  # type: ignore[import-untyped]
+from scipy.stats import chi2
 from sklearn.covariance import MinCovDet
 
 from cgem_ext.ood.features import FEATURE_COLUMNS, extract_features
