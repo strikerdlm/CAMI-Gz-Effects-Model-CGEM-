@@ -95,6 +95,12 @@ data/results/*
 !data/results/figures/echarts_options/
 !data/results/figures/echarts_options/*.json
 
+# Exception: ship the Scenario-B Week-1 CQR coverage anchor — small
+# JSON capturing the empirical numbers cited in manuscript §3.3 and
+# in the OSF amendment's H5 hypothesis.
+!data/results/cqr/
+!data/results/cqr/*.json
+
 # Pandoc-rendered submission outputs are regenerable from the
 # markdown sources via `python -m scripts.render_manuscript`. The
 # binaries are large and re-render on every edit; keeping them out

@@ -213,14 +213,13 @@ non-resolvable as cited. These corrections are recorded here so the
 manuscript's reference list can be updated under the same version
 control as this amendment, and so reviewers can audit the chain.
 
-| Manuscript ref # | As currently cited | Verified status | Required action |
+| Manuscript ref # | As originally cited | Independent verification | Replacement applied |
 |---|---|---|---|
-| [4] Whinnery 1990 | *ASEM* 61(5):435–439, PMID 2350248 | Cited PMID maps to an unrelated paper; the closest Whinnery 1990 paper of similar topic is *ASEM* 61(5):406–411, PMID 2350309 ("Recognizing +Gz-induced loss of consciousness…"). | Replace ref [4] with the corrected PMID 2350309 and pages 406–411, **after** verifying the corrected entry on PubMed; if the corrected entry is the paper actually cited in §1 ¶2 (G-LOC physiology context), the substitution is editorial; if not, drop the citation and either re-anchor the surrounding sentence or pick a different source. |
-| [5] Burns & Kruger 1997 | "Mathematical model of G-LOC onset time…", *ASEM* 68(2):120–126, PMID 9143752 | Cited PMID maps to a heatstroke-CPR-in-monkeys paper; the cited title does not appear in PubMed; the cited journal-page combination does not appear in Crossref. **Likely fabricated or seriously garbled.** | Drop ref [5] entirely. Re-anchor the §4.3 sentence about prior G-LOC sensitivity analyses on a verified source — candidates: Burton RR (2000) anti-G straining literature; Whinnery & Forster (2013) on time-to-LOC kinetics; or remove the claim if no replacement is available. |
+| [4] Whinnery 1990 (EEG response to +Gz) | "The electroencephalographic response to +Gz stress." *ASEM* 61(5):435–439, PMID 2350248. | (a) PubMed lookup of PMID 2350248 returns Avrushchenko et al. 1990, "Structural and functional status of chromatin in the cerebral cortex…", *Arkh Anat Gistol Embriol* 98(1):42–8 — unrelated. (b) PubMed phrase search for "electroencephalographic response to +Gz stress" returns zero records. (c) The same is true via scite. The cited paper does not exist as written. | Replaced with Whinnery JE (1990), "Recognizing +Gz-induced loss of consciousness and subject recovery from unconsciousness on a human centrifuge," *ASEM* 61(5):406–411, **PMID 2350309** (verified via PubMed direct fetch). The replacement is closely topical (G-LOC recognition on a human centrifuge with > 500 documented cases) and a real, attributable Whinnery 1990 paper at the right journal/volume/issue, anchoring the same §1 ¶2 claim about the multi-factorial nature of G-LOC physiology. |
+| [5] Burns & Kruger 1997 | "Mathematical model of G-LOC onset time: validation and sensitivity analysis." *ASEM* 68(2):120–126, PMID 9143752. | (a) PubMed lookup of PMID 9143752 returns Eshel et al. (1997), "Hyperthermia-induced cardiac arrest in monkeys: limited efficacy of standard CPR," *ASEM* 68(5):415–20 — unrelated. (b) PubMed direct search "Burns Kruger G-LOC" returns zero records. (c) PubMed phrase search "mathematical model G-LOC onset" returns zero records. (d) Crossref / scite searches return zero records for the cited title. **The cited paper does not exist.** | Replaced with Whinnery JE & Forster EM (2013), "The +Gz-induced loss of consciousness curve," *Extreme Physiology & Medicine* 2(1):19, **DOI 10.1186/2046-7648-2-19** (open-access, CC-BY, n = 888 centrifuge G-LOC episodes; tabulated G-LOC times by onset rate and Gz level). The replacement is a real, citable, verified open-access source for the same §1 ¶2 claim about G-LOC physiology being multi-factorial and *additionally* serves as the primary archival cohort source for H6 (see §B above). |
 
 These corrections are bibliography-only (no scientific claim is added
-or retracted by the substitution); they are recorded here rather than
-in a manuscript-side commit because (i) the OSF amendment is the
-authoritative locus for changes to the pre-registered submission and
-(ii) the substitution must happen before any test-set evaluation
-under H5 / H6 to keep the amendment's cite chain coherent.
+or retracted by the substitution); they are recorded here as an
+authoritative audit trail. The substitutions land in the manuscript
+under the same commit as this amendment update so the cite chain
+remains coherent before any test-set evaluation under H5 / H6.

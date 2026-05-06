@@ -249,7 +249,7 @@ Recent work on physiological surrogates of cardiovascular and cardiopulmonary mo
 
 ### 4.4 Limitations
 
-**Synthetic-only validation.** This paper validates the framework against CGEM as ground truth. Emulator R² and OOD AUROC measure how well the ML layer *reproduces CGEM*, not how well it predicts real centrifuge or in-flight outcomes. Estimating the systematic discrepancy δ(x) = real(x) − CGEM(x) requires either re-analysis of archival centrifuge datasets (Burns & Kruger 1997 [5]; Copeland & Whinnery 2023 [7]; Whinnery 1990 [4]) or new centrifuge subjects, and is the subject of separate work. This synthetic-only boundary is declared throughout the manuscript; readers should not interpret the reported metrics as centrifuge-validated performance.
+**Synthetic-only validation.** This paper validates the framework against CGEM as ground truth. Emulator R² and OOD AUROC measure how well the ML layer *reproduces CGEM*, not how well it predicts real centrifuge or in-flight outcomes. Estimating the systematic discrepancy δ(x) = real(x) − CGEM(x) requires either re-analysis of archival centrifuge datasets (Whinnery & Forster 2013 [5], n = 888 G-LOC episodes; Copeland & Whinnery 2023 [7]; Whinnery 1990 [4]) or new centrifuge subjects, and is the subject of separate work. This synthetic-only boundary is declared throughout the manuscript; readers should not interpret the reported metrics as centrifuge-validated performance.
 
 **Dataset size and coverage.** The 3,240-row grid covers a structured cross-product of 72 maneuvers × 45 pilot configurations. It is not a random sample from the space of all possible (maneuver, pilot) pairs. Maneuver categories overlap substantially in continuous feature space (G-peak, dG/dt, duration), which is why the LOGO AUROC values are low — not because the detectors fail, but because the categorical "OOD" axis is a weak signal. Real deployment-time OOD inputs (out-of-envelope maneuvers, pilots outside the FAA-preset anthropometric range) would produce stronger separation.
 
@@ -327,9 +327,9 @@ The author gratefully acknowledges the FAA Civil Aerospace Medical Institute (CA
 
 [3] Green NDC. *Long duration acceleration.* In: Gradwell DP, Rainford DJ, eds. Ernsting's Aviation and Space Medicine. 5th ed. CRC Press; 2016:149-164.
 
-[4] Whinnery JE, Whinnery AM. *The electroencephalographic response to +Gz stress.* Aviat Space Environ Med. 1990;61(5):435-439.
+[4] Whinnery JE. *Recognizing +Gz-induced loss of consciousness and subject recovery from unconsciousness on a human centrifuge.* Aviat Space Environ Med. 1990;61(5):406-411. PMID: 2350309.
 
-[5] Burns JW, Kruger MT. *Mathematical model of G-LOC onset time: validation and sensitivity analysis.* Aviat Space Environ Med. 1997;68(2):120-126.
+[5] Whinnery JE, Forster EM. *The +Gz-induced loss of consciousness curve.* Extreme Physiol Med. 2013;2(1):19. doi:10.1186/2046-7648-2-19. (Open access; n = 888 centrifuge G-LOC episodes; tabulated G-LOC times by +Gz level and onset rate — primary archival source for the discrepancy analysis flagged in §4.6.)
 
 [6] Copeland K, Knarr J, Whinnery JE. *Mathematical model of +Gz acceleration tolerance: effect of countermeasures and pilot configuration.* Aviat Space Environ Med. 2000;71(4):370-375.
 
