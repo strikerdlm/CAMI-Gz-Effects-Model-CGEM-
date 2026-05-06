@@ -11,6 +11,48 @@ extension-layer level (the upstream CGEM software DOI is fixed, see README).
 
 ## [Unreleased]
 
+### Originality uplift — Scenario B Week 1 (2026-05-06)
+
+Opening week of the IJNMBE-fit originality plan
+(`/root/.claude/plans/moonlit-stargazing-wolf.md`). Scenario B was
+chosen by the author after the manuscript peer-review + advisor
+pass identified the novelty file's reliance on off-the-shelf methods.
+Week 1 lays the groundwork for the methodological uplift.
+
+- **Cross-cutting manuscript fixes** applied ahead of any scenario:
+  drop "first of three planned" framing in `manuscript.md`,
+  `cover_letter_ijnmbe.md`, and `author_page_ijnmbe.md`; demote the
+  ~180× speedup from a headline to a deployment characteristic;
+  remove the off-the-shelf "additive-wrapper preservation principle"
+  novelty claim and the vague generalisation claim
+  (`novelty_file_ijnmbe.md`). Reorder the abstract Results so the OOD
+  calibration result (the strongest empirical claim) leads.
+- **Conformalized Quantile Regression (CQR)** — new module
+  `cgem_ext/surrogate/cqr.py` with `XGBQuantileSurrogate` (continuous
+  targets) and `TwoStageXGBQuantileSurrogate` (right-censored time
+  targets) using XGBoost 2.0+'s native `objective="reg:quantileerror"`.
+  Three quantile heads per regressor (lower α/2, median, upper 1−α/2)
+  share the per-target monotonicity vectors from
+  `cgem_ext.surrogate.targets`; quantile crossing is post-hoc resolved
+  by row-wise `(min, max)` of the lower / upper heads.
+- **MondrianCQR conformal layer** — added to
+  `cgem_ext/surrogate/conformal.py` alongside the existing
+  `MondrianSplitConformal`. Conformity score follows Romano et al.
+  (2019, Eq. 1); the per-stratum (1 − α) quantile machinery is
+  factored into a private `_per_stratum_quantile` helper that both
+  conformal layers share. The previous `MondrianSplitConformal` API
+  is preserved verbatim — no change for downstream consumers.
+- **Tests** — `tests/test_cqr.py` adds 16 tests: 6 pure-numpy tests
+  for `MondrianCQR` (heteroscedasticity scaling, near-nominal coverage
+  on synthetic data, fallback for unseen strata, alpha validation,
+  alignment / NaN guards) and 10 XGBoost-backed tests for the
+  surrogate classes (fit / predict / interval contracts, the
+  non-crossing guard, two-stage censored end-to-end, build-factory
+  routing, alpha-validation, an exploratory comparison against the
+  homoscedastic Mondrian baseline under heteroscedastic data).
+  Existing 59 ungated tests continue to pass; `ruff` and `mypy`
+  remain clean on `cgem_ext` + `tests`.
+
 ### Phase 7 — AMHP submission package (2026-04-30)
 
 Built on top of the Phase-7 stages 1–3 work (manuscript draft, figure

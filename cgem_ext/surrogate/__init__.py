@@ -23,7 +23,12 @@ from cgem_ext.surrogate.baseline import (
     TwoStageRFSurrogate,
     build_baseline,
 )
-from cgem_ext.surrogate.conformal import MondrianSplitConformal
+from cgem_ext.surrogate.conformal import MondrianCQR, MondrianSplitConformal
+from cgem_ext.surrogate.cqr import (
+    TwoStageXGBQuantileSurrogate,
+    XGBQuantileSurrogate,
+    build_quantile_surrogate,
+)
 from cgem_ext.surrogate.features import FEATURE_COLUMNS, extract_features
 from cgem_ext.surrogate.targets import (
     TARGETS,
@@ -41,13 +46,17 @@ from cgem_ext.surrogate.xgb import (
 __all__ = [
     "FEATURE_COLUMNS",
     "TARGETS",
+    "MondrianCQR",
     "MondrianSplitConformal",
     "RFSurrogate",
     "TargetSpec",
     "TwoStageRFSurrogate",
+    "TwoStageXGBQuantileSurrogate",
     "TwoStageXGBSurrogate",
+    "XGBQuantileSurrogate",
     "XGBSurrogate",
     "build_baseline",
+    "build_quantile_surrogate",
     "build_surrogate",
     "censored_targets",
     "continuous_targets",
