@@ -30,6 +30,7 @@ from cgem_ext.surrogate.cqr import (
     build_quantile_surrogate,
 )
 from cgem_ext.surrogate.features import FEATURE_COLUMNS, extract_features
+from cgem_ext.surrogate.lowfi import StollGTolerance, WhinneryForsterGLOC
 from cgem_ext.surrogate.targets import (
     TARGETS,
     TargetSpec,
@@ -49,10 +50,12 @@ __all__ = [
     "MondrianCQR",
     "MondrianSplitConformal",
     "RFSurrogate",
+    "StollGTolerance",
     "TargetSpec",
     "TwoStageRFSurrogate",
     "TwoStageXGBQuantileSurrogate",
     "TwoStageXGBSurrogate",
+    "WhinneryForsterGLOC",
     "XGBQuantileSurrogate",
     "XGBSurrogate",
     "build_baseline",
