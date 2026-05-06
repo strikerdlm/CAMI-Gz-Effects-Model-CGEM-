@@ -46,38 +46,34 @@ regressor pattern for right-censored event-time targets that handles the
 intrinsic censoring structure of G-LOC outcomes; (ii) Mondrian split-conformal
 prediction intervals stratified *by maneuver category* (rather than the more
 common pooled calibration), so that conformal coverage is preserved within
-operational sub-populations of inputs; (iii) a robust-Mahalanobis distance
-detector calibrated by *distribution-free conformal abstention*, providing an
-operationally meaningful in-envelope guarantee that does not assume Gaussianity
-of the score; and (iv) the *additive-wrapper* preservation principle — the
-ML stack does not replace the FAA-validated Fortran core, it surrounds it,
-preserving the regulatory validation chain. To my knowledge no prior work
-combines all four elements over a validated regulatory ODE physiological
-model. The pattern generalises immediately to other validated biomedical ODE
-solvers — cardiovascular haemodynamics, pharmacokinetic compartment models,
-thermoregulatory and respiratory simulators — that must be made
-computationally tractable, uncertainty-aware, and input-safe for operational
-research use.
+operational sub-populations of inputs, with under-coverage at low-event-rate
+strata declared transparently rather than masked by global pooling; and
+(iii) a robust-Mahalanobis distance detector calibrated by *distribution-free
+conformal abstention* over a 17-dimensional mixed numeric/categorical input
+space, providing an operationally meaningful in-envelope guarantee that does
+not assume Gaussianity of the score. To my knowledge no prior work combines
+these three elements over a validated regulatory ODE physiological model.
 
-**Key empirical anchors** on the pre-registered held-out test split: classifier
-AUROC ≥ 0.996 on all three right-censored event targets; XGBoost regressor
-R² = 0.82–0.90 on event-positive rows of censored targets and 0.94–1.00 on
-continuous targets; Mondrian conformal empirical coverage within 4.6 percentage
-points of nominal 95 % on 4 of 5 targets, with the under-coverage on time-to-
-G-LOC declared transparently and motivating a heteroscedastic conformal
-extension flagged in §4.4; conformal OOD calibration within 0.3 pp of nominal
-95 %; ~180× emulator speedup over direct Fortran subprocess invocation,
-enabling a 20,480-evaluation Saltelli Sobol study in ~38 s rather than the
-days that would be required of direct CGEM. The validation protocol was
-pre-registered on the Open Science Framework before any test-set evaluation.
+**Key empirical anchors** on the pre-registered held-out test split: conformal
+OOD calibration of 0.953 versus the nominal 0.95 (within 0.3 pp), with the
+conformal threshold ~3× the parametric χ²(17, 0.95) cutoff; Mondrian
+conformal empirical coverage within 4.6 percentage points of nominal 95 % on
+4 of 5 surrogate targets, with the under-coverage on time-to-G-LOC declared
+transparently and motivating a heteroscedastic / quantile-regression conformal
+extension flagged in §4.4; XGBoost regressor R² = 0.82–0.90 on event-positive
+rows of censored targets and 0.94–1.00 on continuous targets; classifier
+AUROC ≥ 0.996 across the three event targets, presented as a sanity check
+on a deterministic data-generating process rather than a primary claim. The
+surrogate evaluates in ~50 µs per row versus ~9 ms for direct CGEM
+subprocess invocation, which makes the 20,480-evaluation Saltelli Sobol
+sweep in §3.6 tractable inside a manuscript-preparation cycle. The
+validation protocol was pre-registered on the Open Science Framework before
+any test-set evaluation.
 
-**Generalisability.** Although the worked example is aerospace physiology,
-the methodological pattern (additive surrogate + Mondrian conformal +
-distribution-free OOD + global sensitivity) applies to any validated ODE
-physiological model. Companion papers 2 and 3 (in preparation, also
-pre-registered on OSF) will quantify the discrepancy term δ(x) = real(x) −
-CGEM(x) against published centrifuge data and validate the full pipeline
-against own-centrifuge subjects (CACOM-1 protocol, Bogotá, 2,600 m altitude).
+**Boundary of the present paper.** The framework is validated against CGEM
+itself as ground truth. External validation against archival centrifuge
+data and against own-centrifuge subjects is the subject of separate work
+and is not claimed in this manuscript.
 
 ---
 

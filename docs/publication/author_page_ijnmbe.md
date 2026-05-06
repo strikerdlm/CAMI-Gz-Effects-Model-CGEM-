@@ -103,9 +103,8 @@ n/a — synthetic data only. The study used exclusively synthetic outputs
 of the FAA CAMI CGEM Fortran ODE model with anthropometric and
 physiological presets internal to the model. No human or animal subjects
 were involved; ethics-board approval was therefore not required.
-Empirical validation against own-centrifuge subjects is the explicit
-subject of companion paper 3 (in preparation, CACOM-1 protocol, Bogotá,
-2,600 m altitude), reported separately under appropriate IRB approval.
+Empirical validation against centrifuge subjects is the subject of
+separate work, reported elsewhere under the appropriate IRB approval.
 
 ### 5. Patient consent statement
 
