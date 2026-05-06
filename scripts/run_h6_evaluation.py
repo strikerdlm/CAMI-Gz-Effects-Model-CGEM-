@@ -158,9 +158,17 @@ def main() -> None:
     ).fit(train_df, calibration_df=val_df)
 
     arc = pd.read_parquet(arc_path)
-    wf2013 = arc[arc["source_id"] == "WF2013"].copy()
+    # H6 evaluation runs against the 8 Phase A onset-rate point rows
+    # (each carries a real time_to_loc_s mean and SD at a single onset
+    # rate). Phase B WF2013 rows are stratification-band anchors and
+    # threshold values — they do not have a single onset rate to map
+    # into CGEM input space and are reported separately in the
+    # provenance audit, not consumed by the surrogate query path.
+    wf2013 = arc[
+        (arc["source_id"] == "WF2013") & (arc["phase"] == "A")
+    ].copy()
     if wf2013.empty:
-        raise SystemExit("no WF2013 rows in archival cohort")
+        raise SystemExit("no Phase A WF2013 rows in archival cohort")
 
     rows = [_build_input_row(rec) for _, rec in wf2013.iterrows()]
     eval_df = pd.DataFrame(rows)

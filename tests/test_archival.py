@@ -144,6 +144,18 @@ def test_archival_phase_a_minimum_records(archival_df: pd.DataFrame) -> None:
     )
 
 
+def test_archival_phase_b_minimum_records(archival_df: pd.DataFrame) -> None:
+    """Phase B is the scite-full-text-derived narrow-range and threshold
+    rows from the upstream BMC papers. Minimum 10 records (5 WFR2014
+    narrow-range bands + 5 WF2013 abstract anchors). Lower counts
+    indicate that the Phase B extraction has regressed."""
+    phase_b = archival_df[archival_df["phase"] == "B"]
+    assert len(phase_b) >= 10, (
+        f"Phase B cohort under-populated: {len(phase_b)} < 10 records. "
+        f"See data/archival/PROVENANCE.md."
+    )
+
+
 def test_archival_endpoints_match_cgem_outcomes(archival_df: pd.DataFrame) -> None:
     """The two endpoint families currently in the cohort must populate
     their respective outcome columns mutually exclusively (a row should

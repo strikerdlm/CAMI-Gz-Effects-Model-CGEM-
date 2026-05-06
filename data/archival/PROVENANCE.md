@@ -11,8 +11,9 @@
 
 | Phase | Description | Status |
 |---|---|---|
-| A | Aggregated mean ± SD rows reproduced from FAA AM-23/6 (open-access summary of Whinnery & Forster 2013 Table 2 / Whinnery, Forster & Rogers 2014 Table 2) | ✅ shipped 2026-05-06 (this commit), n = 13 records |
-| B | Per-subject records extracted directly from the upstream BMC open-access papers | ⬜ deferred — full-text scrape blocked by Springer Nature redirect chain on the current dev environment; planned for the next commit cycle |
+| A | Aggregated mean ± SD rows reproduced from FAA AM-23/6 (open-access summary of Whinnery & Forster 2013 Figure 2 / Whinnery, Forster & Rogers 2014 Figure 2) | ✅ shipped 2026-05-06, n = 13 records |
+| B | Additional narrow-range Table 2 rows + abstract-anchor stratification rows from the upstream BMC open-access papers, recovered via scite full-text excerpts | ✅ shipped 2026-05-06 (this commit), n = 10 records |
+| C | Per-subject (per-row) records extracted directly from the upstream BMC PDFs | ⬜ deferred — Springer Nature redirect chain blocks WebFetch and `firecrawl_search` is unauthorized on the current dev environment; PDF acquisition will require either a manual download by the corresponding author or an upstream-friendly endpoint |
 
 Phase A is sufficient for the H6 success criterion (n ≥ 50 archival
 event-time records combined across sources) once Phase B records are
@@ -109,23 +110,57 @@ manuscript.
 
 ---
 
-## Phase B (deferred) — per-subject extraction roadmap
+## Phase B sources (this commit) — scite full-text excerpts
 
-To reach the H6 ≥ 50-record threshold with operationally meaningful
-inputs, Phase B will retrieve per-subject records from the upstream
-BMC open-access papers:
+Five WFR2014 narrow-range Table 2 rows (`WFR2014B-NARROW-*` and
+`WFR2014B-COMBINED-ge0p6`) and five WF2013 abstract-anchored
+stratification rows (`WF2013B-RAPID-ONSET-GE-1`,
+`WF2013B-GRADUAL-ONSET-LE-0p2`, `WF2013B-RAPID-GZ-GE-7`,
+`WF2013B-MIN-GZ-THRESHOLD`, `WF2013B-MIN-LOCINDTI`) were recovered
+from scite full-text excerpts of the upstream BMC papers (DOIs
+10.1186/2046-7648-2-19 and 10.1186/2046-7648-3-9). These rows are
+*additional stratifications* that the FAA AM-23/6 8-row Figure 1 and
+5-row Figure 2 aggregate further; the upstream papers report them at
+finer grain (mean ± SD per narrow band; threshold values for the
++Gz-level minimum and the minimum LOCINDTI).
+
+The Phase B WF2013 rows include two threshold values that do not
+correspond to point estimates of `time_to_loc_s` (the +Gz threshold
+of +4.7 Gz below which G-LOC does not occur, and the minimum
+observed LOCINDTI of 5 s). These are encoded with
+`summary_kind = "threshold_value"` and are excluded from the H6
+evaluation by `scripts/run_h6_evaluation.py` (which filters
+`phase == "A"`); they remain in the parquet as auditable cohort
+metadata.
+
+The Phase B WFR2014 narrow-range rows report mean ± SD at narrower
+offset-rate bands than the FAA AM-23/6 reproduction. They are
+encoded with `summary_kind` absent; their `offset_rate_g_per_s_low`
+and `offset_rate_g_per_s_high` columns capture the band edges, and
+the band midpoint is recorded as `offset_rate_g_per_s` for backward
+compatibility with downstream consumers.
+
+## Phase C (deferred) — per-subject extraction roadmap
+
+To reach a per-subject grain — required for any Bayesian per-pilot
+calibration extension or for tightening the H6 evaluation past the
+aggregated bracket — Phase C will retrieve subject-level records
+from the upstream BMC PDFs:
 
 1. Pull
    `https://link.springer.com/article/10.1186/2046-7648-2-19` and
-   `https://link.springer.com/article/10.1186/2046-7648-3-9` as PDF;
-   parse Tables 1–3 of each.
-2. For each per-subject row reported (if any), append to the
-   parquet with `record_type="per_subject"` and `phase="B"`.
-3. If the upstream tables are still pooled (no per-subject grain),
-   retain Phase A as the cohort and either expand via additional
-   open-source FAA / USAFSAM technical reports (DOT/FAA/AM-21/* and
-   AFRL TRs published openly via NTRS) or downgrade H6 to
-   exploratory per the OSF amendment's failure-handling rule.
+   `https://link.springer.com/article/10.1186/2046-7648-3-9` as PDF
+   (currently blocked by the Springer Nature redirect chain on the
+   `WebFetch` and `firecrawl_search` tools available to the dev
+   environment — a manual PDF download by the corresponding author
+   is the working solution).
+2. For each per-subject row reported (Tables 1–3 of each paper),
+   append to the parquet with `record_type="per_subject"` and
+   `phase="C"`.
+3. If the upstream tables remain pooled at the SD/range level (no
+   per-subject grain), expand the cohort via additional open-source
+   FAA / USAFSAM technical reports (DOT/FAA/AM-21/* and AFRL TRs
+   published openly via NTRS).
 
-Phase B kicks off in the next commit cycle; the deferral is recorded
-here so the cite chain stays auditable.
+Phase C kicks off in the next commit cycle; the deferral is
+recorded here so the cite chain stays auditable.
