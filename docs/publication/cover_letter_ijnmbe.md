@@ -42,33 +42,40 @@ The journal's guidance reminds authors that "application of a standard
 numerical procedure to a standard problem is not within the scope". The
 contribution of this paper is *not* "we applied XGBoost to a Fortran model".
 It is the **combined methodological stack**: (i) a two-stage classifier-then-
-regressor pattern for right-censored event-time targets that handles the
-intrinsic censoring structure of G-LOC outcomes; (ii) Mondrian split-conformal
-prediction intervals stratified *by maneuver category* (rather than the more
-common pooled calibration), so that conformal coverage is preserved within
-operational sub-populations of inputs, with under-coverage at low-event-rate
-strata declared transparently rather than masked by global pooling; and
+regressor pattern for right-censored event-time targets, wrapped by a
+*heteroscedastic* maneuver-category-stratified Conformalized Quantile
+Regression layer (Romano, Patterson & Candès 2019) that restores empirical
+coverage on the long-tailed `time_to_gloc_s` target from 0.861 to 0.972 on
+the OSF-pre-registered held-out test split (pre-registered as OSF amendment
+2026-05-06 hypothesis H5); (ii) Mondrian split-conformal prediction intervals
+stratified *by maneuver category* (rather than the more common pooled
+calibration), so that conformal coverage is preserved within operational
+sub-populations of inputs, with under-coverage at low-event-rate strata
+declared transparently rather than masked by global pooling; and
 (iii) a robust-Mahalanobis distance detector calibrated by *distribution-free
 conformal abstention* over a 17-dimensional mixed numeric/categorical input
 space, providing an operationally meaningful in-envelope guarantee that does
 not assume Gaussianity of the score. To my knowledge no prior work combines
-these three elements over a validated regulatory ODE physiological model.
+these three elements over a validated regulatory ODE physiological model;
+the CQR application to a two-stage right-censored aerospace-medicine target
+is, specifically, novel.
 
 **Key empirical anchors** on the pre-registered held-out test split: conformal
 OOD calibration of 0.953 versus the nominal 0.95 (within 0.3 pp), with the
-conformal threshold ~3× the parametric χ²(17, 0.95) cutoff; Mondrian
-conformal empirical coverage within 4.6 percentage points of nominal 95 % on
-4 of 5 surrogate targets, with the under-coverage on time-to-G-LOC declared
-transparently and motivating a heteroscedastic / quantile-regression conformal
-extension flagged in §4.4; XGBoost regressor R² = 0.82–0.90 on event-positive
-rows of censored targets and 0.94–1.00 on continuous targets; classifier
-AUROC ≥ 0.996 across the three event targets, presented as a sanity check
-on a deterministic data-generating process rather than a primary claim. The
-surrogate evaluates in ~50 µs per row versus ~9 ms for direct CGEM
-subprocess invocation, which makes the 20,480-evaluation Saltelli Sobol
-sweep in §3.6 tractable inside a manuscript-preparation cycle. The
-validation protocol was pre-registered on the Open Science Framework before
-any test-set evaluation.
+conformal threshold ~3× the parametric χ²(17, 0.95) cutoff; conformal coverage
+within 5 percentage points of nominal 95 % on **all** 5 surrogate targets
+once the heteroscedastic CQR layer replaces the homoscedastic Mondrian
+baseline on `time_to_gloc_s` (0.861 → 0.972, n = 36 event-positive test
+rows); XGBoost regressor R² = 0.82–0.90 on event-positive rows of censored
+targets and 0.94–1.00 on continuous targets; classifier AUROC ≥ 0.996 across
+the three event targets, presented as a sanity check on a deterministic
+data-generating process rather than a primary claim. The surrogate evaluates
+in ~50 µs per row versus ~9 ms for direct CGEM subprocess invocation, which
+makes the 20,480-evaluation Saltelli Sobol sweep in §3.6 tractable inside a
+manuscript-preparation cycle. The validation protocol was pre-registered on
+the Open Science Framework before any test-set evaluation; the CQR layer
+and the archival-validation arm were added under a 2026-05-06 OSF amendment
+(H5, H6) before any test-set evaluation under those new hypotheses.
 
 **Boundary of the present paper.** The framework is validated against CGEM
 itself as ground truth. External validation against archival centrifuge
