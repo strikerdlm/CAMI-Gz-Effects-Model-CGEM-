@@ -340,14 +340,21 @@ def test_xgb_quantile_unfitted_raises():
         _ = sur.cqr
 
 
-def test_xgb_quantile_better_stratum_coverage_under_heteroscedasticity():
-    """CQR's stratum-conditional coverage should improve over a
-    homoscedastic Mondrian baseline on heteroscedastic data.
+def test_xgb_quantile_smoke_under_heteroscedasticity():
+    """Smoke test: both CQR and the homoscedastic Mondrian baseline
+    deliver coverage within ±10 pp of nominal on a heteroscedastic
+    synthetic fixture.
 
-    Sanity check rather than a tight theoretical bound — both methods
-    pass on benign data, but on noisy strata the CQR bracket is allowed
-    to widen with G_peak whereas Mondrian's bracket is constant within
-    the stratum.
+    This is *not* a manuscript-grade comparison of CQR vs Mondrian.
+    The synthetic Gaussian fixture is too benign to demonstrate the
+    CQR advantage cleanly, and a passing assertion here would be
+    over-claimed evidence for the manuscript.
+
+    The genuine empirical anchor lives in
+    :func:`test_cqr_fixes_time_to_gloc_under_coverage` (gated by the
+    ``needs_cgem_binary`` marker), which fits both layers on the
+    OSF-pre-registered ``cgem_synthetic_v1`` split and reports actual
+    per-stratum coverage on ``time_to_gloc_s``.
     """
     from cgem_ext.surrogate import (
         MondrianSplitConformal,
@@ -360,13 +367,11 @@ def test_xgb_quantile_better_stratum_coverage_under_heteroscedasticity():
     cal = df.iloc[600:750].copy()
     test = df.iloc[750:].copy()
 
-    # CQR
     cqr = XGBQuantileSurrogate("hlap_min", alpha=0.10).fit(
         train, calibration_df=cal
     )
     cov_cqr = cqr.coverage(test)
 
-    # Homoscedastic Mondrian baseline
     base = XGBSurrogate("hlap_min").fit(train)
     cal_pred = base.predict(cal)
     msc = MondrianSplitConformal(alpha=0.10).fit(
@@ -381,10 +386,87 @@ def test_xgb_quantile_better_stratum_coverage_under_heteroscedasticity():
         test_strata=test["maneuver_category"].to_numpy(),
     )
 
-    # Both methods deliver coverage within a reasonable band; the
-    # primary check is that CQR is at least as well-calibrated as the
-    # homoscedastic baseline on overall coverage.
-    assert abs(cov_cqr["_overall"] - 0.90) <= abs(cov_msc["_overall"] - 0.90) + 0.05
+    # Both methods deliver coverage within a reasonable band on the
+    # synthetic fixture — neither pathologically over- nor under-covers.
+    assert 0.80 <= cov_cqr["_overall"] <= 1.0
+    assert 0.80 <= cov_msc["_overall"] <= 1.0
+
+
+@pytest.mark.needs_cgem_binary
+def test_cqr_fixes_time_to_gloc_under_coverage():
+    """Empirical anchor: CQR's coverage on ``time_to_gloc_s`` should
+    be closer to the nominal 95 % than the existing homoscedastic
+    Mondrian under-coverage of 0.861 reported in the OSF
+    pre-registered held-out split.
+
+    Loads ``data/datasets/cgem_synthetic_v1.parquet`` (the canonical
+    paper-1 dataset), reproduces the 70/15/15 stratified split with
+    master seed 42, fits :class:`TwoStageXGBQuantileSurrogate`, and
+    asserts:
+
+    1. CQR coverage on event-positive ``time_to_gloc_s`` rows is at
+       least 0.90 — within 5 pp of nominal 0.95.
+    2. CQR coverage is strictly closer to 0.95 than the existing
+       homoscedastic Mondrian point estimate of 0.861.
+
+    This test is gated by ``needs_cgem_binary`` because it loads the
+    full parquet (which is generated from the compiled CGEM binary
+    and lives on the developer machine). CI runs ``-m "not
+    needs_cgem_binary"`` and skips it; a manual run via
+    ``pytest tests/test_cqr.py::test_cqr_fixes_time_to_gloc_under_coverage``
+    is what the manuscript Section 3.3 cites.
+
+    Pre-registration: the success threshold (≥ 0.90) is locked in the
+    OSF amendment authored before this test is first executed; any
+    failure must be reported transparently in Section 3.3 rather than
+    silently relaxed.
+    """
+    from pathlib import Path
+
+    from cgem_ext.data.splits import stratified_split
+    from cgem_ext.surrogate import TwoStageXGBQuantileSurrogate
+
+    parquet_path = (
+        Path(__file__).parent.parent
+        / "data"
+        / "datasets"
+        / "cgem_synthetic_v1.parquet"
+    )
+    if not parquet_path.exists():
+        pytest.skip(f"canonical dataset not found at {parquet_path}")
+
+    df = pd.read_parquet(parquet_path)
+    # Apply the same status filter the splitter uses internally so the
+    # index arrays line up with the DataFrame view.
+    if "status" in df.columns:
+        df = df[df["status"] == "ok"].reset_index(drop=True)
+    split = stratified_split(df, seed=42)
+    train_df = df.iloc[split.train_idx].copy()
+    val_df = df.iloc[split.val_idx].copy()
+    test_df = df.iloc[split.test_idx].copy()
+
+    model = TwoStageXGBQuantileSurrogate(
+        "time_to_gloc_s", alpha=0.05
+    ).fit(train_df, calibration_df=val_df)
+    cov = model.coverage(test_df)
+
+    # Empirical-anchor primary assertion: coverage on event-positive
+    # rows of the held-out test split is within 5 pp of nominal.
+    assert cov["_overall"] >= 0.90, (
+        f"CQR coverage on time_to_gloc_s is {cov['_overall']:.3f} "
+        f"(< 0.90); the OSF-amended success threshold is not met. "
+        f"Per-stratum: {cov}"
+    )
+
+    # Comparison to the homoscedastic Mondrian baseline result of 0.861
+    # reported in §3.3 of manuscript.md (commit 1f1a816).
+    baseline_under_coverage = 0.861
+    nominal = 1 - 0.05
+    assert abs(cov["_overall"] - nominal) < abs(baseline_under_coverage - nominal), (
+        f"CQR coverage {cov['_overall']:.3f} is not closer to nominal "
+        f"{nominal:.3f} than the homoscedastic Mondrian baseline "
+        f"{baseline_under_coverage:.3f}."
+    )
 
 
 # ──────────────────────────────────────────────────────────────────────
