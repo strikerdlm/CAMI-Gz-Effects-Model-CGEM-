@@ -5,7 +5,7 @@
  * Designed for Q1 science journal publication standards.
  */
 
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import {
   LayoutGrid,
@@ -31,12 +31,21 @@ import {
   CerebralFlowChart,
   type ModelVariableKey,
 } from '../components/charts';
-import { AEROBATIC_PROFILES, simulateCGEMResult } from '../services/mockData';
+import { MANEUVERS_BY_ID } from '../data/maneuvers';
+import { simulateCGEMResult } from '../services/mockData';
 import { DEFAULT_COUNTERMEASURES } from '../utils/constants';
-import { cgemApiBaseURL, useVersion } from '../services/cgemApi';
+import {
+  cgemApiBaseURL,
+  useHealth,
+  useRunCgem,
+  useVersion,
+  apiErrorMessage,
+} from '../services/cgemApi';
+import { adaptCgemRun } from '../services/runCgemAdapter';
 import { calculateProfileStats, computeStateDurations } from '../utils/calculations';
 import { cn } from '../utils';
 import type { CGEMResult, Countermeasures, PilotConfig } from '../types';
+import type { RunCGEMRequest, PilotConfigRequest } from '../services/types';
 
 type ViewMode = 'grid' | 'single';
 type ChartType = 'lines' | 'heatmap' | 'radar' | 'histogram' | 'durations' | 'flows';
@@ -164,7 +173,7 @@ export const DashboardPage: React.FC = () => {
   const [selectedPresetId, setSelectedPresetId] = useState<string>(PILOT_PRESETS[0].id);
   const [focusedVariable, setFocusedVariable] = useState<ModelVariableKey>('geff');
 
-  const profile = AEROBATIC_PROFILES[selectedProfileId];
+  const profile = MANEUVERS_BY_ID[selectedProfileId];
   const selectedPreset = useMemo(
     () => PILOT_PRESETS.find((preset) => preset.id === selectedPresetId) ?? PILOT_PRESETS[0],
     [selectedPresetId]
@@ -175,13 +184,58 @@ export const DashboardPage: React.FC = () => {
     [selectedProfileId]
   );
 
-  const stats = useMemo(() => 
-    profile ? calculateProfileStats(profile.samples) : null, 
+  const stats = useMemo(() =>
+    profile ? calculateProfileStats(profile.samples) : null,
     [profile]
   );
 
-  // Run simulation for selected profile
+  // ── Real-API path ────────────────────────────────────────────────────
+  // Fire /run-cgem on the FastAPI service; fall back to mock simulator
+  // only when the service is unreachable.
+  const health = useHealth();
+  const apiAlive = health.data?.status === 'ok';
+  const runCgem = useRunCgem();
+
+  useEffect(() => {
+    if (!apiAlive || !profile) return;
+    const pilot: PilotConfigRequest = {
+      who_profile: selectedPreset.whoProfile,
+      g_tolerance_multiplier: 1.0,
+      dehydration_level:
+        selectedPreset.countermeasureOverrides.dehydration_level ??
+        DEFAULT_COUNTERMEASURES.dehydration_level ??
+        0,
+      countermeasures_label:
+        (selectedPreset.countermeasureOverrides.agsm_effectiveness ?? 0) > 0 ? 'agsm' : 'none',
+      gsuit_max_psi:
+        selectedPreset.countermeasureOverrides.gsuit_max_psi ??
+        DEFAULT_COUNTERMEASURES.gsuit_max_psi ??
+        0,
+      gsuit_coverage_fraction:
+        selectedPreset.countermeasureOverrides.gsuit_coverage_fraction ??
+        DEFAULT_COUNTERMEASURES.gsuit_coverage_fraction ??
+        0.6,
+      agsm_effectiveness:
+        selectedPreset.countermeasureOverrides.agsm_effectiveness ??
+        DEFAULT_COUNTERMEASURES.agsm_effectiveness ??
+        0,
+      pbg_max_mmhg: selectedPreset.countermeasureOverrides.pbg_max_mmhg ?? 0,
+    };
+    const req: RunCGEMRequest = { maneuver: selectedProfileId, pilot };
+    runCgem.mutate(req);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedProfileId, selectedPresetId, apiAlive]);
+
   const result = useMemo<CGEMResult | null>(() => {
+    if (runCgem.data) {
+      try {
+        return adaptCgemRun(runCgem.data);
+      } catch (e) {
+        console.error('Failed to adapt /run-cgem response, falling back to mock', e);
+      }
+    }
+    if (apiAlive) return null; // wait for response; do not fall back when API is up
+    // Offline fallback: mock simulator (legacy path)
     if (!profile) return null;
     const countermeasures: Countermeasures = {
       ...DEFAULT_COUNTERMEASURES,
@@ -192,17 +246,40 @@ export const DashboardPage: React.FC = () => {
       countermeasures,
     };
     return simulateCGEMResult(profile, config);
-  }, [profile, selectedPreset]);
+  }, [runCgem.data, apiAlive, profile, selectedPreset]);
 
   const durations = useMemo(() => {
     if (!result) return null;
     return computeStateDurations(result.times_s, result.g_values, result.geff_values);
   }, [result]);
 
-  if (!profile || !stats || !result || !durations) {
+  if (!profile || !stats) {
     return (
       <div className="flex items-center justify-center h-96">
-        <p className="text-surface-400">Loading dashboard data...</p>
+        <p className="text-surface-400 font-mono">No maneuver selected.</p>
+      </div>
+    );
+  }
+  if (apiAlive && runCgem.isPending) {
+    return (
+      <div className="flex flex-col items-center justify-center h-96 gap-2">
+        <p className="amber font-mono text-sm tracking-callsign animate-pulse-amber">RUNNING CGEM · /run-cgem</p>
+        <p className="text-surface-500 text-xs font-mono">Fortran core · ~9 ms / sample</p>
+      </div>
+    );
+  }
+  if (apiAlive && runCgem.isError) {
+    return (
+      <div className="flex flex-col items-center justify-center h-96 gap-2">
+        <p className="text-hud-red font-mono text-sm tracking-callsign">CGEM CALL FAILED</p>
+        <p className="text-surface-500 text-xs font-mono">{apiErrorMessage(runCgem.error)}</p>
+      </div>
+    );
+  }
+  if (!result || !durations) {
+    return (
+      <div className="flex items-center justify-center h-96">
+        <p className="text-surface-400 font-mono">Loading dashboard data…</p>
       </div>
     );
   }
