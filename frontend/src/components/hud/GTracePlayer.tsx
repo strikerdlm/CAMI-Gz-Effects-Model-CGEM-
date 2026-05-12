@@ -42,22 +42,24 @@ export const GTracePlayer: React.FC<GTracePlayerProps> = ({
   const gs = useMemo(() => maneuver.samples.map((s) => s.nz), [maneuver]);
   const duration = times.length > 0 ? times[times.length - 1] : 0;
 
+  // Track maneuver-id in state so we can reset the playhead synchronously
+  // when the prop changes (React's documented "adjust state on prop change"
+  // pattern — see react.dev/reference/react/useState).
+  const [trackedManeuverId, setTrackedManeuverId] = useState(maneuver.id);
   const [playing, setPlaying] = useState(false);
   const [speed, setSpeed] = useState<0.5 | 1 | 2>(1);
   const [t, setT] = useState(0);
-  const lastFrameRef = useRef<number | null>(null);
-
-  // Reset playhead when the maneuver changes.
-  useEffect(() => {
+  if (trackedManeuverId !== maneuver.id) {
+    setTrackedManeuverId(maneuver.id);
     setT(0);
     setPlaying(false);
-    lastFrameRef.current = null;
-  }, [maneuver.id]);
+  }
+
+  const lastFrameRef = useRef<number | null>(null);
 
   useEffect(() => {
     if (!playing) {
-      lastFrameRef.current = null;
-      return;
+      return () => { lastFrameRef.current = null; };
     }
     let raf = 0;
     const tick = (frameTime: number): void => {
@@ -77,7 +79,10 @@ export const GTracePlayer: React.FC<GTracePlayerProps> = ({
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
+    return () => {
+      cancelAnimationFrame(raf);
+      lastFrameRef.current = null;
+    };
   }, [playing, speed, duration]);
 
   const currentG = useMemo(() => interpolateG(t, times, gs), [t, times, gs]);
