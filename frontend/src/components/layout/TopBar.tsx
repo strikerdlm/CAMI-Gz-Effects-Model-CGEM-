@@ -12,39 +12,42 @@ import {
   Search,
   Download,
   RefreshCw,
-  Moon,
-  Sun,
   HelpCircle,
 } from 'lucide-react';
 import { cn } from '../../utils';
+import { useHealth, useVersion } from '../../services/cgemApi';
 
 const PAGE_TITLES: Record<string, { title: string; subtitle: string }> = {
   '/': {
-    title: 'G-Force Profile Overview',
-    subtitle: 'Select and visualize aerobatic maneuver profiles',
+    title: 'G-FORCE PROFILE OVERVIEW',
+    subtitle: 'Maneuver library · risk preview',
+  },
+  '/simulator': {
+    title: 'TACTICAL SIMULATOR',
+    subtitle: 'Attitude · G-trace · live conformal T-LOC',
   },
   '/prediction': {
-    title: 'CGEM Prediction',
-    subtitle: 'Configure pilot parameters and run physiological simulation',
+    title: 'CGEM PREDICTION',
+    subtitle: 'Conformal /predict on the trained surrogate',
   },
   '/dashboard': {
-    title: 'Scientific Dashboard',
-    subtitle: 'Publication-quality ECharts visualizations',
+    title: 'SCIENTIFIC DASHBOARD',
+    subtitle: 'Publication-quality CGEM time-series',
   },
   '/batch': {
-    title: 'Batch Analysis',
-    subtitle: 'Compare physiological predictions across all profiles',
+    title: 'BATCH ANALYSIS',
+    subtitle: 'Compare predictions across all maneuvers',
   },
   '/analysis': {
-    title: 'Physiological Analysis',
-    subtitle: 'Detailed maneuver explanations and risk factors',
+    title: 'PHYSIOLOGICAL ANALYSIS',
+    subtitle: 'Sobol sensitivity · maneuver briefings',
   },
   '/settings': {
-    title: 'Settings',
-    subtitle: 'Configure application preferences',
+    title: 'SETTINGS',
+    subtitle: 'API URL · default pilot config · display',
   },
   '/about': {
-    title: 'About',
+    title: 'ABOUT',
     subtitle: 'Project information and references',
   },
 };
@@ -52,18 +55,34 @@ const PAGE_TITLES: Record<string, { title: string; subtitle: string }> = {
 export const TopBar: React.FC = () => {
   const location = useLocation();
   const pageInfo = PAGE_TITLES[location.pathname] || {
-    title: 'G-Effects Dashboard',
+    title: 'G-EFFECTS TACTICAL DISPLAY',
     subtitle: 'Aerospace safety management',
   };
 
-  const [isDarkMode, setIsDarkMode] = React.useState(true);
+  const health = useHealth();
+  const version = useVersion();
+  const apiState: 'ok' | 'down' | 'pending' = health.isPending
+    ? 'pending'
+    : health.data?.status === 'ok'
+      ? 'ok'
+      : 'down';
+  const dotClass =
+    apiState === 'ok'
+      ? 'bg-hud-phosphor shadow-hud-glow-green'
+      : apiState === 'down'
+        ? 'bg-hud-red shadow-hud-glow-red'
+        : 'bg-hud-amber shadow-hud-glow-amber animate-pulse-amber';
+  const linkText =
+    apiState === 'ok' ? 'API LINK' : apiState === 'down' ? 'NO LINK' : 'HANDSHAKE';
+  const linkTextClass =
+    apiState === 'ok' ? 'phosphor' : apiState === 'down' ? 'text-hud-red' : 'amber';
 
   return (
     <header
       className={cn(
         'fixed top-0 right-0 z-30 h-16',
-        'bg-surface-950/80 backdrop-blur-xl',
-        'border-b border-surface-800/50',
+        'bg-hud-bg/85 backdrop-blur-xl',
+        'border-b border-hud-line/70',
         'flex items-center justify-between px-6',
         'transition-all duration-300'
       )}
@@ -77,23 +96,27 @@ export const TopBar: React.FC = () => {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.2 }}
         >
-          <h1 className="text-lg font-semibold text-white">{pageInfo.title}</h1>
-          <p className="text-xs text-surface-400">{pageInfo.subtitle}</p>
+          <h1 className="font-condensed text-lg tracking-callsign uppercase text-hud-ink">
+            {pageInfo.title}
+          </h1>
+          <p className="text-[11px] font-mono text-hud-ink-faint tracking-wide">
+            {pageInfo.subtitle}
+          </p>
         </motion.div>
       </div>
 
       {/* Center: Search */}
       <div className="hidden md:flex items-center flex-1 max-w-md mx-8">
         <div className="relative w-full">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-surface-500" />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-hud-ink-faint" />
           <input
             type="text"
-            placeholder="Search profiles, parameters..."
+            placeholder="SEARCH MANEUVER · TAG · CATEGORY"
             className={cn(
-              'w-full pl-10 pr-4 py-2 rounded-xl',
-              'bg-surface-800/60 border border-surface-700/50',
-              'text-surface-200 placeholder:text-surface-500',
-              'focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500/50',
+              'w-full pl-10 pr-4 py-1.5 rounded-sm font-mono text-xs tracking-callsign',
+              'bg-hud-panel-2 border border-hud-line',
+              'text-hud-amber placeholder:text-hud-ink-faint placeholder:tracking-callsign',
+              'focus:outline-none focus:border-hud-amber',
               'transition-all duration-200'
             )}
           />
@@ -101,75 +124,71 @@ export const TopBar: React.FC = () => {
       </div>
 
       {/* Right: Actions */}
-      <div className="flex items-center gap-2">
-        {/* Status indicator */}
-        <div className="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-accent-500/10 border border-accent-500/20">
-          <div className="w-2 h-2 rounded-full bg-accent-500 animate-pulse" />
-          <span className="text-xs font-medium text-accent-400">Model Ready</span>
+      <div className="flex items-center gap-3">
+        {/* API status indicator */}
+        <div className="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-sm bg-hud-panel border border-hud-line">
+          <span className={cn('w-2 h-2 rounded-full', dotClass)} />
+          <span
+            className={cn(
+              'font-mono text-[11px] tracking-callsign uppercase',
+              linkTextClass,
+            )}
+          >
+            {linkText}
+          </span>
+          {version.data?.package_version && (
+            <span className="font-mono text-[11px] text-hud-ink-faint">
+              · v{version.data.package_version}
+            </span>
+          )}
         </div>
 
         {/* Action buttons */}
-        <div className="flex items-center gap-1 ml-2">
+        <div className="flex items-center gap-1">
           <button
+            onClick={() => { void health.refetch(); void version.refetch(); }}
             className={cn(
-              'p-2 rounded-lg transition-all duration-200',
-              'text-surface-400 hover:text-white hover:bg-surface-800'
+              'p-2 rounded-sm transition-all duration-200',
+              'text-hud-ink-faint hover:text-hud-amber hover:bg-hud-panel'
             )}
-            title="Refresh data"
+            title="Refresh API status"
           >
             <RefreshCw className="w-4 h-4" />
           </button>
-
           <button
             className={cn(
-              'p-2 rounded-lg transition-all duration-200',
-              'text-surface-400 hover:text-white hover:bg-surface-800'
+              'p-2 rounded-sm transition-all duration-200',
+              'text-hud-ink-faint hover:text-hud-amber hover:bg-hud-panel'
             )}
             title="Export"
           >
             <Download className="w-4 h-4" />
           </button>
-
           <button
             className={cn(
-              'p-2 rounded-lg transition-all duration-200',
-              'text-surface-400 hover:text-white hover:bg-surface-800'
+              'p-2 rounded-sm transition-all duration-200',
+              'text-hud-ink-faint hover:text-hud-amber hover:bg-hud-panel'
             )}
             title="Notifications"
           >
             <Bell className="w-4 h-4" />
           </button>
-
           <button
             className={cn(
-              'p-2 rounded-lg transition-all duration-200',
-              'text-surface-400 hover:text-white hover:bg-surface-800'
+              'p-2 rounded-sm transition-all duration-200',
+              'text-hud-ink-faint hover:text-hud-amber hover:bg-hud-panel'
             )}
             title="Help"
           >
             <HelpCircle className="w-4 h-4" />
           </button>
-
-          <button
-            onClick={() => setIsDarkMode(!isDarkMode)}
-            className={cn(
-              'p-2 rounded-lg transition-all duration-200',
-              'text-surface-400 hover:text-white hover:bg-surface-800'
-            )}
-            title={isDarkMode ? 'Light mode' : 'Dark mode'}
-          >
-            {isDarkMode ? (
-              <Sun className="w-4 h-4" />
-            ) : (
-              <Moon className="w-4 h-4" />
-            )}
-          </button>
         </div>
 
-        {/* User avatar */}
-        <div className="ml-2 pl-2 border-l border-surface-700">
-          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center text-white font-semibold text-sm">
-            DM
+        {/* Callsign */}
+        <div className="pl-3 border-l border-hud-line">
+          <div className="font-mono text-[11px] tracking-callsign text-hud-ink-faint leading-tight">
+            <div className="amber">CGEM-1</div>
+            <div>DLM · BOG</div>
           </div>
         </div>
       </div>

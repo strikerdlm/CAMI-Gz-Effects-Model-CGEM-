@@ -6,20 +6,25 @@
  */
 
 import React, { useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sidebar } from './Sidebar';
 import { TopBar } from './TopBar';
+import { ScanlineOverlay } from '../hud';
 
 export const MainLayout: React.FC = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const location = useLocation();
 
   return (
-    <div className="min-h-screen bg-surface-950 bg-grid">
-      {/* Background gradient effects */}
+    <div className="min-h-screen bg-hud-bg relative">
+      {/* CRT scanlines + slow sweep */}
+      <ScanlineOverlay />
+
+      {/* Background atmosphere */}
       <div className="fixed inset-0 pointer-events-none">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary-500/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-accent-500/5 rounded-full blur-3xl" />
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-hud-phosphor/[0.04] rounded-full blur-3xl" />
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-hud-amber/[0.03] rounded-full blur-3xl" />
       </div>
 
       {/* Sidebar */}
