@@ -15,6 +15,7 @@ import {
   Play,
   FileText,
   Info,
+  Plane,
   Zap,
   ChevronLeft,
   ChevronRight,
@@ -36,6 +37,13 @@ const NAV_ITEMS: NavItem[] = [
     icon: LayoutDashboard,
     path: '/',
     description: 'Profile selection & G-force visualization',
+  },
+  {
+    id: 'simulator',
+    label: 'Simulator',
+    icon: Plane,
+    path: '/simulator',
+    description: 'Live attitude + G-trace + prediction',
   },
   {
     id: 'prediction',

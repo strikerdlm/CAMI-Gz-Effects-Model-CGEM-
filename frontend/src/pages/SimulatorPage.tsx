@@ -1,0 +1,318 @@
+/**
+ * Simulator — /simulator
+ * --------------------------------------------------------------------
+ * Three-column tactical-display layout:
+ *   • Left: maneuver picker (71 + 1, grouped by Aresti / military category)
+ *   • Center: status strip, attitude indicator (visual proxy), G-trace player
+ *   • Right: live telemetry, /predict-driven T-LOC + 95 % conformal bracket,
+ *           RiskBadge, pilot config snapshot
+ */
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import {
+  MANEUVERS,
+  MANEUVERS_BY_CATEGORY,
+  ORDERED_CATEGORIES,
+  type Maneuver,
+  type ManeuverCategory,
+} from '../data/maneuvers';
+import {
+  Bezel,
+  SegmentReadout,
+  RiskBadge,
+  StatusStrip,
+  AttitudeIndicator,
+  GTracePlayer,
+  type RiskTier,
+} from '../components/hud';
+import {
+  usePredict,
+  useHealth,
+  apiErrorMessage,
+} from '../services/cgemApi';
+import type {
+  ManeuverDescriptors,
+  PilotConfigRequest,
+  PredictionRequest,
+  TargetPrediction,
+} from '../services/types';
+
+const CATEGORY_LABELS: Record<ManeuverCategory, string> = {
+  championship: 'CHAMPIONSHIP',
+  military_acm: 'MILITARY ACM',
+  extreme_post_stall: 'EXTREME / POST-STALL',
+  training: 'TRAINING',
+  conceptual: 'CONCEPTUAL',
+};
+
+const DEFAULT_PILOT: PilotConfigRequest = {
+  who_profile: 4,
+  g_tolerance_multiplier: 1.0,
+  dehydration_level: 0.0,
+  countermeasures_label: 'agsm',
+  gsuit_max_psi: 5.0,
+  gsuit_coverage_fraction: 0.6,
+  agsm_effectiveness: 0.5,
+  pbg_max_mmhg: 0.0,
+};
+
+function riskFromPrediction(
+  point: number | null,
+  eventProb: number | null | undefined,
+): RiskTier {
+  if (eventProb == null) return 'CLEAR';
+  if (eventProb < 0.05) return 'CLEAR';
+  if (eventProb < 0.25 && (point ?? Infinity) > 10) return 'CAUTION';
+  if (eventProb < 0.6) return 'WARNING';
+  return 'G-LOC';
+}
+
+export const SimulatorPage: React.FC = () => {
+  const health = useHealth();
+  const apiAlive = health.data?.status === 'ok';
+
+  const [searchParams] = useSearchParams();
+  const initial = searchParams.get('id') ?? 'hammerhead';
+  const [selectedId, setSelectedId] = useState<string>(initial);
+
+  const maneuver = useMemo<Maneuver>(
+    () => MANEUVERS.find((m) => m.id === selectedId) ?? MANEUVERS[0],
+    [selectedId],
+  );
+
+  const [now, setNow] = useState<{ t: number; g: number }>({ t: 0, g: maneuver.samples[0]?.nz ?? 0 });
+
+  // Attitude proxy: integrate pitch from (Gz - 1); roll oscillates by category.
+  const pitchRef = useRef<number>(0);
+  const lastTRef = useRef<number>(0);
+  useEffect(() => {
+    pitchRef.current = 0;
+    lastTRef.current = 0;
+  }, [selectedId]);
+
+  const dt = now.t - lastTRef.current;
+  if (dt > 0 && dt < 2) {
+    pitchRef.current = Math.max(-45, Math.min(45, pitchRef.current + (now.g - 1) * 12 * dt));
+    lastTRef.current = now.t;
+  } else if (dt < 0 || dt >= 2) {
+    pitchRef.current = (now.g - 1) * 12 * 0.5;
+    lastTRef.current = now.t;
+  }
+  const rollAmp =
+    maneuver.category === 'extreme_post_stall' ? 40
+    : maneuver.category === 'military_acm' ? 22
+    : maneuver.category === 'conceptual' ? 30
+    : 12;
+  const roll = Math.sin(now.t * 0.6 + maneuver.id.length) * rollAmp;
+
+  // Fire one /predict per maneuver change.
+  const predictMutation = usePredict();
+  useEffect(() => {
+    if (!apiAlive) return;
+    const desc: ManeuverDescriptors = {
+      maneuver: maneuver.id,
+      g_peak_abs: Math.abs(maneuver.peak_pos_gz),
+      dgdt_max_g_per_s: maneuver.onset_rate_g_per_s,
+      profile_duration_s: maneuver.total_duration_s,
+    };
+    const req: PredictionRequest = { pilot: DEFAULT_PILOT, maneuver: desc };
+    predictMutation.mutate(req);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [maneuver.id, apiAlive]);
+
+  const targets = predictMutation.data?.targets ?? [];
+  const glocPred: TargetPrediction | undefined = targets.find((t) => t.target === 'time_to_gloc_s');
+  const point = glocPred?.point ?? null;
+  const lo = glocPred?.lo ?? null;
+  const hi = glocPred?.hi ?? null;
+  const eventProb = glocPred?.event_probability ?? null;
+  const expectedT = glocPred?.expected_time_s ?? null;
+  const conformal =
+    point != null && lo != null && hi != null
+      ? { median_s: point, low_s: lo, high_s: hi, label: '95% CI' }
+      : null;
+
+  const risk = riskFromPrediction(point, eventProb);
+  const ood = predictMutation.data?.ood ?? false;
+
+  return (
+    <div className="grid grid-cols-1 xl:grid-cols-[260px_1fr_320px] gap-4 min-h-[calc(100vh-120px)]">
+      {/* Left rail — maneuver picker */}
+      <Bezel
+        label={`MANEUVER LIBRARY · ${MANEUVERS.length}`}
+        className="overflow-y-auto max-h-[calc(100vh-140px)]"
+      >
+        <div className="flex flex-col gap-4 mt-2">
+          {ORDERED_CATEGORIES.map((cat) => (
+            <div key={cat}>
+              <div className="font-mono text-[10px] tracking-callsign text-hud-amber-dim mb-1 pl-1">
+                {CATEGORY_LABELS[cat]} · {MANEUVERS_BY_CATEGORY[cat].length}
+              </div>
+              <ul className="flex flex-col gap-0.5">
+                {MANEUVERS_BY_CATEGORY[cat].map((m) => {
+                  const active = m.id === selectedId;
+                  return (
+                    <li key={m.id}>
+                      <button
+                        onClick={() => setSelectedId(m.id)}
+                        className={
+                          'w-full text-left px-2 py-1 rounded-sm font-mono text-xs flex justify-between items-center transition-colors ' +
+                          (active
+                            ? 'bg-hud-amber/15 text-hud-amber border border-hud-amber/40'
+                            : 'border border-transparent text-hud-ink-dim hover:bg-hud-panel-2 hover:text-hud-ink')
+                        }
+                      >
+                        <span className="truncate">{m.id.replace(/_/g, ' ')}</span>
+                        <span className="text-[10px] text-hud-phosphor tabular-nums pl-2 whitespace-nowrap">
+                          {m.peak_pos_gz >= 0 ? '+' : ''}{m.peak_pos_gz.toFixed(1)}G
+                        </span>
+                      </button>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </Bezel>
+
+      {/* Center — instrumentation */}
+      <div className="flex flex-col gap-4 min-w-0">
+        <StatusStrip
+          mode={`SIM · ${maneuver.category.toUpperCase().replace('_', ' ')}`}
+          callsign={maneuver.id.toUpperCase()}
+        />
+        <div className="grid grid-cols-1 lg:grid-cols-[auto_1fr] gap-4">
+          <Bezel label="ATTITUDE · VISUAL PROXY" status="caution" className="flex items-center justify-center min-h-[280px]">
+            <AttitudeIndicator roll={roll} pitch={pitchRef.current} size={260} />
+          </Bezel>
+          <Bezel label="MANEUVER BRIEFING" status="ok" className="text-sm leading-relaxed text-hud-ink-dim">
+            <div className="font-condensed text-2xl text-hud-ink mb-2 tracking-wide uppercase">
+              {maneuver.id.replace(/_/g, ' ')}
+            </div>
+            <p className="mb-3">{maneuver.description}</p>
+            <div className="grid grid-cols-2 gap-x-4 gap-y-1 font-mono text-xs">
+              <div className="text-hud-ink-faint">AIRCRAFT</div>
+              <div className="amber">{maneuver.aircraft}</div>
+              <div className="text-hud-ink-faint">PEAK +Gz</div>
+              <div className="amber">{maneuver.peak_pos_gz.toFixed(1)} G</div>
+              <div className="text-hud-ink-faint">PEAK −Gz</div>
+              <div className="amber">{maneuver.peak_neg_gz.toFixed(1)} G</div>
+              <div className="text-hud-ink-faint">ONSET</div>
+              <div className="amber">{maneuver.onset_rate_g_per_s.toFixed(2)} G/s</div>
+              <div className="text-hud-ink-faint">DURATION</div>
+              <div className="amber">{maneuver.total_duration_s.toFixed(1)} s</div>
+              {maneuver.aresti_family != null && (
+                <>
+                  <div className="text-hud-ink-faint">ARESTI</div>
+                  <div className="amber">
+                    Fam {maneuver.aresti_family}
+                    {maneuver.aresti_code ? ` · ${maneuver.aresti_code}` : ''}
+                  </div>
+                </>
+              )}
+              {maneuver.sustained_gz != null && maneuver.sustained_duration_s != null && (
+                <>
+                  <div className="text-hud-ink-faint">SUSTAINED</div>
+                  <div className="amber">
+                    {maneuver.sustained_gz.toFixed(1)} G · {maneuver.sustained_duration_s.toFixed(1)} s
+                  </div>
+                </>
+              )}
+            </div>
+            {maneuver.hemodynamic_concern && (
+              <div className="mt-3 pt-3 border-t border-hud-line text-hud-amber text-xs leading-snug">
+                <span className="font-bold tracking-callsign">⚠ HEMO</span>
+                {' '}
+                {maneuver.hemodynamic_concern}
+              </div>
+            )}
+          </Bezel>
+        </div>
+        <Bezel label="G-TRACE PLAYBACK" status="ok">
+          <GTracePlayer
+            maneuver={maneuver}
+            conformal={conformal}
+            height={300}
+            onTimeChange={(t, g) => setNow({ t, g })}
+          />
+        </Bezel>
+      </div>
+
+      {/* Right rail — live readouts + prediction */}
+      <div className="flex flex-col gap-4">
+        <Bezel label="LIVE TELEMETRY" status="ok">
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <span className="font-mono text-[10px] text-hud-ink-faint tracking-callsign">+Gz NOW</span>
+              <SegmentReadout value={now.g} unit="G" tone={now.g > 7 ? 'red' : 'amber'} size="xl" precision={2} width={5} />
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="font-mono text-[10px] text-hud-ink-faint tracking-callsign">T ELAPSED</span>
+              <SegmentReadout value={now.t} unit="s" tone="phosphor" size="md" precision={2} width={6} />
+            </div>
+          </div>
+        </Bezel>
+
+        <Bezel
+          label={apiAlive ? 'PREDICTION · /predict' : 'PREDICTION · OFFLINE'}
+          status={apiAlive ? (predictMutation.isError ? 'fail' : 'ok') : 'fail'}
+        >
+          {!apiAlive && (
+            <div className="text-hud-red text-xs font-mono leading-relaxed">
+              FastAPI service unreachable.<br />
+              Start with:<br />
+              <span className="amber">uvicorn cgem_ext.api.main:app --reload</span>
+            </div>
+          )}
+          {apiAlive && predictMutation.isPending && (
+            <div className="text-hud-amber font-mono text-xs animate-pulse-amber">QUERYING SURROGATE…</div>
+          )}
+          {apiAlive && predictMutation.isError && (
+            <div className="text-hud-red font-mono text-xs">{apiErrorMessage(predictMutation.error)}</div>
+          )}
+          {apiAlive && predictMutation.isSuccess && glocPred && (
+            <div className="space-y-3">
+              <div className="flex justify-between items-baseline">
+                <span className="font-mono text-[10px] text-hud-ink-faint tracking-callsign">T-LOC POINT</span>
+                <SegmentReadout value={point} unit="s" tone="amber" size="lg" precision={1} width={5} />
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="font-mono text-[10px] text-hud-ink-faint tracking-callsign">95% CI</span>
+                <span className="font-mono text-sm phosphor tabular-nums">
+                  [{lo != null ? lo.toFixed(1) : '—'}, {hi != null ? hi.toFixed(1) : '—'}]
+                </span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="font-mono text-[10px] text-hud-ink-faint tracking-callsign">E[T] · P·μ</span>
+                <SegmentReadout value={expectedT} unit="s" tone="phosphor" size="md" precision={1} width={5} />
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="font-mono text-[10px] text-hud-ink-faint tracking-callsign">P(event)</span>
+                <SegmentReadout value={eventProb} tone="ice" size="md" precision={3} width={5} />
+              </div>
+              <div className="pt-2 border-t border-hud-line flex justify-center gap-2 flex-wrap">
+                <RiskBadge tier={risk} pulse={risk === 'G-LOC' || risk === 'WARNING'} />
+                {ood && <RiskBadge tier="OOD" />}
+              </div>
+            </div>
+          )}
+        </Bezel>
+
+        <Bezel label="PILOT CONFIG" status="idle">
+          <div className="grid grid-cols-2 gap-x-3 gap-y-1 font-mono text-xs">
+            <div className="text-hud-ink-faint">WHO</div><div className="amber">FAA-{DEFAULT_PILOT.who_profile}</div>
+            <div className="text-hud-ink-faint">G-SUIT</div><div className="amber">{DEFAULT_PILOT.gsuit_max_psi} psi · {(DEFAULT_PILOT.gsuit_coverage_fraction * 100).toFixed(0)}%</div>
+            <div className="text-hud-ink-faint">AGSM</div><div className="amber">{DEFAULT_PILOT.agsm_effectiveness.toFixed(2)}</div>
+            <div className="text-hud-ink-faint">PBG</div><div className="amber">{DEFAULT_PILOT.pbg_max_mmhg} mmHg</div>
+            <div className="text-hud-ink-faint">DEHYD</div><div className="amber">{DEFAULT_PILOT.dehydration_level.toFixed(2)}</div>
+            <div className="text-hud-ink-faint">CM</div><div className="amber uppercase">{DEFAULT_PILOT.countermeasures_label}</div>
+          </div>
+          <div className="mt-3 text-hud-ink-faint font-mono text-[11px]">
+            Edit defaults in <a href="/settings" className="phosphor hover:underline">/settings</a>
+          </div>
+        </Bezel>
+      </div>
+    </div>
+  );
+};
