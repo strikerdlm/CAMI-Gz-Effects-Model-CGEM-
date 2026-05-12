@@ -8,10 +8,12 @@
   "license": "MIT",
   "scripts": {
     "dev": "vite",
+    "prebuild": "cd .. && python3 scripts/export_maneuvers_json.py",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "regen:maneuvers": "cd .. && python3 scripts/export_maneuvers_json.py"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.90.20",

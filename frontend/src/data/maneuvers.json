@@ -1,0 +1,6270 @@
+[
+  {
+    "id": "avalanche",
+    "filename": "avalanche.txt",
+    "category": "championship",
+    "description": "Inside loop with a horizontal positive snap roll at the apex; adds asymmetric high-G transient.",
+    "aircraft": "Unlimited (Extra 330 / Su-26)",
+    "peak_pos_gz": 6.0,
+    "peak_neg_gz": -1.0,
+    "onset_rate_g_per_s": 3.0,
+    "total_duration_s": 9.0,
+    "aresti_family": 7,
+    "aresti_code": null,
+    "sustained_gz": null,
+    "sustained_duration_s": null,
+    "hemodynamic_concern": "Loop sustained +G plus brief snap-roll spike (~250 ms).",
+    "source": "FAI/CIVA Aresti family 7 + 9 (snap subfamily); kinematic synthesis.",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 0.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 2.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 3.5,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 5.0,
+        "duration_ms": 700.0
+      },
+      {
+        "nz": 5.5,
+        "duration_ms": 700.0
+      },
+      {
+        "nz": 4.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 2.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 0.5,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": -1.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 0.5,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 6.0,
+        "duration_ms": 250.0
+      },
+      {
+        "nz": 0.5,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": -0.8,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 1.5,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 3.0,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 4.5,
+        "duration_ms": 700.0
+      },
+      {
+        "nz": 3.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 600.0
+      }
+    ]
+  },
+  {
+    "id": "barrel_roll_attack",
+    "filename": "military_barrel_roll_attack.txt",
+    "category": "military_acm",
+    "description": "Rolling, vertically-displaced helical maneuver to control closure on a slower bandit.",
+    "aircraft": "F-15C / Su-27",
+    "peak_pos_gz": 5.0,
+    "peak_neg_gz": 0.0,
+    "onset_rate_g_per_s": 3.0,
+    "total_duration_s": 14.0,
+    "aresti_family": null,
+    "aresti_code": null,
+    "sustained_gz": 4.5,
+    "sustained_duration_s": 6.0,
+    "hemodynamic_concern": "Sustained +4–5 G with continuous body-axis rotation (Gy stress).",
+    "source": "Shaw Ch.4 (rolling maneuvers).",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 1.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 2.5,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 4.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 5.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 5.0,
+        "duration_ms": 3000.0
+      },
+      {
+        "nz": 4.5,
+        "duration_ms": 3000.0
+      },
+      {
+        "nz": 5.0,
+        "duration_ms": 2000.0
+      },
+      {
+        "nz": 4.5,
+        "duration_ms": 2000.0
+      },
+      {
+        "nz": 4.0,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 3.0,
+        "duration_ms": 800.0
+      },
+      {
+        "nz": 1.5,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 1000.0
+      }
+    ]
+  },
+  {
+    "id": "bell_tailslide",
+    "filename": "bell_tailslide.txt",
+    "category": "extreme_post_stall",
+    "description": "Vertical climb, full backslide, negative-G nose-over at apex, forward dive recovery.",
+    "aircraft": "Sukhoi Su-26/29 / Extra 300 / MX-2",
+    "peak_pos_gz": 3.5,
+    "peak_neg_gz": -2.0,
+    "onset_rate_g_per_s": 15.0,
+    "total_duration_s": 14.0,
+    "aresti_family": null,
+    "aresti_code": null,
+    "sustained_gz": null,
+    "sustained_duration_s": null,
+    "hemodynamic_concern": "Sustained low-G then -2 G nose-over; classical push-pull setup.",
+    "source": "Russian aerobatic literature ('Bell' / Колокол); CIVA Aresti.",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 1.0,
+        "duration_ms": 800.0
+      },
+      {
+        "nz": 4.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 2.5,
+        "duration_ms": 800.0
+      },
+      {
+        "nz": 1.5,
+        "duration_ms": 1500.0
+      },
+      {
+        "nz": 0.5,
+        "duration_ms": 2000.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 1500.0
+      },
+      {
+        "nz": -0.5,
+        "duration_ms": 800.0
+      },
+      {
+        "nz": -1.5,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": -2.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": -1.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 1.5,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 3.5,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 2.0,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 1.2,
+        "duration_ms": 800.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 1000.0
+      }
+    ]
+  },
+  {
+    "id": "combat_immelmann",
+    "filename": "military_combat_immelmann.txt",
+    "category": "military_acm",
+    "description": "Combat-power half-loop with half-roll on top; 6–7 G entry pull.",
+    "aircraft": "F-16C / F-15C",
+    "peak_pos_gz": 7.0,
+    "peak_neg_gz": 0.0,
+    "onset_rate_g_per_s": 6.0,
+    "total_duration_s": 14.0,
+    "aresti_family": null,
+    "aresti_code": null,
+    "sustained_gz": 6.5,
+    "sustained_duration_s": 2.5,
+    "hemodynamic_concern": "Higher peak than aerobatic Immelmann (5G); 6 G/s onset.",
+    "source": "Shaw Ch.4; USAF AFMAN BFM.",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 1.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 3.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 5.0,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 7.0,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 7.0,
+        "duration_ms": 2500.0
+      },
+      {
+        "nz": 6.0,
+        "duration_ms": 1500.0
+      },
+      {
+        "nz": 4.0,
+        "duration_ms": 1500.0
+      },
+      {
+        "nz": 2.5,
+        "duration_ms": 1500.0
+      },
+      {
+        "nz": 1.5,
+        "duration_ms": 1500.0
+      },
+      {
+        "nz": 0.7,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 0.5,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 0.8,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 1000.0
+      }
+    ]
+  },
+  {
+    "id": "combat_split_s",
+    "filename": "military_combat_split_s.txt",
+    "category": "military_acm",
+    "description": "Inverted half-loop reversal at low altitude with 7–8 G pull-out.",
+    "aircraft": "F-16C / F/A-18",
+    "peak_pos_gz": 8.0,
+    "peak_neg_gz": -0.5,
+    "onset_rate_g_per_s": 7.0,
+    "total_duration_s": 14.0,
+    "aresti_family": null,
+    "aresti_code": null,
+    "sustained_gz": 7.5,
+    "sustained_duration_s": 2.5,
+    "hemodynamic_concern": "High +G recovery from inverted at low altitude; minimal margin.",
+    "source": "Shaw Ch.4; Newman & Callister 2009.",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 1.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 0.5,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": -0.5,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 2.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 5.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 7.0,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 8.0,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 8.0,
+        "duration_ms": 2500.0
+      },
+      {
+        "nz": 6.0,
+        "duration_ms": 2000.0
+      },
+      {
+        "nz": 3.0,
+        "duration_ms": 2000.0
+      },
+      {
+        "nz": 1.5,
+        "duration_ms": 1500.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 1000.0
+      }
+    ]
+  },
+  {
+    "id": "corner_velocity_turn",
+    "filename": "military_corner_velocity_turn.txt",
+    "category": "military_acm",
+    "description": "Brief instantaneous-rate turn at corner velocity (max G/min radius) with rapid energy bleed.",
+    "aircraft": "F-16C @ ~430 KCAS SL",
+    "peak_pos_gz": 9.0,
+    "peak_neg_gz": 0.0,
+    "onset_rate_g_per_s": 9.0,
+    "total_duration_s": 12.0,
+    "aresti_family": null,
+    "aresti_code": null,
+    "sustained_gz": 9.0,
+    "sustained_duration_s": 3.0,
+    "hemodynamic_concern": "Aggressive 9 G/s onset; high G-LOC risk if AGSM late.",
+    "source": "Shaw Ch.3; F-16 corner-velocity charts.",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 1.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 2.5,
+        "duration_ms": 200.0
+      },
+      {
+        "nz": 4.5,
+        "duration_ms": 200.0
+      },
+      {
+        "nz": 6.5,
+        "duration_ms": 200.0
+      },
+      {
+        "nz": 8.0,
+        "duration_ms": 200.0
+      },
+      {
+        "nz": 9.0,
+        "duration_ms": 200.0
+      },
+      {
+        "nz": 9.0,
+        "duration_ms": 3000.0
+      },
+      {
+        "nz": 7.5,
+        "duration_ms": 1500.0
+      },
+      {
+        "nz": 6.0,
+        "duration_ms": 3000.0
+      },
+      {
+        "nz": 4.0,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 2.0,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 1000.0
+      }
+    ]
+  },
+  {
+    "id": "cuban_eight",
+    "filename": "cuban_eight.txt",
+    "category": "championship",
+    "description": "Two looping segments joined by 45° down half-rolls.",
+    "aircraft": "Generic aerobatic",
+    "peak_pos_gz": 4.8,
+    "peak_neg_gz": 0.0,
+    "onset_rate_g_per_s": 3.0,
+    "total_duration_s": 11.5,
+    "aresti_family": 8,
+    "aresti_code": null,
+    "sustained_gz": null,
+    "sustained_duration_s": null,
+    "hemodynamic_concern": "Repeated sustained +G with brief unloads.",
+    "source": "IAC catalogue family 8.",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 0.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 2.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 3.5,
+        "duration_ms": 700.0
+      },
+      {
+        "nz": 4.8,
+        "duration_ms": 700.0
+      },
+      {
+        "nz": 3.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 0.2,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 0.1,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 0.2,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 0.1,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 2.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 3.6,
+        "duration_ms": 700.0
+      },
+      {
+        "nz": 4.6,
+        "duration_ms": 700.0
+      },
+      {
+        "nz": 2.8,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 0.3,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 800.0
+      }
+    ]
+  },
+  {
+    "id": "defensive_break_9g",
+    "filename": "military_defensive_break_9g.txt",
+    "category": "military_acm",
+    "description": "Maximum-performance 9-G defensive break turn to spoil a bandit's tracking solution.",
+    "aircraft": "F-16C",
+    "peak_pos_gz": 9.0,
+    "peak_neg_gz": 0.0,
+    "onset_rate_g_per_s": 7.0,
+    "total_duration_s": 17.0,
+    "aresti_family": null,
+    "aresti_code": null,
+    "sustained_gz": 9.0,
+    "sustained_duration_s": 4.0,
+    "hemodynamic_concern": "Maximum sustained +Gz with fast onset; AGSM critical.",
+    "source": "Shaw, Fighter Combat Ch.4; Newman & Callister 2009 DOI:10.3357/asem.2361.2009.",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 1.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 1.5,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 3.0,
+        "duration_ms": 200.0
+      },
+      {
+        "nz": 5.0,
+        "duration_ms": 200.0
+      },
+      {
+        "nz": 7.0,
+        "duration_ms": 200.0
+      },
+      {
+        "nz": 9.0,
+        "duration_ms": 200.0
+      },
+      {
+        "nz": 9.0,
+        "duration_ms": 4000.0
+      },
+      {
+        "nz": 8.5,
+        "duration_ms": 2000.0
+      },
+      {
+        "nz": 7.0,
+        "duration_ms": 4000.0
+      },
+      {
+        "nz": 5.0,
+        "duration_ms": 2000.0
+      },
+      {
+        "nz": 3.0,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 1.5,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 1000.0
+      }
+    ]
+  },
+  {
+    "id": "defensive_break_chaff_flare",
+    "filename": "military_defensive_break_chaff_flare.txt",
+    "category": "military_acm",
+    "description": "Max-G break with brief unload at decoy release to favor seduction, then re-pull.",
+    "aircraft": "F-16C / F-15E / Eurofighter",
+    "peak_pos_gz": 9.0,
+    "peak_neg_gz": 0.0,
+    "onset_rate_g_per_s": 8.0,
+    "total_duration_s": 14.0,
+    "aresti_family": null,
+    "aresti_code": null,
+    "sustained_gz": 8.5,
+    "sustained_duration_s": 2.5,
+    "hemodynamic_concern": "Two high-G pulses with abrupt unload; AGSM cycle disruption.",
+    "source": "Shaw Ch.5; Bürkle et al. (Eurofighter G-LOC, by topic).",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 1.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 3.0,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 6.0,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 9.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 9.0,
+        "duration_ms": 2500.0
+      },
+      {
+        "nz": 0.5,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 2.0,
+        "duration_ms": 200.0
+      },
+      {
+        "nz": 6.0,
+        "duration_ms": 200.0
+      },
+      {
+        "nz": 8.0,
+        "duration_ms": 200.0
+      },
+      {
+        "nz": 8.0,
+        "duration_ms": 2500.0
+      },
+      {
+        "nz": 6.0,
+        "duration_ms": 3000.0
+      },
+      {
+        "nz": 3.0,
+        "duration_ms": 1500.0
+      },
+      {
+        "nz": 1.5,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 1000.0
+      }
+    ]
+  },
+  {
+    "id": "defensive_jink",
+    "filename": "military_defensive_jink.txt",
+    "category": "military_acm",
+    "description": "Rapid out-of-plane G excursions to defeat tracking-gun / IR-missile lock-on.",
+    "aircraft": "A-10 / F-16C",
+    "peak_pos_gz": 6.5,
+    "peak_neg_gz": -0.5,
+    "onset_rate_g_per_s": 10.0,
+    "total_duration_s": 10.0,
+    "aresti_family": null,
+    "aresti_code": null,
+    "sustained_gz": null,
+    "sustained_duration_s": null,
+    "hemodynamic_concern": "High-onset (~10 G/s) pulses with brief unloads; mild push-pull.",
+    "source": "Shaw Ch.5 (gun defense); A-10 BFM doctrine.",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 1.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 4.0,
+        "duration_ms": 200.0
+      },
+      {
+        "nz": 6.5,
+        "duration_ms": 200.0
+      },
+      {
+        "nz": 6.0,
+        "duration_ms": 800.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": -0.5,
+        "duration_ms": 200.0
+      },
+      {
+        "nz": 3.0,
+        "duration_ms": 200.0
+      },
+      {
+        "nz": 6.0,
+        "duration_ms": 200.0
+      },
+      {
+        "nz": 6.0,
+        "duration_ms": 800.0
+      },
+      {
+        "nz": 0.5,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 4.0,
+        "duration_ms": 200.0
+      },
+      {
+        "nz": 6.0,
+        "duration_ms": 200.0
+      },
+      {
+        "nz": 5.5,
+        "duration_ms": 800.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 1000.0
+      }
+    ]
+  },
+  {
+    "id": "defensive_spiral",
+    "filename": "military_defensive_spiral.txt",
+    "category": "military_acm",
+    "description": "Descending high-G spiral (corkscrew) to bleed bandit's energy.",
+    "aircraft": "F-16C / Su-27",
+    "peak_pos_gz": 7.5,
+    "peak_neg_gz": 0.0,
+    "onset_rate_g_per_s": 6.0,
+    "total_duration_s": 22.0,
+    "aresti_family": null,
+    "aresti_code": null,
+    "sustained_gz": 7.0,
+    "sustained_duration_s": 12.0,
+    "hemodynamic_concern": "Sustained +6.5–7.5 G across multiple spiral turns.",
+    "source": "Shaw Ch.4 (vertical maneuvers); Zhang et al. Su-27 +Gz exposure.",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 1.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 3.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 5.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 7.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 7.5,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 7.5,
+        "duration_ms": 5000.0
+      },
+      {
+        "nz": 7.0,
+        "duration_ms": 5000.0
+      },
+      {
+        "nz": 6.5,
+        "duration_ms": 5000.0
+      },
+      {
+        "nz": 5.0,
+        "duration_ms": 2000.0
+      },
+      {
+        "nz": 3.0,
+        "duration_ms": 1500.0
+      },
+      {
+        "nz": 1.5,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 1000.0
+      }
+    ]
+  },
+  {
+    "id": "double_immelmann",
+    "filename": "double_immelmann.txt",
+    "category": "championship",
+    "description": "Two consecutive Immelmann turns flown back-to-back without level segment between.",
+    "aircraft": "Generic / fighter",
+    "peak_pos_gz": 5.0,
+    "peak_neg_gz": -0.5,
+    "onset_rate_g_per_s": 3.5,
+    "total_duration_s": 16.0,
+    "aresti_family": 8,
+    "aresti_code": null,
+    "sustained_gz": null,
+    "sustained_duration_s": null,
+    "hemodynamic_concern": "Two sustained +5 G pulls within 16 s; AGSM endurance.",
+    "source": "FAI/CIVA Aresti family 8; kinematic synthesis.",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 0.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 2.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 3.5,
+        "duration_ms": 700.0
+      },
+      {
+        "nz": 5.0,
+        "duration_ms": 700.0
+      },
+      {
+        "nz": 3.0,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 0.2,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": -0.5,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 0.5,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 1.5,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 2.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 3.5,
+        "duration_ms": 700.0
+      },
+      {
+        "nz": 5.0,
+        "duration_ms": 700.0
+      },
+      {
+        "nz": 3.0,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 0.2,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 800.0
+      }
+    ]
+  },
+  {
+    "id": "english_bunt",
+    "filename": "english_bunt.txt",
+    "category": "championship",
+    "description": "Full outside loop pushed from level upright; sustained negative G throughout.",
+    "aircraft": "Unlimited aerobatic",
+    "peak_pos_gz": 0.5,
+    "peak_neg_gz": -4.5,
+    "onset_rate_g_per_s": 3.0,
+    "total_duration_s": 16.0,
+    "aresti_family": 7,
+    "aresti_code": null,
+    "sustained_gz": null,
+    "sustained_duration_s": null,
+    "hemodynamic_concern": "Sustained -3 to -4.5 G for 12+ seconds; cerebral congestion / red-out risk.",
+    "source": "FAI/CIVA Aresti family 7 (outside loop variant); kinematic synthesis.",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 0.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": -1.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": -2.5,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": -3.5,
+        "duration_ms": 700.0
+      },
+      {
+        "nz": -4.5,
+        "duration_ms": 700.0
+      },
+      {
+        "nz": -4.0,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": -3.0,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": -2.5,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": -2.0,
+        "duration_ms": 800.0
+      },
+      {
+        "nz": -2.5,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": -3.0,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": -3.5,
+        "duration_ms": 700.0
+      },
+      {
+        "nz": -4.5,
+        "duration_ms": 700.0
+      },
+      {
+        "nz": -4.0,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": -3.0,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": -2.5,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": -2.0,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": -1.5,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": -1.0,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": -0.5,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 0.5,
+        "duration_ms": 600.0
+      }
+    ]
+  },
+  {
+    "id": "falling_leaf",
+    "filename": "falling_leaf.txt",
+    "category": "extreme_post_stall",
+    "description": "Sustained high-AOA flight with alternating yaw/pitch oscillations resembling a falling leaf.",
+    "aircraft": "F-18 HARV / X-31 / Su-35",
+    "peak_pos_gz": 2.5,
+    "peak_neg_gz": -1.2,
+    "onset_rate_g_per_s": 8.0,
+    "total_duration_s": 16.0,
+    "aresti_family": null,
+    "aresti_code": null,
+    "sustained_gz": null,
+    "sustained_duration_s": null,
+    "hemodynamic_concern": "10+ s vestibular-baroreflex coupling; mild but cumulative.",
+    "source": "NASA Langley wing-rock and falling-leaf literature (Foster).",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 1.0,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 1.8,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 2.5,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 1.5,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": -1.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": -0.5,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 2.2,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": -0.5,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": -1.2,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 1.5,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 2.5,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": -0.8,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 0.5,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 1.5,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 1000.0
+      }
+    ]
+  },
+  {
+    "id": "flat_scissors_defensive",
+    "filename": "military_flat_scissors.txt",
+    "category": "military_acm",
+    "description": "Defensive horizontal-plane rolling reversals to force bandit overshoot.",
+    "aircraft": "F/A-18",
+    "peak_pos_gz": 4.5,
+    "peak_neg_gz": 0.5,
+    "onset_rate_g_per_s": 4.0,
+    "total_duration_s": 16.0,
+    "aresti_family": null,
+    "aresti_code": null,
+    "sustained_gz": 4.0,
+    "sustained_duration_s": 1.5,
+    "hemodynamic_concern": "Multiple +4–4.5 G reversal pulses; AGSM cycle stress.",
+    "source": "Shaw Ch.4; Newman & Callister 2009 (F/A-18 reversal G profiles).",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 1.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 3.0,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 4.5,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 4.0,
+        "duration_ms": 1500.0
+      },
+      {
+        "nz": 1.5,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 3.5,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 4.5,
+        "duration_ms": 1500.0
+      },
+      {
+        "nz": 4.0,
+        "duration_ms": 1500.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 3.5,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 4.5,
+        "duration_ms": 1500.0
+      },
+      {
+        "nz": 3.5,
+        "duration_ms": 1500.0
+      },
+      {
+        "nz": 1.5,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 1000.0
+      }
+    ]
+  },
+  {
+    "id": "flat_spin_positive",
+    "filename": "flat_spin_positive.txt",
+    "category": "championship",
+    "description": "High-AOA flat-attitude spin; modest +Gz dominated by centripetal yaw rate.",
+    "aircraft": "Aerobatic / fighter",
+    "peak_pos_gz": 2.5,
+    "peak_neg_gz": -0.5,
+    "onset_rate_g_per_s": 3.0,
+    "total_duration_s": 14.0,
+    "aresti_family": 9,
+    "aresti_code": null,
+    "sustained_gz": null,
+    "sustained_duration_s": null,
+    "hemodynamic_concern": "Dominant rotational/Gy stress (not modeled); +Gz modest.",
+    "source": "FAI/CIVA Aresti family 9 (flat spin subcode); kinematic synthesis.",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 0.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 0.8,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 1.5,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 2.0,
+        "duration_ms": 800.0
+      },
+      {
+        "nz": 2.5,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 2.5,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 2.5,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 2.5,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 2.5,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 2.5,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 2.5,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 2.0,
+        "duration_ms": 800.0
+      },
+      {
+        "nz": 1.5,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 0.5,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": -0.5,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 2.5,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 600.0
+      }
+    ]
+  },
+  {
+    "id": "half_vert_roll_neg_pull",
+    "filename": "halfverticalrollwnegpullout.txt",
+    "category": "championship",
+    "description": "½ vertical roll ending with a negative G pull-out.",
+    "aircraft": "Unlimited aerobatic",
+    "peak_pos_gz": 2.0,
+    "peak_neg_gz": -3.0,
+    "onset_rate_g_per_s": 3.0,
+    "total_duration_s": 7.0,
+    "aresti_family": 8,
+    "aresti_code": null,
+    "sustained_gz": null,
+    "sustained_duration_s": null,
+    "hemodynamic_concern": "−G pull-out: classic push-pull setup.",
+    "source": "Existing CGEM sample input.",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 0.0,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 2.5,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 0.5,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 0.5,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 0.3,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -0.8,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -1.7,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -2.1,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -0.2,
+        "duration_ms": 3000.0
+      },
+      {
+        "nz": -0.2,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -0.4,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 0.4,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 0.2,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 0.2,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -0.5,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -0.7,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -0.15,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -0.15,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -0.5,
+        "duration_ms": 3000.0
+      },
+      {
+        "nz": 0.7,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -0.4,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 0.9,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -0.8,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 0.9,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -1.0,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 0.6,
+        "duration_ms": 1000.0
+      }
+    ]
+  },
+  {
+    "id": "hammerhead",
+    "filename": "hammerhead.txt",
+    "category": "championship",
+    "description": "Vertical climb to zero airspeed, 180° yaw (stall turn), vertical descent.",
+    "aircraft": "Extra 330 / Sukhoi Su-26 (Unlimited)",
+    "peak_pos_gz": 2.0,
+    "peak_neg_gz": -2.0,
+    "onset_rate_g_per_s": 2.0,
+    "total_duration_s": 22.0,
+    "aresti_family": 5,
+    "aresti_code": null,
+    "sustained_gz": null,
+    "sustained_duration_s": null,
+    "hemodynamic_concern": "Brief push-pull during pivot.",
+    "source": "IAC catalogue family 5; existing CGEM sample input.",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 0.0,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 2.0,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 0.3,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 0.8,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -0.4,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -0.8,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -2.0,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -0.8,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -0.1,
+        "duration_ms": 3000.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -0.1,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -0.1,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 0.4,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 0.9,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 1.9,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -0.4,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 0.5,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -1.0,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -0.9,
+        "duration_ms": 1000.0
+      }
+    ]
+  },
+  {
+    "id": "helicopter_bugout",
+    "filename": "military_helicopter_bugout.txt",
+    "category": "military_acm",
+    "description": "Low-energy disengagement: nose-high, decelerate, pivot and pitch over into dive.",
+    "aircraft": "F/A-18 / F-16C",
+    "peak_pos_gz": 4.5,
+    "peak_neg_gz": -0.7,
+    "onset_rate_g_per_s": 3.0,
+    "total_duration_s": 17.0,
+    "aresti_family": null,
+    "aresti_code": null,
+    "sustained_gz": 4.0,
+    "sustained_duration_s": 2.5,
+    "hemodynamic_concern": "Low-energy push-pull: -0.7 G pitchover then +4.5 G recovery.",
+    "source": "Shaw Ch.4 (low-speed maneuvers); Newman & Callister 2009.",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 1.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 1.5,
+        "duration_ms": 1500.0
+      },
+      {
+        "nz": 0.8,
+        "duration_ms": 2000.0
+      },
+      {
+        "nz": 0.3,
+        "duration_ms": 1500.0
+      },
+      {
+        "nz": -0.3,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -0.7,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -0.3,
+        "duration_ms": 800.0
+      },
+      {
+        "nz": 0.5,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 2.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 3.5,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 4.5,
+        "duration_ms": 2500.0
+      },
+      {
+        "nz": 2.5,
+        "duration_ms": 2000.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 1500.0
+      }
+    ]
+  },
+  {
+    "id": "helicopter_maneuver",
+    "filename": "helicopter_maneuver.txt",
+    "category": "extreme_post_stall",
+    "description": "Near-vertical attitude at low airspeed (Russian 'Bell'); rearward drift, nose-over, recovery.",
+    "aircraft": "Su-27 / Su-35 / MiG-29 OVT",
+    "peak_pos_gz": 3.5,
+    "peak_neg_gz": -1.2,
+    "onset_rate_g_per_s": 15.0,
+    "total_duration_s": 12.0,
+    "aresti_family": null,
+    "aresti_code": null,
+    "sustained_gz": null,
+    "sustained_duration_s": null,
+    "hemodynamic_concern": "Long zero-G phase causes cephalad shift; -G nose-over then mild +G pull.",
+    "source": "Sukhoi public demo literature; F-18 HARV high-alpha analog.",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 1.0,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 2.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 1.5,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 0.5,
+        "duration_ms": 1500.0
+      },
+      {
+        "nz": 0.2,
+        "duration_ms": 2000.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 2000.0
+      },
+      {
+        "nz": -0.5,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": -1.2,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": -0.5,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 0.5,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 2.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 3.5,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 1.5,
+        "duration_ms": 700.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 1000.0
+      }
+    ]
+  },
+  {
+    "id": "herbst_jturn",
+    "filename": "herbst_jturn.txt",
+    "category": "extreme_post_stall",
+    "description": "Post-stall yaw-reversal: pitch-up to ~70° AOA, 180° body-axis yaw, pitch-down recovery.",
+    "aircraft": "X-31 / F-22A / F-18 HARV",
+    "peak_pos_gz": 3.8,
+    "peak_neg_gz": -0.5,
+    "onset_rate_g_per_s": 12.0,
+    "total_duration_s": 12.0,
+    "aresti_family": null,
+    "aresti_code": null,
+    "sustained_gz": null,
+    "sustained_duration_s": null,
+    "hemodynamic_concern": "Body-axis Nz modest; lateral Gy + longitudinal Gx unmodeled by CGEM.",
+    "source": "NASA Dryden / Langley X-31 EFM publications (Smith, Foster).",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 1.0,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 1.8,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 3.0,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 3.8,
+        "duration_ms": 800.0
+      },
+      {
+        "nz": 3.2,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 2.0,
+        "duration_ms": 1500.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 1500.0
+      },
+      {
+        "nz": 0.8,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 0.2,
+        "duration_ms": 800.0
+      },
+      {
+        "nz": -0.3,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": -0.5,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 0.5,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 1.5,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 1.2,
+        "duration_ms": 800.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 1000.0
+      }
+    ]
+  },
+  {
+    "id": "hesitation_roll_4pt",
+    "filename": "hesitation_roll_4pt.txt",
+    "category": "championship",
+    "description": "Aileron roll executed in four 90° increments with brief stops.",
+    "aircraft": "Aerobatic competition",
+    "peak_pos_gz": 1.0,
+    "peak_neg_gz": -1.0,
+    "onset_rate_g_per_s": 2.5,
+    "total_duration_s": 6.0,
+    "aresti_family": 9,
+    "aresti_code": null,
+    "sustained_gz": null,
+    "sustained_duration_s": null,
+    "hemodynamic_concern": "Mild oscillating G; knife-edge unloads to ~0 G.",
+    "source": "FAI/CIVA Aresti family 9; kinematic synthesis.",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 0.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 0.3,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": -0.3,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": -1.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": -1.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": -0.3,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 0.3,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 600.0
+      }
+    ]
+  },
+  {
+    "id": "hesitation_roll_8pt",
+    "filename": "hesitation_roll_8pt.txt",
+    "category": "championship",
+    "description": "Eight-stop slow roll (45° increments).",
+    "aircraft": "Aerobatic competition",
+    "peak_pos_gz": 1.0,
+    "peak_neg_gz": -1.0,
+    "onset_rate_g_per_s": 2.0,
+    "total_duration_s": 8.0,
+    "aresti_family": 9,
+    "aresti_code": null,
+    "sustained_gz": null,
+    "sustained_duration_s": null,
+    "hemodynamic_concern": "Finer-granularity oscillation; mild stress.",
+    "source": "FAI/CIVA Aresti family 9; kinematic synthesis.",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 0.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 0.7,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 0.3,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": -0.3,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": -0.7,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": -1.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": -1.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": -0.7,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": -0.3,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 0.3,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 0.7,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 600.0
+      }
+    ]
+  },
+  {
+    "id": "high_g_turn",
+    "filename": "high_g_turn.txt",
+    "category": "military_acm",
+    "description": "Sustained high-G level turn with 6–7 G plateau and on/off modulation.",
+    "aircraft": "Generic fighter",
+    "peak_pos_gz": 6.8,
+    "peak_neg_gz": 0.0,
+    "onset_rate_g_per_s": 4.0,
+    "total_duration_s": 10.0,
+    "aresti_family": null,
+    "aresti_code": null,
+    "sustained_gz": 6.5,
+    "sustained_duration_s": 4.0,
+    "hemodynamic_concern": "Sustained +G plateau; baseline AGSM endurance test.",
+    "source": "Existing CGEM sample input.",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 0.0,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 2.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 4.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 5.5,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 6.5,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 6.8,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 6.5,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 6.8,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 6.5,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 5.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 3.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 1.5,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 1000.0
+      }
+    ]
+  },
+  {
+    "id": "high_yoyo_offensive",
+    "filename": "military_high_yoyo.txt",
+    "category": "military_acm",
+    "description": "Offensive 3-D maneuver: climb out of plane, trade airspeed, dive back into bandit's plane.",
+    "aircraft": "F-15C / F-16C",
+    "peak_pos_gz": 6.0,
+    "peak_neg_gz": 0.5,
+    "onset_rate_g_per_s": 5.0,
+    "total_duration_s": 13.0,
+    "aresti_family": null,
+    "aresti_code": null,
+    "sustained_gz": 5.5,
+    "sustained_duration_s": 2.0,
+    "hemodynamic_concern": "Dual +5–6 G pulls separated by brief unload.",
+    "source": "Shaw Ch.4 (offensive BFM); USAF AFMAN 11-2F-16.",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 1.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 3.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 5.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 6.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 6.0,
+        "duration_ms": 2000.0
+      },
+      {
+        "nz": 3.0,
+        "duration_ms": 800.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 1500.0
+      },
+      {
+        "nz": 0.5,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 2.0,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 4.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 5.0,
+        "duration_ms": 1500.0
+      },
+      {
+        "nz": 3.0,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 1000.0
+      }
+    ]
+  },
+  {
+    "id": "horizontal_rolling_360",
+    "filename": "horizontalrolling360.txt",
+    "category": "championship",
+    "description": "360° aileron roll while maintaining level flight.",
+    "aircraft": "Generic aerobatic",
+    "peak_pos_gz": 2.0,
+    "peak_neg_gz": -1.5,
+    "onset_rate_g_per_s": 2.0,
+    "total_duration_s": 4.5,
+    "aresti_family": 9,
+    "aresti_code": null,
+    "sustained_gz": null,
+    "sustained_duration_s": null,
+    "hemodynamic_concern": "Modest oscillating G; lateral stress.",
+    "source": "IAC catalogue family 9; existing CGEM sample input.",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 0.0,
+        "duration_ms": 893.0
+      },
+      {
+        "nz": 1.12,
+        "duration_ms": 893.0
+      },
+      {
+        "nz": -3.695,
+        "duration_ms": 893.0
+      },
+      {
+        "nz": -1.08,
+        "duration_ms": 893.0
+      },
+      {
+        "nz": -0.224,
+        "duration_ms": 893.0
+      },
+      {
+        "nz": 0.224,
+        "duration_ms": 893.0
+      },
+      {
+        "nz": 2.576,
+        "duration_ms": 893.0
+      },
+      {
+        "nz": 2.91,
+        "duration_ms": 893.0
+      },
+      {
+        "nz": 0.56,
+        "duration_ms": 893.0
+      },
+      {
+        "nz": 0.112,
+        "duration_ms": 893.0
+      },
+      {
+        "nz": -0.56,
+        "duration_ms": 893.0
+      },
+      {
+        "nz": -2.651,
+        "duration_ms": 893.0
+      },
+      {
+        "nz": -1.904,
+        "duration_ms": 893.0
+      },
+      {
+        "nz": -1.08,
+        "duration_ms": 893.0
+      },
+      {
+        "nz": -0.336,
+        "duration_ms": 893.0
+      },
+      {
+        "nz": 0.336,
+        "duration_ms": 893.0
+      },
+      {
+        "nz": 1.904,
+        "duration_ms": 893.0
+      },
+      {
+        "nz": 2.688,
+        "duration_ms": 893.0
+      },
+      {
+        "nz": 1.08,
+        "duration_ms": 893.0
+      },
+      {
+        "nz": -0.784,
+        "duration_ms": 893.0
+      },
+      {
+        "nz": -1.12,
+        "duration_ms": 893.0
+      },
+      {
+        "nz": -0.56,
+        "duration_ms": 893.0
+      },
+      {
+        "nz": -2.352,
+        "duration_ms": 893.0
+      },
+      {
+        "nz": -1.12,
+        "duration_ms": 893.0
+      },
+      {
+        "nz": -0.448,
+        "duration_ms": 893.0
+      },
+      {
+        "nz": 0.448,
+        "duration_ms": 893.0
+      },
+      {
+        "nz": 1.12,
+        "duration_ms": 893.0
+      },
+      {
+        "nz": 2.91,
+        "duration_ms": 893.0
+      },
+      {
+        "nz": 1.12,
+        "duration_ms": 893.0
+      },
+      {
+        "nz": 0.448,
+        "duration_ms": 893.0
+      },
+      {
+        "nz": 0.896,
+        "duration_ms": 893.0
+      },
+      {
+        "nz": -0.896,
+        "duration_ms": 893.0
+      },
+      {
+        "nz": -1.568,
+        "duration_ms": 893.0
+      }
+    ]
+  },
+  {
+    "id": "humpty_bump_negative",
+    "filename": "humpty_bump_negative.txt",
+    "category": "championship",
+    "description": "Quarter-loop up, pushed (outside) half-loop over the top loading the pilot negatively, vertical down.",
+    "aircraft": "Unlimited aerobatic",
+    "peak_pos_gz": 5.5,
+    "peak_neg_gz": -4.0,
+    "onset_rate_g_per_s": 3.5,
+    "total_duration_s": 14.0,
+    "aresti_family": 8,
+    "aresti_code": null,
+    "sustained_gz": null,
+    "sustained_duration_s": null,
+    "hemodynamic_concern": "Sustained -3 to -4 G across pushed half-loop; severe push-pull risk.",
+    "source": "FAI/CIVA Aresti family 8; kinematic synthesis.",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 0.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 2.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 4.5,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 5.5,
+        "duration_ms": 700.0
+      },
+      {
+        "nz": 4.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 1.5,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 800.0
+      },
+      {
+        "nz": 0.5,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": -2.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": -4.0,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": -4.0,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": -2.5,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 1.5,
+        "duration_ms": 800.0
+      },
+      {
+        "nz": 2.5,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 4.5,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 5.5,
+        "duration_ms": 700.0
+      },
+      {
+        "nz": 3.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 500.0
+      }
+    ]
+  },
+  {
+    "id": "humpty_bump_positive",
+    "filename": "humpty_bump_positive.txt",
+    "category": "championship",
+    "description": "Quarter-loop up, vertical line, half-loop forward (positive over the top), vertical line down, quarter-loop pull.",
+    "aircraft": "Unlimited aerobatic",
+    "peak_pos_gz": 5.5,
+    "peak_neg_gz": -0.5,
+    "onset_rate_g_per_s": 4.0,
+    "total_duration_s": 14.0,
+    "aresti_family": 8,
+    "aresti_code": null,
+    "sustained_gz": null,
+    "sustained_duration_s": null,
+    "hemodynamic_concern": "Two large +G corners bracketing brief negative apex.",
+    "source": "FAI/CIVA Aresti family 8; kinematic synthesis.",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 0.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 2.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 4.0,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 5.0,
+        "duration_ms": 700.0
+      },
+      {
+        "nz": 5.5,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 3.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 1.5,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 800.0
+      },
+      {
+        "nz": 1.5,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 3.5,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 4.5,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 2.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": -0.5,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 1.5,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 800.0
+      },
+      {
+        "nz": 1.5,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 4.0,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 5.5,
+        "duration_ms": 700.0
+      },
+      {
+        "nz": 3.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 600.0
+      }
+    ]
+  },
+  {
+    "id": "immelmann_turn",
+    "filename": "immelmann_turn.txt",
+    "category": "championship",
+    "description": "Half-loop to half-roll Immelmann with high +G pull-up.",
+    "aircraft": "Generic / fighter",
+    "peak_pos_gz": 5.0,
+    "peak_neg_gz": 0.0,
+    "onset_rate_g_per_s": 3.5,
+    "total_duration_s": 8.0,
+    "aresti_family": 8,
+    "aresti_code": null,
+    "sustained_gz": null,
+    "sustained_duration_s": null,
+    "hemodynamic_concern": "High sustained +G during pull-up.",
+    "source": "IAC catalogue family 8.",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 0.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 2.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 3.5,
+        "duration_ms": 700.0
+      },
+      {
+        "nz": 5.0,
+        "duration_ms": 700.0
+      },
+      {
+        "nz": 3.0,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 0.2,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 0.1,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 0.2,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 0.1,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 800.0
+      }
+    ]
+  },
+  {
+    "id": "inverted_cobra",
+    "filename": "inverted_cobra.txt",
+    "category": "extreme_post_stall",
+    "description": "Theoretical negative-G mirror of Pugachev's Cobra; sustained -Gz spike and recovery from inverted.",
+    "aircraft": "Theoretical / Extra 300L kinematic equivalent",
+    "peak_pos_gz": 1.0,
+    "peak_neg_gz": -5.5,
+    "onset_rate_g_per_s": 30.0,
+    "total_duration_s": 5.0,
+    "aresti_family": null,
+    "aresti_code": null,
+    "sustained_gz": null,
+    "sustained_duration_s": null,
+    "hemodynamic_concern": "Peak -5 G ~ 1 s; conjunctival hemorrhage / red-out risk; airframe-limited.",
+    "source": "Burton USAFSAM -Gz literature; theoretical envelope extension.",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 1.0,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 200.0
+      },
+      {
+        "nz": -1.5,
+        "duration_ms": 200.0
+      },
+      {
+        "nz": -3.0,
+        "duration_ms": 200.0
+      },
+      {
+        "nz": -5.0,
+        "duration_ms": 200.0
+      },
+      {
+        "nz": -5.5,
+        "duration_ms": 250.0
+      },
+      {
+        "nz": -3.5,
+        "duration_ms": 250.0
+      },
+      {
+        "nz": -1.5,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": -0.2,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 0.5,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": -0.3,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 0.2,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 800.0
+      }
+    ]
+  },
+  {
+    "id": "inverted_flat_spin",
+    "filename": "inverted_flat_spin.txt",
+    "category": "championship",
+    "description": "Flat spin in inverted attitude; sustained -1.5 to -2.5 G.",
+    "aircraft": "Aerobatic / fighter",
+    "peak_pos_gz": 2.0,
+    "peak_neg_gz": -2.5,
+    "onset_rate_g_per_s": 4.0,
+    "total_duration_s": 14.0,
+    "aresti_family": 9,
+    "aresti_code": null,
+    "sustained_gz": null,
+    "sustained_duration_s": null,
+    "hemodynamic_concern": "Most stressful Unlimited spin; sustained -G + rotational stress.",
+    "source": "FAI/CIVA Aresti family 9; kinematic synthesis.",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 0.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": -0.5,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": -1.5,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": -2.0,
+        "duration_ms": 800.0
+      },
+      {
+        "nz": -2.5,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -2.5,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -2.5,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -2.5,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -2.5,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -2.5,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -2.5,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -2.0,
+        "duration_ms": 800.0
+      },
+      {
+        "nz": -1.5,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": -0.5,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 0.5,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 2.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 600.0
+      }
+    ]
+  },
+  {
+    "id": "inverted_spin",
+    "filename": "inverted_spin.txt",
+    "category": "championship",
+    "description": "Sustained autorotation at negative AOA; -1.5 to -2.5 G sustained, +G recovery pull.",
+    "aircraft": "Aerobatic / military trainer",
+    "peak_pos_gz": 3.0,
+    "peak_neg_gz": -2.5,
+    "onset_rate_g_per_s": 4.0,
+    "total_duration_s": 14.0,
+    "aresti_family": 9,
+    "aresti_code": null,
+    "sustained_gz": null,
+    "sustained_duration_s": null,
+    "hemodynamic_concern": "Sustained -G with Coriolis stress; recovery pull on deconditioned baroreflex.",
+    "source": "FAI/CIVA Aresti family 9 (inverted spin subcode); kinematic synthesis.",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 0.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 0.5,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": -0.5,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": -1.5,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": -2.0,
+        "duration_ms": 800.0
+      },
+      {
+        "nz": -2.5,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -2.0,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -2.5,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -2.0,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -2.5,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -2.0,
+        "duration_ms": 800.0
+      },
+      {
+        "nz": -1.5,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": -0.5,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 3.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 2.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 0.5,
+        "duration_ms": 600.0
+      }
+    ]
+  },
+  {
+    "id": "inverted_spin_recovery",
+    "filename": "inverted_spin_recovery.txt",
+    "category": "extreme_post_stall",
+    "description": "Developed inverted spin → 2–3 s -G recovery dive → hard symmetric +G pull.",
+    "aircraft": "T-6 / Pitts / Extra 300 / Su-26",
+    "peak_pos_gz": 6.0,
+    "peak_neg_gz": -2.5,
+    "onset_rate_g_per_s": 25.0,
+    "total_duration_s": 16.0,
+    "aresti_family": null,
+    "aresti_code": null,
+    "sustained_gz": null,
+    "sustained_duration_s": null,
+    "hemodynamic_concern": "Most clinically realistic push-pull; sustained -G unloads carotid baroreflex before +6 G pull.",
+    "source": "NASA SP-2009-575 (Chambers); Bihrle Applied Research; Banks push-pull literature.",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 1.0,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": -1.5,
+        "duration_ms": 800.0
+      },
+      {
+        "nz": -2.5,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -2.0,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -1.5,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -1.0,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -0.5,
+        "duration_ms": 800.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 2.5,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 4.5,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 6.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 6.0,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 4.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 2.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 1.2,
+        "duration_ms": 700.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 1000.0
+      }
+    ]
+  },
+  {
+    "id": "knife_edge_pass_highg",
+    "filename": "knife_edge_pass_highg.txt",
+    "category": "championship",
+    "description": "High-G level turn into 90° bank knife-edge with rudder; sustained +G then sudden offload.",
+    "aircraft": "Showpiece",
+    "peak_pos_gz": 6.0,
+    "peak_neg_gz": -0.3,
+    "onset_rate_g_per_s": 5.0,
+    "total_duration_s": 10.0,
+    "aresti_family": 1,
+    "aresti_code": null,
+    "sustained_gz": null,
+    "sustained_duration_s": null,
+    "hemodynamic_concern": "Sudden +6 → 0 G offload (~10 G/s); abrupt baroreflex demand.",
+    "source": "Airshow figure; kinematic synthesis.",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 0.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 2.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 4.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 5.5,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 6.0,
+        "duration_ms": 700.0
+      },
+      {
+        "nz": 6.0,
+        "duration_ms": 700.0
+      },
+      {
+        "nz": 3.0,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 0.5,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 1500.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 3.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 1.5,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 0.5,
+        "duration_ms": 600.0
+      }
+    ]
+  },
+  {
+    "id": "kulbit",
+    "filename": "kulbit.txt",
+    "category": "extreme_post_stall",
+    "description": "Cobra continued through full 360° backflip about pitch axis at low translational velocity.",
+    "aircraft": "Su-37 / Su-30MKI / Su-35",
+    "peak_pos_gz": 8.0,
+    "peak_neg_gz": -1.8,
+    "onset_rate_g_per_s": 35.0,
+    "total_duration_s": 7.0,
+    "aresti_family": null,
+    "aresti_code": null,
+    "sustained_gz": null,
+    "sustained_duration_s": null,
+    "hemodynamic_concern": "Textbook push-pull: +6–8 G then sustained -1.8 G then +6–7 G recovery.",
+    "source": "Sukhoi flight-demo materials; cross-reference Banks et al. push-pull literature.",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 1.0,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 2.0,
+        "duration_ms": 150.0
+      },
+      {
+        "nz": 5.0,
+        "duration_ms": 150.0
+      },
+      {
+        "nz": 7.5,
+        "duration_ms": 200.0
+      },
+      {
+        "nz": 8.0,
+        "duration_ms": 200.0
+      },
+      {
+        "nz": 5.0,
+        "duration_ms": 250.0
+      },
+      {
+        "nz": 2.0,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": -1.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": -1.8,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": -1.2,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 2.0,
+        "duration_ms": 200.0
+      },
+      {
+        "nz": 5.5,
+        "duration_ms": 200.0
+      },
+      {
+        "nz": 7.0,
+        "duration_ms": 250.0
+      },
+      {
+        "nz": 4.0,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 1.5,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 800.0
+      }
+    ]
+  },
+  {
+    "id": "lag_pursuit_roll",
+    "filename": "military_lag_pursuit_roll.txt",
+    "category": "military_acm",
+    "description": "Rolling-displacement maneuver to convert excess closure into angles.",
+    "aircraft": "F-16C",
+    "peak_pos_gz": 4.0,
+    "peak_neg_gz": 0.0,
+    "onset_rate_g_per_s": 3.0,
+    "total_duration_s": 13.0,
+    "aresti_family": null,
+    "aresti_code": null,
+    "sustained_gz": 3.5,
+    "sustained_duration_s": 6.0,
+    "hemodynamic_concern": "Sustained +3–4 G with rolling component.",
+    "source": "Shaw Ch.4 (pursuit curves); USAF AFMAN 11-2F-16.",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 1.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 2.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 3.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 4.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 4.0,
+        "duration_ms": 4000.0
+      },
+      {
+        "nz": 3.5,
+        "duration_ms": 2000.0
+      },
+      {
+        "nz": 3.0,
+        "duration_ms": 2000.0
+      },
+      {
+        "nz": 2.5,
+        "duration_ms": 1500.0
+      },
+      {
+        "nz": 2.0,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 1.5,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 500.0
+      }
+    ]
+  },
+  {
+    "id": "last_ditch_break",
+    "filename": "military_last_ditch_break.txt",
+    "category": "military_acm",
+    "description": "Final maximum-G out-of-plane break ~1.5–3 s before missile impact, often combined with chaff/flare.",
+    "aircraft": "F-16C / F/A-18",
+    "peak_pos_gz": 9.5,
+    "peak_neg_gz": -1.0,
+    "onset_rate_g_per_s": 13.0,
+    "total_duration_s": 6.0,
+    "aresti_family": null,
+    "aresti_code": null,
+    "sustained_gz": null,
+    "sustained_duration_s": null,
+    "hemodynamic_concern": "Onset >12 G/s exceeds standard envelope; pilot accepts grey-out risk.",
+    "source": "Shaw Ch.5; NATO HFM-251 rapid-onset tolerance discussions.",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 1.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": -1.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 200.0
+      },
+      {
+        "nz": 3.0,
+        "duration_ms": 100.0
+      },
+      {
+        "nz": 6.0,
+        "duration_ms": 100.0
+      },
+      {
+        "nz": 9.0,
+        "duration_ms": 100.0
+      },
+      {
+        "nz": 9.5,
+        "duration_ms": 1500.0
+      },
+      {
+        "nz": 8.0,
+        "duration_ms": 800.0
+      },
+      {
+        "nz": 5.0,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 3.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 1.5,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 800.0
+      }
+    ]
+  },
+  {
+    "id": "lazy_eight",
+    "filename": "lazy_eight.txt",
+    "category": "championship",
+    "description": "Gentle commercial-pilot/training maneuver: undulating coordinated turns in horizontal figure-eight.",
+    "aircraft": "Trainer / GA",
+    "peak_pos_gz": 2.5,
+    "peak_neg_gz": 0.5,
+    "onset_rate_g_per_s": 0.5,
+    "total_duration_s": 24.0,
+    "aresti_family": 7,
+    "aresti_code": null,
+    "sustained_gz": null,
+    "sustained_duration_s": null,
+    "hemodynamic_concern": "Mild; no negative phase. Reference low-stress profile.",
+    "source": "FAA-H-8083-3 Airplane Flying Handbook; kinematic synthesis.",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 1.0,
+        "duration_ms": 800.0
+      },
+      {
+        "nz": 1.5,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 2.0,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 2.5,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 2.0,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 1.5,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 0.7,
+        "duration_ms": 1200.0
+      },
+      {
+        "nz": 0.5,
+        "duration_ms": 1200.0
+      },
+      {
+        "nz": 0.7,
+        "duration_ms": 1200.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 1.5,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 2.0,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 2.5,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 2.0,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 1.5,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 0.7,
+        "duration_ms": 1200.0
+      },
+      {
+        "nz": 0.5,
+        "duration_ms": 1200.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 1000.0
+      }
+    ]
+  },
+  {
+    "id": "lomcovak",
+    "filename": "lomcovak.txt",
+    "category": "extreme_post_stall",
+    "description": "Czech autorotative tumbling maneuver; gyroscopically coupled rotation about all three body axes.",
+    "aircraft": "Zlín Z-50 / Extra 300 / Su-26",
+    "peak_pos_gz": 6.5,
+    "peak_neg_gz": -5.5,
+    "onset_rate_g_per_s": 45.0,
+    "total_duration_s": 6.0,
+    "aresti_family": null,
+    "aresti_code": null,
+    "sustained_gz": null,
+    "sustained_duration_s": null,
+    "hemodynamic_concern": "Highest per-unit-time CV demand; alternating ±5+ G defeats AGSM.",
+    "source": "FAI/CIVA Aresti family 9 tumble; Walter Extra airframe ±10G; kinematic estimate.",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 1.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 3.5,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 6.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 2.0,
+        "duration_ms": 200.0
+      },
+      {
+        "nz": -3.0,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": -5.5,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": -2.0,
+        "duration_ms": 200.0
+      },
+      {
+        "nz": 3.0,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 6.5,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 2.0,
+        "duration_ms": 200.0
+      },
+      {
+        "nz": -3.5,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": -5.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": -1.5,
+        "duration_ms": 200.0
+      },
+      {
+        "nz": 4.0,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 6.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": -1.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 0.5,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 2.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 800.0
+      }
+    ]
+  },
+  {
+    "id": "lomcovak_repeats",
+    "filename": "lomcovak_repeats.txt",
+    "category": "extreme_post_stall",
+    "description": "Two to three Lomcováks back-to-back; cumulative axis-switching ±G.",
+    "aircraft": "Extra 330SC / Su-26 / Edge 540 / MX-2",
+    "peak_pos_gz": 6.5,
+    "peak_neg_gz": -5.5,
+    "onset_rate_g_per_s": 50.0,
+    "total_duration_s": 14.0,
+    "aresti_family": null,
+    "aresti_code": null,
+    "sustained_gz": null,
+    "sustained_duration_s": null,
+    "hemodynamic_concern": "Cumulative baroreflex exhaustion; CGEM lacks fatigue term — likely under-predicts.",
+    "source": "Competition aerobatic flight literature; kinematic estimate.",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 1.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 6.0,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": -5.0,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 5.5,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": -5.5,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 2.0,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 6.0,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": -5.5,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 6.0,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": -5.0,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 2.0,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 6.5,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": -5.5,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 5.5,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": -5.0,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 1.5,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 3.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 1.5,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 0.5,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": -0.5,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 0.5,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 800.0
+      }
+    ]
+  },
+  {
+    "id": "loop_standard",
+    "filename": "loop_standard.txt",
+    "category": "championship",
+    "description": "Standard inside loop with 3–5 G pull-up and pull-out.",
+    "aircraft": "Generic aerobatic",
+    "peak_pos_gz": 4.5,
+    "peak_neg_gz": 0.0,
+    "onset_rate_g_per_s": 3.0,
+    "total_duration_s": 8.5,
+    "aresti_family": 7,
+    "aresti_code": null,
+    "sustained_gz": null,
+    "sustained_duration_s": null,
+    "hemodynamic_concern": "Sustained +G during entry pull.",
+    "source": "IAC catalogue family 7.",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 0.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 2.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 3.5,
+        "duration_ms": 800.0
+      },
+      {
+        "nz": 4.5,
+        "duration_ms": 800.0
+      },
+      {
+        "nz": 3.0,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 1.2,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 0.4,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 0.6,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 2.5,
+        "duration_ms": 800.0
+      },
+      {
+        "nz": 3.8,
+        "duration_ms": 800.0
+      },
+      {
+        "nz": 2.2,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 0.2,
+        "duration_ms": 800.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 800.0
+      }
+    ]
+  },
+  {
+    "id": "low_yoyo_offensive",
+    "filename": "military_low_yoyo.txt",
+    "category": "military_acm",
+    "description": "Offensive maneuver: roll-and-dive below bandit's plane to gain closure, then hard pull-up.",
+    "aircraft": "F-16C / F/A-18",
+    "peak_pos_gz": 7.0,
+    "peak_neg_gz": 0.0,
+    "onset_rate_g_per_s": 6.0,
+    "total_duration_s": 13.0,
+    "aresti_family": null,
+    "aresti_code": null,
+    "sustained_gz": 7.0,
+    "sustained_duration_s": 2.5,
+    "hemodynamic_concern": "Hard +7 G pull-up after low-G dive; mild push-pull.",
+    "source": "Shaw Ch.4; Newman & Callister 2009.",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 1.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 4.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 5.0,
+        "duration_ms": 1500.0
+      },
+      {
+        "nz": 2.0,
+        "duration_ms": 700.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 1500.0
+      },
+      {
+        "nz": 3.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 5.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 7.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 7.0,
+        "duration_ms": 2500.0
+      },
+      {
+        "nz": 5.0,
+        "duration_ms": 1500.0
+      },
+      {
+        "nz": 2.0,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 1000.0
+      }
+    ]
+  },
+  {
+    "id": "outside_360",
+    "filename": "outside360.txt",
+    "category": "championship",
+    "description": "360° outside loop sustaining −G throughout.",
+    "aircraft": "Unlimited aerobatic",
+    "peak_pos_gz": 0.5,
+    "peak_neg_gz": -3.5,
+    "onset_rate_g_per_s": 2.0,
+    "total_duration_s": 9.0,
+    "aresti_family": 7,
+    "aresti_code": null,
+    "sustained_gz": null,
+    "sustained_duration_s": null,
+    "hemodynamic_concern": "Sustained −Gz: red-out / cerebral congestion risk.",
+    "source": "IAC catalogue; existing CGEM sample input.",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 0.0,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -2.0,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -0.1,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -0.2,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 0.2,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 0.1,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -0.4,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -0.2,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 0.1,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -0.1,
+        "duration_ms": 2000.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -0.1,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -0.1,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 0.1,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -0.1,
+        "duration_ms": 2000.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 0.1,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -0.1,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -0.1,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 0.1,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -0.2,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 0.2,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -0.1,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -0.2,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 0.9,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 0.3,
+        "duration_ms": 1000.0
+      }
+    ]
+  },
+  {
+    "id": "outside_inside_vert8",
+    "filename": "outsideinsidevertical8.txt",
+    "category": "championship",
+    "description": "Vertical 8 — outside loop on bottom, inside loop on top.",
+    "aircraft": "Unlimited aerobatic",
+    "peak_pos_gz": 4.0,
+    "peak_neg_gz": -3.0,
+    "onset_rate_g_per_s": 2.5,
+    "total_duration_s": 18.0,
+    "aresti_family": 7,
+    "aresti_code": null,
+    "sustained_gz": null,
+    "sustained_duration_s": null,
+    "hemodynamic_concern": "Strong push-pull transitions between loop halves.",
+    "source": "IAC catalogue; existing CGEM sample input.",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 0.0,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -3.2,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -0.1,
+        "duration_ms": 3000.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 2000.0
+      },
+      {
+        "nz": 0.3,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 0.5,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 0.3,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 0.3,
+        "duration_ms": 2000.0
+      },
+      {
+        "nz": 0.2,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 0.1,
+        "duration_ms": 2000.0
+      },
+      {
+        "nz": -0.1,
+        "duration_ms": 2000.0
+      },
+      {
+        "nz": -0.7,
+        "duration_ms": 2000.0
+      },
+      {
+        "nz": -2.0,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -0.6,
+        "duration_ms": 2000.0
+      },
+      {
+        "nz": 0.8,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 7.8,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 0.6,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 0.8,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 0.2,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -1.1,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -0.9,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -0.6,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -0.3,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -0.5,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -0.2,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 0.1,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -1.7,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -0.3,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -0.1,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -0.2,
+        "duration_ms": 2000.0
+      },
+      {
+        "nz": -0.3,
+        "duration_ms": 2000.0
+      }
+    ]
+  },
+  {
+    "id": "outside_snap_level",
+    "filename": "outside_snap_level.txt",
+    "category": "championship",
+    "description": "Snap roll initiated by forward stick (negative AOA stall); brief negative-G spike.",
+    "aircraft": "Unlimited aerobatic",
+    "peak_pos_gz": 1.5,
+    "peak_neg_gz": -4.5,
+    "onset_rate_g_per_s": 18.0,
+    "total_duration_s": 5.0,
+    "aresti_family": 9,
+    "aresti_code": null,
+    "sustained_gz": null,
+    "sustained_duration_s": null,
+    "hemodynamic_concern": "Sub-300 ms -4.5 G spike; rare physiologic challenge.",
+    "source": "FAI/CIVA Aresti family 9 (outside snap); kinematic synthesis.",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 0.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 0.8,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 0.5,
+        "duration_ms": 250.0
+      },
+      {
+        "nz": -2.0,
+        "duration_ms": 250.0
+      },
+      {
+        "nz": -4.5,
+        "duration_ms": 250.0
+      },
+      {
+        "nz": -3.0,
+        "duration_ms": 250.0
+      },
+      {
+        "nz": -0.5,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 1.5,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 600.0
+      }
+    ]
+  },
+  {
+    "id": "pugachev_cobra",
+    "filename": "pugachev_cobra.txt",
+    "category": "extreme_post_stall",
+    "description": "Dynamic post-stall pitch-up to ~110–120° AOA, decelerate, pitch forward and recover.",
+    "aircraft": "Su-27 / Su-35",
+    "peak_pos_gz": 6.5,
+    "peak_neg_gz": -0.4,
+    "onset_rate_g_per_s": 30.0,
+    "total_duration_s": 5.0,
+    "aresti_family": null,
+    "aresti_code": null,
+    "sustained_gz": null,
+    "sustained_duration_s": null,
+    "hemodynamic_concern": "Pitch-up Gz spike (~150 ms) too short for AGSM; brief float.",
+    "source": "Herbst W.B. (1980) Dynamics of Air Combat, J. Aircraft 17(8); kinematic estimate.",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 1.0,
+        "duration_ms": 800.0
+      },
+      {
+        "nz": 1.5,
+        "duration_ms": 150.0
+      },
+      {
+        "nz": 3.0,
+        "duration_ms": 150.0
+      },
+      {
+        "nz": 5.5,
+        "duration_ms": 200.0
+      },
+      {
+        "nz": 6.5,
+        "duration_ms": 200.0
+      },
+      {
+        "nz": 4.0,
+        "duration_ms": 250.0
+      },
+      {
+        "nz": 1.5,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 0.2,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": -0.4,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": -0.2,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 0.5,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 1.8,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 1.2,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 700.0
+      }
+    ]
+  },
+  {
+    "id": "push_pull_missile_evasion",
+    "filename": "military_push_pull_evasion.txt",
+    "category": "military_acm",
+    "description": "Negative-G push to displace velocity vector, immediately followed by max +G inside pull.",
+    "aircraft": "F-16C / F/A-18",
+    "peak_pos_gz": 7.0,
+    "peak_neg_gz": -1.5,
+    "onset_rate_g_per_s": 6.0,
+    "total_duration_s": 13.0,
+    "aresti_family": null,
+    "aresti_code": null,
+    "sustained_gz": 6.5,
+    "sustained_duration_s": 3.5,
+    "hemodynamic_concern": "Classical push-pull: 2.5 s -1.5 G push then 7 G pull. Tolerance ↓1–2 G.",
+    "source": "Banks et al. push-pull effect literature; Shaw Ch.5.",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 1.0,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": -0.5,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": -1.5,
+        "duration_ms": 2000.0
+      },
+      {
+        "nz": -1.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 3.0,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 5.0,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 7.0,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 7.0,
+        "duration_ms": 3500.0
+      },
+      {
+        "nz": 5.0,
+        "duration_ms": 2000.0
+      },
+      {
+        "nz": 2.0,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 1000.0
+      }
+    ]
+  },
+  {
+    "id": "quarter_clover",
+    "filename": "quarter_clover.txt",
+    "category": "championship",
+    "description": "Looping segment combined with 90° heading change; classical clover-leaf training figure.",
+    "aircraft": "Generic / fighter",
+    "peak_pos_gz": 5.0,
+    "peak_neg_gz": -0.5,
+    "onset_rate_g_per_s": 3.5,
+    "total_duration_s": 12.0,
+    "aresti_family": 7,
+    "aresti_code": null,
+    "sustained_gz": null,
+    "sustained_duration_s": null,
+    "hemodynamic_concern": "Single sustained +5 G pull with mild post-roll segment.",
+    "source": "FAA-H-8083-9 Aerobatic Flying Handbook; kinematic synthesis.",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 0.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 2.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 3.5,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 5.0,
+        "duration_ms": 700.0
+      },
+      {
+        "nz": 4.0,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 2.5,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": -0.5,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 0.5,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 1.5,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 2.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 3.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 1.5,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 0.5,
+        "duration_ms": 600.0
+      }
+    ]
+  },
+  {
+    "id": "quarter_down_roll",
+    "filename": "quarterdownroll.txt",
+    "category": "championship",
+    "description": "Quarter outside loop followed by 90° downline snap roll.",
+    "aircraft": "Unlimited aerobatic",
+    "peak_pos_gz": 2.0,
+    "peak_neg_gz": -3.0,
+    "onset_rate_g_per_s": 3.0,
+    "total_duration_s": 8.0,
+    "aresti_family": 8,
+    "aresti_code": null,
+    "sustained_gz": null,
+    "sustained_duration_s": null,
+    "hemodynamic_concern": "−G entry then snap-induced lateral G.",
+    "source": "Existing CGEM sample input.",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 0.0,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -0.9,
+        "duration_ms": 900.0
+      },
+      {
+        "nz": 0.33,
+        "duration_ms": 900.0
+      },
+      {
+        "nz": 0.22,
+        "duration_ms": 900.0
+      },
+      {
+        "nz": -0.44,
+        "duration_ms": 900.0
+      },
+      {
+        "nz": -0.66,
+        "duration_ms": 900.0
+      },
+      {
+        "nz": -1.1,
+        "duration_ms": 900.0
+      },
+      {
+        "nz": 1.1,
+        "duration_ms": 900.0
+      },
+      {
+        "nz": -1.0,
+        "duration_ms": 900.0
+      },
+      {
+        "nz": 2.5,
+        "duration_ms": 900.0
+      },
+      {
+        "nz": 4.1,
+        "duration_ms": 900.0
+      },
+      {
+        "nz": -1.9,
+        "duration_ms": 900.0
+      },
+      {
+        "nz": -2.2,
+        "duration_ms": 900.0
+      },
+      {
+        "nz": 2.2,
+        "duration_ms": 900.0
+      },
+      {
+        "nz": 0.55,
+        "duration_ms": 900.0
+      },
+      {
+        "nz": 1.32,
+        "duration_ms": 900.0
+      }
+    ]
+  },
+  {
+    "id": "rate_fight_sustained",
+    "filename": "military_rate_fight.txt",
+    "category": "military_acm",
+    "description": "Two-circle sustained turning engagement at corner velocity; 7–8 G plateau for 22 s.",
+    "aircraft": "F-16C / Eurofighter",
+    "peak_pos_gz": 8.0,
+    "peak_neg_gz": 0.0,
+    "onset_rate_g_per_s": 6.0,
+    "total_duration_s": 30.0,
+    "aresti_family": null,
+    "aresti_code": null,
+    "sustained_gz": 7.5,
+    "sustained_duration_s": 18.0,
+    "hemodynamic_concern": "G-tolerance endurance test; major AGSM fatigue scenario.",
+    "source": "Shaw Ch.4 (one-circle vs two-circle); Sauvet et al. F-16 ACM HRV.",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 1.0,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 3.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 5.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 7.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 8.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 8.0,
+        "duration_ms": 8000.0
+      },
+      {
+        "nz": 7.5,
+        "duration_ms": 6000.0
+      },
+      {
+        "nz": 7.0,
+        "duration_ms": 4000.0
+      },
+      {
+        "nz": 6.0,
+        "duration_ms": 4000.0
+      },
+      {
+        "nz": 4.0,
+        "duration_ms": 2000.0
+      },
+      {
+        "nz": 2.0,
+        "duration_ms": 1500.0
+      },
+      {
+        "nz": 1.5,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 1000.0
+      }
+    ]
+  },
+  {
+    "id": "reverse_cuban_eight",
+    "filename": "reverse_cuban_eight.txt",
+    "category": "championship",
+    "description": "Mirror of standard Cuban eight: 5/8-loop entry then 45° upline half-rolls and pulls.",
+    "aircraft": "Unlimited aerobatic",
+    "peak_pos_gz": 5.0,
+    "peak_neg_gz": -1.0,
+    "onset_rate_g_per_s": 3.5,
+    "total_duration_s": 18.0,
+    "aresti_family": 7,
+    "aresti_code": null,
+    "sustained_gz": null,
+    "sustained_duration_s": null,
+    "hemodynamic_concern": "Two large +G pulls separated by brief negative half-roll segments.",
+    "source": "FAI/CIVA Aresti family 7 (eights); kinematic synthesis.",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 0.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 2.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 3.8,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 5.0,
+        "duration_ms": 700.0
+      },
+      {
+        "nz": 4.5,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 2.5,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 0.2,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": -1.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 0.5,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 1.5,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 2.2,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 4.0,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 5.0,
+        "duration_ms": 700.0
+      },
+      {
+        "nz": 4.0,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 2.5,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 0.2,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": -1.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 0.5,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 600.0
+      }
+    ]
+  },
+  {
+    "id": "reverse_half_cuban",
+    "filename": "reverse_half_cuban.txt",
+    "category": "championship",
+    "description": "Half-Cuban entered from the top: pull up to 45° upline, half-roll to inverted, then 5/8 loop.",
+    "aircraft": "Aerobatic competition",
+    "peak_pos_gz": 5.0,
+    "peak_neg_gz": -1.0,
+    "onset_rate_g_per_s": 3.0,
+    "total_duration_s": 10.0,
+    "aresti_family": 7,
+    "aresti_code": null,
+    "sustained_gz": null,
+    "sustained_duration_s": null,
+    "hemodynamic_concern": "Single +5 G pull preceded by brief inverted segment.",
+    "source": "FAI/CIVA Aresti family 7; kinematic synthesis.",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 0.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 2.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 3.5,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 4.0,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 2.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 0.5,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": -1.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 3.0,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 5.0,
+        "duration_ms": 700.0
+      },
+      {
+        "nz": 3.5,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 1.5,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 0.5,
+        "duration_ms": 600.0
+      }
+    ]
+  },
+  {
+    "id": "rolling_scissors",
+    "filename": "military_rolling_scissors.txt",
+    "category": "military_acm",
+    "description": "Vertical scissors with rolling component; sustained 3–5 G alternating.",
+    "aircraft": "F-16C / F/A-18",
+    "peak_pos_gz": 5.0,
+    "peak_neg_gz": 0.5,
+    "onset_rate_g_per_s": 3.0,
+    "total_duration_s": 18.0,
+    "aresti_family": null,
+    "aresti_code": null,
+    "sustained_gz": 4.5,
+    "sustained_duration_s": 5.0,
+    "hemodynamic_concern": "Sustained +4–5 G with rolling/vertical component over 18 s.",
+    "source": "Shaw Ch.4; Newman & Callister 2009.",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 1.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 3.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 5.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 5.0,
+        "duration_ms": 2000.0
+      },
+      {
+        "nz": 3.0,
+        "duration_ms": 1500.0
+      },
+      {
+        "nz": 2.0,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 4.5,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 5.0,
+        "duration_ms": 2000.0
+      },
+      {
+        "nz": 4.5,
+        "duration_ms": 1500.0
+      },
+      {
+        "nz": 2.0,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 4.5,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 5.0,
+        "duration_ms": 2000.0
+      },
+      {
+        "nz": 3.0,
+        "duration_ms": 1500.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 1000.0
+      }
+    ]
+  },
+  {
+    "id": "slatted_high_aoa_turn",
+    "filename": "military_slatted_high_aoa_turn.txt",
+    "category": "military_acm",
+    "description": "Sustained 7-G turn at high AOA with leading-edge slats deployed.",
+    "aircraft": "F/A-18C/D",
+    "peak_pos_gz": 7.5,
+    "peak_neg_gz": 0.0,
+    "onset_rate_g_per_s": 5.0,
+    "total_duration_s": 22.0,
+    "aresti_family": null,
+    "aresti_code": null,
+    "sustained_gz": 7.2,
+    "sustained_duration_s": 10.0,
+    "hemodynamic_concern": "Long sustained 7 G plateau at high AOA.",
+    "source": "Newman & Callister 2009 DOI:10.3357/asem.2361.2009.",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 1.0,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 3.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 5.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 7.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 7.5,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 7.5,
+        "duration_ms": 6000.0
+      },
+      {
+        "nz": 7.2,
+        "duration_ms": 3000.0
+      },
+      {
+        "nz": 7.0,
+        "duration_ms": 3000.0
+      },
+      {
+        "nz": 5.5,
+        "duration_ms": 2000.0
+      },
+      {
+        "nz": 3.5,
+        "duration_ms": 2000.0
+      },
+      {
+        "nz": 2.0,
+        "duration_ms": 1500.0
+      },
+      {
+        "nz": 1.5,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 1000.0
+      }
+    ]
+  },
+  {
+    "id": "slow_roll_level",
+    "filename": "slow_roll_level.txt",
+    "category": "championship",
+    "description": "Continuous full-360° aileron roll on level line; smooth Nz transition through ±1 G.",
+    "aircraft": "Aerobatic competition",
+    "peak_pos_gz": 1.0,
+    "peak_neg_gz": -1.0,
+    "onset_rate_g_per_s": 1.5,
+    "total_duration_s": 5.0,
+    "aresti_family": 9,
+    "aresti_code": null,
+    "sustained_gz": null,
+    "sustained_duration_s": null,
+    "hemodynamic_concern": "Smooth ±1 G sinusoid; mild physiologic load.",
+    "source": "FAI/CIVA Aresti family 9; idealised slow-roll Nz profile.",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 0.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 0.7,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": -0.7,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": -1.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": -1.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": -0.7,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 0.7,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 600.0
+      }
+    ]
+  },
+  {
+    "id": "snake_modulated",
+    "filename": "snake_modulated.txt",
+    "category": "extreme_post_stall",
+    "description": "Falling leaf with intentional pitch-rate forcing producing phased ±G modulation.",
+    "aircraft": "F-18 HARV / X-31",
+    "peak_pos_gz": 3.8,
+    "peak_neg_gz": -2.0,
+    "onset_rate_g_per_s": 20.0,
+    "total_duration_s": 14.0,
+    "aresti_family": null,
+    "aresti_code": null,
+    "sustained_gz": null,
+    "sustained_duration_s": null,
+    "hemodynamic_concern": "~2–3 s push-pull period close to baroreflex resonance frequency.",
+    "source": "NASA F-18 HARV and X-31 high-AOA flight-test pilot reports.",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 1.0,
+        "duration_ms": 800.0
+      },
+      {
+        "nz": 2.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 3.5,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 2.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 0.5,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": -1.5,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": -2.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": -0.5,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 1.5,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 3.5,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 2.5,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": -1.8,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": -2.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": -0.5,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 2.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 3.8,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 2.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": -1.5,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 0.5,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 800.0
+      }
+    ]
+  },
+  {
+    "id": "snap_45deg_down_roll",
+    "filename": "snap45degdownroll.txt",
+    "category": "championship",
+    "description": "45° downline with a snap roll.",
+    "aircraft": "Unlimited aerobatic",
+    "peak_pos_gz": 4.0,
+    "peak_neg_gz": -1.5,
+    "onset_rate_g_per_s": 10.0,
+    "total_duration_s": 6.0,
+    "aresti_family": 9,
+    "aresti_code": null,
+    "sustained_gz": null,
+    "sustained_duration_s": null,
+    "hemodynamic_concern": "Snap-roll high-onset transient; lateral asymmetric loading.",
+    "source": "Existing CGEM sample input.",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 0.0,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -2.0,
+        "duration_ms": 900.0
+      },
+      {
+        "nz": 1.8,
+        "duration_ms": 900.0
+      },
+      {
+        "nz": 1.65,
+        "duration_ms": 900.0
+      },
+      {
+        "nz": -1.0,
+        "duration_ms": 900.0
+      },
+      {
+        "nz": -0.45,
+        "duration_ms": 900.0
+      },
+      {
+        "nz": -1.3,
+        "duration_ms": 900.0
+      },
+      {
+        "nz": -0.45,
+        "duration_ms": 900.0
+      },
+      {
+        "nz": 6.0,
+        "duration_ms": 900.0
+      },
+      {
+        "nz": -3.0,
+        "duration_ms": 900.0
+      },
+      {
+        "nz": -0.55,
+        "duration_ms": 900.0
+      },
+      {
+        "nz": 1.7,
+        "duration_ms": 900.0
+      },
+      {
+        "nz": -2.0,
+        "duration_ms": 900.0
+      },
+      {
+        "nz": 2.2,
+        "duration_ms": 900.0
+      },
+      {
+        "nz": -0.88,
+        "duration_ms": 900.0
+      },
+      {
+        "nz": -1.1,
+        "duration_ms": 900.0
+      },
+      {
+        "nz": 0.88,
+        "duration_ms": 900.0
+      },
+      {
+        "nz": 0.77,
+        "duration_ms": 900.0
+      }
+    ]
+  },
+  {
+    "id": "snap_roll_level",
+    "filename": "snap_roll_level.txt",
+    "category": "championship",
+    "description": "Autorotative aileron-rudder snap on level line; brief asymmetric high-G spike.",
+    "aircraft": "Unlimited aerobatic",
+    "peak_pos_gz": 6.0,
+    "peak_neg_gz": -1.0,
+    "onset_rate_g_per_s": 18.0,
+    "total_duration_s": 5.0,
+    "aresti_family": 9,
+    "aresti_code": null,
+    "sustained_gz": null,
+    "sustained_duration_s": null,
+    "hemodynamic_concern": "Sub-300 ms +6 G spike; onset rate exceeds AGSM time constant.",
+    "source": "FAI/CIVA Aresti family 9 (snap subfamily); kinematic synthesis.",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 0.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 1.2,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 2.0,
+        "duration_ms": 250.0
+      },
+      {
+        "nz": 6.0,
+        "duration_ms": 250.0
+      },
+      {
+        "nz": 4.0,
+        "duration_ms": 250.0
+      },
+      {
+        "nz": 1.5,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": -1.0,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 0.5,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 800.0
+      }
+    ]
+  },
+  {
+    "id": "split_s",
+    "filename": "split_s.txt",
+    "category": "championship",
+    "description": "Roll inverted then descending half-loop with high +G pull-out.",
+    "aircraft": "Generic / fighter",
+    "peak_pos_gz": 5.0,
+    "peak_neg_gz": 0.0,
+    "onset_rate_g_per_s": 3.5,
+    "total_duration_s": 8.0,
+    "aresti_family": 8,
+    "aresti_code": null,
+    "sustained_gz": null,
+    "sustained_duration_s": null,
+    "hemodynamic_concern": "High +G recovery from inverted; risk at low altitude.",
+    "source": "IAC catalogue family 8.",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 0.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 0.2,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 0.1,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 1.5,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 3.0,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 4.5,
+        "duration_ms": 800.0
+      },
+      {
+        "nz": 5.2,
+        "duration_ms": 800.0
+      },
+      {
+        "nz": 4.0,
+        "duration_ms": 700.0
+      },
+      {
+        "nz": 2.5,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 1.2,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 0.4,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 800.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 800.0
+      }
+    ]
+  },
+  {
+    "id": "square_loop",
+    "filename": "square_loop.txt",
+    "category": "championship",
+    "description": "Four 90° corner pulls (~5–6 G) linked by 1-G straight lines.",
+    "aircraft": "Unlimited aerobatic",
+    "peak_pos_gz": 6.0,
+    "peak_neg_gz": -0.2,
+    "onset_rate_g_per_s": 5.5,
+    "total_duration_s": 15.0,
+    "aresti_family": 7,
+    "aresti_code": null,
+    "sustained_gz": null,
+    "sustained_duration_s": null,
+    "hemodynamic_concern": "Four high-onset +6 G corners in sequence; AGSM endurance test.",
+    "source": "FAI/CIVA Aresti family 7 (square loop); kinematic synthesis.",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 0.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 2.5,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 5.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 6.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 1500.0
+      },
+      {
+        "nz": 5.5,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 6.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 2.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": -0.2,
+        "duration_ms": 1500.0
+      },
+      {
+        "nz": -0.2,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 1.5,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 5.5,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 6.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 1500.0
+      },
+      {
+        "nz": 5.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 6.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 2.5,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 0.5,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 600.0
+      }
+    ]
+  },
+  {
+    "id": "strike_turn_strafing_pullout",
+    "filename": "military_strike_pullout.txt",
+    "category": "military_acm",
+    "description": "Ground-attack profile: shallow dive at -1 G push, strafing pass, 7 G pull-out.",
+    "aircraft": "A-10C / F-16C strike",
+    "peak_pos_gz": 7.0,
+    "peak_neg_gz": -1.0,
+    "onset_rate_g_per_s": 7.0,
+    "total_duration_s": 16.0,
+    "aresti_family": null,
+    "aresti_code": null,
+    "sustained_gz": 6.5,
+    "sustained_duration_s": 3.0,
+    "hemodynamic_concern": "Push-pull: -1 G dive bunt for 2 s then +7 G pull-out.",
+    "source": "USAF A-10 BFM/CAS doctrine; Shaw Ch.6.",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 1.0,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 800.0
+      },
+      {
+        "nz": -1.0,
+        "duration_ms": 2000.0
+      },
+      {
+        "nz": -0.5,
+        "duration_ms": 800.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 2.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 4.0,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 6.0,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 7.0,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 7.0,
+        "duration_ms": 3000.0
+      },
+      {
+        "nz": 4.0,
+        "duration_ms": 2000.0
+      },
+      {
+        "nz": 2.0,
+        "duration_ms": 2000.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 1500.0
+      }
+    ]
+  },
+  {
+    "id": "sustained_9g_turn",
+    "filename": "military_sustained_9g_turn.txt",
+    "category": "military_acm",
+    "description": "9-G structural-limit turn held for 25–30 s (qualification SACM standard).",
+    "aircraft": "F-16C / F-22A",
+    "peak_pos_gz": 9.0,
+    "peak_neg_gz": 0.0,
+    "onset_rate_g_per_s": 6.0,
+    "total_duration_s": 38.0,
+    "aresti_family": null,
+    "aresti_code": null,
+    "sustained_gz": 9.0,
+    "sustained_duration_s": 25.0,
+    "hemodynamic_concern": "G-tolerance endurance test; cumulative AGSM fatigue.",
+    "source": "USAF AFMAN 11-2F-16; NATO HFM-251 lineage SACM 9G/30s standard.",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 1.0,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 2.0,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 4.0,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 6.0,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 8.0,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 9.0,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 9.0,
+        "duration_ms": 25000.0
+      },
+      {
+        "nz": 8.5,
+        "duration_ms": 3000.0
+      },
+      {
+        "nz": 7.0,
+        "duration_ms": 2000.0
+      },
+      {
+        "nz": 5.0,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 3.0,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 1.5,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 1000.0
+      }
+    ]
+  },
+  {
+    "id": "tailslide_negative",
+    "filename": "tailslide_negative.txt",
+    "category": "championship",
+    "description": "Vertical climb, rearward slide, canopy-forward nose-over with negative-G recovery.",
+    "aircraft": "Unlimited aerobatic",
+    "peak_pos_gz": 1.0,
+    "peak_neg_gz": -2.5,
+    "onset_rate_g_per_s": 5.0,
+    "total_duration_s": 10.0,
+    "aresti_family": 6,
+    "aresti_code": null,
+    "sustained_gz": null,
+    "sustained_duration_s": null,
+    "hemodynamic_concern": "Sustained negative-G recovery; cephalad blood pooling.",
+    "source": "FAI/CIVA Aresti family 6; kinematic synthesis.",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 0.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 3.5,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 800.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 0.5,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": -0.2,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": -0.5,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": -1.5,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": -2.5,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": -2.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": -1.2,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": -0.6,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": -0.2,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 0.2,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 600.0
+      }
+    ]
+  },
+  {
+    "id": "tailslide_positive",
+    "filename": "tailslide_positive.txt",
+    "category": "championship",
+    "description": "Vertical climb to zero airspeed, brief rearward slide, canopy-back nose-over with positive-G recovery.",
+    "aircraft": "Unlimited aerobatic",
+    "peak_pos_gz": 3.5,
+    "peak_neg_gz": -0.5,
+    "onset_rate_g_per_s": 5.0,
+    "total_duration_s": 10.0,
+    "aresti_family": 6,
+    "aresti_code": null,
+    "sustained_gz": null,
+    "sustained_duration_s": null,
+    "hemodynamic_concern": "Long zero-G phase before positive recovery pull (mild push-pull).",
+    "source": "FAI/CIVA Aresti family 6; kinematic synthesis.",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 0.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 3.5,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 800.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 0.6,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 0.2,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": -0.2,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": -0.5,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 1.5,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 3.5,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 2.5,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 1.5,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 0.8,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 0.2,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 600.0
+      }
+    ]
+  },
+  {
+    "id": "tailslide_tumble",
+    "filename": "tailslide_tumble.txt",
+    "category": "extreme_post_stall",
+    "description": "Tailslide entering autorotative tumble during recovery; compound sustained-G then alternating ±G.",
+    "aircraft": "Unlimited (Extra 300 / Su-26 / Edge 540)",
+    "peak_pos_gz": 6.0,
+    "peak_neg_gz": -5.0,
+    "onset_rate_g_per_s": 50.0,
+    "total_duration_s": 9.0,
+    "aresti_family": null,
+    "aresti_code": null,
+    "sustained_gz": null,
+    "sustained_duration_s": null,
+    "hemodynamic_concern": "Longest combined push-pull pattern in catalog; highest aggregate risk.",
+    "source": "Pilot incident reports (CIVA / IAC); kinematic estimate.",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 1.0,
+        "duration_ms": 800.0
+      },
+      {
+        "nz": 4.5,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 2.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 0.5,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": -0.5,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": -1.2,
+        "duration_ms": 800.0
+      },
+      {
+        "nz": -0.8,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": -0.2,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 3.0,
+        "duration_ms": 200.0
+      },
+      {
+        "nz": 6.0,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": -2.0,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": -5.0,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 2.0,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 5.5,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": -3.0,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": -4.0,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 2.0,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 6.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 3.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 800.0
+      }
+    ]
+  },
+  {
+    "id": "torque_roll",
+    "filename": "torque_roll.txt",
+    "category": "championship",
+    "description": "Vertical zero-airspeed rotation under engine torque; ~0 G hang then recovery.",
+    "aircraft": "Showpiece (Sean Tucker / Mike Goulian)",
+    "peak_pos_gz": 2.5,
+    "peak_neg_gz": -0.5,
+    "onset_rate_g_per_s": 3.0,
+    "total_duration_s": 10.0,
+    "aresti_family": 1,
+    "aresti_code": null,
+    "sustained_gz": null,
+    "sustained_duration_s": null,
+    "hemodynamic_concern": "Long zero-G float; mild push-pull on recovery.",
+    "source": "Airshow figure; kinematic synthesis.",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 0.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 3.0,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 1.5,
+        "duration_ms": 700.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 800.0
+      },
+      {
+        "nz": 0.5,
+        "duration_ms": 800.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -0.2,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -0.5,
+        "duration_ms": 800.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 0.5,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 1.5,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 2.5,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 1.5,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 0.5,
+        "duration_ms": 600.0
+      }
+    ]
+  },
+  {
+    "id": "triple_push_pull_immelmann",
+    "filename": "triple_push_pull_immelmann.txt",
+    "category": "conceptual",
+    "description": "Push–pull + half-roll repeated ×3.",
+    "aircraft": "Conceptual demo",
+    "peak_pos_gz": 6.0,
+    "peak_neg_gz": -3.0,
+    "onset_rate_g_per_s": 4.0,
+    "total_duration_s": 27.0,
+    "aresti_family": null,
+    "aresti_code": null,
+    "sustained_gz": null,
+    "sustained_duration_s": null,
+    "hemodynamic_concern": "Repeated push-pull; severe G-LOC risk per FAA reports.",
+    "source": "Demo profile (CGEM repository).",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 0.0,
+        "duration_ms": 800.0
+      },
+      {
+        "nz": -1.2,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -0.3,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 2.8,
+        "duration_ms": 1200.0
+      },
+      {
+        "nz": 0.8,
+        "duration_ms": 800.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 0.5,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": -1.3,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -0.4,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 3.0,
+        "duration_ms": 1200.0
+      },
+      {
+        "nz": 0.9,
+        "duration_ms": 800.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 0.6,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": -1.4,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -0.4,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 3.1,
+        "duration_ms": 1200.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 800.0
+      },
+      {
+        "nz": 0.2,
+        "duration_ms": 800.0
+      }
+    ]
+  },
+  {
+    "id": "triple_push_pull_loop",
+    "filename": "triple_push_pull_loop.txt",
+    "category": "conceptual",
+    "description": "Triple push–pull loop: −G push then +G pull, repeated ×3.",
+    "aircraft": "Conceptual demo",
+    "peak_pos_gz": 5.0,
+    "peak_neg_gz": -3.0,
+    "onset_rate_g_per_s": 4.0,
+    "total_duration_s": 24.0,
+    "aresti_family": null,
+    "aresti_code": null,
+    "sustained_gz": null,
+    "sustained_duration_s": null,
+    "hemodynamic_concern": "Maximal push-pull stress; baroreflex disruption.",
+    "source": "Demo profile (CGEM repository).",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 0.0,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -1.5,
+        "duration_ms": 1200.0
+      },
+      {
+        "nz": -0.4,
+        "duration_ms": 800.0
+      },
+      {
+        "nz": 3.8,
+        "duration_ms": 1500.0
+      },
+      {
+        "nz": 1.2,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -1.6,
+        "duration_ms": 1200.0
+      },
+      {
+        "nz": -0.3,
+        "duration_ms": 800.0
+      },
+      {
+        "nz": 4.0,
+        "duration_ms": 1500.0
+      },
+      {
+        "nz": 1.1,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": -1.4,
+        "duration_ms": 1200.0
+      },
+      {
+        "nz": -0.2,
+        "duration_ms": 800.0
+      },
+      {
+        "nz": 3.6,
+        "duration_ms": 1500.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 0.2,
+        "duration_ms": 1000.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 1000.0
+      }
+    ]
+  },
+  {
+    "id": "triple_push_pull_split_s",
+    "filename": "triple_push_pull_split_s.txt",
+    "category": "conceptual",
+    "description": "Three consecutive push–pull Split-S entries.",
+    "aircraft": "Conceptual demo",
+    "peak_pos_gz": 6.0,
+    "peak_neg_gz": -3.0,
+    "onset_rate_g_per_s": 4.0,
+    "total_duration_s": 27.0,
+    "aresti_family": null,
+    "aresti_code": null,
+    "sustained_gz": null,
+    "sustained_duration_s": null,
+    "hemodynamic_concern": "Repeated push-pull at high +G; near worst-case for unprotected pilot.",
+    "source": "Demo profile (CGEM repository).",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 0.0,
+        "duration_ms": 800.0
+      },
+      {
+        "nz": -1.4,
+        "duration_ms": 900.0
+      },
+      {
+        "nz": -0.5,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 2.2,
+        "duration_ms": 900.0
+      },
+      {
+        "nz": 0.7,
+        "duration_ms": 700.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": -1.5,
+        "duration_ms": 900.0
+      },
+      {
+        "nz": -0.5,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 2.4,
+        "duration_ms": 900.0
+      },
+      {
+        "nz": 0.8,
+        "duration_ms": 700.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": -1.6,
+        "duration_ms": 900.0
+      },
+      {
+        "nz": -0.5,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 2.6,
+        "duration_ms": 900.0
+      },
+      {
+        "nz": 0.9,
+        "duration_ms": 700.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 0.3,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 800.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 800.0
+      }
+    ]
+  },
+  {
+    "id": "vertical_climb_missile_evasion",
+    "filename": "military_vertical_climb_evasion.txt",
+    "category": "military_acm",
+    "description": "Zoom climb to drag missile into thin air; high-G pull-up then near-1 G climb.",
+    "aircraft": "F-15C / F-22A",
+    "peak_pos_gz": 7.0,
+    "peak_neg_gz": 0.0,
+    "onset_rate_g_per_s": 6.0,
+    "total_duration_s": 22.0,
+    "aresti_family": null,
+    "aresti_code": null,
+    "sustained_gz": 6.5,
+    "sustained_duration_s": 2.5,
+    "hemodynamic_concern": "Initial high-G pull then prolonged low-G climb; mild post-G-pull recovery.",
+    "source": "Shaw Ch.4; USAF AFMAN 11-2F-15.",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 1.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 3.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 5.0,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 7.0,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 7.0,
+        "duration_ms": 2500.0
+      },
+      {
+        "nz": 4.0,
+        "duration_ms": 1500.0
+      },
+      {
+        "nz": 2.0,
+        "duration_ms": 1500.0
+      },
+      {
+        "nz": 1.2,
+        "duration_ms": 4000.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 4000.0
+      },
+      {
+        "nz": 0.5,
+        "duration_ms": 2000.0
+      },
+      {
+        "nz": 0.7,
+        "duration_ms": 2000.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 2000.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 1000.0
+      }
+    ]
+  },
+  {
+    "id": "vertical_eight",
+    "filename": "vertical_eight.txt",
+    "category": "championship",
+    "description": "Vertical figure-8 with repeated +G exposures and brief −G transitions.",
+    "aircraft": "Generic aerobatic",
+    "peak_pos_gz": 4.6,
+    "peak_neg_gz": -0.4,
+    "onset_rate_g_per_s": 3.0,
+    "total_duration_s": 12.0,
+    "aresti_family": 7,
+    "aresti_code": null,
+    "sustained_gz": null,
+    "sustained_duration_s": null,
+    "hemodynamic_concern": "Push-pull cycle.",
+    "source": "IAC catalogue family 7.",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 0.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 2.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 3.5,
+        "duration_ms": 700.0
+      },
+      {
+        "nz": 4.2,
+        "duration_ms": 700.0
+      },
+      {
+        "nz": 3.8,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 2.5,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 1.2,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": -0.3,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": -0.7,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 2.2,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 3.8,
+        "duration_ms": 700.0
+      },
+      {
+        "nz": 4.5,
+        "duration_ms": 700.0
+      },
+      {
+        "nz": 3.6,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 2.2,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": -0.3,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": -0.5,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 0.4,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 0.2,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 800.0
+      }
+    ]
+  },
+  {
+    "id": "vertical_snap_upline",
+    "filename": "vertical_snap_upline.txt",
+    "category": "championship",
+    "description": "Quarter-loop pull to vertical, snap roll executed during the climb at decaying airspeed.",
+    "aircraft": "Unlimited aerobatic",
+    "peak_pos_gz": 6.0,
+    "peak_neg_gz": -1.5,
+    "onset_rate_g_per_s": 18.0,
+    "total_duration_s": 9.0,
+    "aresti_family": 9,
+    "aresti_code": null,
+    "sustained_gz": null,
+    "sustained_duration_s": null,
+    "hemodynamic_concern": "Snap-G spike on top of 1-G vertical baseline.",
+    "source": "FAI/CIVA Aresti family 9 (snap on family-1 line); kinematic synthesis.",
+    "tags": [],
+    "samples": [
+      {
+        "nz": 0.0,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 2.5,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 4.5,
+        "duration_ms": 500.0
+      },
+      {
+        "nz": 3.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 6.0,
+        "duration_ms": 250.0
+      },
+      {
+        "nz": 4.0,
+        "duration_ms": 250.0
+      },
+      {
+        "nz": -1.5,
+        "duration_ms": 300.0
+      },
+      {
+        "nz": 0.5,
+        "duration_ms": 400.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 1.0,
+        "duration_ms": 800.0
+      },
+      {
+        "nz": 0.5,
+        "duration_ms": 600.0
+      },
+      {
+        "nz": 0.0,
+        "duration_ms": 500.0
+      }
+    ]
+  }
+]
