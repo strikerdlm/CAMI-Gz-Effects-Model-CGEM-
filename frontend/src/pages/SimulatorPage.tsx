@@ -49,7 +49,8 @@ const DEFAULT_PILOT: PilotConfigRequest = {
   who_profile: 4,
   g_tolerance_multiplier: 1.0,
   dehydration_level: 0.0,
-  countermeasures_label: 'agsm',
+  // G-suit + AGSM both active → "suit_agsm" (not "agsm" alone)
+  countermeasures_label: 'suit_agsm',
   gsuit_max_psi: 5.0,
   gsuit_coverage_fraction: 0.6,
   agsm_effectiveness: 0.5,
