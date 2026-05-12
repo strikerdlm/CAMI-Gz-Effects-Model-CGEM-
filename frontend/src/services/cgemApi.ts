@@ -25,20 +25,23 @@ import type {
   VersionResponse,
   TargetName,
 } from './types';
+import { readUserPrefs } from '../state/useUserPrefs';
 
 // ── HTTP client ──────────────────────────────────────────────────────
-
-const baseURL =
-  (import.meta as unknown as { env?: { VITE_API_URL?: string } }).env?.VITE_API_URL ??
-  'http://localhost:8000';
+// Base URL is read per-request from the user prefs store so the
+// Settings page can switch backends without a reload.
 
 export const cgemHttp = axios.create({
-  baseURL,
   timeout: 60_000,
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json',
   },
+});
+
+cgemHttp.interceptors.request.use((cfg) => {
+  cfg.baseURL = readUserPrefs().apiUrl;
+  return cfg;
 });
 
 export type ApiError = AxiosError<{ detail?: string }>;
@@ -144,4 +147,7 @@ export function apiErrorMessage(err: unknown): string {
   return String(err);
 }
 
-export { baseURL as cgemApiBaseURL };
+/** Reactive accessor — reads the current prefs URL at call time.
+ *  Kept as an exported constant string for legacy callers that just want
+ *  to log the URL (DashboardPage.ApiStatusBanner uses this). */
+export const cgemApiBaseURL: string = readUserPrefs().apiUrl;
