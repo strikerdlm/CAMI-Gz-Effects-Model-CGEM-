@@ -1,5 +1,9 @@
 # Highlights
 
+> **Do NOT upload at IJNMBE.** The Highlights file is a CMPB / Elsevier
+> requirement; IJNMBE (Wiley) does not accept or render it. Retained here
+> only as a fallback if the manuscript is ever re-routed to CMPB.
+
 <!--
 CMPB requires 3–5 bullet points; each ≤ 85 characters including spaces.
 Each bullet should state a NOVEL FINDING, not a generic description.

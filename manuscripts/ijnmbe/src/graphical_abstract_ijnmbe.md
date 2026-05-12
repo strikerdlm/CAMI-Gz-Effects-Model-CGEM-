@@ -22,23 +22,28 @@ ORCID: 0000-0002-2257-4940.
 **Mini-abstract (≤ 80 words / ≤ 3 sentences):**
 
 A four-element machine-learning wrapper — XGBoost surrogate, Mondrian
-split-conformal intervals stratified by maneuver category,
-conformal-distance out-of-distribution abstention, and global Sobol sensitivity —
-surrounds the FAA-validated CGEM Fortran ODE model of +Gz acceleration
-physiology without modifying it. On a 3,240-row pre-registered held-out
-test split, the surrogate is ~180 × faster than direct subprocess
-invocation and conformal coverage stays within 4.6 percentage points of
-nominal 95 % on 4 of 5 targets. The additive-wrapper pattern generalises
-to any validated biomedical ODE model.
+split-conformal intervals, heteroscedastic CQR for time-to-G-LOC, and
+conformal-distance OOD abstention — surrounds the FAA-validated CGEM
+Fortran ODE model of +Gz physiology without modifying it. On the
+pre-registered held-out test split, the surrogate is ~180× faster than
+direct subprocess invocation and conformal coverage stays within ±5 pp
+of nominal 95 % on all five targets once CQR replaces the Mondrian
+baseline on time-to-G-LOC. The additive pattern generalises to any
+validated biomedical ODE model.
 
 **Self-audit:**
 
-- Word count of the mini-abstract paragraph: **78 words** / 80. PASS.
+- Word count of the mini-abstract paragraph: **80 words** / 80. PASS (exactly at cap).
 - Sentence count: **3 sentences** / 3 max. PASS.
 - Self-contained; no citations; no figure / table / equation references.
   PASS.
-- Quantitative anchors present (~180×, ≤4.6 pp, 4 of 5 targets, 95 %).
+- Quantitative anchors present (~180×, ±5 pp, all 5 targets, 95 %).
   PASS.
+- Updated 2026-05-12: mini-abstract synced to the post-CQR (OSF
+  amendment H5) framing — replaces the earlier "within 4.6 pp on 4 of 5
+  targets" wording, which described only the homoscedastic Mondrian
+  baseline. The 5th target (time-to-G-LOC) is now explicitly captured
+  via CQR.
 
 ---
 

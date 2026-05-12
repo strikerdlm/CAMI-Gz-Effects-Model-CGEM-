@@ -65,17 +65,33 @@ OOD calibration of 0.953 versus the nominal 0.95 (within 0.3 pp), with the
 conformal threshold ~3× the parametric χ²(17, 0.95) cutoff; conformal coverage
 within 5 percentage points of nominal 95 % on **all** 5 surrogate targets
 once the heteroscedastic CQR layer replaces the homoscedastic Mondrian
-baseline on `time_to_gloc_s` (0.861 → 0.972, n = 36 event-positive test
-rows); XGBoost regressor R² = 0.82–0.90 on event-positive rows of censored
-targets and 0.94–1.00 on continuous targets; classifier AUROC ≥ 0.996 across
-the three event targets, presented as a sanity check on a deterministic
-data-generating process rather than a primary claim. The surrogate evaluates
-in ~50 µs per row versus ~9 ms for direct CGEM subprocess invocation, which
-makes the 20,480-evaluation Saltelli Sobol sweep in §3.6 tractable inside a
-manuscript-preparation cycle. The validation protocol was pre-registered on
-the Open Science Framework before any test-set evaluation; the CQR layer
+baseline on `time_to_gloc_s` (the CQR layer narrows distance-to-nominal from
+8.9 pp to 2.2 pp on the n = 36 event-positive test slice; the per-stratum
+Clopper–Pearson exact 95 % binomial CIs on the two layers overlap at this
+sample size, so the manuscript reports the CQR result as operationally
+closer to nominal rather than statistically dominant — the n = 36 anchor is
+the primary practical, not statistical, claim of H5); XGBoost regressor
+R² = 0.82–0.90 on event-positive rows of censored targets (with the 95 %
+bootstrap CI on `time_to_gloc_s` spanning [−0.055, 0.951], the regime in
+which the CQR layer was activated) and 0.94–1.00 on continuous targets;
+classifier AUROC ≥ 0.996 across the three event targets, presented as a
+sanity check on a deterministic data-generating process rather than a
+primary claim. The surrogate evaluates in ~50 µs per row versus ~9 ms for
+direct CGEM subprocess invocation, which makes the 20,480-evaluation
+Saltelli Sobol sweep in §3.6 tractable inside a manuscript-preparation
+cycle; this latency figure is reported as a deployment characteristic, not
+as a methodological contribution. The validation protocol was pre-registered
+on the Open Science Framework before any test-set evaluation; the CQR layer
 and the archival-validation arm were added under a 2026-05-06 OSF amendment
-(H5, H6) before any test-set evaluation under those new hypotheses.
+(H5, H6) before any test-set evaluation under those new hypotheses. The H6
+archival evaluation against the Phase A cohort of Whinnery & Forster (2013)
+[5] does **not** meet its pre-registered ≥ 0.90 coverage criterion: the
+mean discrepancy δ̄ = +26.6 s [95 % CI +6.3, +52.1] is statistically
+distinguishable from zero. The discrepancy concentrates at onset ≤ 0.5 G/s
+and the surrogate is in-bracket on every record at onset ≥ 1 G/s — the
+operationally relevant fighter and aerobatic regime. We therefore present
+H6 as a partial external-validation failure with a well-defined operational
+scope, not as a clean pass.
 
 **Boundary of the present paper.** The framework is validated against CGEM
 itself as ground truth. External validation against archival centrifuge
