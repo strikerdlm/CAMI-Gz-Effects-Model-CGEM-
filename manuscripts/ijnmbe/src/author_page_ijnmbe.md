@@ -135,9 +135,9 @@ on which this extension layer is built.
 - Short title: 60 characters including spaces. (Wiley short-title
   cap ≤ 70.)
 - Abstract: 368 words. (IJNMBE cap ≤ 400.)
-- Body (Introduction → Conclusion): ≈ 5,430 words. IJNMBE has no stated
-  body-word cap; the length is consistent with recent IJNMBE Research
-  Papers.
+- Body (Introduction → Conclusion): ≈ 4,980 words (§3.8 multi-fidelity
+  section removed 2026-05-12). IJNMBE has no stated body-word cap; the
+  length is consistent with recent IJNMBE Research Papers.
 - References: 27.
 - Tables: 5.
 - Figures: 6 (all in main body at submission). At revision stage they

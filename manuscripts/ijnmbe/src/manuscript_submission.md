@@ -1,22 +1,5 @@
 # Conformal machine-learning emulation and out-of-distribution detection for the FAA CAMI G-Effects mechanistic model of acceleration physiology
 
-**Target venue:** *International Journal for Numerical Methods in Biomedical Engineering* (IJNMBE, Wiley, ISSN 2040-7947). Article type: Research Paper. Submission track: subscription / non-OA (Wiley hybrid; no APC). Portal: Wiley CNM (`https://authors.wiley.com/journal/CNM`). Editor-in-Chief: Perumal Nithiarasu, PhD, College of Engineering, Swansea University.
-
-**Short title** (≤ 70 chars; for portal entry): Conformal ML wrapper for a validated ODE physiological model.
-
-<!-- Author identity lives in `docs/publication/author_page.md` and is uploaded as the
-Title Page file in Editorial Manager. -->
-
-**Word count:** ≈ 4,980 (body, Introduction → Conclusion; §3.8 multi-fidelity section removed 2026-05-12). IJNMBE has no stated body-word cap; this length is consistent with recent IJNMBE Research Papers.
-**Abstract word count:** 368 (IJNMBE ≤ 400; structured *or* unstructured permitted; the structured Background and Objectives / Methods / Results / Conclusions form is retained for clarity).
-**Tables:** 5.
-**Figures:** 6 (all in main body at submission; IJNMBE accepts inline figures at submission and requires separate files only at revision; no figure-count limit).
-**References:** 27 (incl. two IJNMBE-precedent references [20,21], one formal dataset citation per the Joint Declaration of Data Citation Principles [22], and five added references for conformal survival analysis [24–26], closest published precedent [23], and multi-fidelity DNN [27]).
-**Mandatory separate files at IJNMBE:** `cover_letter_ijnmbe.md`, `novelty_file_ijnmbe.md` (≤ 100 words), `graphical_abstract_ijnmbe.md` (mini-abstract ≤ 80 words / 3 sentences) plus the rendered Graphical Table of Contents image, `suggested_reviewers_ijnmbe.md` (5 candidates), Data Files (data + code, uploaded as the **Data Files** designation, not as Supporting Information).
-**CMPB Highlights file** (`docs/publication/highlights.md`): not used at IJNMBE — do **not** upload.
-
----
-
 ## Abstract
 
 **Background and Objectives.** The FAA's CAMI G-Effects Model (CGEM) is a validated Fortran model of +Gz tolerance used in civil-aviation regulatory contexts. It is computationally expensive, provides no calibrated uncertainty quantification, and accepts out-of-distribution (OOD) inputs without warning. We developed an additive machine-learning extension that closes these three gaps without modifying the validated core, illustrating a general pattern for wrapping validated ODE physiological models.
