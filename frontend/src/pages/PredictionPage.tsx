@@ -33,7 +33,7 @@ import {
   ProfileSelector,
 } from '../components/ui';
 import { GForceLineChart, CerebralFlowChart } from '../components/charts';
-import { AEROBATIC_PROFILES } from '../services/mockData';
+import { MANEUVERS_BY_ID as AEROBATIC_PROFILES } from '../data/maneuvers';
 import { STANDARD_PROFILES, DEFAULT_COUNTERMEASURES } from '../utils/constants';
 import { buildTimeSeries } from '../utils/calculations';
 import type { CGEMResult } from '../types';

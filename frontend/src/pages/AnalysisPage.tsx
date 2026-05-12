@@ -18,7 +18,7 @@ import {
 
 import { ProfileSelector } from '../components/ui';
 import { SensitivityChart } from '../components/charts';
-import { AEROBATIC_PROFILES } from '../services/mockData';
+import { MANEUVERS_BY_ID as AEROBATIC_PROFILES } from '../data/maneuvers';
 import { MANEUVER_EXPLANATIONS } from '../utils/constants';
 import { calculateProfileStats } from '../utils/calculations';
 import { cn } from '../utils';

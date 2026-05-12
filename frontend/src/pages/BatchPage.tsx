@@ -24,7 +24,7 @@ import {
   ShieldAlert,
 } from 'lucide-react';
 
-import { AEROBATIC_PROFILES } from '../services/mockData';
+import { MANEUVERS_BY_ID as AEROBATIC_PROFILES } from '../data/maneuvers';
 import { cn } from '../utils';
 import {
   apiErrorMessage,

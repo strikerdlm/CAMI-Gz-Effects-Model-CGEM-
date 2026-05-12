@@ -8,7 +8,7 @@ import React, { useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, Plane, AlertTriangle, Clock, Search } from 'lucide-react';
 import { cn } from '../../utils';
-import { AEROBATIC_PROFILES } from '../../services/mockData';
+import { MANEUVERS_BY_ID as AEROBATIC_PROFILES } from '../../data/maneuvers';
 import { calculateProfileStats } from '../../utils/calculations';
 import type { AerobaticProfile } from '../../types';
 
