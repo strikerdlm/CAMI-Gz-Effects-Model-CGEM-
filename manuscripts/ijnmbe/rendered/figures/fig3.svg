@@ -1,0 +1,717 @@
+<svg width="1400" height="900" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" baseProfile="full" viewBox="0 0 1400 900">
+<rect width="1400" height="900" x="0" y="0" fill="#ffffff"></rect>
+<path d="M49 405.5L434 405.5" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M49 360.5L434 360.5" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M49 315.5L434 315.5" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M49 270.5L434 270.5" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M49 225.5L434 225.5" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M49 180.5L434 180.5" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M49 135.5L434 135.5" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M49 90.5L434 90.5" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M49 45.5L434 45.5" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M490 405.5L896 405.5" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M490 353.5L896 353.5" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M490 302.5L896 302.5" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M490 250.5L896 250.5" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M490 199.5L896 199.5" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M490 148.5L896 148.5" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M490 96.5L896 96.5" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M490 45.5L896 45.5" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M952 405.5L1358 405.5" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M952 353.5L1358 353.5" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M952 302.5L1358 302.5" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M952 250.5L1358 250.5" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M952 199.5L1358 199.5" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M952 148.5L1358 148.5" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M952 96.5L1358 96.5" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M952 45.5L1358 45.5" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M49 855.5L434 855.5" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M49 803.5L434 803.5" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M49 752.5L434 752.5" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M49 700.5L434 700.5" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M49 649.5L434 649.5" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M49 598.5L434 598.5" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M49 546.5L434 546.5" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M49 495.5L434 495.5" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M490 855.5L896 855.5" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M490 783.5L896 783.5" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M490 711.5L896 711.5" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M490 639.5L896 639.5" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M490 567.5L896 567.5" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M490 495.5L896 495.5" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M49.5 45L49.5 405" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M97.5 45L97.5 405" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M145.5 45L145.5 405" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M193.5 45L193.5 405" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M241.5 45L241.5 405" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M289.5 45L289.5 405" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M338.5 45L338.5 405" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M386.5 45L386.5 405" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M434.5 45L434.5 405" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M490.5 45L490.5 405" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M548.5 45L548.5 405" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M606.5 45L606.5 405" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M664.5 45L664.5 405" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M722.5 45L722.5 405" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M780.5 45L780.5 405" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M838.5 45L838.5 405" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M896.5 45L896.5 405" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M952.5 45L952.5 405" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M1010.5 45L1010.5 405" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M1068.5 45L1068.5 405" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M1126.5 45L1126.5 405" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M1184.5 45L1184.5 405" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M1242.5 45L1242.5 405" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M1300.5 45L1300.5 405" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M1358.5 45L1358.5 405" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M49.5 495L49.5 855" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M104.5 495L104.5 855" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M159.5 495L159.5 855" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M214.5 495L214.5 855" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M269.5 495L269.5 855" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M324.5 495L324.5 855" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M379.5 495L379.5 855" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M434.5 495L434.5 855" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M490.5 495L490.5 855" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M571.5 495L571.5 855" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M652.5 495L652.5 855" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M733.5 495L733.5 855" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M815.5 495L815.5 855" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M896.5 495L896.5 855" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" y="-6" transform="matrix(0,-1,1,0,13,225)" fill="#333333">Observed</text>
+<path d="M49.5 405L49.5 45" fill="none" pointer-events="visible" stroke="#aaaaaa" stroke-linecap="round" class="zr0-cls-0"></path>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" y="-6" transform="matrix(0,-1,1,0,454,225)" fill="#333333">Observed</text>
+<path d="M548.5 405L548.5 45" fill="none" pointer-events="visible" stroke="#aaaaaa" stroke-linecap="round" class="zr0-cls-0"></path>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" y="-6" transform="matrix(0,-1,1,0,916,225)" fill="#333333">Observed</text>
+<path d="M1010.5 405L1010.5 45" fill="none" pointer-events="visible" stroke="#aaaaaa" stroke-linecap="round" class="zr0-cls-0"></path>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" y="-6" transform="matrix(0,-1,1,0,13,675)" fill="#333333">Observed</text>
+<path d="M104.5 855L104.5 495" fill="none" pointer-events="visible" stroke="#aaaaaa" stroke-linecap="round" class="zr0-cls-0"></path>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" y="-6" transform="matrix(0,-1,1,0,454,675)" fill="#333333">Observed</text>
+<path d="M571.5 855L571.5 495" fill="none" pointer-events="visible" stroke="#aaaaaa" stroke-linecap="round" class="zr0-cls-0"></path>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" y="6" transform="translate(241.5 430)" fill="#333333">Predicted</text>
+<path d="M49 405.5L434 405.5" fill="none" pointer-events="visible" stroke="#aaaaaa" stroke-linecap="round" class="zr0-cls-0"></path>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" y="6" transform="translate(693 430)" fill="#333333">Predicted</text>
+<path d="M490 353.5L896 353.5" fill="none" pointer-events="visible" stroke="#aaaaaa" stroke-linecap="round" class="zr0-cls-0"></path>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" y="6" transform="translate(1155 430)" fill="#333333">Predicted</text>
+<path d="M952 353.5L1358 353.5" fill="none" pointer-events="visible" stroke="#aaaaaa" stroke-linecap="round" class="zr0-cls-0"></path>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" y="6" transform="translate(241.5 880)" fill="#333333">Predicted</text>
+<path d="M49 803.5L434 803.5" fill="none" pointer-events="visible" stroke="#aaaaaa" stroke-linecap="round" class="zr0-cls-0"></path>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" y="6" transform="translate(693 880)" fill="#333333">Predicted</text>
+<path d="M490 783.5L896 783.5" fill="none" pointer-events="visible" stroke="#aaaaaa" stroke-linecap="round" class="zr0-cls-0"></path>
+<path d="M49 405.5L44 405.5" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M49 360.5L44 360.5" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M49 315.5L44 315.5" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M49 270.5L44 270.5" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M49 225.5L44 225.5" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M49 180.5L44 180.5" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M49 135.5L44 135.5" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M49 90.5L44 90.5" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M49 45.5L44 45.5" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M548 405.5L543 405.5" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M548 353.5L543 353.5" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M548 302.5L543 302.5" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M548 250.5L543 250.5" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M548 199.5L543 199.5" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M548 148.5L543 148.5" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M548 96.5L543 96.5" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M548 45.5L543 45.5" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M1010 405.5L1005 405.5" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M1010 353.5L1005 353.5" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M1010 302.5L1005 302.5" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M1010 250.5L1005 250.5" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M1010 199.5L1005 199.5" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M1010 148.5L1005 148.5" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M1010 96.5L1005 96.5" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M1010 45.5L1005 45.5" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M104 855.5L99 855.5" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M104 803.5L99 803.5" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M104 752.5L99 752.5" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M104 700.5L99 700.5" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M104 649.5L99 649.5" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M104 598.5L99 598.5" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M104 546.5L99 546.5" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M104 495.5L99 495.5" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M571.2 855.5L566.2 855.5" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M571.2 783.5L566.2 783.5" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M571.2 711.5L566.2 711.5" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M571.2 639.5L566.2 639.5" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M571.2 567.5L566.2 567.5" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M571.2 495.5L566.2 495.5" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M49.5 405L49.5 410" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M97.5 405L97.5 410" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M145.5 405L145.5 410" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M193.5 405L193.5 410" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M241.5 405L241.5 410" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M289.5 405L289.5 410" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M338.5 405L338.5 410" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M386.5 405L386.5 410" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M434.5 405L434.5 410" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M490.5 353.6L490.5 358.6" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M548.5 353.6L548.5 358.6" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M606.5 353.6L606.5 358.6" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M664.5 353.6L664.5 358.6" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M722.5 353.6L722.5 358.6" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M780.5 353.6L780.5 358.6" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M838.5 353.6L838.5 358.6" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M896.5 353.6L896.5 358.6" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M952.5 353.6L952.5 358.6" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M1010.5 353.6L1010.5 358.6" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M1068.5 353.6L1068.5 358.6" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M1126.5 353.6L1126.5 358.6" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M1184.5 353.6L1184.5 358.6" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M1242.5 353.6L1242.5 358.6" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M1300.5 353.6L1300.5 358.6" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M1358.5 353.6L1358.5 358.6" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M49.5 803.6L49.5 808.6" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M104.5 803.6L104.5 808.6" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M159.5 803.6L159.5 808.6" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M214.5 803.6L214.5 808.6" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M269.5 803.6L269.5 808.6" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M324.5 803.6L324.5 808.6" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M379.5 803.6L379.5 808.6" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M434.5 803.6L434.5 808.6" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M490.5 783L490.5 788" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M571.5 783L571.5 788" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M652.5 783L652.5 788" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M733.5 783L733.5 788" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M815.5 783L815.5 788" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M896.5 783L896.5 788" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" transform="translate(41 405)" fill="#333333">75</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" transform="translate(41 360)" fill="#333333">80</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" transform="translate(41 315)" fill="#333333">85</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" transform="translate(41 270)" fill="#333333">90</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" transform="translate(41 225)" fill="#333333">95</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" transform="translate(41 180)" fill="#333333">100</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" transform="translate(41 135)" fill="#333333">105</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" transform="translate(41 90)" fill="#333333">110</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" transform="translate(41 45)" fill="#333333">115</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" transform="translate(482 405)" fill="#333333">-3</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" transform="translate(482 353.5714)" fill="#333333">0</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" transform="translate(482 302.1429)" fill="#333333">3</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" transform="translate(482 250.7143)" fill="#333333">6</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" transform="translate(482 199.2857)" fill="#333333">9</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" transform="translate(482 147.8571)" fill="#333333">12</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" transform="translate(482 96.4286)" fill="#333333">15</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" transform="translate(482 45)" fill="#333333">18</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" transform="translate(944 405)" fill="#333333">-0.2</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" transform="translate(944 353.5714)" fill="#333333">0</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" transform="translate(944 302.1429)" fill="#333333">0.2</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" transform="translate(944 250.7143)" fill="#333333">0.4</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" transform="translate(944 199.2857)" fill="#333333">0.6</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" transform="translate(944 147.8571)" fill="#333333">0.8</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" transform="translate(944 96.4286)" fill="#333333">1</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" transform="translate(944 45)" fill="#333333">1.2</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" transform="translate(41 855)" fill="#333333">-0.2</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" transform="translate(41 803.5714)" fill="#333333">0</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" transform="translate(41 752.1429)" fill="#333333">0.2</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" transform="translate(41 700.7143)" fill="#333333">0.4</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" transform="translate(41 649.2857)" fill="#333333">0.6</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" transform="translate(41 597.8571)" fill="#333333">0.8</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" transform="translate(41 546.4286)" fill="#333333">1</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" transform="translate(41 495)" fill="#333333">1.2</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" transform="translate(482 855)" fill="#333333">-0.2</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" transform="translate(482 783)" fill="#333333">0</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" transform="translate(482 711)" fill="#333333">0.2</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" transform="translate(482 639)" fill="#333333">0.4</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" transform="translate(482 567)" fill="#333333">0.6</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" transform="translate(482 495)" fill="#333333">0.8</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" y="6" transform="translate(49 413)" fill="#333333">75</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" y="6" transform="translate(97.125 413)" fill="#333333">80</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" y="6" transform="translate(145.25 413)" fill="#333333">85</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" y="6" transform="translate(193.375 413)" fill="#333333">90</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" y="6" transform="translate(241.5 413)" fill="#333333">95</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" y="6" transform="translate(289.625 413)" fill="#333333">100</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" y="6" transform="translate(337.75 413)" fill="#333333">105</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" y="6" transform="translate(385.875 413)" fill="#333333">110</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" y="6" transform="translate(434 413)" fill="#333333">115</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" y="6" transform="translate(490 413)" fill="#333333">-3</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" y="6" transform="translate(548 413)" fill="#333333">0</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" y="6" transform="translate(606 413)" fill="#333333">3</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" y="6" transform="translate(664 413)" fill="#333333">6</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" y="6" transform="translate(722 413)" fill="#333333">9</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" y="6" transform="translate(780 413)" fill="#333333">12</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" y="6" transform="translate(838 413)" fill="#333333">15</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" y="6" transform="translate(896 413)" fill="#333333">18</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" y="6" transform="translate(952 413)" fill="#333333">-0.2</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" y="6" transform="translate(1010 413)" fill="#333333">0</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" y="6" transform="translate(1068 413)" fill="#333333">0.2</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" y="6" transform="translate(1126 413)" fill="#333333">0.4</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" y="6" transform="translate(1184 413)" fill="#333333">0.6</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" y="6" transform="translate(1242 413)" fill="#333333">0.8</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" y="6" transform="translate(1300 413)" fill="#333333">1</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" y="6" transform="translate(1358 413)" fill="#333333">1.2</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" y="6" transform="translate(49 863)" fill="#333333">-0.2</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" y="6" transform="translate(104 863)" fill="#333333">0</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" y="6" transform="translate(159 863)" fill="#333333">0.2</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" y="6" transform="translate(214 863)" fill="#333333">0.4</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" y="6" transform="translate(269 863)" fill="#333333">0.6</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" y="6" transform="translate(324 863)" fill="#333333">0.8</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" y="6" transform="translate(379 863)" fill="#333333">1</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" y="6" transform="translate(434 863)" fill="#333333">1.2</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" y="6" transform="translate(490 863)" fill="#333333">-0.2</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" y="6" transform="translate(571.2 863)" fill="#333333">0</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" y="6" transform="translate(652.4 863)" fill="#333333">0.2</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" y="6" transform="translate(733.6 863)" fill="#333333">0.4</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" y="6" transform="translate(814.8 863)" fill="#333333">0.6</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" y="6" transform="translate(896 863)" fill="#333333">0.8</text>
+<path d="M96.6 405l1 0l0 -45l-1 0Z" fill="#0072B2" ecmeta_series_index="0" ecmeta_data_index="0" ecmeta_ssr_type="chart" class="zr0-cls-1 zr0-cls-2"></path>
+<path d="M197.2 405l1 0l0 -139.1l-1 0Z" fill="#0072B2" ecmeta_series_index="0" ecmeta_data_index="1" ecmeta_ssr_type="chart" class="zr0-cls-3 zr0-cls-2"></path>
+<path d="M238.6 405l1 0l0 -177.8l-1 0Z" fill="#0072B2" ecmeta_series_index="0" ecmeta_data_index="2" ecmeta_ssr_type="chart" class="zr0-cls-4 zr0-cls-2"></path>
+<path d="M254.9 405l1 0l0 -193l-1 0Z" fill="#0072B2" ecmeta_series_index="0" ecmeta_data_index="3" ecmeta_ssr_type="chart" class="zr0-cls-5 zr0-cls-2"></path>
+<path d="M267.5 405l1 0l0 -204.8l-1 0Z" fill="#0072B2" ecmeta_series_index="0" ecmeta_data_index="4" ecmeta_ssr_type="chart" class="zr0-cls-6 zr0-cls-2"></path>
+<path d="M288.2 405l1 0l0 -224.2l-1 0Z" fill="#0072B2" ecmeta_series_index="0" ecmeta_data_index="5" ecmeta_ssr_type="chart" class="zr0-cls-7 zr0-cls-2"></path>
+<path d="M289.1 405l1 0l0 -225l-1 0Z" fill="#0072B2" ecmeta_series_index="0" ecmeta_data_index="6" ecmeta_ssr_type="chart" class="zr0-cls-8 zr0-cls-2"></path>
+<path d="M289.2 405l1 0l0 -225l-1 0Z" fill="#0072B2" ecmeta_series_index="0" ecmeta_data_index="7" ecmeta_ssr_type="chart" class="zr0-cls-9 zr0-cls-2"></path>
+<path d="M332.4 405l1 0l0 -265.5l-1 0Z" fill="#0072B2" ecmeta_series_index="0" ecmeta_data_index="8" ecmeta_ssr_type="chart" class="zr0-cls-10 zr0-cls-2"></path>
+<path d="M385.5 405l1 0l0 -315.1l-1 0Z" fill="#0072B2" ecmeta_series_index="0" ecmeta_data_index="9" ecmeta_ssr_type="chart" class="zr0-cls-11 zr0-cls-2"></path>
+<path d="M551.2 353.6l2.2 0l0 -4.9l-2.2 0Z" fill="#0072B2" ecmeta_series_index="2" ecmeta_data_index="0" ecmeta_ssr_type="chart" class="zr0-cls-12 zr0-cls-2"></path>
+<path d="M612.8 353.6l2.2 0l0 -53l-2.2 0Z" fill="#0072B2" ecmeta_series_index="2" ecmeta_data_index="1" ecmeta_ssr_type="chart" class="zr0-cls-13 zr0-cls-2"></path>
+<path d="M646.6 353.6l2.2 0l0 -89.4l-2.2 0Z" fill="#0072B2" ecmeta_series_index="2" ecmeta_data_index="2" ecmeta_ssr_type="chart" class="zr0-cls-14 zr0-cls-2"></path>
+<path d="M662.3 353.6l2.2 0l0 -102.2l-2.2 0Z" fill="#0072B2" ecmeta_series_index="2" ecmeta_data_index="3" ecmeta_ssr_type="chart" class="zr0-cls-15 zr0-cls-2"></path>
+<path d="M670.3 353.6l2.2 0l0 -111.3l-2.2 0Z" fill="#0072B2" ecmeta_series_index="2" ecmeta_data_index="4" ecmeta_ssr_type="chart" class="zr0-cls-16 zr0-cls-2"></path>
+<path d="M678.7 353.6l2.2 0l0 -118.7l-2.2 0Z" fill="#0072B2" ecmeta_series_index="2" ecmeta_data_index="5" ecmeta_ssr_type="chart" class="zr0-cls-17 zr0-cls-2"></path>
+<path d="M683.3 353.6l2.2 0l0 -121.1l-2.2 0Z" fill="#0072B2" ecmeta_series_index="2" ecmeta_data_index="6" ecmeta_ssr_type="chart" class="zr0-cls-18 zr0-cls-2"></path>
+<path d="M686 353.6l2.2 0l0 -120.7l-2.2 0Z" fill="#0072B2" ecmeta_series_index="2" ecmeta_data_index="7" ecmeta_ssr_type="chart" class="zr0-cls-19 zr0-cls-2"></path>
+<path d="M717.6 353.6l2.2 0l0 -153.6l-2.2 0Z" fill="#0072B2" ecmeta_series_index="2" ecmeta_data_index="8" ecmeta_ssr_type="chart" class="zr0-cls-20 zr0-cls-2"></path>
+<path d="M835.7 353.6l2.2 0l0 -254.1l-2.2 0Z" fill="#0072B2" ecmeta_series_index="2" ecmeta_data_index="9" ecmeta_ssr_type="chart" class="zr0-cls-21 zr0-cls-2"></path>
+<path d="M1009.5 353.6l1 0l0 0l-1 0Z" fill="#0072B2" ecmeta_series_index="4" ecmeta_data_index="0" ecmeta_ssr_type="chart" class="zr0-cls-2"></path>
+<path d="M1009.5 353.6l1 0l0 0l-1 0Z" fill="#0072B2" ecmeta_series_index="4" ecmeta_data_index="1" ecmeta_ssr_type="chart" class="zr0-cls-2"></path>
+<path d="M1009.5 353.6l1 0l0 0l-1 0Z" fill="#0072B2" ecmeta_series_index="4" ecmeta_data_index="2" ecmeta_ssr_type="chart" class="zr0-cls-2"></path>
+<path d="M1009.6 353.6l1 0l0 0l-1 0Z" fill="#0072B2" ecmeta_series_index="4" ecmeta_data_index="3" ecmeta_ssr_type="chart" class="zr0-cls-2"></path>
+<path d="M1009.8 353.6l1 0l0 0l-1 0Z" fill="#0072B2" ecmeta_series_index="4" ecmeta_data_index="4" ecmeta_ssr_type="chart" class="zr0-cls-2"></path>
+<path d="M1010.3 353.6l1 0l0 0l-1 0Z" fill="#0072B2" ecmeta_series_index="4" ecmeta_data_index="5" ecmeta_ssr_type="chart" class="zr0-cls-2"></path>
+<path d="M1012.2 353.6l1 0l0 0l-1 0Z" fill="#0072B2" ecmeta_series_index="4" ecmeta_data_index="6" ecmeta_ssr_type="chart" class="zr0-cls-2"></path>
+<path d="M1024.7 353.6l1 0l0 -10.7l-1 0Z" fill="#0072B2" ecmeta_series_index="4" ecmeta_data_index="7" ecmeta_ssr_type="chart" class="zr0-cls-22 zr0-cls-2"></path>
+<path d="M1208.6 353.6l1 0l0 -173.2l-1 0Z" fill="#0072B2" ecmeta_series_index="4" ecmeta_data_index="8" ecmeta_ssr_type="chart" class="zr0-cls-23 zr0-cls-2"></path>
+<path d="M1297.8 353.6l1 0l0 -257.1l-1 0Z" fill="#0072B2" ecmeta_series_index="4" ecmeta_data_index="9" ecmeta_ssr_type="chart" class="zr0-cls-24 zr0-cls-2"></path>
+<path d="M103.5 803.6l1 0l0 0l-1 0Z" fill="#0072B2" ecmeta_series_index="6" ecmeta_data_index="0" ecmeta_ssr_type="chart" class="zr0-cls-2"></path>
+<path d="M103.5 803.6l1 0l0 0l-1 0Z" fill="#0072B2" ecmeta_series_index="6" ecmeta_data_index="1" ecmeta_ssr_type="chart" class="zr0-cls-2"></path>
+<path d="M103.5 803.6l1 0l0 0l-1 0Z" fill="#0072B2" ecmeta_series_index="6" ecmeta_data_index="2" ecmeta_ssr_type="chart" class="zr0-cls-2"></path>
+<path d="M103.5 803.6l1 0l0 0l-1 0Z" fill="#0072B2" ecmeta_series_index="6" ecmeta_data_index="3" ecmeta_ssr_type="chart" class="zr0-cls-2"></path>
+<path d="M103.5 803.6l1 0l0 0l-1 0Z" fill="#0072B2" ecmeta_series_index="6" ecmeta_data_index="4" ecmeta_ssr_type="chart" class="zr0-cls-2"></path>
+<path d="M103.6 803.6l1 0l0 0l-1 0Z" fill="#0072B2" ecmeta_series_index="6" ecmeta_data_index="5" ecmeta_ssr_type="chart" class="zr0-cls-2"></path>
+<path d="M103.8 803.6l1 0l0 0l-1 0Z" fill="#0072B2" ecmeta_series_index="6" ecmeta_data_index="6" ecmeta_ssr_type="chart" class="zr0-cls-2"></path>
+<path d="M104.8 803.6l1 0l0 0l-1 0Z" fill="#0072B2" ecmeta_series_index="6" ecmeta_data_index="7" ecmeta_ssr_type="chart" class="zr0-cls-2"></path>
+<path d="M147.7 803.6l1 0l0 -47.2l-1 0Z" fill="#0072B2" ecmeta_series_index="6" ecmeta_data_index="8" ecmeta_ssr_type="chart" class="zr0-cls-25 zr0-cls-2"></path>
+<path d="M371.2 803.6l1 0l0 -257.1l-1 0Z" fill="#0072B2" ecmeta_series_index="6" ecmeta_data_index="9" ecmeta_ssr_type="chart" class="zr0-cls-26 zr0-cls-2"></path>
+<path d="M570.7 783l1 0l0 0l-1 0Z" fill="#0072B2" ecmeta_series_index="8" ecmeta_data_index="0" ecmeta_ssr_type="chart" class="zr0-cls-2"></path>
+<path d="M570.7 783l1 0l0 0l-1 0Z" fill="#0072B2" ecmeta_series_index="8" ecmeta_data_index="1" ecmeta_ssr_type="chart" class="zr0-cls-2"></path>
+<path d="M570.7 783l1 0l0 0l-1 0Z" fill="#0072B2" ecmeta_series_index="8" ecmeta_data_index="2" ecmeta_ssr_type="chart" class="zr0-cls-2"></path>
+<path d="M570.7 783l1 0l0 0l-1 0Z" fill="#0072B2" ecmeta_series_index="8" ecmeta_data_index="3" ecmeta_ssr_type="chart" class="zr0-cls-2"></path>
+<path d="M570.7 783l1 0l0 0l-1 0Z" fill="#0072B2" ecmeta_series_index="8" ecmeta_data_index="4" ecmeta_ssr_type="chart" class="zr0-cls-2"></path>
+<path d="M570.7 783l1 0l0 0l-1 0Z" fill="#0072B2" ecmeta_series_index="8" ecmeta_data_index="5" ecmeta_ssr_type="chart" class="zr0-cls-2"></path>
+<path d="M570.8 783l1 0l0 0l-1 0Z" fill="#0072B2" ecmeta_series_index="8" ecmeta_data_index="6" ecmeta_ssr_type="chart" class="zr0-cls-2"></path>
+<path d="M571 783l1 0l0 0l-1 0Z" fill="#0072B2" ecmeta_series_index="8" ecmeta_data_index="7" ecmeta_ssr_type="chart" class="zr0-cls-2"></path>
+<path d="M573.9 783l1 0l0 -14.7l-1 0Z" fill="#0072B2" ecmeta_series_index="8" ecmeta_data_index="8" ecmeta_ssr_type="chart" class="zr0-cls-27 zr0-cls-2"></path>
+<path d="M810.6 783l1 0l0 -249.8l-1 0Z" fill="#0072B2" ecmeta_series_index="8" ecmeta_data_index="9" ecmeta_ssr_type="chart" class="zr0-cls-28 zr0-cls-2"></path>
+<g clip-path="url(#zr0-c0)">
+<path d="M82.7 373.5L400.4 76.4" fill="none" pointer-events="visible" stroke="#999999" stroke-dasharray="4,2" stroke-linejoin="bevel" class="zr0-cls-0"></path>
+</g>
+<g clip-path="url(#zr0-c1)">
+<path d="M538.1 362.4L851 84.9" fill="none" pointer-events="visible" stroke="#999999" stroke-dasharray="4,2" stroke-linejoin="bevel" class="zr0-cls-0"></path>
+</g>
+<g clip-path="url(#zr0-c2)">
+<path d="M995.5 366.4L1314.5 83.6" fill="none" pointer-events="visible" stroke="#999999" stroke-dasharray="4,2" stroke-linejoin="bevel" class="zr0-cls-0"></path>
+</g>
+<g clip-path="url(#zr0-c3)">
+<path d="M90.3 816.4L392.8 533.6" fill="none" pointer-events="visible" stroke="#999999" stroke-dasharray="4,2" stroke-linejoin="bevel" class="zr0-cls-0"></path>
+</g>
+<g clip-path="url(#zr0-c4)">
+<path d="M557.1 795.5L867 520.7" fill="none" pointer-events="visible" stroke="#999999" stroke-dasharray="4,2" stroke-linejoin="bevel" class="zr0-cls-0"></path>
+</g>
+<path d="M-5 -5l72.9 0l0 32l-72.9 0Z" transform="translate(33 14)" fill="rgb(0,0,0)" fill-opacity="0" stroke="#3c3c41" stroke-width="0" class="zr0-cls-0"></path>
+<path d="M-5 -5l83 0l0 32l-83 0Z" transform="translate(495 14)" fill="rgb(0,0,0)" fill-opacity="0" stroke="#3c3c41" stroke-width="0" class="zr0-cls-0"></path>
+<path d="M-5 -5l114.9 0l0 32l-114.9 0Z" transform="translate(957 14)" fill="rgb(0,0,0)" fill-opacity="0" stroke="#3c3c41" stroke-width="0" class="zr0-cls-0"></path>
+<path d="M-5 -5l119.2 0l0 32l-119.2 0Z" transform="translate(33 464)" fill="rgb(0,0,0)" fill-opacity="0" stroke="#3c3c41" stroke-width="0" class="zr0-cls-0"></path>
+<path d="M-5 -5l97.8 0l0 32l-97.8 0Z" transform="translate(495 464)" fill="rgb(0,0,0)" fill-opacity="0" stroke="#3c3c41" stroke-width="0" class="zr0-cls-0"></path>
+<text dominant-baseline="central" text-anchor="start" style="font-size:11px;font-family:Arial, Helvetica, sans-serif;font-weight:bold;" xml:space="preserve" y="5.5" transform="translate(33 14)" fill="#333333">A  hlap_min</text>
+<text dominant-baseline="central" text-anchor="start" style="font-size:11px;font-family:Arial, Helvetica, sans-serif;font-weight:bold;" y="16.5" transform="translate(33 14)" fill="#333333">ECE=0.0024</text>
+<text dominant-baseline="central" text-anchor="start" style="font-size:11px;font-family:Arial, Helvetica, sans-serif;font-weight:bold;" xml:space="preserve" y="5.5" transform="translate(495 14)" fill="#333333">B  c_bank_min</text>
+<text dominant-baseline="central" text-anchor="start" style="font-size:11px;font-family:Arial, Helvetica, sans-serif;font-weight:bold;" y="16.5" transform="translate(495 14)" fill="#333333">ECE=0.1079</text>
+<text dominant-baseline="central" text-anchor="start" style="font-size:11px;font-family:Arial, Helvetica, sans-serif;font-weight:bold;" xml:space="preserve" y="5.5" transform="translate(957 14)" fill="#333333">C  time_to_greyout_s</text>
+<text dominant-baseline="central" text-anchor="start" style="font-size:11px;font-family:Arial, Helvetica, sans-serif;font-weight:bold;" y="16.5" transform="translate(957 14)" fill="#333333">ECE=0.0043</text>
+<text dominant-baseline="central" text-anchor="start" style="font-size:11px;font-family:Arial, Helvetica, sans-serif;font-weight:bold;" xml:space="preserve" y="5.5" transform="translate(33 464)" fill="#333333">D  time_to_blackout_s</text>
+<text dominant-baseline="central" text-anchor="start" style="font-size:11px;font-family:Arial, Helvetica, sans-serif;font-weight:bold;" y="16.5" transform="translate(33 464)" fill="#333333">ECE=0.0056</text>
+<text dominant-baseline="central" text-anchor="start" style="font-size:11px;font-family:Arial, Helvetica, sans-serif;font-weight:bold;" xml:space="preserve" y="5.5" transform="translate(495 464)" fill="#333333">E  time_to_gloc_s</text>
+<text dominant-baseline="central" text-anchor="start" style="font-size:11px;font-family:Arial, Helvetica, sans-serif;font-weight:bold;" y="16.5" transform="translate(495 464)" fill="#333333">ECE=0.0138</text>
+<defs >
+<clipPath id="zr0-c0">
+<path d="M48 44.5l388 0l0 361l-388 0Z" fill="#000" class="zr0-cls-29 zr0-cls-0"></path>
+</clipPath>
+<clipPath id="zr0-c1">
+<path d="M489 44.5l409 0l0 361l-409 0Z" fill="#000" class="zr0-cls-30 zr0-cls-0"></path>
+</clipPath>
+<clipPath id="zr0-c2">
+<path d="M951 44.5l408 0l0 361l-408 0Z" fill="#000" class="zr0-cls-31 zr0-cls-0"></path>
+</clipPath>
+<clipPath id="zr0-c3">
+<path d="M48 494.5l388 0l0 361l-388 0Z" fill="#000" class="zr0-cls-32 zr0-cls-0"></path>
+</clipPath>
+<clipPath id="zr0-c4">
+<path d="M489 494.5l409 0l0 361l-409 0Z" fill="#000" class="zr0-cls-33 zr0-cls-0"></path>
+</clipPath>
+</defs>
+<style ><![CDATA[
+.zr0-cls-0:hover {
+pointer-events:none;
+}
+.zr0-cls-1 {
+animation:zr0-ani-0 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-2:hover {
+cursor:pointer;
+fill:rgba(0,125,195,1);
+}
+.zr0-cls-3 {
+animation:zr0-ani-1 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-4 {
+animation:zr0-ani-2 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-5 {
+animation:zr0-ani-3 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-6 {
+animation:zr0-ani-4 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-7 {
+animation:zr0-ani-5 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-8 {
+animation:zr0-ani-6 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-9 {
+animation:zr0-ani-7 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-10 {
+animation:zr0-ani-8 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-11 {
+animation:zr0-ani-9 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-12 {
+animation:zr0-ani-10 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-13 {
+animation:zr0-ani-11 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-14 {
+animation:zr0-ani-12 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-15 {
+animation:zr0-ani-13 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-16 {
+animation:zr0-ani-14 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-17 {
+animation:zr0-ani-15 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-18 {
+animation:zr0-ani-16 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-19 {
+animation:zr0-ani-17 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-20 {
+animation:zr0-ani-18 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-21 {
+animation:zr0-ani-19 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-22 {
+animation:zr0-ani-20 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-23 {
+animation:zr0-ani-21 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-24 {
+animation:zr0-ani-22 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-25 {
+animation:zr0-ani-23 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-26 {
+animation:zr0-ani-24 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-27 {
+animation:zr0-ani-25 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-28 {
+animation:zr0-ani-26 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-29 {
+animation:zr0-ani-27 1s linear both;
+}
+.zr0-cls-30 {
+animation:zr0-ani-28 1s linear both;
+}
+.zr0-cls-31 {
+animation:zr0-ani-29 1s linear both;
+}
+.zr0-cls-32 {
+animation:zr0-ani-30 1s linear both;
+}
+.zr0-cls-33 {
+animation:zr0-ani-31 1s linear both;
+}
+@keyframes zr0-ani-0 {
+0% {
+d:path("M96.6 405l1 0l0 0l-1 0Z");
+}
+100% {
+d:path("M96.6 405l1 0l0 -45l-1 0Z");
+}
+}
+@keyframes zr0-ani-1 {
+0% {
+d:path("M197.2 405l1 0l0 0l-1 0Z");
+}
+100% {
+d:path("M197.2 405l1 0l0 -139.1l-1 0Z");
+}
+}
+@keyframes zr0-ani-2 {
+0% {
+d:path("M238.6 405l1 0l0 0l-1 0Z");
+}
+100% {
+d:path("M238.6 405l1 0l0 -177.8l-1 0Z");
+}
+}
+@keyframes zr0-ani-3 {
+0% {
+d:path("M254.9 405l1 0l0 0l-1 0Z");
+}
+100% {
+d:path("M254.9 405l1 0l0 -193l-1 0Z");
+}
+}
+@keyframes zr0-ani-4 {
+0% {
+d:path("M267.5 405l1 0l0 0l-1 0Z");
+}
+100% {
+d:path("M267.5 405l1 0l0 -204.8l-1 0Z");
+}
+}
+@keyframes zr0-ani-5 {
+0% {
+d:path("M288.2 405l1 0l0 0l-1 0Z");
+}
+100% {
+d:path("M288.2 405l1 0l0 -224.2l-1 0Z");
+}
+}
+@keyframes zr0-ani-6 {
+0% {
+d:path("M289.1 405l1 0l0 0l-1 0Z");
+}
+100% {
+d:path("M289.1 405l1 0l0 -225l-1 0Z");
+}
+}
+@keyframes zr0-ani-7 {
+0% {
+d:path("M289.2 405l1 0l0 0l-1 0Z");
+}
+100% {
+d:path("M289.2 405l1 0l0 -225l-1 0Z");
+}
+}
+@keyframes zr0-ani-8 {
+0% {
+d:path("M332.4 405l1 0l0 0l-1 0Z");
+}
+100% {
+d:path("M332.4 405l1 0l0 -265.5l-1 0Z");
+}
+}
+@keyframes zr0-ani-9 {
+0% {
+d:path("M385.5 405l1 0l0 0l-1 0Z");
+}
+100% {
+d:path("M385.5 405l1 0l0 -315.1l-1 0Z");
+}
+}
+@keyframes zr0-ani-10 {
+0% {
+d:path("M551.2 353.6l2.2 0l0 0l-2.2 0Z");
+}
+100% {
+d:path("M551.2 353.6l2.2 0l0 -4.9l-2.2 0Z");
+}
+}
+@keyframes zr0-ani-11 {
+0% {
+d:path("M612.8 353.6l2.2 0l0 0l-2.2 0Z");
+}
+100% {
+d:path("M612.8 353.6l2.2 0l0 -53l-2.2 0Z");
+}
+}
+@keyframes zr0-ani-12 {
+0% {
+d:path("M646.6 353.6l2.2 0l0 0l-2.2 0Z");
+}
+100% {
+d:path("M646.6 353.6l2.2 0l0 -89.4l-2.2 0Z");
+}
+}
+@keyframes zr0-ani-13 {
+0% {
+d:path("M662.3 353.6l2.2 0l0 0l-2.2 0Z");
+}
+100% {
+d:path("M662.3 353.6l2.2 0l0 -102.2l-2.2 0Z");
+}
+}
+@keyframes zr0-ani-14 {
+0% {
+d:path("M670.3 353.6l2.2 0l0 0l-2.2 0Z");
+}
+100% {
+d:path("M670.3 353.6l2.2 0l0 -111.3l-2.2 0Z");
+}
+}
+@keyframes zr0-ani-15 {
+0% {
+d:path("M678.7 353.6l2.2 0l0 0l-2.2 0Z");
+}
+100% {
+d:path("M678.7 353.6l2.2 0l0 -118.7l-2.2 0Z");
+}
+}
+@keyframes zr0-ani-16 {
+0% {
+d:path("M683.3 353.6l2.2 0l0 0l-2.2 0Z");
+}
+100% {
+d:path("M683.3 353.6l2.2 0l0 -121.1l-2.2 0Z");
+}
+}
+@keyframes zr0-ani-17 {
+0% {
+d:path("M686 353.6l2.2 0l0 0l-2.2 0Z");
+}
+100% {
+d:path("M686 353.6l2.2 0l0 -120.7l-2.2 0Z");
+}
+}
+@keyframes zr0-ani-18 {
+0% {
+d:path("M717.6 353.6l2.2 0l0 0l-2.2 0Z");
+}
+100% {
+d:path("M717.6 353.6l2.2 0l0 -153.6l-2.2 0Z");
+}
+}
+@keyframes zr0-ani-19 {
+0% {
+d:path("M835.7 353.6l2.2 0l0 0l-2.2 0Z");
+}
+100% {
+d:path("M835.7 353.6l2.2 0l0 -254.1l-2.2 0Z");
+}
+}
+@keyframes zr0-ani-20 {
+0% {
+d:path("M1024.7 353.6l1 0l0 0l-1 0Z");
+}
+100% {
+d:path("M1024.7 353.6l1 0l0 -10.7l-1 0Z");
+}
+}
+@keyframes zr0-ani-21 {
+0% {
+d:path("M1208.6 353.6l1 0l0 0l-1 0Z");
+}
+100% {
+d:path("M1208.6 353.6l1 0l0 -173.2l-1 0Z");
+}
+}
+@keyframes zr0-ani-22 {
+0% {
+d:path("M1297.8 353.6l1 0l0 0l-1 0Z");
+}
+100% {
+d:path("M1297.8 353.6l1 0l0 -257.1l-1 0Z");
+}
+}
+@keyframes zr0-ani-23 {
+0% {
+d:path("M147.7 803.6l1 0l0 0l-1 0Z");
+}
+100% {
+d:path("M147.7 803.6l1 0l0 -47.2l-1 0Z");
+}
+}
+@keyframes zr0-ani-24 {
+0% {
+d:path("M371.2 803.6l1 0l0 0l-1 0Z");
+}
+100% {
+d:path("M371.2 803.6l1 0l0 -257.1l-1 0Z");
+}
+}
+@keyframes zr0-ani-25 {
+0% {
+d:path("M573.9 783l1 0l0 0l-1 0Z");
+}
+100% {
+d:path("M573.9 783l1 0l0 -14.7l-1 0Z");
+}
+}
+@keyframes zr0-ani-26 {
+0% {
+d:path("M810.6 783l1 0l0 0l-1 0Z");
+}
+100% {
+d:path("M810.6 783l1 0l0 -249.8l-1 0Z");
+}
+}
+@keyframes zr0-ani-27 {
+0% {
+d:path("M48 44.5l0 0l0 361l0 0Z");
+}
+100% {
+d:path("M48 44.5l388 0l0 361l-388 0Z");
+}
+}
+@keyframes zr0-ani-28 {
+0% {
+d:path("M489 44.5l0 0l0 361l0 0Z");
+}
+100% {
+d:path("M489 44.5l409 0l0 361l-409 0Z");
+}
+}
+@keyframes zr0-ani-29 {
+0% {
+d:path("M951 44.5l0 0l0 361l0 0Z");
+}
+100% {
+d:path("M951 44.5l408 0l0 361l-408 0Z");
+}
+}
+@keyframes zr0-ani-30 {
+0% {
+d:path("M48 494.5l0 0l0 361l0 0Z");
+}
+100% {
+d:path("M48 494.5l388 0l0 361l-388 0Z");
+}
+}
+@keyframes zr0-ani-31 {
+0% {
+d:path("M489 494.5l0 0l0 361l0 0Z");
+}
+100% {
+d:path("M489 494.5l409 0l0 361l-409 0Z");
+}
+}
+]]>
+
+</style>
+</svg>

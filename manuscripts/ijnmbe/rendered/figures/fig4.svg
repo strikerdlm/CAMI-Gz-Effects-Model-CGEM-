@@ -1,0 +1,721 @@
+<svg width="900" height="580" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" baseProfile="full" viewBox="0 0 900 580">
+<rect width="900" height="580" x="0" y="0" fill="#ffffff"></rect>
+<path d="M70 520.5L870 520.5" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M70 451.5L870 451.5" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M70 383.5L870 383.5" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M70 314.5L870 314.5" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M70 245.5L870 245.5" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M70 177.5L870 177.5" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M70 108.5L870 108.5" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M70 40.5L870 40.5" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M70.5 40L70.5 520" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M184.5 40L184.5 520" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M298.5 40L298.5 520" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M413.5 40L413.5 520" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M527.5 40L527.5 520" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M641.5 40L641.5 520" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M755.5 40L755.5 520" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<path d="M870.5 40L870.5 520" fill="none" pointer-events="visible" stroke="#e8e8e8" class="zr0-cls-0"></path>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" y="-6" transform="matrix(0,-1,1,0,30,280)" fill="#333333">Density</text>
+<path d="M70.5 520L70.5 40" fill="none" pointer-events="visible" stroke="#aaaaaa" stroke-linecap="round" class="zr0-cls-0"></path>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" xml:space="preserve" y="6" transform="translate(470 550)" fill="#333333">Squared Mahalanobis Distance</text>
+<path d="M70 520.5L870 520.5" fill="none" pointer-events="visible" stroke="#aaaaaa" stroke-linecap="round" class="zr0-cls-0"></path>
+<path d="M70 520.5L65 520.5" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M70 451.5L65 451.5" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M70 383.5L65 383.5" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M70 314.5L65 314.5" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M70 245.5L65 245.5" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M70 177.5L65 177.5" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M70 108.5L65 108.5" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M70 40.5L65 40.5" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M70.5 520L70.5 525" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M184.5 520L184.5 525" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M298.5 520L298.5 525" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M413.5 520L413.5 525" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M527.5 520L527.5 525" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M641.5 520L641.5 525" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M755.5 520L755.5 525" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<path d="M870.5 520L870.5 525" fill="none" pointer-events="visible" stroke="#aaaaaa" class="zr0-cls-0"></path>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" transform="translate(62 520)" fill="#333333">0</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" transform="translate(62 451.4286)" fill="#333333">50</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" transform="translate(62 382.8571)" fill="#333333">100</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" transform="translate(62 314.2857)" fill="#333333">150</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" transform="translate(62 245.7143)" fill="#333333">200</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" transform="translate(62 177.1429)" fill="#333333">250</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" transform="translate(62 108.5714)" fill="#333333">300</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" transform="translate(62 40)" fill="#333333">350</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" y="6" transform="translate(70 528)" fill="#333333">0</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" y="6" transform="translate(184.2857 528)" fill="#333333">50</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" y="6" transform="translate(298.5714 528)" fill="#333333">100</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" y="6" transform="translate(412.8571 528)" fill="#333333">150</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" y="6" transform="translate(527.1429 528)" fill="#333333">200</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" y="6" transform="translate(641.4286 528)" fill="#333333">250</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" y="6" transform="translate(755.7143 528)" fill="#333333">300</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" y="6" transform="translate(870 528)" fill="#333333">350</text>
+<path d="M75.3 520l1 0l0 -20.4l-1 0Z" fill="#0072B2" ecmeta_series_index="0" ecmeta_data_index="0" ecmeta_ssr_type="chart" class="zr0-cls-1 zr0-cls-2"></path>
+<path d="M102.9 520l1 0l0 -37l-1 0Z" fill="#0072B2" ecmeta_series_index="0" ecmeta_data_index="1" ecmeta_ssr_type="chart" class="zr0-cls-3 zr0-cls-2"></path>
+<path d="M130.6 520l1 0l0 -53.5l-1 0Z" fill="#0072B2" ecmeta_series_index="0" ecmeta_data_index="2" ecmeta_ssr_type="chart" class="zr0-cls-4 zr0-cls-2"></path>
+<path d="M158.2 520l1 0l0 -70.1l-1 0Z" fill="#0072B2" ecmeta_series_index="0" ecmeta_data_index="3" ecmeta_ssr_type="chart" class="zr0-cls-5 zr0-cls-2"></path>
+<path d="M185.8 520l1 0l0 -86.7l-1 0Z" fill="#0072B2" ecmeta_series_index="0" ecmeta_data_index="4" ecmeta_ssr_type="chart" class="zr0-cls-6 zr0-cls-2"></path>
+<path d="M213.5 520l1 0l0 -103.3l-1 0Z" fill="#0072B2" ecmeta_series_index="0" ecmeta_data_index="5" ecmeta_ssr_type="chart" class="zr0-cls-7 zr0-cls-2"></path>
+<path d="M241.1 520l1 0l0 -119.9l-1 0Z" fill="#0072B2" ecmeta_series_index="0" ecmeta_data_index="6" ecmeta_ssr_type="chart" class="zr0-cls-8 zr0-cls-2"></path>
+<path d="M268.8 520l1 0l0 -136.5l-1 0Z" fill="#0072B2" ecmeta_series_index="0" ecmeta_data_index="7" ecmeta_ssr_type="chart" class="zr0-cls-9 zr0-cls-2"></path>
+<path d="M296.4 520l1 0l0 -153l-1 0Z" fill="#0072B2" ecmeta_series_index="0" ecmeta_data_index="8" ecmeta_ssr_type="chart" class="zr0-cls-10 zr0-cls-2"></path>
+<path d="M324 520l1 0l0 -169.6l-1 0Z" fill="#0072B2" ecmeta_series_index="0" ecmeta_data_index="9" ecmeta_ssr_type="chart" class="zr0-cls-11 zr0-cls-2"></path>
+<path d="M351.7 520l1 0l0 -186.2l-1 0Z" fill="#0072B2" ecmeta_series_index="0" ecmeta_data_index="10" ecmeta_ssr_type="chart" class="zr0-cls-12 zr0-cls-2"></path>
+<path d="M379.3 520l1 0l0 -202.8l-1 0Z" fill="#0072B2" ecmeta_series_index="0" ecmeta_data_index="11" ecmeta_ssr_type="chart" class="zr0-cls-13 zr0-cls-2"></path>
+<path d="M406.9 520l1 0l0 -219.4l-1 0Z" fill="#0072B2" ecmeta_series_index="0" ecmeta_data_index="12" ecmeta_ssr_type="chart" class="zr0-cls-14 zr0-cls-2"></path>
+<path d="M434.6 520l1 0l0 -236l-1 0Z" fill="#0072B2" ecmeta_series_index="0" ecmeta_data_index="13" ecmeta_ssr_type="chart" class="zr0-cls-15 zr0-cls-2"></path>
+<path d="M462.2 520l1 0l0 -252.5l-1 0Z" fill="#0072B2" ecmeta_series_index="0" ecmeta_data_index="14" ecmeta_ssr_type="chart" class="zr0-cls-16 zr0-cls-2"></path>
+<path d="M489.9 520l1 0l0 -269.1l-1 0Z" fill="#0072B2" ecmeta_series_index="0" ecmeta_data_index="15" ecmeta_ssr_type="chart" class="zr0-cls-17 zr0-cls-2"></path>
+<path d="M517.5 520l1 0l0 -285.7l-1 0Z" fill="#0072B2" ecmeta_series_index="0" ecmeta_data_index="16" ecmeta_ssr_type="chart" class="zr0-cls-18 zr0-cls-2"></path>
+<path d="M76.3 520l1 0l0 -18l-1 0Z" fill="#D55E00" ecmeta_series_index="1" ecmeta_data_index="0" ecmeta_ssr_type="chart" class="zr0-cls-19 zr0-cls-20"></path>
+<path d="M100.1 520l1 0l0 -32.3l-1 0Z" fill="#D55E00" ecmeta_series_index="1" ecmeta_data_index="1" ecmeta_ssr_type="chart" class="zr0-cls-21 zr0-cls-20"></path>
+<path d="M123.9 520l1 0l0 -46.6l-1 0Z" fill="#D55E00" ecmeta_series_index="1" ecmeta_data_index="2" ecmeta_ssr_type="chart" class="zr0-cls-22 zr0-cls-20"></path>
+<path d="M147.6 520l1 0l0 -60.8l-1 0Z" fill="#D55E00" ecmeta_series_index="1" ecmeta_data_index="3" ecmeta_ssr_type="chart" class="zr0-cls-23 zr0-cls-20"></path>
+<path d="M171.4 520l1 0l0 -75.1l-1 0Z" fill="#D55E00" ecmeta_series_index="1" ecmeta_data_index="4" ecmeta_ssr_type="chart" class="zr0-cls-24 zr0-cls-20"></path>
+<path d="M195.2 520l1 0l0 -89.4l-1 0Z" fill="#D55E00" ecmeta_series_index="1" ecmeta_data_index="5" ecmeta_ssr_type="chart" class="zr0-cls-25 zr0-cls-20"></path>
+<path d="M219 520l1 0l0 -103.6l-1 0Z" fill="#D55E00" ecmeta_series_index="1" ecmeta_data_index="6" ecmeta_ssr_type="chart" class="zr0-cls-26 zr0-cls-20"></path>
+<path d="M242.8 520l1 0l0 -117.9l-1 0Z" fill="#D55E00" ecmeta_series_index="1" ecmeta_data_index="7" ecmeta_ssr_type="chart" class="zr0-cls-27 zr0-cls-20"></path>
+<path d="M266.5 520l1 0l0 -132.2l-1 0Z" fill="#D55E00" ecmeta_series_index="1" ecmeta_data_index="8" ecmeta_ssr_type="chart" class="zr0-cls-28 zr0-cls-20"></path>
+<path d="M290.3 520l1 0l0 -146.4l-1 0Z" fill="#D55E00" ecmeta_series_index="1" ecmeta_data_index="9" ecmeta_ssr_type="chart" class="zr0-cls-29 zr0-cls-20"></path>
+<path d="M314.1 520l1 0l0 -160.7l-1 0Z" fill="#D55E00" ecmeta_series_index="1" ecmeta_data_index="10" ecmeta_ssr_type="chart" class="zr0-cls-30 zr0-cls-20"></path>
+<path d="M337.9 520l1 0l0 -175l-1 0Z" fill="#D55E00" ecmeta_series_index="1" ecmeta_data_index="11" ecmeta_ssr_type="chart" class="zr0-cls-31 zr0-cls-20"></path>
+<path d="M361.6 520l1 0l0 -189.2l-1 0Z" fill="#D55E00" ecmeta_series_index="1" ecmeta_data_index="12" ecmeta_ssr_type="chart" class="zr0-cls-32 zr0-cls-20"></path>
+<path d="M385.4 520l1 0l0 -203.5l-1 0Z" fill="#D55E00" ecmeta_series_index="1" ecmeta_data_index="13" ecmeta_ssr_type="chart" class="zr0-cls-33 zr0-cls-20"></path>
+<path d="M409.2 520l1 0l0 -217.8l-1 0Z" fill="#D55E00" ecmeta_series_index="1" ecmeta_data_index="14" ecmeta_ssr_type="chart" class="zr0-cls-34 zr0-cls-20"></path>
+<path d="M433 520l1 0l0 -232l-1 0Z" fill="#D55E00" ecmeta_series_index="1" ecmeta_data_index="15" ecmeta_ssr_type="chart" class="zr0-cls-35 zr0-cls-20"></path>
+<path d="M456.8 520l1 0l0 -246.3l-1 0Z" fill="#D55E00" ecmeta_series_index="1" ecmeta_data_index="16" ecmeta_ssr_type="chart" class="zr0-cls-36 zr0-cls-20"></path>
+<path d="M480.5 520l1 0l0 -260.6l-1 0Z" fill="#D55E00" ecmeta_series_index="1" ecmeta_data_index="17" ecmeta_ssr_type="chart" class="zr0-cls-37 zr0-cls-20"></path>
+<path d="M504.3 520l1 0l0 -274.8l-1 0Z" fill="#D55E00" ecmeta_series_index="1" ecmeta_data_index="18" ecmeta_ssr_type="chart" class="zr0-cls-38 zr0-cls-20"></path>
+<path d="M528.1 520l1 0l0 -289.1l-1 0Z" fill="#D55E00" ecmeta_series_index="1" ecmeta_data_index="19" ecmeta_ssr_type="chart" class="zr0-cls-39 zr0-cls-20"></path>
+<path d="M551.9 520l1 0l0 -303.4l-1 0Z" fill="#D55E00" ecmeta_series_index="1" ecmeta_data_index="20" ecmeta_ssr_type="chart" class="zr0-cls-40 zr0-cls-20"></path>
+<path d="M575.6 520l1 0l0 -317.6l-1 0Z" fill="#D55E00" ecmeta_series_index="1" ecmeta_data_index="21" ecmeta_ssr_type="chart" class="zr0-cls-41 zr0-cls-20"></path>
+<path d="M599.4 520l1 0l0 -331.9l-1 0Z" fill="#D55E00" ecmeta_series_index="1" ecmeta_data_index="22" ecmeta_ssr_type="chart" class="zr0-cls-42 zr0-cls-20"></path>
+<path d="M623.2 520l1 0l0 -346.2l-1 0Z" fill="#D55E00" ecmeta_series_index="1" ecmeta_data_index="23" ecmeta_ssr_type="chart" class="zr0-cls-43 zr0-cls-20"></path>
+<path d="M647 520l1 0l0 -360.4l-1 0Z" fill="#D55E00" ecmeta_series_index="1" ecmeta_data_index="24" ecmeta_ssr_type="chart" class="zr0-cls-44 zr0-cls-20"></path>
+<path d="M670.8 520l1 0l0 -374.7l-1 0Z" fill="#D55E00" ecmeta_series_index="1" ecmeta_data_index="25" ecmeta_ssr_type="chart" class="zr0-cls-45 zr0-cls-20"></path>
+<path d="M694.5 520l1 0l0 -389l-1 0Z" fill="#D55E00" ecmeta_series_index="1" ecmeta_data_index="26" ecmeta_ssr_type="chart" class="zr0-cls-46 zr0-cls-20"></path>
+<path d="M718.3 520l1 0l0 -403.2l-1 0Z" fill="#D55E00" ecmeta_series_index="1" ecmeta_data_index="27" ecmeta_ssr_type="chart" class="zr0-cls-47 zr0-cls-20"></path>
+<path d="M742.1 520l1 0l0 -417.5l-1 0Z" fill="#D55E00" ecmeta_series_index="1" ecmeta_data_index="28" ecmeta_ssr_type="chart" class="zr0-cls-48 zr0-cls-20"></path>
+<path d="M765.9 520l1 0l0 -431.8l-1 0Z" fill="#D55E00" ecmeta_series_index="1" ecmeta_data_index="29" ecmeta_ssr_type="chart" class="zr0-cls-49 zr0-cls-20"></path>
+<path d="M789.6 520l1 0l0 -446l-1 0Z" fill="#D55E00" ecmeta_series_index="1" ecmeta_data_index="30" ecmeta_ssr_type="chart" class="zr0-cls-50 zr0-cls-20"></path>
+<path d="M813.4 520l1 0l0 -460.3l-1 0Z" fill="#D55E00" ecmeta_series_index="1" ecmeta_data_index="31" ecmeta_ssr_type="chart" class="zr0-cls-51 zr0-cls-20"></path>
+<path d="M837.2 520l1 0l0 -474.6l-1 0Z" fill="#D55E00" ecmeta_series_index="1" ecmeta_data_index="32" ecmeta_ssr_type="chart" class="zr0-cls-52 zr0-cls-20"></path>
+<g clip-path="url(#zr0-c0)">
+<path d="" fill="none" pointer-events="visible" stroke="#D55E00" stroke-width="2" stroke-dasharray="8,4" stroke-linejoin="bevel" class="zr0-cls-0"></path>
+</g>
+<g clip-path="url(#zr0-c1)">
+<path d="" fill="none" pointer-events="visible" stroke="#999999" stroke-width="1.5" stroke-dasharray="6,3" stroke-linejoin="bevel" class="zr0-cls-0"></path>
+</g>
+<path d="M-3 -5L238.9 -5A2 2 0 0 1 240.9 -3L240.9 14A2 2 0 0 1 238.9 16L-3 16A2 2 0 0 1 -5 14L-5 -3A2 2 0 0 1 -3 -5" transform="translate(332.07 10)" fill="rgb(0,0,0)" fill-opacity="0" stroke="#b7b9be" stroke-width="0" class="zr0-cls-0"></path>
+<path d="M2.5 0L11.5 0A2.5 2.5 0 0 1 14 2.5L14 7.5A2.5 2.5 0 0 1 11.5 10L2.5 10A2.5 2.5 0 0 1 0 7.5L0 2.5A2.5 2.5 0 0 1 2.5 0" transform="translate(332.07 10.5)" fill="#0072B2" ecmeta_series_index="0" ecmeta_data_index="0" ecmeta_ssr_type="legend" ecmeta_silent="true" class="zr0-cls-0"></path>
+<text dominant-baseline="central" text-anchor="start" style="font-size:11px;font-family:Arial, Helvetica, sans-serif;" xml:space="preserve" x="19" y="5" transform="translate(332.07 10.5)" fill="#333333">In-Distribution (test)</text>
+<path d="M0 -0.5l115.1 0l0 11l-115.1 0Z" transform="translate(332.07 10.5)" fill="none" pointer-events="visible" ecmeta_series_index="0" ecmeta_data_index="0" ecmeta_ssr_type="legend" class="zr0-cls-55"></path>
+<path d="M2.5 0L11.5 0A2.5 2.5 0 0 1 14 2.5L14 7.5A2.5 2.5 0 0 1 11.5 10L2.5 10A2.5 2.5 0 0 1 0 7.5L0 2.5A2.5 2.5 0 0 1 2.5 0" transform="translate(455.21 10.5)" fill="#D55E00" ecmeta_series_index="1" ecmeta_data_index="1" ecmeta_ssr_type="legend" ecmeta_silent="true" class="zr0-cls-0"></path>
+<text dominant-baseline="central" text-anchor="start" style="font-size:11px;font-family:Arial, Helvetica, sans-serif;" xml:space="preserve" x="19" y="5" transform="translate(455.21 10.5)" fill="#333333">OOD (LOGO folds)</text>
+<path d="M0 -0.5l112.7 0l0 11l-112.7 0Z" transform="translate(455.21 10.5)" fill="none" pointer-events="visible" ecmeta_series_index="1" ecmeta_data_index="1" ecmeta_ssr_type="legend" class="zr0-cls-55"></path>
+<path d="M249 520L249 40" fill="none" pointer-events="visible" stroke="#D55E00" stroke-width="1.5" stroke-dasharray="6,3" ecmeta_series_index="2" ecmeta_data_index="0" ecmeta_ssr_type="chart" ecmeta_silent="true" class="zr0-cls-0"></path>
+<path d="M133 520L133 40" fill="none" pointer-events="visible" stroke="#999999" stroke-width="1.5" stroke-dasharray="6,3" ecmeta_series_index="3" ecmeta_data_index="0" ecmeta_ssr_type="chart" ecmeta_silent="true" class="zr0-cls-0"></path>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" y="-6" transform="translate(248.88 35)" fill="#333" stroke="rgb(255,255,255)" stroke-width="2" paint-order="stroke" stroke-miterlimit="2">Conformal</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;" y="-6" transform="translate(133.0629 35)" fill="#333" stroke="rgb(255,255,255)" stroke-width="2" paint-order="stroke" stroke-miterlimit="2">χ²(0.95)</text>
+<defs >
+<clipPath id="zr0-c0">
+<path d="M69 39l802 0l0 482l-802 0Z" fill="#000" class="zr0-cls-53 zr0-cls-0"></path>
+</clipPath>
+<clipPath id="zr0-c1">
+<path d="M69 39.3l803 0l0 481.5l-803 0Z" fill="#000" class="zr0-cls-54 zr0-cls-0"></path>
+</clipPath>
+</defs>
+<style ><![CDATA[
+.zr0-cls-0:hover {
+pointer-events:none;
+}
+.zr0-cls-1 {
+animation:zr0-ani-0 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-2:hover {
+cursor:pointer;
+fill:rgba(0,125,195,1);
+}
+.zr0-cls-3 {
+animation:zr0-ani-1 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-4 {
+animation:zr0-ani-2 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-5 {
+animation:zr0-ani-3 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-6 {
+animation:zr0-ani-4 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-7 {
+animation:zr0-ani-5 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-8 {
+animation:zr0-ani-6 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-9 {
+animation:zr0-ani-7 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-10 {
+animation:zr0-ani-8 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-11 {
+animation:zr0-ani-9 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-12 {
+animation:zr0-ani-10 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-13 {
+animation:zr0-ani-11 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-14 {
+animation:zr0-ani-12 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-15 {
+animation:zr0-ani-13 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-16 {
+animation:zr0-ani-14 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-17 {
+animation:zr0-ani-15 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-18 {
+animation:zr0-ani-16 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-19 {
+animation:zr0-ani-17 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-20:hover {
+cursor:pointer;
+fill:rgba(234,103,0,1);
+}
+.zr0-cls-21 {
+animation:zr0-ani-18 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-22 {
+animation:zr0-ani-19 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-23 {
+animation:zr0-ani-20 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-24 {
+animation:zr0-ani-21 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-25 {
+animation:zr0-ani-22 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-26 {
+animation:zr0-ani-23 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-27 {
+animation:zr0-ani-24 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-28 {
+animation:zr0-ani-25 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-29 {
+animation:zr0-ani-26 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-30 {
+animation:zr0-ani-27 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-31 {
+animation:zr0-ani-28 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-32 {
+animation:zr0-ani-29 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-33 {
+animation:zr0-ani-30 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-34 {
+animation:zr0-ani-31 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-35 {
+animation:zr0-ani-32 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-36 {
+animation:zr0-ani-33 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-37 {
+animation:zr0-ani-34 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-38 {
+animation:zr0-ani-35 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-39 {
+animation:zr0-ani-36 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-40 {
+animation:zr0-ani-37 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-41 {
+animation:zr0-ani-38 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-42 {
+animation:zr0-ani-39 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-43 {
+animation:zr0-ani-40 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-44 {
+animation:zr0-ani-41 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-45 {
+animation:zr0-ani-42 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-46 {
+animation:zr0-ani-43 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-47 {
+animation:zr0-ani-44 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-48 {
+animation:zr0-ani-45 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-49 {
+animation:zr0-ani-46 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-50 {
+animation:zr0-ani-47 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-51 {
+animation:zr0-ani-48 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-52 {
+animation:zr0-ani-49 1s cubic-bezier(0.65,0,0.35,1) both;
+}
+.zr0-cls-53 {
+animation:zr0-ani-50 1s linear both;
+}
+.zr0-cls-54 {
+animation:zr0-ani-51 1s linear both;
+}
+.zr0-cls-55:hover {
+cursor:pointer;
+fill:rgba(0,0,0,0);
+}
+@keyframes zr0-ani-0 {
+0% {
+d:path("M75.3 520l1 0l0 0l-1 0Z");
+}
+100% {
+d:path("M75.3 520l1 0l0 -20.4l-1 0Z");
+}
+}
+@keyframes zr0-ani-1 {
+0% {
+d:path("M102.9 520l1 0l0 0l-1 0Z");
+}
+100% {
+d:path("M102.9 520l1 0l0 -37l-1 0Z");
+}
+}
+@keyframes zr0-ani-2 {
+0% {
+d:path("M130.6 520l1 0l0 0l-1 0Z");
+}
+100% {
+d:path("M130.6 520l1 0l0 -53.5l-1 0Z");
+}
+}
+@keyframes zr0-ani-3 {
+0% {
+d:path("M158.2 520l1 0l0 0l-1 0Z");
+}
+100% {
+d:path("M158.2 520l1 0l0 -70.1l-1 0Z");
+}
+}
+@keyframes zr0-ani-4 {
+0% {
+d:path("M185.8 520l1 0l0 0l-1 0Z");
+}
+100% {
+d:path("M185.8 520l1 0l0 -86.7l-1 0Z");
+}
+}
+@keyframes zr0-ani-5 {
+0% {
+d:path("M213.5 520l1 0l0 0l-1 0Z");
+}
+100% {
+d:path("M213.5 520l1 0l0 -103.3l-1 0Z");
+}
+}
+@keyframes zr0-ani-6 {
+0% {
+d:path("M241.1 520l1 0l0 0l-1 0Z");
+}
+100% {
+d:path("M241.1 520l1 0l0 -119.9l-1 0Z");
+}
+}
+@keyframes zr0-ani-7 {
+0% {
+d:path("M268.8 520l1 0l0 0l-1 0Z");
+}
+100% {
+d:path("M268.8 520l1 0l0 -136.5l-1 0Z");
+}
+}
+@keyframes zr0-ani-8 {
+0% {
+d:path("M296.4 520l1 0l0 0l-1 0Z");
+}
+100% {
+d:path("M296.4 520l1 0l0 -153l-1 0Z");
+}
+}
+@keyframes zr0-ani-9 {
+0% {
+d:path("M324 520l1 0l0 0l-1 0Z");
+}
+100% {
+d:path("M324 520l1 0l0 -169.6l-1 0Z");
+}
+}
+@keyframes zr0-ani-10 {
+0% {
+d:path("M351.7 520l1 0l0 0l-1 0Z");
+}
+100% {
+d:path("M351.7 520l1 0l0 -186.2l-1 0Z");
+}
+}
+@keyframes zr0-ani-11 {
+0% {
+d:path("M379.3 520l1 0l0 0l-1 0Z");
+}
+100% {
+d:path("M379.3 520l1 0l0 -202.8l-1 0Z");
+}
+}
+@keyframes zr0-ani-12 {
+0% {
+d:path("M406.9 520l1 0l0 0l-1 0Z");
+}
+100% {
+d:path("M406.9 520l1 0l0 -219.4l-1 0Z");
+}
+}
+@keyframes zr0-ani-13 {
+0% {
+d:path("M434.6 520l1 0l0 0l-1 0Z");
+}
+100% {
+d:path("M434.6 520l1 0l0 -236l-1 0Z");
+}
+}
+@keyframes zr0-ani-14 {
+0% {
+d:path("M462.2 520l1 0l0 0l-1 0Z");
+}
+100% {
+d:path("M462.2 520l1 0l0 -252.5l-1 0Z");
+}
+}
+@keyframes zr0-ani-15 {
+0% {
+d:path("M489.9 520l1 0l0 0l-1 0Z");
+}
+100% {
+d:path("M489.9 520l1 0l0 -269.1l-1 0Z");
+}
+}
+@keyframes zr0-ani-16 {
+0% {
+d:path("M517.5 520l1 0l0 0l-1 0Z");
+}
+100% {
+d:path("M517.5 520l1 0l0 -285.7l-1 0Z");
+}
+}
+@keyframes zr0-ani-17 {
+0% {
+d:path("M76.3 520l1 0l0 0l-1 0Z");
+}
+100% {
+d:path("M76.3 520l1 0l0 -18l-1 0Z");
+}
+}
+@keyframes zr0-ani-18 {
+0% {
+d:path("M100.1 520l1 0l0 0l-1 0Z");
+}
+100% {
+d:path("M100.1 520l1 0l0 -32.3l-1 0Z");
+}
+}
+@keyframes zr0-ani-19 {
+0% {
+d:path("M123.9 520l1 0l0 0l-1 0Z");
+}
+100% {
+d:path("M123.9 520l1 0l0 -46.6l-1 0Z");
+}
+}
+@keyframes zr0-ani-20 {
+0% {
+d:path("M147.6 520l1 0l0 0l-1 0Z");
+}
+100% {
+d:path("M147.6 520l1 0l0 -60.8l-1 0Z");
+}
+}
+@keyframes zr0-ani-21 {
+0% {
+d:path("M171.4 520l1 0l0 0l-1 0Z");
+}
+100% {
+d:path("M171.4 520l1 0l0 -75.1l-1 0Z");
+}
+}
+@keyframes zr0-ani-22 {
+0% {
+d:path("M195.2 520l1 0l0 0l-1 0Z");
+}
+100% {
+d:path("M195.2 520l1 0l0 -89.4l-1 0Z");
+}
+}
+@keyframes zr0-ani-23 {
+0% {
+d:path("M219 520l1 0l0 0l-1 0Z");
+}
+100% {
+d:path("M219 520l1 0l0 -103.6l-1 0Z");
+}
+}
+@keyframes zr0-ani-24 {
+0% {
+d:path("M242.8 520l1 0l0 0l-1 0Z");
+}
+100% {
+d:path("M242.8 520l1 0l0 -117.9l-1 0Z");
+}
+}
+@keyframes zr0-ani-25 {
+0% {
+d:path("M266.5 520l1 0l0 0l-1 0Z");
+}
+100% {
+d:path("M266.5 520l1 0l0 -132.2l-1 0Z");
+}
+}
+@keyframes zr0-ani-26 {
+0% {
+d:path("M290.3 520l1 0l0 0l-1 0Z");
+}
+100% {
+d:path("M290.3 520l1 0l0 -146.4l-1 0Z");
+}
+}
+@keyframes zr0-ani-27 {
+0% {
+d:path("M314.1 520l1 0l0 0l-1 0Z");
+}
+100% {
+d:path("M314.1 520l1 0l0 -160.7l-1 0Z");
+}
+}
+@keyframes zr0-ani-28 {
+0% {
+d:path("M337.9 520l1 0l0 0l-1 0Z");
+}
+100% {
+d:path("M337.9 520l1 0l0 -175l-1 0Z");
+}
+}
+@keyframes zr0-ani-29 {
+0% {
+d:path("M361.6 520l1 0l0 0l-1 0Z");
+}
+100% {
+d:path("M361.6 520l1 0l0 -189.2l-1 0Z");
+}
+}
+@keyframes zr0-ani-30 {
+0% {
+d:path("M385.4 520l1 0l0 0l-1 0Z");
+}
+100% {
+d:path("M385.4 520l1 0l0 -203.5l-1 0Z");
+}
+}
+@keyframes zr0-ani-31 {
+0% {
+d:path("M409.2 520l1 0l0 0l-1 0Z");
+}
+100% {
+d:path("M409.2 520l1 0l0 -217.8l-1 0Z");
+}
+}
+@keyframes zr0-ani-32 {
+0% {
+d:path("M433 520l1 0l0 0l-1 0Z");
+}
+100% {
+d:path("M433 520l1 0l0 -232l-1 0Z");
+}
+}
+@keyframes zr0-ani-33 {
+0% {
+d:path("M456.8 520l1 0l0 0l-1 0Z");
+}
+100% {
+d:path("M456.8 520l1 0l0 -246.3l-1 0Z");
+}
+}
+@keyframes zr0-ani-34 {
+0% {
+d:path("M480.5 520l1 0l0 0l-1 0Z");
+}
+100% {
+d:path("M480.5 520l1 0l0 -260.6l-1 0Z");
+}
+}
+@keyframes zr0-ani-35 {
+0% {
+d:path("M504.3 520l1 0l0 0l-1 0Z");
+}
+100% {
+d:path("M504.3 520l1 0l0 -274.8l-1 0Z");
+}
+}
+@keyframes zr0-ani-36 {
+0% {
+d:path("M528.1 520l1 0l0 0l-1 0Z");
+}
+100% {
+d:path("M528.1 520l1 0l0 -289.1l-1 0Z");
+}
+}
+@keyframes zr0-ani-37 {
+0% {
+d:path("M551.9 520l1 0l0 0l-1 0Z");
+}
+100% {
+d:path("M551.9 520l1 0l0 -303.4l-1 0Z");
+}
+}
+@keyframes zr0-ani-38 {
+0% {
+d:path("M575.6 520l1 0l0 0l-1 0Z");
+}
+100% {
+d:path("M575.6 520l1 0l0 -317.6l-1 0Z");
+}
+}
+@keyframes zr0-ani-39 {
+0% {
+d:path("M599.4 520l1 0l0 0l-1 0Z");
+}
+100% {
+d:path("M599.4 520l1 0l0 -331.9l-1 0Z");
+}
+}
+@keyframes zr0-ani-40 {
+0% {
+d:path("M623.2 520l1 0l0 0l-1 0Z");
+}
+100% {
+d:path("M623.2 520l1 0l0 -346.2l-1 0Z");
+}
+}
+@keyframes zr0-ani-41 {
+0% {
+d:path("M647 520l1 0l0 0l-1 0Z");
+}
+100% {
+d:path("M647 520l1 0l0 -360.4l-1 0Z");
+}
+}
+@keyframes zr0-ani-42 {
+0% {
+d:path("M670.8 520l1 0l0 0l-1 0Z");
+}
+100% {
+d:path("M670.8 520l1 0l0 -374.7l-1 0Z");
+}
+}
+@keyframes zr0-ani-43 {
+0% {
+d:path("M694.5 520l1 0l0 0l-1 0Z");
+}
+100% {
+d:path("M694.5 520l1 0l0 -389l-1 0Z");
+}
+}
+@keyframes zr0-ani-44 {
+0% {
+d:path("M718.3 520l1 0l0 0l-1 0Z");
+}
+100% {
+d:path("M718.3 520l1 0l0 -403.2l-1 0Z");
+}
+}
+@keyframes zr0-ani-45 {
+0% {
+d:path("M742.1 520l1 0l0 0l-1 0Z");
+}
+100% {
+d:path("M742.1 520l1 0l0 -417.5l-1 0Z");
+}
+}
+@keyframes zr0-ani-46 {
+0% {
+d:path("M765.9 520l1 0l0 0l-1 0Z");
+}
+100% {
+d:path("M765.9 520l1 0l0 -431.8l-1 0Z");
+}
+}
+@keyframes zr0-ani-47 {
+0% {
+d:path("M789.6 520l1 0l0 0l-1 0Z");
+}
+100% {
+d:path("M789.6 520l1 0l0 -446l-1 0Z");
+}
+}
+@keyframes zr0-ani-48 {
+0% {
+d:path("M813.4 520l1 0l0 0l-1 0Z");
+}
+100% {
+d:path("M813.4 520l1 0l0 -460.3l-1 0Z");
+}
+}
+@keyframes zr0-ani-49 {
+0% {
+d:path("M837.2 520l1 0l0 0l-1 0Z");
+}
+100% {
+d:path("M837.2 520l1 0l0 -474.6l-1 0Z");
+}
+}
+@keyframes zr0-ani-50 {
+0% {
+d:path("M69 39l0 0l0 482l0 0Z");
+}
+100% {
+d:path("M69 39l802 0l0 482l-802 0Z");
+}
+}
+@keyframes zr0-ani-51 {
+0% {
+d:path("M69 39.3l0 0l0 481.5l0 0Z");
+}
+100% {
+d:path("M69 39.3l803 0l0 481.5l-803 0Z");
+}
+}
+]]>
+
+</style>
+</svg>

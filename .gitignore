@@ -130,3 +130,4 @@ dist/
 # scripts/render_echarts_svg.mjs renderer pulls echarts + jsdom).
 # The frontend/ tree already gitignores its own node_modules separately.
 node_modules/
+manuscripts/ijnmbe/rendered/figures/_tmp/
