@@ -1,0 +1,193 @@
+{
+  "grid": {
+    "left": 70,
+    "right": 20,
+    "bottom": 80,
+    "top": 50,
+    "containLabel": false
+  },
+  "legend": {
+    "data": [
+      "championship",
+      "conceptual",
+      "extreme_post_stall",
+      "military_acm",
+      "Nominal 95%"
+    ],
+    "top": 8,
+    "itemWidth": 14,
+    "itemHeight": 10,
+    "textStyle": {
+      "color": "#333333",
+      "fontSize": 10
+    },
+    "orient": "horizontal"
+  },
+  "xAxis": {
+    "type": "category",
+    "data": [
+      "hlap_min",
+      "c_bank_min",
+      "Greyout\n(class.)",
+      "Greyout\n(reg.)",
+      "Blackout\n(class.)",
+      "Blackout\n(reg.)",
+      "G-LOC\n(class.)",
+      "G-LOC\n(reg.)"
+    ],
+    "axisLabel": {
+      "rotate": 0,
+      "fontSize": 10,
+      "interval": 0,
+      "color": "#333333",
+      "rich": {}
+    },
+    "axisLine": {
+      "lineStyle": {
+        "color": "#aaaaaa"
+      }
+    },
+    "axisTick": {
+      "lineStyle": {
+        "color": "#aaaaaa"
+      }
+    },
+    "splitLine": {
+      "lineStyle": {
+        "color": "#e8e8e8",
+        "type": "solid"
+      }
+    }
+  },
+  "yAxis": {
+    "type": "value",
+    "name": "Empirical Coverage",
+    "nameLocation": "middle",
+    "nameGap": 48,
+    "min": 0.0,
+    "max": 1.05,
+    "axisLine": {
+      "lineStyle": {
+        "color": "#aaaaaa"
+      }
+    },
+    "axisTick": {
+      "lineStyle": {
+        "color": "#aaaaaa"
+      }
+    },
+    "splitLine": {
+      "lineStyle": {
+        "color": "#e8e8e8",
+        "type": "solid"
+      }
+    },
+    "axisLabel": {
+      "formatter": "{value}",
+      "color": "#333333",
+      "fontSize": 10
+    }
+  },
+  "series": [
+    {
+      "name": "championship",
+      "type": "bar",
+      "data": [
+        0.9279661016949152,
+        0.9661016949152542,
+        0.9788135593220338,
+        1.0,
+        0.961864406779661,
+        1.0,
+        0.9576271186440678,
+        1.0
+      ],
+      "itemStyle": {
+        "color": "#0072B2"
+      }
+    },
+    {
+      "name": "conceptual",
+      "type": "bar",
+      "data": [
+        0.7142857142857143,
+        0.9523809523809523,
+        1.0,
+        0,
+        1.0,
+        0,
+        1.0,
+        0
+      ],
+      "itemStyle": {
+        "color": "#D55E00"
+      }
+    },
+    {
+      "name": "extreme_post_stall",
+      "type": "bar",
+      "data": [
+        0.9506172839506173,
+        0.9135802469135802,
+        0.9382716049382716,
+        1.0,
+        0.9012345679012346,
+        0,
+        0.9135802469135802,
+        0
+      ],
+      "itemStyle": {
+        "color": "#009E73"
+      }
+    },
+    {
+      "name": "military_acm",
+      "type": "bar",
+      "data": [
+        0.9463087248322147,
+        0.9395973154362416,
+        0.959731543624161,
+        1.0,
+        0.959731543624161,
+        1.0,
+        0.9194630872483222,
+        0.8571428571428571
+      ],
+      "itemStyle": {
+        "color": "#CC79A7"
+      }
+    },
+    {
+      "name": "Nominal 95%",
+      "type": "line",
+      "data": [
+        0.95,
+        0.95,
+        0.95,
+        0.95,
+        0.95,
+        0.95,
+        0.95,
+        0.95
+      ],
+      "showSymbol": false,
+      "silent": true,
+      "lineStyle": {
+        "type": "dashed",
+        "color": "#222222",
+        "width": 1.5
+      }
+    }
+  ],
+  "tooltip": {
+    "trigger": "axis",
+    "backgroundColor": "rgba(255,255,255,0.95)",
+    "borderColor": "#cccccc"
+  },
+  "backgroundColor": "#ffffff",
+  "textStyle": {
+    "fontFamily": "Arial, Helvetica, sans-serif",
+    "color": "#333333",
+    "fontSize": 12
+  }
+}

@@ -1,0 +1,748 @@
+{
+  "title": [
+    {
+      "text": "A  hlap_min\nECE=0.0024",
+      "left": "2%",
+      "top": "1%",
+      "textStyle": {
+        "fontSize": 11,
+        "fontWeight": "bold",
+        "color": "#333333"
+      }
+    },
+    {
+      "text": "B  c_bank_min\nECE=0.1079",
+      "left": "35%",
+      "top": "1%",
+      "textStyle": {
+        "fontSize": 11,
+        "fontWeight": "bold",
+        "color": "#333333"
+      }
+    },
+    {
+      "text": "C  time_to_greyout_s\nECE=0.0043",
+      "left": "68%",
+      "top": "1%",
+      "textStyle": {
+        "fontSize": 11,
+        "fontWeight": "bold",
+        "color": "#333333"
+      }
+    },
+    {
+      "text": "D  time_to_blackout_s\nECE=0.0056",
+      "left": "2%",
+      "top": "51%",
+      "textStyle": {
+        "fontSize": 11,
+        "fontWeight": "bold",
+        "color": "#333333"
+      }
+    },
+    {
+      "text": "E  time_to_gloc_s\nECE=0.0138",
+      "left": "35%",
+      "top": "51%",
+      "textStyle": {
+        "fontSize": 11,
+        "fontWeight": "bold",
+        "color": "#333333"
+      }
+    }
+  ],
+  "grid": [
+    {
+      "left": "2%",
+      "right": "69%",
+      "top": "5%",
+      "bottom": "55%",
+      "show": false
+    },
+    {
+      "left": "35%",
+      "right": "36%",
+      "top": "5%",
+      "bottom": "55%",
+      "show": false
+    },
+    {
+      "left": "68%",
+      "right": "3%",
+      "top": "5%",
+      "bottom": "55%",
+      "show": false
+    },
+    {
+      "left": "2%",
+      "right": "69%",
+      "top": "55%",
+      "bottom": "5%",
+      "show": false
+    },
+    {
+      "left": "35%",
+      "right": "36%",
+      "top": "55%",
+      "bottom": "5%",
+      "show": false
+    }
+  ],
+  "xAxis": [
+    {
+      "gridIndex": 0,
+      "type": "value",
+      "name": "Predicted",
+      "nameLocation": "middle",
+      "nameGap": 25,
+      "scale": true,
+      "axisLine": {
+        "lineStyle": {
+          "color": "#aaaaaa"
+        }
+      },
+      "axisTick": {
+        "lineStyle": {
+          "color": "#aaaaaa"
+        }
+      },
+      "splitLine": {
+        "lineStyle": {
+          "color": "#e8e8e8",
+          "type": "solid"
+        }
+      },
+      "axisLabel": {
+        "color": "#333333"
+      }
+    },
+    {
+      "gridIndex": 1,
+      "type": "value",
+      "name": "Predicted",
+      "nameLocation": "middle",
+      "nameGap": 25,
+      "scale": true,
+      "axisLine": {
+        "lineStyle": {
+          "color": "#aaaaaa"
+        }
+      },
+      "axisTick": {
+        "lineStyle": {
+          "color": "#aaaaaa"
+        }
+      },
+      "splitLine": {
+        "lineStyle": {
+          "color": "#e8e8e8",
+          "type": "solid"
+        }
+      },
+      "axisLabel": {
+        "color": "#333333"
+      }
+    },
+    {
+      "gridIndex": 2,
+      "type": "value",
+      "name": "Predicted",
+      "nameLocation": "middle",
+      "nameGap": 25,
+      "scale": true,
+      "axisLine": {
+        "lineStyle": {
+          "color": "#aaaaaa"
+        }
+      },
+      "axisTick": {
+        "lineStyle": {
+          "color": "#aaaaaa"
+        }
+      },
+      "splitLine": {
+        "lineStyle": {
+          "color": "#e8e8e8",
+          "type": "solid"
+        }
+      },
+      "axisLabel": {
+        "color": "#333333"
+      }
+    },
+    {
+      "gridIndex": 3,
+      "type": "value",
+      "name": "Predicted",
+      "nameLocation": "middle",
+      "nameGap": 25,
+      "scale": true,
+      "axisLine": {
+        "lineStyle": {
+          "color": "#aaaaaa"
+        }
+      },
+      "axisTick": {
+        "lineStyle": {
+          "color": "#aaaaaa"
+        }
+      },
+      "splitLine": {
+        "lineStyle": {
+          "color": "#e8e8e8",
+          "type": "solid"
+        }
+      },
+      "axisLabel": {
+        "color": "#333333"
+      }
+    },
+    {
+      "gridIndex": 4,
+      "type": "value",
+      "name": "Predicted",
+      "nameLocation": "middle",
+      "nameGap": 25,
+      "scale": true,
+      "axisLine": {
+        "lineStyle": {
+          "color": "#aaaaaa"
+        }
+      },
+      "axisTick": {
+        "lineStyle": {
+          "color": "#aaaaaa"
+        }
+      },
+      "splitLine": {
+        "lineStyle": {
+          "color": "#e8e8e8",
+          "type": "solid"
+        }
+      },
+      "axisLabel": {
+        "color": "#333333"
+      }
+    }
+  ],
+  "yAxis": [
+    {
+      "gridIndex": 0,
+      "type": "value",
+      "name": "Observed",
+      "nameLocation": "middle",
+      "nameGap": 36,
+      "scale": true,
+      "axisLine": {
+        "lineStyle": {
+          "color": "#aaaaaa"
+        }
+      },
+      "axisTick": {
+        "lineStyle": {
+          "color": "#aaaaaa"
+        }
+      },
+      "splitLine": {
+        "lineStyle": {
+          "color": "#e8e8e8",
+          "type": "solid"
+        }
+      },
+      "axisLabel": {
+        "color": "#333333"
+      }
+    },
+    {
+      "gridIndex": 1,
+      "type": "value",
+      "name": "Observed",
+      "nameLocation": "middle",
+      "nameGap": 36,
+      "scale": true,
+      "axisLine": {
+        "lineStyle": {
+          "color": "#aaaaaa"
+        }
+      },
+      "axisTick": {
+        "lineStyle": {
+          "color": "#aaaaaa"
+        }
+      },
+      "splitLine": {
+        "lineStyle": {
+          "color": "#e8e8e8",
+          "type": "solid"
+        }
+      },
+      "axisLabel": {
+        "color": "#333333"
+      }
+    },
+    {
+      "gridIndex": 2,
+      "type": "value",
+      "name": "Observed",
+      "nameLocation": "middle",
+      "nameGap": 36,
+      "scale": true,
+      "axisLine": {
+        "lineStyle": {
+          "color": "#aaaaaa"
+        }
+      },
+      "axisTick": {
+        "lineStyle": {
+          "color": "#aaaaaa"
+        }
+      },
+      "splitLine": {
+        "lineStyle": {
+          "color": "#e8e8e8",
+          "type": "solid"
+        }
+      },
+      "axisLabel": {
+        "color": "#333333"
+      }
+    },
+    {
+      "gridIndex": 3,
+      "type": "value",
+      "name": "Observed",
+      "nameLocation": "middle",
+      "nameGap": 36,
+      "scale": true,
+      "axisLine": {
+        "lineStyle": {
+          "color": "#aaaaaa"
+        }
+      },
+      "axisTick": {
+        "lineStyle": {
+          "color": "#aaaaaa"
+        }
+      },
+      "splitLine": {
+        "lineStyle": {
+          "color": "#e8e8e8",
+          "type": "solid"
+        }
+      },
+      "axisLabel": {
+        "color": "#333333"
+      }
+    },
+    {
+      "gridIndex": 4,
+      "type": "value",
+      "name": "Observed",
+      "nameLocation": "middle",
+      "nameGap": 36,
+      "scale": true,
+      "axisLine": {
+        "lineStyle": {
+          "color": "#aaaaaa"
+        }
+      },
+      "axisTick": {
+        "lineStyle": {
+          "color": "#aaaaaa"
+        }
+      },
+      "splitLine": {
+        "lineStyle": {
+          "color": "#e8e8e8",
+          "type": "solid"
+        }
+      },
+      "axisLabel": {
+        "color": "#333333"
+      }
+    }
+  ],
+  "series": [
+    {
+      "name": "hlap_min_observed",
+      "type": "bar",
+      "xAxisIndex": 0,
+      "yAxisIndex": 0,
+      "data": [
+        [
+          80.00024460773079,
+          80.00016326530611
+        ],
+        [
+          90.44960816701253,
+          90.45066666666666
+        ],
+        [
+          94.7511993719607,
+          94.75
+        ],
+        [
+          96.44081910451253,
+          96.44425000000001
+        ],
+        [
+          97.75495007573342,
+          97.7536530612245
+        ],
+        [
+          99.89997599076251,
+          99.91
+        ],
+        [
+          99.99958505435866,
+          100.0
+        ],
+        [
+          100.00649515787761,
+          100.00345833333334
+        ],
+        [
+          104.50011739925462,
+          104.49830612244897
+        ],
+        [
+          110.00856749865474,
+          110.0107142857143
+        ]
+      ],
+      "barWidth": "80%",
+      "itemStyle": {
+        "color": "#0072B2"
+      }
+    },
+    {
+      "name": "hlap_min_ref",
+      "type": "line",
+      "xAxisIndex": 0,
+      "yAxisIndex": 0,
+      "data": [
+        [
+          78.4996357142857,
+          78.4996357142857
+        ],
+        [
+          111.51124183673471,
+          111.51124183673471
+        ]
+      ],
+      "showSymbol": false,
+      "lineStyle": {
+        "width": 1,
+        "type": "dashed",
+        "color": "#999999"
+      },
+      "silent": true
+    },
+    {
+      "name": "c_bank_min_observed",
+      "type": "bar",
+      "xAxisIndex": 1,
+      "yAxisIndex": 1,
+      "data": [
+        [
+          0.22209230924443324,
+          0.284265306122449
+        ],
+        [
+          3.4079304106381474,
+          3.0901224489795918
+        ],
+        [
+          5.158425251642863,
+          5.216208333333333
+        ],
+        [
+          5.968648667238196,
+          5.959918367346939
+        ],
+        [
+          6.381283938884735,
+          6.4917291666666666
+        ],
+        [
+          6.816327328584632,
+          6.923489795918367
+        ],
+        [
+          7.054100133934799,
+          7.063571428571429
+        ],
+        [
+          7.194830288489659,
+          7.040916666666667
+        ],
+        [
+          8.827683643418915,
+          8.9625306122449
+        ],
+        [
+          14.937749940521863,
+          14.82065306122449
+        ]
+      ],
+      "barWidth": "80%",
+      "itemStyle": {
+        "color": "#0072B2"
+      }
+    },
+    {
+      "name": "c_bank_min_ref",
+      "type": "line",
+      "xAxisIndex": 1,
+      "yAxisIndex": 1,
+      "data": [
+        [
+          -0.5136905723194384,
+          -0.5136905723194384
+        ],
+        [
+          15.673532822085734,
+          15.673532822085734
+        ]
+      ],
+      "showSymbol": false,
+      "lineStyle": {
+        "width": 1,
+        "type": "dashed",
+        "color": "#999999"
+      },
+      "silent": true
+    },
+    {
+      "name": "time_to_greyout_s_observed",
+      "type": "bar",
+      "xAxisIndex": 2,
+      "yAxisIndex": 2,
+      "data": [
+        [
+          1.5712741111312833e-05,
+          0.0
+        ],
+        [
+          5.431835445645503e-05,
+          0.0
+        ],
+        [
+          0.00011851250565086957,
+          0.0
+        ],
+        [
+          0.0003387484849758484,
+          0.0
+        ],
+        [
+          0.0009844465021160431,
+          0.0
+        ],
+        [
+          0.002722762173459846,
+          0.0
+        ],
+        [
+          0.009345276860938388,
+          0.0
+        ],
+        [
+          0.052468167540306844,
+          0.041666666666666664
+        ],
+        [
+          0.6866028229801022,
+          0.673469387755102
+        ],
+        [
+          0.9942215437791786,
+          1.0
+        ]
+      ],
+      "barWidth": "80%",
+      "itemStyle": {
+        "color": "#0072B2"
+      }
+    },
+    {
+      "name": "time_to_greyout_s_ref",
+      "type": "line",
+      "xAxisIndex": 2,
+      "yAxisIndex": 2,
+      "data": [
+        [
+          -0.05,
+          -0.05
+        ],
+        [
+          1.05,
+          1.05
+        ]
+      ],
+      "showSymbol": false,
+      "lineStyle": {
+        "width": 1,
+        "type": "dashed",
+        "color": "#999999"
+      },
+      "silent": true
+    },
+    {
+      "name": "time_to_blackout_s_observed",
+      "type": "bar",
+      "xAxisIndex": 3,
+      "yAxisIndex": 3,
+      "data": [
+        [
+          4.882983415306941e-06,
+          0.0
+        ],
+        [
+          1.5102246760186378e-05,
+          0.0
+        ],
+        [
+          3.278315110340676e-05,
+          0.0
+        ],
+        [
+          7.526835951448077e-05,
+          0.0
+        ],
+        [
+          0.00015259501272642714,
+          0.0
+        ],
+        [
+          0.0003421965972235312,
+          0.0
+        ],
+        [
+          0.001049128653866486,
+          0.0
+        ],
+        [
+          0.0046618726385834934,
+          0.0
+        ],
+        [
+          0.1608960051279591,
+          0.1836734693877551
+        ],
+        [
+          0.9734415813368194,
+          1.0
+        ]
+      ],
+      "barWidth": "80%",
+      "itemStyle": {
+        "color": "#0072B2"
+      }
+    },
+    {
+      "name": "time_to_blackout_s_ref",
+      "type": "line",
+      "xAxisIndex": 3,
+      "yAxisIndex": 3,
+      "data": [
+        [
+          -0.05,
+          -0.05
+        ],
+        [
+          1.05,
+          1.05
+        ]
+      ],
+      "showSymbol": false,
+      "lineStyle": {
+        "width": 1,
+        "type": "dashed",
+        "color": "#999999"
+      },
+      "silent": true
+    },
+    {
+      "name": "time_to_gloc_s_observed",
+      "type": "bar",
+      "xAxisIndex": 4,
+      "yAxisIndex": 4,
+      "data": [
+        [
+          2.8734748272598858e-06,
+          0.0
+        ],
+        [
+          5.0940270275346774e-06,
+          0.0
+        ],
+        [
+          1.0829925741973057e-05,
+          0.0
+        ],
+        [
+          2.11607179413217e-05,
+          0.0
+        ],
+        [
+          3.990886102656077e-05,
+          0.0
+        ],
+        [
+          8.32232396291778e-05,
+          0.0
+        ],
+        [
+          0.00022952554213496077,
+          0.0
+        ],
+        [
+          0.0007899866407872954,
+          0.0
+        ],
+        [
+          0.007759807184718701,
+          0.04081632653061224
+        ],
+        [
+          0.5909634534345598,
+          0.6938775510204082
+        ]
+      ],
+      "barWidth": "80%",
+      "itemStyle": {
+        "color": "#0072B2"
+      }
+    },
+    {
+      "name": "time_to_gloc_s_ref",
+      "type": "line",
+      "xAxisIndex": 4,
+      "yAxisIndex": 4,
+      "data": [
+        [
+          -0.03469387755102041,
+          -0.03469387755102041
+        ],
+        [
+          0.7285714285714285,
+          0.7285714285714285
+        ]
+      ],
+      "showSymbol": false,
+      "lineStyle": {
+        "width": 1,
+        "type": "dashed",
+        "color": "#999999"
+      },
+      "silent": true
+    }
+  ],
+  "backgroundColor": "#ffffff",
+  "textStyle": {
+    "fontFamily": "Arial, Helvetica, sans-serif",
+    "color": "#333333",
+    "fontSize": 12
+  }
+}
