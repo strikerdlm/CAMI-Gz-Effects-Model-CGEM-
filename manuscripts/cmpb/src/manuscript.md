@@ -1,19 +1,10 @@
 # Conformal machine-learning emulation and out-of-distribution detection for the FAA CAMI G-Effects mechanistic model of acceleration physiology
 
-**Target venue:** *International Journal for Numerical Methods in Biomedical Engineering* (IJNMBE, Wiley, ISSN 2040-7947). Article type: Research Paper. Submission track: subscription / non-OA (Wiley hybrid; no APC). Portal: Wiley CNM (`https://authors.wiley.com/journal/CNM`). Editor-in-Chief: Perumal Nithiarasu, PhD, College of Engineering, Swansea University.
+**Author.** Diego Malpica, MD. Direction of Aerospace Medicine, Aerospace Scientific Department, Colombian Aerospace Force (Fuerza Aeroespacial Colombiana, FAC), Bogotá, Colombia. ORCID 0000-0002-2257-4940. Correspondence: dlmalpica@yahoo.com.
 
-**Short title** (≤ 70 chars; for portal entry): Conformal ML wrapper for a validated ODE physiological model.
+**Article type.** Full Length Article.
 
-<!-- Author identity lives in `docs/publication/author_page.md` and is uploaded as the
-Title Page file in Editorial Manager. -->
-
-**Word count:** ≈ 4,980 (body, Introduction → Conclusion; §3.8 multi-fidelity section removed 2026-05-12). IJNMBE has no stated body-word cap; this length is consistent with recent IJNMBE Research Papers.
-**Abstract word count:** 394 (IJNMBE ≤ 400; structured *or* unstructured permitted; the structured Background and Objectives / Methods / Results / Conclusions form is retained for clarity).
-**Tables:** 5.
-**Figures:** 6 (all in main body at submission; IJNMBE accepts inline figures at submission and requires separate files only at revision; no figure-count limit).
-**References:** 27 (incl. two IJNMBE-precedent references [20,21], one formal dataset citation per the Joint Declaration of Data Citation Principles [22], and five added references for conformal survival analysis [24–26], closest published precedent [23], and multi-fidelity DNN [27]).
-**Mandatory separate files at IJNMBE:** `cover_letter_ijnmbe.md`, `novelty_file_ijnmbe.md` (≤ 100 words), `graphical_abstract_ijnmbe.md` (mini-abstract ≤ 80 words / 3 sentences) plus the rendered Graphical Table of Contents image, `suggested_reviewers_ijnmbe.md` (5 candidates), Data Files (data + code, uploaded as the **Data Files** designation, not as Supporting Information).
-**CMPB Highlights file** (`docs/publication/highlights.md`): not used at IJNMBE — do **not** upload.
+**Running title** (≤ 70 chars). Conformal ML wrapper for a validated ODE physiological model.
 
 ---
 
