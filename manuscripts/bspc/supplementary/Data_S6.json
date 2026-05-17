@@ -1,0 +1,40 @@
+{
+  "_meta": {
+    "produced_by": "cgem_ext.surrogate.cqr.TwoStageXGBQuantileSurrogate vs cgem_ext.surrogate.xgb.TwoStageXGBSurrogate + cgem_ext.surrogate.conformal.MondrianSplitConformal",
+    "dataset": "data/datasets/cgem_synthetic_v1.parquet",
+    "split": "cgem_ext.data.splits.stratified_split(df, seed=42), drop_status_error=True",
+    "target": "time_to_gloc_s",
+    "alpha": 0.05,
+    "nominal_coverage": 0.95,
+    "n_train": 2267,
+    "n_val": 486,
+    "n_test": 487,
+    "n_test_event_positive": 36,
+    "produced_on": "2026-05-06",
+    "git_commit_at_run": "c55f058 (uncommitted manuscript ref fixes pending)",
+    "osf_amendment": "docs/publication/osf_amendment_2026-05-06.md (H5 anchor)"
+  },
+  "cqr": {
+    "_overall": 0.9722222222222222,
+    "championship": 1.0,
+    "military_acm": 0.9714285714285714,
+    "distance_to_nominal_pp": 2.22
+  },
+  "mondrian_homoscedastic_baseline": {
+    "_overall": 0.8611111111111112,
+    "championship": 1.0,
+    "military_acm": 0.8571428571428571,
+    "distance_to_nominal_pp": 8.89
+  },
+  "h5_outcome": {
+    "primary_assertion_met": true,
+    "primary_assertion": "CQR coverage on event-positive time_to_gloc_s >= 0.90",
+    "comparison_assertion_met": true,
+    "comparison_assertion": "CQR coverage strictly closer to nominal than 0.861 baseline",
+    "notes": [
+      "CQR delivers a moderate over-coverage (0.972 vs nominal 0.95).",
+      "n=36 event-positive rows in test slice — wide binomial CI; bootstrap interval will be reported in manuscript §3.3.",
+      "Per-stratum championship n=1 (single test row) limits the per-stratum claim; military_acm (n=35) is the operationally meaningful stratum."
+    ]
+  }
+}

@@ -397,15 +397,14 @@ The author gratefully acknowledges the FAA Civil Aerospace Medical Institute (CA
 
 ---
 
-## Supplementary materials
+## Supplementary Material
 
-1. TRIPOD-AI checklist (`TRIPOD_AI_checklist.md`)
-2. Dataset datasheet (`docs/data/datasheet.md`)
-3. Emulator model card (`docs/models/emulator_card.md`)
-4. OOD detector model card (`docs/models/ood_card.md`)
-5. OSF-pre-registration frozen hyperparameter search spaces (`osf_search_spaces.json`)
-6. OSF-pre-registration frozen split indices (`osf_split_indices.parquet`)
-7. Full per-stratum per-target Mondrian conformal coverage tables
-8. SHAP TreeExplainer importance plots per target
-9. Morris Elementary Effects μ* vs σ scatter plots
-10. Second-order Sobol interaction tables (S₂) with 95 % bootstrap CIs
+Supplementary material associated with this article is provided in the online version of the journal. Each item is delivered as a separate file under the "Supplementary Material" category in Editorial Manager, named per the Elsevier convention; a full inventory with one-sentence captions is in `Supplementary_Captions.docx` (uploaded first).
+
+**Tables.** Table S1 (XGBoost hyperparameters + RandomForest baseline regressor performance on the held-out test split); Table S2 (per-stratum Mondrian conformal coverage with Clopper–Pearson 95 % exact binomial CIs, including the side-by-side comparison of the homoscedastic Mondrian baseline and the heteroscedastic CQR layer on `time_to_gloc_s`); Table S3 (second-order Sobol interaction indices S₂ for all feature pairs across the five surrogate targets, with 95 % bootstrap CIs).
+
+**Figures.** Fig. S1 (SHAP TreeExplainer feature-importance ranking across the five surrogate targets); Fig. S2 (Morris Elementary Effects μ\*–σ scatter for the nine input features across the five surrogate targets).
+
+**Appendices.** Appendix S1 (dataset datasheet per Gebru et al. 2018); Appendix S2 (TRIPOD-AI compliance checklist per Collins et al. 2024); Appendix S3 (emulator model card per Mitchell et al. 2019); Appendix S4 (OOD detector model card); Appendix S5 (frozen OSF pre-registration, hypotheses H1–H4); Appendix S6 (OSF amendment 2026-05-06 introducing H5 heteroscedastic CQR and H6 archival external validation, filed before any test-set evaluation under the new hypotheses).
+
+**Data.** Data S1 (OSF-frozen hyperparameter search spaces, JSON); Data S2 (OSF-frozen 70/15/15 split indices stratified by `maneuver_category`, Parquet); Data S3 (Sobol first- and total-order indices with 95 % bootstrap CIs, CSV); Data S4 (Sobol second-order indices, CSV); Data S5 (Morris Elementary Effects μ, μ\*, σ, CSV); Data S6 (side-by-side CQR-vs-Mondrian coverage on `time_to_gloc_s`, JSON); Data S7 (H6 archival-validation per-record discrepancy diagnostics against Whinnery and Forster 2013, JSON).
