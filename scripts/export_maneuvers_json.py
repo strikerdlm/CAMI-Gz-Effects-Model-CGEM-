@@ -11,9 +11,12 @@ import sys
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
+SCRIPTS_DIR = Path(__file__).resolve().parent
 sys.path.insert(0, str(REPO_ROOT))
+sys.path.insert(0, str(SCRIPTS_DIR))
 
 from maneuvers_catalog import CATALOG  # noqa: E402
+from attitude_synthesis import attach_attitude_to_samples  # noqa: E402
 
 INPUTS_DIR = REPO_ROOT / "Aerobatics_sample_inputs"
 OUTPUT = REPO_ROOT / "frontend" / "src" / "data" / "maneuvers.json"
@@ -93,6 +96,13 @@ def main() -> None:
                 break
         if not samples:
             missing.append(identifier)
+        enriched_samples = attach_attitude_to_samples(
+            meta.identifier,
+            meta.category.value,
+            meta.aresti_family,
+            meta.description,
+            samples,
+        )
         records.append({
             "id": meta.identifier,
             "filename": filename,
@@ -110,11 +120,11 @@ def main() -> None:
             "hemodynamic_concern": meta.hemodynamic_concern,
             "source": meta.source,
             "tags": list(meta.tags),
-            "samples": samples,
+            "samples": enriched_samples,
         })
 
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
-    OUTPUT.write_text(json.dumps(records, indent=2, ensure_ascii=False))
+    OUTPUT.write_text(json.dumps(records, indent=2, ensure_ascii=False), encoding='utf-8')
 
     print(f"wrote {len(records)} maneuvers to {OUTPUT}")
     if missing:

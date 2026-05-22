@@ -7,7 +7,7 @@
  *   • Right: live telemetry, /predict-driven T-LOC + 95 % conformal bracket,
  *           RiskBadge, pilot config snapshot
  */
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import {
   MANEUVERS,
@@ -16,6 +16,7 @@ import {
   type Maneuver,
   type ManeuverCategory,
 } from '../data/maneuvers';
+import { attitudeAtTime } from '../utils/attitude';
 import {
   Bezel,
   SegmentReadout,
@@ -83,28 +84,10 @@ export const SimulatorPage: React.FC = () => {
 
   const [now, setNow] = useState<{ t: number; g: number }>({ t: 0, g: maneuver.samples[0]?.nz ?? 0 });
 
-  // Attitude proxy: integrate pitch from (Gz - 1); roll oscillates by category.
-  const pitchRef = useRef<number>(0);
-  const lastTRef = useRef<number>(0);
-  useEffect(() => {
-    pitchRef.current = 0;
-    lastTRef.current = 0;
-  }, [selectedId]);
-
-  const dt = now.t - lastTRef.current;
-  if (dt > 0 && dt < 2) {
-    pitchRef.current = Math.max(-45, Math.min(45, pitchRef.current + (now.g - 1) * 12 * dt));
-    lastTRef.current = now.t;
-  } else if (dt < 0 || dt >= 2) {
-    pitchRef.current = (now.g - 1) * 12 * 0.5;
-    lastTRef.current = now.t;
-  }
-  const rollAmp =
-    maneuver.category === 'extreme_post_stall' ? 40
-    : maneuver.category === 'military_acm' ? 22
-    : maneuver.category === 'conceptual' ? 30
-    : 12;
-  const roll = Math.sin(now.t * 0.6 + maneuver.id.length) * rollAmp;
+  const attitude = useMemo(
+    () => attitudeAtTime(maneuver, now.t),
+    [maneuver, now.t],
+  );
 
   // Fire one /predict per maneuver change.
   const predictMutation = usePredict();
@@ -184,8 +167,8 @@ export const SimulatorPage: React.FC = () => {
           callsign={maneuver.id.toUpperCase()}
         />
         <div className="grid grid-cols-1 lg:grid-cols-[auto_1fr] gap-4">
-          <Bezel label="ATTITUDE · VISUAL PROXY" status="caution" className="flex items-center justify-center min-h-[280px]">
-            <AttitudeIndicator roll={roll} pitch={pitchRef.current} size={260} />
+          <Bezel label="ATTITUDE · KINEMATIC" status="caution" className="flex items-center justify-center min-h-[280px]">
+            <AttitudeIndicator roll={attitude.roll} pitch={attitude.pitch} size={260} />
           </Bezel>
           <Bezel label="MANEUVER BRIEFING" status="ok" className="text-sm leading-relaxed text-hud-ink-dim">
             <div className="font-condensed text-2xl text-hud-ink mb-2 tracking-wide uppercase">
