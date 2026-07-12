@@ -235,7 +235,7 @@ export const DashboardPage: React.FC = () => {
   const exportSpec = useMemo(() => runCgem.data && runCgem.variables ? buildAuthoritativeJsonExport({ run: runCgem.data, request: runCgem.variables, version: versionQuery.data, exportedAt: new Date(runCgem.submittedAt || 0).toISOString() }) : null,
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [runCgem.data, runCgem.submittedAt, versionQuery.data]);
-  useEffect(() => { registerExport(exportSpec); return () => registerExport(null); }, [exportSpec, registerExport]);
+  useEffect(() => { const unregister = registerExport(exportSpec); return typeof unregister === 'function' ? unregister : undefined; }, [exportSpec, registerExport]);
 
   if (!profile || !stats) {
     return (

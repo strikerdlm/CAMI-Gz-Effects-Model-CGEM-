@@ -152,7 +152,8 @@ export const PredictionPage: React.FC = () => {
       ? buildAuthoritativeJsonExport({ run: runCgemMutation.data, request: runCgemMutation.variables, version: versionQuery.data, exportedAt: new Date(runCgemMutation.submittedAt || 0).toISOString() })
       : showSurrogate && prediction && predictMutation.variables
         ? buildPredictionJsonExport({ response: prediction, request: predictMutation.variables, exportedAt: new Date(predictMutation.submittedAt || 0).toISOString() }) : null;
-    registerExport(spec); return () => registerExport(null);
+    const unregister = registerExport(spec);
+    return typeof unregister === 'function' ? unregister : undefined;
     // Mutation variables are the immutable submitted snapshot; submittedAt/data identify its completion.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showAuthoritative, showSurrogate, runCgemMutation.data, runCgemMutation.submittedAt, prediction, predictMutation.submittedAt, versionQuery.data, registerExport]);

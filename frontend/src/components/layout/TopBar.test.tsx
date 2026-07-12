@@ -20,7 +20,7 @@ function renderTopBar(path = '/simulator') {
   return render(<MemoryRouter initialEntries={[path]}><TopBar onOpenNavigation={vi.fn()} navigationTriggerRef={{ current: null }} sidebarCollapsed={false} reduceMotion={false} /></MemoryRouter>);
 }
 const spec: ExportSpec = { filename: 'result.json', mediaType: 'application/json', content: '{}' };
-function RegisterExport({ value }: { value: ExportSpec | null }) { const { registerExport } = useResultActions(); useEffect(() => { registerExport(value); return () => registerExport(null); }, [value, registerExport]); return null; }
+function RegisterExport({ value }: { value: ExportSpec | null }) { const { registerExport } = useResultActions(); useEffect(() => { const unregister = registerExport(value); return typeof unregister === 'function' ? unregister : undefined; }, [value, registerExport]); return null; }
 function renderTopBarWithExport(value: ExportSpec | null) {
   return render(<MemoryRouter><ResultActionsProvider><RegisterExport value={value} /><TopBar onOpenNavigation={vi.fn()} navigationTriggerRef={{ current: null }} sidebarCollapsed={false} reduceMotion={false} /></ResultActionsProvider></MemoryRouter>);
 }
@@ -82,5 +82,15 @@ describe('TopBar actions', () => {
     renderTopBarWithExport(spec);
     await userEvent.click(await screen.findByRole('button', { name: 'Export current result' }));
     expect(screen.getByRole('status')).toHaveTextContent('Export failed');
+  });
+
+  it('does not let an export announcement mask a subsequent refresh', async () => {
+    api.refetchHealth.mockResolvedValue({}); api.refetchVersion.mockResolvedValue({});
+    renderTopBarWithExport(spec);
+    await userEvent.click(await screen.findByRole('button', { name: 'Export current result' }));
+    expect(screen.getByRole('status')).toHaveTextContent('Export complete');
+    await userEvent.click(screen.getByRole('button', { name: 'Refresh API status' }));
+    expect(await screen.findByRole('status')).toHaveTextContent('API status refreshed');
+    expect(screen.getByRole('status')).not.toHaveTextContent('Export complete');
   });
 });

@@ -62,6 +62,7 @@ export const TopBar: React.FC<TopBarProps> = ({
 
   const refreshApiStatus = async () => {
     if (isRefreshing) return;
+    setExportStatus('');
     setRefreshing(true);
     setRefreshStatus('Refreshing API status');
     try {
@@ -78,6 +79,7 @@ export const TopBar: React.FC<TopBarProps> = ({
   };
   const exportCurrentResult = () => {
     if (!activeExport) return;
+    setRefreshStatus('');
     try { downloadExport(activeExport); setExportStatus(`Export complete: ${activeExport.filename}`); }
     catch { setExportStatus('Export failed'); }
   };

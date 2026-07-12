@@ -8,5 +8,5 @@ export { OODBanner } from './OODBanner';
 export { PredictionTable } from './PredictionTable';
 export { ProfileSelector } from './ProfileSelector';
 export { VariableInsightsPanel } from './VariableInsightsPanel';
-export { EvidenceRail, type Evidence } from './EvidenceRail';
+export { EvidenceRail, type Evidence, type BatchEvidence } from './EvidenceRail';
 export { ResultActionsProvider, useResultActions } from './ResultActions';

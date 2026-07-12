@@ -3,10 +3,10 @@ import { useId } from 'react';
 
 export type Evidence =
   | { kind: 'surrogate'; response: PredictionResponse }
-  | { kind: 'authoritative'; run: CGEMRunResponse; version?: VersionResponse }
-  | { kind: 'batch'; responses: PredictionResponse[] };
+  | { kind: 'authoritative'; run: CGEMRunResponse; version?: VersionResponse };
+export type BatchEvidence = { kind: 'batch'; responses: PredictionResponse[] };
 
-export function EvidenceRail({ evidence }: { evidence: Evidence }) {
+export function EvidenceRail({ evidence }: { evidence: Evidence | BatchEvidence }) {
   const summaryId = useId();
   const shared = evidence.kind === 'batch' ? <K extends keyof PredictionResponse,>(key: K) => {
     const first = evidence.responses[0]?.[key];

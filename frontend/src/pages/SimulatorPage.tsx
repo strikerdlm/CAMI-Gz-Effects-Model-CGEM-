@@ -91,7 +91,7 @@ export const SimulatorPage: React.FC = () => {
   const exportSpec = useMemo(() => predictMutation.data && predictMutation.variables ? buildPredictionJsonExport({ response: predictMutation.data, request: predictMutation.variables, exportedAt: new Date(predictMutation.submittedAt || 0).toISOString() }) : null,
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [predictMutation.data, predictMutation.submittedAt]);
-  useEffect(() => { registerExport(exportSpec); return () => registerExport(null); }, [exportSpec, registerExport]);
+  useEffect(() => { const unregister = registerExport(exportSpec); return typeof unregister === 'function' ? unregister : undefined; }, [exportSpec, registerExport]);
 
   const targets = predictMutation.data?.targets ?? [];
   const glocPred: TargetPrediction | undefined = targets.find((t) => t.target === 'time_to_gloc_s');

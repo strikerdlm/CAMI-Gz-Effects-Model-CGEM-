@@ -149,7 +149,7 @@ export const BatchPage: React.FC = () => {
     // Submitted variables are bound to submittedAt and must not follow later UI edits.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sortedRows, sweepMutation.submittedAt, requestForProfile]);
-  useEffect(() => { registerExport(exportSpec); return () => registerExport(null); }, [exportSpec, registerExport]);
+  useEffect(() => { const unregister = registerExport(exportSpec); return typeof unregister === 'function' ? unregister : undefined; }, [exportSpec, registerExport]);
 
   return (
     <div className="space-y-6">
