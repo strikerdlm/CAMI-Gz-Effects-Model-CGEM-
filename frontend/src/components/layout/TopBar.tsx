@@ -61,7 +61,10 @@ export const TopBar: React.FC<TopBarProps> = ({
     setRefreshing(true);
     setRefreshStatus('Refreshing API status');
     try {
-      await Promise.all([health.refetch(), version.refetch()]);
+      await Promise.all([
+        health.refetch({ throwOnError: true }),
+        version.refetch({ throwOnError: true }),
+      ]);
       setRefreshStatus('API status refreshed');
     } catch {
       setRefreshStatus('API status refresh failed');

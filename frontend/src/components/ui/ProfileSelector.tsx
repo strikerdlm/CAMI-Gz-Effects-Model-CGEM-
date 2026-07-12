@@ -18,6 +18,7 @@ export const ProfileSelector: React.FC<ProfileSelectorProps> = ({ selectedProfil
   const listId = useId();
   const rootRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
+  const searchInputRef = useRef<HTMLInputElement>(null);
   const optionRefs = useRef<Array<HTMLLIElement | null>>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -32,7 +33,7 @@ export const ProfileSelector: React.FC<ProfileSelectorProps> = ({ selectedProfil
 
   const close = (restoreFocus = false) => {
     setIsOpen(false); setActiveIndex(-1);
-    if (restoreFocus) requestAnimationFrame(() => triggerRef.current?.focus());
+    if (restoreFocus) triggerRef.current?.focus();
   };
   const activate = (index: number) => {
     setActiveIndex(index);
@@ -58,6 +59,10 @@ export const ProfileSelector: React.FC<ProfileSelectorProps> = ({ selectedProfil
     return () => document.removeEventListener('mousedown', outside);
   }, []);
 
+  React.useEffect(() => {
+    if (isOpen) searchInputRef.current?.focus();
+  }, [isOpen]);
+
   return (
     <div ref={rootRef} className={cn('relative', className)} onKeyDown={handleKeyDown}>
       <button
@@ -80,7 +85,18 @@ export const ProfileSelector: React.FC<ProfileSelectorProps> = ({ selectedProfil
       {isOpen && <div className="absolute z-50 mt-2 max-h-[400px] w-full overflow-y-auto rounded-xl border border-surface-700/50 bg-surface-900 shadow-xl">
         <div className="sticky top-0 z-10 border-b border-surface-700/40 bg-surface-900 px-3 py-3">
           <label className="relative block"><span className="sr-only">Search maneuver profiles</span><Search aria-hidden="true" className="absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-surface-500" />
-            <input value={searchQuery} onChange={(event) => { setSearchQuery(event.target.value); setActiveIndex(-1); }} aria-label="Search maneuver profiles" className="h-8 w-full rounded-lg border border-surface-700/60 bg-surface-800/80 pl-9 pr-3 text-xs text-surface-100" /></label>
+            <input
+              ref={searchInputRef}
+              role="combobox"
+              aria-label="Search maneuver profiles"
+              aria-autocomplete="list"
+              aria-controls={listId}
+              aria-expanded="true"
+              aria-activedescendant={activeIndex >= 0 ? `${listId}-${filteredProfiles[activeIndex]?.id}` : undefined}
+              value={searchQuery}
+              onChange={(event) => { setSearchQuery(event.target.value); setActiveIndex(-1); }}
+              className="h-8 w-full rounded-lg border border-surface-700/60 bg-surface-800/80 pl-9 pr-3 text-xs text-surface-100"
+            /></label>
         </div>
         <ul id={listId} role="listbox" aria-label="Maneuver profiles" className="py-2">
           {filteredProfiles.map((profile, index) => {

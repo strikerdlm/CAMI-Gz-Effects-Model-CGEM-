@@ -19,6 +19,24 @@ describe('ProfileSelector', () => {
     expect(trigger).toHaveFocus();
   });
 
+  it('moves focus to the searchable combobox and owns active option semantics', async () => {
+    const user = userEvent.setup();
+    const onSelect = vi.fn();
+    render(<ProfileSelector selectedProfileId="hammerhead" onSelect={onSelect} />);
+    await user.click(screen.getByRole('combobox', { name: 'Maneuver profile' }));
+
+    const search = await screen.findByRole('combobox', { name: 'Search maneuver profiles' });
+    expect(search).toHaveFocus();
+    expect(search).toHaveAttribute('aria-controls');
+    expect(search).toHaveAttribute('aria-expanded', 'true');
+    await user.type(search, 'hammer');
+    await user.keyboard('{ArrowDown}');
+    expect(search).toHaveAttribute('aria-activedescendant', expect.stringContaining('hammerhead'));
+    await user.keyboard('{Enter}');
+    expect(onSelect).toHaveBeenCalledWith('hammerhead');
+    expect(screen.getByRole('combobox', { name: 'Maneuver profile' })).toHaveFocus();
+  });
+
   it('closes with Escape and restores trigger focus', async () => {
     const user = userEvent.setup();
     render(<ProfileSelector selectedProfileId="hammerhead" onSelect={vi.fn()} label="Flight profile" />);

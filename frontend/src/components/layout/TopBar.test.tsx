@@ -33,6 +33,21 @@ describe('TopBar actions', () => {
     expect(await screen.findByRole('status')).toHaveTextContent('API status refreshed');
   });
 
+  it('announces a query error returned by a realistic refetch', async () => {
+    const user = userEvent.setup();
+    api.refetchHealth.mockImplementation(async (options?: { throwOnError?: boolean }) => {
+      if (options?.throwOnError) throw new Error('offline');
+      return { error: new Error('offline') };
+    });
+    api.refetchVersion.mockResolvedValue({});
+    renderTopBar();
+
+    await user.click(screen.getByRole('button', { name: 'Refresh API status' }));
+
+    expect(api.refetchHealth).toHaveBeenCalledWith({ throwOnError: true });
+    expect(await screen.findByRole('status')).toHaveTextContent('API status refresh failed');
+  });
+
   it('disables refresh and announces pending work while status queries are fetching', () => {
     api.fetching = true;
     renderTopBar();
