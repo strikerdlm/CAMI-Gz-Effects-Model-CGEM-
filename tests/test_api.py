@@ -270,6 +270,16 @@ def _fake_cgem_result() -> CGEMResult:
     )
 
 
+@pytest.mark.parametrize("value", ["inf", "nan", "0", "-1", "invalid"])
+def test_cgem_timeout_env_rejects_non_finite_or_non_positive_values(
+    monkeypatch, value
+) -> None:
+    import cgem_wrapper
+
+    monkeypatch.setenv("CGEM_TEST_TIMEOUT", value)
+    assert cgem_wrapper._positive_float_env("CGEM_TEST_TIMEOUT", 30.0) == 30.0
+
+
 def test_run_cgem_cleanup(api_client, monkeypatch, tmp_path) -> None:
     import cgem_wrapper
 

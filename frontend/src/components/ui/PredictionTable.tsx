@@ -41,7 +41,7 @@ export const PredictionTable: React.FC<PredictionTableProps> = ({ targets }) => 
           <tr>
             <th className="px-4 py-3 text-left font-medium">Target</th>
             <th className="px-4 py-3 text-right font-medium">Event probability</th>
-            <th className="px-4 py-3 text-right font-medium">Conditional time if event occurs</th>
+            <th className="px-4 py-3 text-right font-medium">Point estimate</th>
             <th className="px-4 py-3 text-right font-medium">95 % prediction interval</th>
             <th className="px-4 py-3 text-right font-medium">P × conditional time</th>
           </tr>
@@ -52,7 +52,14 @@ export const PredictionTable: React.FC<PredictionTableProps> = ({ targets }) => 
             const label = TARGET_LABELS[t.target] ?? t.target;
             return (
               <tr key={t.target} className="hover:bg-surface-800/30 transition-colors">
-                <td className="px-4 py-3 text-surface-200 font-medium">{label}</td>
+                <td className="px-4 py-3 text-surface-200 font-medium">
+                  <div>{label}</div>
+                  <div className="mt-0.5 text-[11px] font-normal text-surface-500">
+                    {isCensored
+                      ? 'Conditional time if event occurs'
+                      : 'Direct surrogate output'}
+                  </div>
+                </td>
                 <td className="px-4 py-3 text-right text-surface-300 tabular-nums">
                   {isCensored && t.event_probability !== null && t.event_probability !== undefined
                     ? `${(t.event_probability * 100).toFixed(1)} %`

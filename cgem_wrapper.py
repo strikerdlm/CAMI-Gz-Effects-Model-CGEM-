@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import math
 import os
 import shutil
 import subprocess
@@ -20,7 +21,7 @@ def _positive_float_env(name: str, default: float) -> float:
         value = float(os.getenv(name, str(default)))
     except ValueError:
         return default
-    return value if value > 0 else default
+    return value if math.isfinite(value) and value > 0 else default
 
 
 CGEM_SUBPROCESS_TIMEOUT_S = _positive_float_env("CGEM_SUBPROCESS_TIMEOUT_S", 30.0)
