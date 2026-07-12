@@ -105,6 +105,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
           <NavLink
             key={item.id}
             to={item.path}
+            aria-label={item.label}
             className={({ isActive }) =>
               cn(
                 'group flex items-center gap-3 px-3 py-2.5 rounded-xl transition-colors duration-200',
@@ -158,6 +159,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
           <NavLink
             key={item.id}
             to={item.path}
+            aria-label={item.label}
             className={({ isActive }) =>
               cn(
                 'group flex items-center gap-3 px-3 py-2.5 rounded-xl transition-colors duration-200',

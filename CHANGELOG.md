@@ -11,6 +11,24 @@ extension-layer level (the upstream CGEM software DOI is fixed, see README).
 
 ## [Unreleased]
 
+### Phase 1 usable research instrument (2026-07-12)
+
+- Added responsive 390 px mobile-drawer, 768 px tablet, and 1024/1440 px
+  desktop shell modes with semantic landmarks, reduced-motion handling,
+  visible focus, and keyboard-safe maneuver selectors.
+- Made scientific page state shareable through typed URL parameters for
+  maneuver, pilot preset, result/view mode, analysis target, and batch
+  sort/filter selections; reload and browser history restore the controls.
+- Implemented maneuver search, contextual Help, API-status refresh, and
+  provenance-bearing JSON/CSV export while keeping Notifications absent.
+- Added result evidence rails for source, calibration scope, OOD/training
+  envelope, model version, binary hash, and authoritative package provenance.
+- Replaced duplicate handwritten wire schemas with deterministic
+  OpenAPI-generated TypeScript and backend-URL-scoped query/mutation keys.
+- Added mocked-API Playwright coverage at 390, 768, 1024, and 1440 px for
+  overflow, drawer focus/Escape, keyboard search, URL history, the
+  Explore→Predict→Verify→Compare path, evidence, and visible shell actions.
+
 ### Phase 0 trust-contract hardening (2026-07-12)
 
 - Canonicalized named-versus-inline maneuver inference. Registered IDs now

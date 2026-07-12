@@ -185,7 +185,9 @@ Use Vitest and Testing Library for:
 
 ### Browser verification
 
-Add Playwright smoke coverage for 390, 768, 1024, and 1440 px. Test:
+Playwright smoke coverage runs at 390, 768, 1024, and 1440 px with complete
+mock responses for `/healthz`, `/version`, `/predict`, `/run-cgem`, `/sweep`,
+and `/sensitivity/*`. It tests:
 
 - no document-level horizontal overflow;
 - mobile drawer open, keyboard traversal, Escape close, and focus restoration;
@@ -193,6 +195,11 @@ Add Playwright smoke coverage for 390, 768, 1024, and 1440 px. Test:
 - URL state survives reload and back/forward navigation;
 - visible controls perform their actions;
 - core pages expose landmarks and accessible names.
+
+The mobile breakpoint ends at 767 px; persistent tablet navigation begins at
+768 px. Desktop spacing modes begin at 1024 px and are also verified at the
+1440 px wide research-console target. Screenshots are retained on failure and
+the first CI retry records a trace.
 
 Use deterministic mocked API responses for browser tests. Live Fortran execution remains covered by backend contract tests, not frontend E2E.
 
