@@ -124,7 +124,7 @@ export const AnalysisPage: React.FC = () => {
       </motion.div>
 
       {/* Global sensitivity (Phase-4 Sobol indices, served by /sensitivity) */}
-      <motion.div
+      {analysisView === 'sensitivity' && <motion.div
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         className="glass rounded-2xl p-6"
@@ -157,9 +157,9 @@ export const AnalysisPage: React.FC = () => {
           </select>
         </div>
         <SensitivityChart target={sobolTarget} height={380} />
-      </motion.div>
+      </motion.div>}
 
-      <div className="grid lg:grid-cols-3 gap-6">
+      {analysisView === 'explanation' && <div className="grid lg:grid-cols-3 gap-6">
         {/* Main Analysis */}
         <div className="lg:col-span-2 space-y-4">
           {explanation ? (
@@ -424,7 +424,7 @@ export const AnalysisPage: React.FC = () => {
             </div>
           </motion.div>
         </div>
-      </div>
+      </div>}
     </div>
   );
 };

@@ -66,6 +66,10 @@ export const SimulatorPage: React.FC = () => {
 
   const [now, setNow] = useState<{ t: number; g: number }>({ t: 0, g: maneuver.samples[0]?.nz ?? 0 });
 
+  useEffect(() => {
+    setNow({ t: 0, g: maneuver.samples[0]?.nz ?? 0 });
+  }, [maneuver]);
+
   const attitude = useMemo(
     () => attitudeAtTime(maneuver, now.t),
     [maneuver, now.t],

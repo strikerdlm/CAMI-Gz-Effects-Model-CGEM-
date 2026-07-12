@@ -194,6 +194,10 @@ export const BatchPage: React.FC = () => {
         )}
       </motion.div>
 
+      <div className="glass-light rounded-xl p-3">
+        <SortControl sortKey={sortKey} direction={direction} ood={ood} category={category} update={updateUrl} />
+      </div>
+
       {/* Sweep error banner */}
       {sweepMutation.isError && (
         <div className="glass-light rounded-xl p-4 text-sm border border-rose-500/30">
@@ -246,13 +250,6 @@ export const BatchPage: React.FC = () => {
         >
           <div className="px-6 py-4 border-b border-surface-700/50 flex items-center justify-between">
             <h3 className="text-lg font-semibold text-white">Per-maneuver predictions</h3>
-            <SortControl
-              sortKey={sortKey}
-              direction={direction}
-              ood={ood}
-              category={category}
-              update={(patch) => updateUrl(patch)}
-            />
           </div>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">

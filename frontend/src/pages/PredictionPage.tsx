@@ -142,6 +142,8 @@ export const PredictionPage: React.FC = () => {
     : null;
 
   const apiReachable = !versionQuery.isError;
+  const showSurrogate = view === 'surrogate' || view === 'comparison';
+  const showAuthoritative = view === 'authoritative' || view === 'comparison';
 
   return (
     <div className="space-y-6">
@@ -388,7 +390,7 @@ export const PredictionPage: React.FC = () => {
 
         {/* ── Results panel ────────────────────────────────────── */}
         <div className="lg:col-span-2 space-y-6">
-          {prediction && (
+          {showSurrogate && prediction && (
             <>
               <OODBanner
                 ood={prediction.ood}
@@ -399,7 +401,7 @@ export const PredictionPage: React.FC = () => {
             </>
           )}
 
-          {predictMutation.isError && (
+          {showSurrogate && predictMutation.isError && (
             <div className="glass-light rounded-xl p-4 text-sm border border-rose-500/30">
               <p className="text-rose-300 font-semibold mb-1">Surrogate request failed</p>
               <p className="text-surface-400">{apiErrorMessage(predictMutation.error)}</p>
@@ -407,7 +409,7 @@ export const PredictionPage: React.FC = () => {
           )}
 
           {/* Authoritative CGEM event-time cards */}
-          {cgemRun && (
+          {showAuthoritative && cgemRun && (
             <motion.div
               initial={{ opacity: 0, scale: 0.97 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -434,7 +436,7 @@ export const PredictionPage: React.FC = () => {
             </motion.div>
           )}
 
-          {runCgemMutation.isError && (
+          {showAuthoritative && runCgemMutation.isError && (
             <div className="glass-light rounded-xl p-4 text-sm border border-rose-500/30">
               <p className="text-rose-300 font-semibold mb-1">CGEM subprocess failed</p>
               <p className="text-surface-400">{apiErrorMessage(runCgemMutation.error)}</p>
@@ -451,7 +453,7 @@ export const PredictionPage: React.FC = () => {
               <Activity className="w-5 h-5 text-primary-400" />
               G-force profile with G_eff
             </div>
-            {cgemRun ? (
+            {showAuthoritative && cgemRun ? (
               <GForceLineChart
                 times={cgemRun.times_s}
                 gValues={cgemRun.g_values}
@@ -474,7 +476,7 @@ export const PredictionPage: React.FC = () => {
           </motion.div>
 
           {/* Cerebral flow chart — requires a CGEM run */}
-          {cgemRun && (
+          {showAuthoritative && cgemRun && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -489,7 +491,9 @@ export const PredictionPage: React.FC = () => {
             </motion.div>
           )}
 
-          {!prediction && !cgemRun && !predictMutation.isPending && !runCgemMutation.isPending && (
+          {!(showSurrogate && prediction) && !(showAuthoritative && cgemRun)
+            && !(showSurrogate && predictMutation.isPending)
+            && !(showAuthoritative && runCgemMutation.isPending) && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}

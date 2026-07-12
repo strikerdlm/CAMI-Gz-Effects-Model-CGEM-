@@ -107,7 +107,7 @@ export const OverviewPage: React.FC = () => {
             className="max-w-xl flex-1"
           />
           <Link
-            to={`/simulator?id=${selectedProfileId}`}
+            to={`/simulator?maneuver=${selectedProfileId}`}
             className="inline-flex items-center justify-center gap-2 px-4 py-2 bg-hud-amber/15 border border-hud-amber text-hud-amber font-mono text-sm tracking-callsign uppercase hover:bg-hud-amber/25 rounded-sm shadow-hud-glow-amber transition-colors"
           >
             <span className="text-base">▶</span> Open in Simulator
