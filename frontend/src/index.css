@@ -94,9 +94,25 @@
   .shell-main, .shell-main-collapsed { margin-left: 0; }
   .mobile-nav-trigger { display: inline-flex; align-items: center; justify-content: center; }
   .mobile-nav-layer { display: block; }
-  .shell-secondary-action,
   .shell-callsign { display: none; }
   .shell-topbar-actions { gap: 0.25rem; }
+  .shell-topbar > div:first-child { min-width: 0; gap: 0.5rem; }
+  .shell-topbar > div:first-child > div:last-child { min-width: 0; }
+  .shell-topbar > div:first-child h1 {
+    max-width: 6.5rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .shell-topbar > div:first-child p { display: none; }
+  .shell-topbar-actions button,
+  .shell-topbar-actions a {
+    display: inline-flex;
+    min-height: 2.75rem;
+    min-width: 2.75rem;
+    align-items: center;
+    justify-content: center;
+  }
 }
 
 /* Base Styles */

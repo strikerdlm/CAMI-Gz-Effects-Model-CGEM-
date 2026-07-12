@@ -41,6 +41,32 @@ test('keyboard search navigates to a shareable simulator selection', async ({ pa
   await expect(page.getByText('HAMMERHEAD', { exact: true }).first()).toBeVisible();
 });
 
+test('mobile exposes contextual Help and downloads a result without overflow', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== 'mobile-390', 'This verifies the sub-768 action layout.');
+  await page.goto('/prediction?maneuver=hammerhead');
+  await page.getByRole('button', { name: /Predict \(surrogate/i }).click();
+  await expect(page.getByRole('complementary', { name: 'Result evidence' })).toBeVisible();
+
+  const downloadPromise = page.waitForEvent('download');
+  await page.getByRole('button', { name: 'Export current result' }).click();
+  const download = await downloadPromise;
+  expect(download.suggestedFilename()).toMatch(/^cgem-hammerhead-.*\.json$/);
+  const resultLayout = await page.evaluate(() => ({
+    clientWidth: document.documentElement.clientWidth,
+    scrollWidth: document.documentElement.scrollWidth,
+    offenders: Array.from(document.querySelectorAll<HTMLElement>('body *'))
+      .filter((element) => element.getBoundingClientRect().right > document.documentElement.clientWidth + 1)
+      .slice(0, 8)
+      .map((element) => ({ tag: element.tagName, className: element.className, right: Math.round(element.getBoundingClientRect().right) })),
+  }));
+  expect(resultLayout.scrollWidth, JSON.stringify(resultLayout)).toBeLessThanOrEqual(resultLayout.clientWidth);
+
+  await page.getByRole('link', { name: 'Help' }).click();
+  await expect(page).toHaveURL(/\/about#prediction$/);
+  await expect(page.getByRole('heading', { name: 'ABOUT', exact: true })).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth)).toBe(true);
+});
+
 test('URL state survives reload and browser back/forward navigation', async ({ page }) => {
   await page.goto('/prediction?maneuver=hammerhead&pilot=6&view=comparison');
   await page.getByRole('combobox', { name: 'Maneuver profile' }).click();

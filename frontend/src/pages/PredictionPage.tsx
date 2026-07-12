@@ -201,9 +201,9 @@ export const PredictionPage: React.FC = () => {
         </div>
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-6">
+      <div className="grid min-w-0 gap-6 lg:grid-cols-3">
         {/* ── Configuration panel ──────────────────────────────── */}
-        <div className="lg:col-span-1 space-y-6">
+        <div className="min-w-0 space-y-6 lg:col-span-1">
           <div
             className="instrument-panel rounded-2xl p-5"
           >
@@ -348,7 +348,7 @@ export const PredictionPage: React.FC = () => {
           <div
             className="space-y-3"
           >
-            <fieldset className="grid grid-cols-3 gap-2">
+            <fieldset className="grid grid-cols-1 gap-2 sm:grid-cols-3">
               <legend className="sr-only">Result view</legend>
               {(['surrogate', 'authoritative', 'comparison'] as const).map((option) => (
                 <button key={option} type="button" aria-pressed={view === option} onClick={() => setView(option)} className="btn-secondary px-2 text-xs">
@@ -400,7 +400,7 @@ export const PredictionPage: React.FC = () => {
         </div>
 
         {/* ── Results panel ────────────────────────────────────── */}
-        <div className="lg:col-span-2 space-y-6">
+        <div className="min-w-0 space-y-6 lg:col-span-2">
           {showSurrogate && prediction && (
             <>
               <EvidenceRail evidence={{ kind: 'surrogate', response: prediction }} />

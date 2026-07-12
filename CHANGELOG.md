@@ -20,7 +20,11 @@ extension-layer level (the upstream CGEM software DOI is fixed, see README).
   maneuver, pilot preset, result/view mode, analysis target, and batch
   sort/filter selections; reload and browser history restore the controls.
 - Implemented maneuver search, contextual Help, API-status refresh, and
-  provenance-bearing JSON/CSV export while keeping Notifications absent.
+  provenance-bearing JSON/CSV export while keeping Notifications absent;
+  Help and result export remain available in the 390 px header.
+- Removed inert display-theme/unit controls from Settings, associated the API
+  URL label with its textbox, and made remaining Settings targets at least
+  44 px high.
 - Added result evidence rails for source, calibration scope, OOD/training
   envelope, model version, binary hash, and authoritative package provenance.
 - Replaced duplicate handwritten wire schemas with deterministic

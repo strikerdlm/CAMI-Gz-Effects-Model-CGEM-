@@ -75,10 +75,10 @@ export const ProfileSelector: React.FC<ProfileSelectorProps> = ({ selectedProfil
         aria-expanded={isOpen}
         aria-activedescendant={isOpen && activeIndex >= 0 ? `${listId}-${filteredProfiles[activeIndex]?.id}` : undefined}
         onClick={() => { setIsOpen((open) => !open); setActiveIndex(-1); }}
-        className="flex w-full items-center justify-between gap-3 rounded-xl border border-surface-700/50 bg-surface-800/80 px-4 py-3 transition-colors hover:border-primary-500/50"
+        className="flex min-w-0 w-full items-center justify-between gap-3 rounded-xl border border-surface-700/50 bg-surface-800/80 px-4 py-3 transition-colors hover:border-primary-500/50"
       >
-        <span className="flex items-center gap-3"><span className="rounded-lg bg-primary-500/10 p-2"><Plane aria-hidden="true" className="h-5 w-5 text-primary-400" /></span>
-          <span className="text-left"><span className="block font-medium text-white">{selectedProfile ? formatProfileName(selectedProfileId) : 'Select profile'}</span>
+        <span className="flex min-w-0 items-center gap-3"><span className="shrink-0 rounded-lg bg-primary-500/10 p-2"><Plane aria-hidden="true" className="h-5 w-5 text-primary-400" /></span>
+          <span className="min-w-0 text-left"><span className="block truncate font-medium text-white">{selectedProfile ? formatProfileName(selectedProfileId) : 'Select profile'}</span>
             <span className="block line-clamp-1 text-xs text-surface-400">{selectedProfile?.description || 'Choose an aerobatic maneuver'}</span></span></span>
         <ChevronDown aria-hidden="true" className={cn('h-5 w-5 text-surface-400 transition-transform', isOpen && 'rotate-180')} />
       </button>
