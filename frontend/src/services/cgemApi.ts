@@ -113,7 +113,13 @@ export function useSensitivity(
 }
 
 /** One-shot prediction. Returns a mutation so the caller controls when
- *  the request fires (matches the form-submission UX of PredictionPage). */
+ *  the request fires (matches the form-submission UX of PredictionPage).
+ *
+ * The API URL must remain part of every mutationKey. TanStack's
+ * MutationObserver synchronously resets when that key changes, detaching the
+ * old in-flight mutation before the new backend scope can render. An effect-
+ * based reset would leave a render/effect window in which stale data is visible.
+ */
 export function usePredict(): UseMutationResult<
   PredictionResponse,
   ApiError,
