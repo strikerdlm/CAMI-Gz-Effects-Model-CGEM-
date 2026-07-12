@@ -276,6 +276,11 @@
           "countermeasures_label": {
             "default": "none",
             "description": "one of \"none\", \"agsm\", \"suit_agsm\"",
+            "enum": [
+              "none",
+              "agsm",
+              "suit_agsm"
+            ],
             "title": "Countermeasures Label",
             "type": "string"
           },
@@ -363,6 +368,14 @@
         "additionalProperties": false,
         "description": "Complete `/predict` response.",
         "properties": {
+          "calibration_scope": {
+            "enum": [
+              "category",
+              "global"
+            ],
+            "title": "Calibration Scope",
+            "type": "string"
+          },
           "cgem_binary_sha256": {
             "title": "Cgem Binary Sha256",
             "type": "string"
@@ -370,6 +383,10 @@
           "in_envelope": {
             "title": "In Envelope",
             "type": "boolean"
+          },
+          "maneuver_category": {
+            "title": "Maneuver Category",
+            "type": "string"
           },
           "model_version": {
             "title": "Model Version",
@@ -382,6 +399,10 @@
           "ood_score": {
             "title": "Ood Score",
             "type": "number"
+          },
+          "resolved_maneuver": {
+            "title": "Resolved Maneuver",
+            "type": "string"
           },
           "source": {
             "default": "surrogate",
@@ -403,7 +424,10 @@
           "ood_score",
           "in_envelope",
           "model_version",
-          "cgem_binary_sha256"
+          "cgem_binary_sha256",
+          "resolved_maneuver",
+          "maneuver_category",
+          "calibration_scope"
         ],
         "title": "PredictionResponse",
         "type": "object"

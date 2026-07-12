@@ -11,6 +11,24 @@ extension-layer level (the upstream CGEM software DOI is fixed, see README).
 
 ## [Unreleased]
 
+### Phase 0 trust-contract hardening (2026-07-12)
+
+- Canonicalized named-versus-inline maneuver inference. Registered IDs now
+  resolve server-owned descriptors and maneuver categories, while complete
+  inline descriptors use an explicit global conformal calibration scope.
+- Made non-binary API tests deterministic through injected application state;
+  health, prediction, sweep, and sensitivity coverage now runs without model
+  training or a Fortran executable.
+- Bounded authoritative `/run-cgem` execution off the event loop, added a
+  configurable subprocess timeout, and guaranteed removal of HTTP-layer run
+  directories while preserving the pulse-sim response contract.
+- Centralized frontend pilot-request construction, removed runtime mock
+  physiology from offline result pages, and added Vitest coverage for request
+  normalization, offline behavior, and probability-first event ranking.
+- Replaced confidence-interval, universal safety, and synthetic event-time
+  language with prediction-interval, contextual load/reference, and distinct
+  event-probability/conditional-time terminology.
+
 ### Originality uplift — Scenario B Week 1 (2026-05-06)
 
 Opening week of the IJNMBE-fit originality plan
