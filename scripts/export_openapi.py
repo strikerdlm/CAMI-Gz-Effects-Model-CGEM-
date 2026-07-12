@@ -4,7 +4,8 @@ Usage:
     python -m scripts.export_openapi
 
 The output is consumed by the React/TypeScript frontend codegen
-(``npx openapi-typescript docs/api/openapi.json -o frontend/src/services/types.ts``)
+(``npm run generate:types --prefix frontend``) so generated wire contracts stay
+separate from handwritten UI-facing types.
 so the TS types stay in sync with the Pydantic schemas.
 
 This script does NOT run the lifespan startup (which would train the
@@ -16,13 +17,16 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+import sys
 
-from cgem_ext.api.main import create_app
+REPO_ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(REPO_ROOT))
+
+from cgem_ext.api.main import create_app  # noqa: E402
 
 
 def main() -> int:
-    repo_root = Path(__file__).resolve().parent.parent
-    output = repo_root / "docs" / "api" / "openapi.json"
+    output = REPO_ROOT / "docs" / "api" / "openapi.json"
     output.parent.mkdir(parents=True, exist_ok=True)
 
     app = create_app()

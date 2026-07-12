@@ -27,7 +27,6 @@ import { MANEUVERS_BY_ID as AEROBATIC_PROFILES } from '../data/maneuvers';
 import { cn } from '../utils';
 import {
   apiErrorMessage,
-  cgemApiBaseURL,
   useSweep,
   useVersion,
 } from '../services/cgemApi';
@@ -40,6 +39,7 @@ import { batchUrlState, type BatchCategory, type BatchDirection, type BatchOod, 
 import { EvidenceRail } from '../components/ui/EvidenceRail';
 import { useResultActions } from '../components/ui/ResultActions';
 import { buildBatchCsvExport } from '../services/exportResult';
+import { useUserPrefs } from '../state/useUserPrefs';
 
 interface BatchRow {
   profileId: string;
@@ -85,6 +85,7 @@ const STATUS_STYLES: Record<string, string> = {
 };
 
 export const BatchPage: React.FC = () => {
+  const prefs = useUserPrefs();
   const profileIds = useMemo(() => Object.keys(AEROBATIC_PROFILES), []);
   const versionQuery = useVersion();
   const sweepMutation = useSweep();
@@ -173,7 +174,7 @@ export const BatchPage: React.FC = () => {
               probability, and OOD flag.
             </p>
             <div className="mt-2 text-xs text-surface-500">
-              API: <code className="text-surface-300">{cgemApiBaseURL}</code> ·{' '}
+              API: <code className="text-surface-300">{prefs.apiUrl}</code> ·{' '}
               {versionQuery.isLoading
                 ? 'connecting…'
                 : versionQuery.isError

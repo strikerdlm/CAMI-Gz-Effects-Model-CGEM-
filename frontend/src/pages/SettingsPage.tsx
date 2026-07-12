@@ -5,6 +5,7 @@
  * prefs at request time, no reload required).
  */
 import React, { useState } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import { Bezel, SegmentReadout } from '../components/hud';
 import {
   useUserPrefs,
@@ -28,20 +29,28 @@ const DEFAULTS_FIELDS: readonly DefaultsKey[] = [
 export const SettingsPage: React.FC = () => {
   const prefs = useUserPrefs();
   const [apiUrlDraft, setApiUrlDraft] = useState(prefs.apiUrl);
+  const [connectionAnnouncement, setConnectionAnnouncement] = useState('');
+  const queryClient = useQueryClient();
   const health = useHealth();
   const version = useVersion();
+
+  const changeApiUrl = (nextUrl: string): void => {
+    if (nextUrl === prefs.apiUrl) return;
+    const oldUrl = prefs.apiUrl;
+    queryClient.removeQueries({ queryKey: ['cgem', oldUrl] });
+    updateUserPrefs({ apiUrl: nextUrl });
+    setConnectionAnnouncement(`Connection context changed to ${nextUrl}`);
+  };
 
   const applyApiUrl = (): void => {
     const cleaned = apiUrlDraft.trim().replace(/\/$/, '');
     if (cleaned.length === 0) return;
-    updateUserPrefs({ apiUrl: cleaned });
-    health.refetch();
-    version.refetch();
+    changeApiUrl(cleaned);
   };
 
   const resetApiUrl = (): void => {
     setApiUrlDraft(DEFAULT_PREFS.apiUrl);
-    updateUserPrefs({ apiUrl: DEFAULT_PREFS.apiUrl });
+    changeApiUrl(DEFAULT_PREFS.apiUrl);
   };
 
   const updateDefault = (key: DefaultsKey, value: number): void => {
@@ -51,6 +60,9 @@ export const SettingsPage: React.FC = () => {
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      <p className="sr-only" role="status" aria-live="polite">
+        {connectionAnnouncement}
+      </p>
       <Bezel
         label="API CONNECTION"
         status={health.data?.status === 'ok' ? 'ok' : health.isError ? 'fail' : 'caution'}

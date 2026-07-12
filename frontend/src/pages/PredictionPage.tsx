@@ -40,7 +40,6 @@ import { buildTimeSeries } from '../utils/calculations';
 import type { CGEMResult } from '../types';
 import {
   apiErrorMessage,
-  cgemApiBaseURL,
   usePredict,
   useRunCgem,
   useVersion,
@@ -181,7 +180,7 @@ export const PredictionPage: React.FC = () => {
           <div className="text-xs text-surface-400 text-right space-y-1">
             <div>
               <span className="text-surface-500">API:</span>{' '}
-              <code className="text-surface-300">{cgemApiBaseURL}</code>
+              <code className="text-surface-300">{prefs.apiUrl}</code>
             </div>
             <div>
               <span className="text-surface-500">Status:</span>{' '}

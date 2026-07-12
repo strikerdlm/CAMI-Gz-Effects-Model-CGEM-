@@ -36,7 +36,6 @@ import {
 import { MANEUVERS_BY_ID } from '../data/maneuvers';
 import { DEFAULT_COUNTERMEASURES } from '../utils/constants';
 import {
-  cgemApiBaseURL,
   useHealth,
   useRunCgem,
   useVersion,
@@ -128,6 +127,7 @@ const PRESET_STYLES: Record<PilotPreset['tag'], string> = {
 };
 
 const ApiStatusBanner: React.FC = () => {
+  const prefs = useUserPrefs();
   const versionQuery = useVersion();
   const status = versionQuery.isLoading
     ? { label: 'connecting…', color: 'text-amber-400 border-amber-500/30' }
@@ -138,7 +138,7 @@ const ApiStatusBanner: React.FC = () => {
     <div className={`glass-light rounded-xl p-3 text-xs border flex items-center justify-between gap-3 ${status.color}`}>
       <div className="text-surface-400">
         <span className="text-surface-500">CGEM API:</span>{' '}
-        <code className="text-surface-300">{cgemApiBaseURL}</code>{' '}
+        <code className="text-surface-300">{prefs.apiUrl}</code>{' '}
         <span className="text-surface-500">·</span>{' '}
         <span className={status.color.split(' ')[0]}>{status.label}</span>
         {versionQuery.data && (
@@ -266,7 +266,7 @@ export const DashboardPage: React.FC = () => {
         <p className="text-hud-red font-mono tracking-callsign">CGEM RESULTS UNAVAILABLE</p>
         <p className="text-surface-400 text-sm max-w-xl">
           No physiological result is shown while the authoritative API is offline.
-          Start <code>uvicorn cgem_ext.api.main:app</code> at {cgemApiBaseURL}.
+          Start <code>uvicorn cgem_ext.api.main:app</code> at {prefs.apiUrl}.
           This research interface is not an operational flight-safety system.
         </p>
       </div>

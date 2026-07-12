@@ -15,6 +15,27 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  generated-contracts:
+    name: Generated API contracts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+          cache: pip
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: pip install -e .[api]
+      - run: npm ci
+        working-directory: frontend
+      - run: npm run generate:contracts
+        working-directory: frontend
+      - run: git diff --exit-code docs/api/openapi.json frontend/src/services/generated/api.ts
+
   frontend-static:
     name: Frontend static checks
     runs-on: ubuntu-latest
