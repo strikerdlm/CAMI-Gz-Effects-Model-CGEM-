@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { MemoryRouter } from 'react-router-dom';
 
 import { DashboardPage } from './DashboardPage';
 
@@ -23,13 +24,14 @@ vi.mock('../services/cgemApi', () => ({
 }));
 
 describe('Dashboard offline state', () => {
+  const renderPage = () => render(<MemoryRouter><DashboardPage /></MemoryRouter>);
   beforeEach(() => {
     apiState.healthStatus = 'degraded';
     apiState.runData = undefined;
   });
 
   it('does not present fixture physiology as authoritative CGEM output', () => {
-    render(<DashboardPage />);
+    renderPage();
 
     expect(screen.getByText(/CGEM results unavailable/i)).toBeTruthy();
     expect(screen.getByText(/No physiological result is shown/i)).toBeTruthy();
@@ -52,7 +54,7 @@ describe('Dashboard offline state', () => {
       },
     };
 
-    render(<DashboardPage />);
+    renderPage();
 
     expect(screen.getByText(/CGEM results unavailable/i)).toBeTruthy();
     expect(screen.queryByText('Max G_eff')).toBeNull();

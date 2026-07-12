@@ -10,7 +10,8 @@
  * Reports a friendly "API unreachable" banner when the backend is offline.
  */
 
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
   Activity,
@@ -35,13 +36,14 @@ import type {
   PredictionResponse,
   SweepRequest,
 } from '../services/types';
+import { batchUrlState, type BatchCategory, type BatchDirection, type BatchOod, type BatchTarget } from '../services/urlState';
 
 interface BatchRow {
   profileId: string;
   prediction: PredictionResponse;
 }
 
-type SortKey = 'profile' | 'gloc' | 'blackout' | 'greyout' | 'ood';
+type SortKey = BatchTarget;
 
 function getTarget(p: PredictionResponse, name: string) {
   return p.targets.find((t) => t.target === name);
@@ -73,7 +75,12 @@ export const BatchPage: React.FC = () => {
   const profileIds = useMemo(() => Object.keys(AEROBATIC_PROFILES), []);
   const versionQuery = useVersion();
   const sweepMutation = useSweep();
-  const [sortKey, setSortKey] = useState<SortKey>('gloc');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const parsed = batchUrlState.read(searchParams);
+  const { target: sortKey, direction, ood, category } = parsed.value;
+  const updateUrl = (patch: Partial<typeof parsed.value>) => setSearchParams(
+    batchUrlState.write({ ...parsed.value, ...patch }), { replace: true },
+  );
 
   const handleRunSweep = () => {
     const inputs: PredictionRequest[] = profileIds.map((id) => ({
@@ -102,30 +109,36 @@ export const BatchPage: React.FC = () => {
   }, [sweepMutation.data, profileIds]);
 
   const sortedRows = useMemo(() => {
-    const items = [...rows];
+    const items = rows.filter(({ profileId, prediction }) =>
+      (category === 'all' || AEROBATIC_PROFILES[profileId]?.category === category)
+      && (ood === 'all' || (ood === 'ood' ? prediction.ood : !prediction.ood)),
+    );
     items.sort((a, b) => {
+      let order: number;
       switch (sortKey) {
         case 'profile':
-          return a.profileId.localeCompare(b.profileId);
+          order = a.profileId.localeCompare(b.profileId); break;
         case 'ood':
-          return Number(b.prediction.ood) - Number(a.prediction.ood);
+          order = Number(b.prediction.ood) - Number(a.prediction.ood); break;
         case 'greyout':
-          return compareEventRisk(a.prediction, b.prediction, 'time_to_greyout_s');
+          order = compareEventRisk(a.prediction, b.prediction, 'time_to_greyout_s'); break;
         case 'blackout':
-          return compareEventRisk(a.prediction, b.prediction, 'time_to_blackout_s');
+          order = compareEventRisk(a.prediction, b.prediction, 'time_to_blackout_s'); break;
         case 'gloc':
         default:
-          return compareEventRisk(a.prediction, b.prediction, 'time_to_gloc_s');
+          order = compareEventRisk(a.prediction, b.prediction, 'time_to_gloc_s');
       }
+      return direction === 'desc' ? order : -order;
     });
     return items;
-  }, [rows, sortKey]);
+  }, [rows, sortKey, direction, ood, category]);
 
   const apiReachable = !versionQuery.isError;
   const oodCount = rows.filter((r) => r.prediction.ood).length;
 
   return (
     <div className="space-y-6">
+      {parsed.invalid.length > 0 && <p role="status" className="sr-only">Unsupported batch URL filters were replaced with safe defaults.</p>}
       {/* Header + run button */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -233,7 +246,13 @@ export const BatchPage: React.FC = () => {
         >
           <div className="px-6 py-4 border-b border-surface-700/50 flex items-center justify-between">
             <h3 className="text-lg font-semibold text-white">Per-maneuver predictions</h3>
-            <SortControl sortKey={sortKey} setSortKey={setSortKey} />
+            <SortControl
+              sortKey={sortKey}
+              direction={direction}
+              ood={ood}
+              category={category}
+              update={(patch) => updateUrl(patch)}
+            />
           </div>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
@@ -341,13 +360,17 @@ const SummaryCard: React.FC<{ label: string; value: string; icon: React.ReactNod
 
 const SortControl: React.FC<{
   sortKey: SortKey;
-  setSortKey: (k: SortKey) => void;
-}> = ({ sortKey, setSortKey }) => (
-  <div className="flex items-center gap-2 text-xs text-surface-400">
+  direction: BatchDirection;
+  ood: BatchOod;
+  category: BatchCategory;
+  update: (patch: Partial<ReturnType<typeof batchUrlState.read>['value']>) => void;
+}> = ({ sortKey, direction, ood, category, update }) => (
+  <div className="flex flex-wrap items-center gap-2 text-xs text-surface-400">
     <ArrowDownAZ className="w-4 h-4" />
     <select
       value={sortKey}
-      onChange={(e) => setSortKey(e.target.value as SortKey)}
+      aria-label="Sort target"
+      onChange={(e) => update({ target: e.target.value as SortKey })}
       className="bg-surface-800/60 border border-surface-700 rounded-md px-2 py-1 text-surface-200"
     >
       <option value="gloc">Sort: G-LOC risk ↓</option>
@@ -355,6 +378,15 @@ const SortControl: React.FC<{
       <option value="greyout">Sort: Greyout risk ↓</option>
       <option value="ood">Sort: OOD first</option>
       <option value="profile">Sort: profile name</option>
+    </select>
+    <select aria-label="Sort direction" value={direction} onChange={(e) => update({ direction: e.target.value as BatchDirection })} className="bg-surface-800/60 border border-surface-700 rounded-md px-2 py-1 text-surface-200">
+      <option value="desc">Descending</option><option value="asc">Ascending</option>
+    </select>
+    <select aria-label="OOD filter" value={ood} onChange={(e) => update({ ood: e.target.value as BatchOod })} className="bg-surface-800/60 border border-surface-700 rounded-md px-2 py-1 text-surface-200">
+      <option value="all">All envelopes</option><option value="in-envelope">In envelope</option><option value="ood">OOD only</option>
+    </select>
+    <select aria-label="Maneuver category" value={category} onChange={(e) => update({ category: e.target.value as BatchCategory })} className="bg-surface-800/60 border border-surface-700 rounded-md px-2 py-1 text-surface-200">
+      <option value="all">All categories</option><option value="championship">Championship</option><option value="military_acm">Military ACM</option><option value="extreme_post_stall">Extreme/post-stall</option><option value="training">Training</option><option value="conceptual">Conceptual</option>
     </select>
   </div>
 );

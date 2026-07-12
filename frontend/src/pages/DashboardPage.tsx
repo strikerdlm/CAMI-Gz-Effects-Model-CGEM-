@@ -6,6 +6,7 @@
  */
 
 import React, { useEffect, useMemo, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
   LayoutGrid,
@@ -47,9 +48,10 @@ import type { CGEMResult, Countermeasures } from '../types';
 import type { RunCGEMRequest, PilotConfigRequest } from '../services/types';
 import { pilotConfigFromPrefs, pilotConfigWithOverrides } from '../services/pilotConfig';
 import { useUserPrefs } from '../state/useUserPrefs';
+import { dashboardUrlState, type DashboardChart, type DashboardLayout, type DashboardPreset } from '../services/urlState';
 
-type ViewMode = 'grid' | 'single';
-type ChartType = 'lines' | 'heatmap' | 'radar' | 'histogram' | 'durations' | 'flows';
+type ViewMode = DashboardLayout;
+type ChartType = DashboardChart;
 
 const CHART_OPTIONS: { id: ChartType; label: string; icon: React.ElementType }[] = [
   { id: 'lines', label: 'G-Force Lines', icon: LineChart },
@@ -61,7 +63,7 @@ const CHART_OPTIONS: { id: ChartType; label: string; icon: React.ElementType }[]
 ];
 
 interface PilotPreset {
-  id: string;
+  id: DashboardPreset;
   label: string;
   summary: string;
   whoProfile: number;
@@ -161,10 +163,16 @@ const ApiStatusBanner: React.FC = () => {
 
 export const DashboardPage: React.FC = () => {
   const prefs = useUserPrefs();
-  const [selectedProfileId, setSelectedProfileId] = useState('high_g_turn');
-  const [viewMode, setViewMode] = useState<ViewMode>('grid');
-  const [selectedChart, setSelectedChart] = useState<ChartType>('lines');
-  const [selectedPresetId, setSelectedPresetId] = useState<string>(PILOT_PRESETS[0].id);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const urlState = dashboardUrlState.read(searchParams);
+  const { maneuver: selectedProfileId, layout: viewMode, chart: selectedChart, preset: selectedPresetId } = urlState.value;
+  const updateUrl = (patch: Partial<typeof urlState.value>, replace = false) => setSearchParams(
+    dashboardUrlState.write({ ...urlState.value, ...patch }), { replace },
+  );
+  const setSelectedProfileId = (maneuver: string) => updateUrl({ maneuver });
+  const setViewMode = (layout: ViewMode) => updateUrl({ layout }, true);
+  const setSelectedChart = (chart: ChartType) => updateUrl({ chart }, true);
+  const setSelectedPresetId = (preset: DashboardPreset) => updateUrl({ preset });
   const [focusedVariable, setFocusedVariable] = useState<ModelVariableKey>('geff');
 
   const profile = MANEUVERS_BY_ID[selectedProfileId];
@@ -327,6 +335,7 @@ export const DashboardPage: React.FC = () => {
 
   return (
     <div className="space-y-6">
+      {urlState.invalid.length > 0 && <p role="status" className="sr-only">Unsupported dashboard URL settings were replaced with safe defaults.</p>}
       <ApiStatusBanner />
 
       {/* Header */}
@@ -351,6 +360,7 @@ export const DashboardPage: React.FC = () => {
             <div className="flex items-center gap-1 p-1 bg-surface-800/80 rounded-lg">
               <button
                 onClick={() => setViewMode('grid')}
+                aria-pressed={viewMode === 'grid'}
                 className={cn(
                   'p-2 rounded-lg transition-all',
                   viewMode === 'grid' 
@@ -363,6 +373,7 @@ export const DashboardPage: React.FC = () => {
               </button>
               <button
                 onClick={() => setViewMode('single')}
+                aria-pressed={viewMode === 'single'}
                 className={cn(
                   'p-2 rounded-lg transition-all',
                   viewMode === 'single' 

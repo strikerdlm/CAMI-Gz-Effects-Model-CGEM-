@@ -36,6 +36,7 @@ import type {
 } from '../services/types';
 import { pilotConfigFromPrefs } from '../services/pilotConfig';
 import { useUserPrefs } from '../state/useUserPrefs';
+import { readManeuverParam, setSearchParam } from '../services/urlState';
 
 const CATEGORY_LABELS: Record<ManeuverCategory, string> = {
   championship: 'CHAMPIONSHIP',
@@ -51,9 +52,12 @@ export const SimulatorPage: React.FC = () => {
   const health = useHealth();
   const apiAlive = health.data?.status === 'ok';
 
-  const [searchParams] = useSearchParams();
-  const initial = searchParams.get('id') ?? 'hammerhead';
-  const [selectedId, setSelectedId] = useState<string>(initial);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const selectedId = readManeuverParam(searchParams, 'hammerhead');
+  const invalidManeuver = searchParams.has('maneuver') && searchParams.get('maneuver') !== selectedId;
+  const setSelectedId = (id: string) => setSearchParams(
+    setSearchParam(searchParams, 'maneuver', id, 'hammerhead'),
+  );
 
   const maneuver = useMemo<Maneuver>(
     () => MANEUVERS.find((m) => m.id === selectedId) ?? MANEUVERS[0],
@@ -92,6 +96,7 @@ export const SimulatorPage: React.FC = () => {
 
   return (
     <div className="grid grid-cols-1 xl:grid-cols-[260px_1fr_320px] gap-4 min-h-[calc(100vh-120px)]">
+      {invalidManeuver && <p role="status" className="sr-only">The requested maneuver was unavailable. Showing hammerhead.</p>}
       {/* Left rail — maneuver picker */}
       <Bezel
         label={`MANEUVER LIBRARY · ${MANEUVERS.length}`}

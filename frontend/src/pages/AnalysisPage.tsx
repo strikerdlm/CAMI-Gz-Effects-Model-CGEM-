@@ -5,6 +5,7 @@
  */
 
 import React, { useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   FileText,
@@ -23,6 +24,7 @@ import { MANEUVER_EXPLANATIONS } from '../utils/constants';
 import { calculateProfileStats } from '../utils/calculations';
 import { cn } from '../utils';
 import { TARGET_NAMES, type TargetName } from '../services/types';
+import { analysisUrlState, readManeuverParam, setSearchParam, type AnalysisView } from '../services/urlState';
 
 interface SectionHeaderProps {
   id: string;
@@ -58,11 +60,23 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({
 );
 
 export const AnalysisPage: React.FC = () => {
-  const [selectedProfileId, setSelectedProfileId] = useState('high_g_turn');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const parsed = analysisUrlState.read(searchParams);
+  const selectedProfileId = readManeuverParam(searchParams);
+  const sobolTarget = parsed.value.target;
+  const analysisView = parsed.value.view;
+  const setSelectedProfileId = (maneuver: string) => setSearchParams(setSearchParam(searchParams, 'maneuver', maneuver, 'high_g_turn'));
+  const updateAnalysis = (patch: Partial<typeof parsed.value>) => {
+    const next = analysisUrlState.write({ ...parsed.value, ...patch });
+    const maneuver = searchParams.get('maneuver');
+    if (maneuver) next.set('maneuver', selectedProfileId);
+    setSearchParams(next, { replace: true });
+  };
+  const setSobolTarget = (target: TargetName) => updateAnalysis({ target });
+  const setAnalysisView = (view: AnalysisView) => updateAnalysis({ view });
   const [expandedSections, setExpandedSections] = useState<Set<string>>(
     new Set(['description', 'effects'])
   );
-  const [sobolTarget, setSobolTarget] = useState<TargetName>('time_to_gloc_s');
 
   const profile = AEROBATIC_PROFILES[selectedProfileId];
   const explanation = MANEUVER_EXPLANATIONS[selectedProfileId];
@@ -80,6 +94,9 @@ export const AnalysisPage: React.FC = () => {
 
   return (
     <div className="space-y-6">
+      {(parsed.invalid.length > 0 || (searchParams.has('maneuver') && searchParams.get('maneuver') !== selectedProfileId)) && (
+        <p role="status" className="sr-only">Unsupported analysis URL settings were replaced with safe defaults.</p>
+      )}
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -99,6 +116,11 @@ export const AnalysisPage: React.FC = () => {
           onSelect={setSelectedProfileId}
           className="max-w-xl"
         />
+        <div className="mt-4 flex gap-2" aria-label="Analysis view">
+          {(['explanation', 'sensitivity'] as const).map((view) => (
+            <button key={view} type="button" aria-pressed={analysisView === view} onClick={() => setAnalysisView(view)} className="btn-secondary">{view}</button>
+          ))}
+        </div>
       </motion.div>
 
       {/* Global sensitivity (Phase-4 Sobol indices, served by /sensitivity) */}

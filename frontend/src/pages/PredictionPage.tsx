@@ -11,6 +11,7 @@
  */
 
 import React, { useMemo, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
   Activity,
@@ -50,6 +51,7 @@ import type {
 } from '../services/types';
 import { pilotConfigFromPrefs, pilotConfigWithOverrides } from '../services/pilotConfig';
 import { useUserPrefs } from '../state/useUserPrefs';
+import { predictionUrlState, type PredictionView } from '../services/urlState';
 
 /** Map the local Countermeasures + who_profile to a PredictionRequest body. */
 function buildRequest(
@@ -98,24 +100,30 @@ const formatTime = (t: number | null | undefined): string =>
 export const PredictionPage: React.FC = () => {
   const prefs = useUserPrefs();
   const preferredPilot = useMemo(() => pilotConfigFromPrefs(prefs), [prefs]);
-  const [selectedProfileId, setSelectedProfileId] = useState('high_g_turn');
-  const [whoProfile, setWhoProfile] = useState<number | null>(preferredPilot.who_profile);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const urlState = predictionUrlState.read(searchParams);
+  const { maneuver: selectedProfileId, pilot: whoProfile, view } = urlState.value;
+  const [customProfile, setCustomProfile] = useState(false);
+  const effectiveWhoProfile = customProfile ? null : whoProfile;
+  const updateUrl = (patch: Partial<typeof urlState.value>, replace = false) => setSearchParams(
+    predictionUrlState.write({ ...urlState.value, ...patch }), { replace },
+  );
+  const setSelectedProfileId = (maneuver: string) => updateUrl({ maneuver });
+  const setWhoProfile = (pilot: number) => updateUrl({ pilot });
+  const setView = (nextView: PredictionView) => updateUrl({ view: nextView }, true);
   const [countermeasures, setCountermeasures] = useState({
     ...DEFAULT_COUNTERMEASURES,
     ...prefs.defaults,
   });
 
   const profile = AEROBATIC_PROFILES[selectedProfileId];
-  const selectedStandardProfile = STANDARD_PROFILES.find((p) => p.id === whoProfile);
+  const selectedStandardProfile = STANDARD_PROFILES.find((p) => p.id === effectiveWhoProfile);
 
   const versionQuery = useVersion();
   const predictMutation = usePredict();
   const runCgemMutation = useRunCgem();
 
-  const requestBody = useMemo(
-    () => buildRequest(selectedProfileId, preferredPilot, whoProfile, countermeasures),
-    [selectedProfileId, preferredPilot, whoProfile, countermeasures],
-  );
+  const requestBody = buildRequest(selectedProfileId, preferredPilot, effectiveWhoProfile, countermeasures);
 
   const handlePredict = () => {
     predictMutation.mutate(requestBody);
@@ -137,6 +145,7 @@ export const PredictionPage: React.FC = () => {
 
   return (
     <div className="space-y-6">
+      {urlState.invalid.length > 0 && <p role="status" className="sr-only">Unsupported prediction URL settings were replaced with safe defaults.</p>}
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -205,10 +214,14 @@ export const PredictionPage: React.FC = () => {
               Subject Profile
             </h3>
             <select
-              value={whoProfile ?? 'custom'}
-              onChange={(e) =>
-                setWhoProfile(e.target.value === 'custom' ? null : parseInt(e.target.value))
-              }
+              value={customProfile ? 'custom' : whoProfile}
+              onChange={(e) => {
+                if (e.target.value === 'custom') setCustomProfile(true);
+                else {
+                  setCustomProfile(false);
+                  setWhoProfile(parseInt(e.target.value));
+                }
+              }}
               className="select-field w-full"
             >
               <option value="custom">Custom Configuration</option>
@@ -322,6 +335,14 @@ export const PredictionPage: React.FC = () => {
             transition={{ delay: 0.3 }}
             className="space-y-3"
           >
+            <fieldset className="grid grid-cols-3 gap-2">
+              <legend className="sr-only">Result view</legend>
+              {(['surrogate', 'authoritative', 'comparison'] as const).map((option) => (
+                <button key={option} type="button" aria-pressed={view === option} onClick={() => setView(option)} className="btn-secondary px-2 text-xs">
+                  {option}
+                </button>
+              ))}
+            </fieldset>
             <button
               onClick={handlePredict}
               disabled={!apiReachable || predictMutation.isPending}

@@ -5,7 +5,7 @@
  * Displays profile statistics and basic physiological metrics.
  */
 
-import React, { useState, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { 
   Gauge, 
@@ -17,15 +17,21 @@ import {
   Zap,
 } from 'lucide-react';
 
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { ProfileSelector, MetricCard } from '../components/ui';
 import { GForceLineChart } from '../components/charts';
 import { MANEUVERS_BY_ID as AEROBATIC_PROFILES } from '../data/maneuvers';
 import { calculateProfileStats, buildTimeSeries } from '../utils/calculations';
 import { cn } from '../utils';
+import { readManeuverParam, setSearchParam } from '../services/urlState';
 
 export const OverviewPage: React.FC = () => {
-  const [selectedProfileId, setSelectedProfileId] = useState('high_g_turn');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const selectedProfileId = readManeuverParam(searchParams);
+  const invalidManeuver = searchParams.has('maneuver') && searchParams.get('maneuver') !== selectedProfileId;
+  const selectProfile = (id: string) => setSearchParams(
+    setSearchParam(searchParams, 'maneuver', id, 'high_g_turn'),
+  );
   
   const profile = AEROBATIC_PROFILES[selectedProfileId];
   const stats = useMemo(() => 
@@ -59,6 +65,9 @@ export const OverviewPage: React.FC = () => {
 
   return (
     <div className="space-y-6">
+      {invalidManeuver && (
+        <p role="status" className="sr-only">The requested maneuver was unavailable. Showing the default maneuver.</p>
+      )}
       {/* Header Section */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -94,7 +103,7 @@ export const OverviewPage: React.FC = () => {
         <div className="mt-6 flex flex-col lg:flex-row lg:items-center gap-4">
           <ProfileSelector
             selectedProfileId={selectedProfileId}
-            onSelect={setSelectedProfileId}
+            onSelect={selectProfile}
             className="max-w-xl flex-1"
           />
           <Link
