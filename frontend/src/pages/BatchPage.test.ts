@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import type { PredictionResponse } from '../services/types';
-import { compareEventRisk } from './BatchPage';
+import { compareEventRisk, compareProfileNames } from './BatchPage';
 
 function prediction(
   probability: number,
@@ -41,5 +41,17 @@ describe('batch event-risk ranking', () => {
     const bravo = prediction(0.5, 4, 'bravo');
     expect([bravo, alpha].sort((a, b) => compareEventRisk(a, b, 'time_to_gloc_s'))[0])
       .toBe(alpha);
+  });
+});
+
+describe('batch profile-name direction', () => {
+  it('sorts profile names Z–A for descending', () => {
+    expect(['alpha', 'charlie', 'bravo'].sort((a, b) => compareProfileNames(a, b, 'desc')))
+      .toEqual(['charlie', 'bravo', 'alpha']);
+  });
+
+  it('sorts profile names A–Z for ascending', () => {
+    expect(['charlie', 'alpha', 'bravo'].sort((a, b) => compareProfileNames(a, b, 'asc')))
+      .toEqual(['alpha', 'bravo', 'charlie']);
   });
 });

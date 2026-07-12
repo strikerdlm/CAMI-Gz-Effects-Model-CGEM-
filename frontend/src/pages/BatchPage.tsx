@@ -66,6 +66,16 @@ export function compareEventRisk(
   return a.resolved_maneuver.localeCompare(b.resolved_maneuver);
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
+export function compareProfileNames(
+  left: string,
+  right: string,
+  direction: BatchDirection,
+): number {
+  const ascending = left.localeCompare(right);
+  return direction === 'asc' ? ascending : -ascending;
+}
+
 const STATUS_STYLES: Record<string, string> = {
   'in envelope': 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30',
   OOD: 'bg-amber-500/15 text-amber-300 border-amber-500/30',
@@ -117,7 +127,7 @@ export const BatchPage: React.FC = () => {
       let order: number;
       switch (sortKey) {
         case 'profile':
-          order = a.profileId.localeCompare(b.profileId); break;
+          return compareProfileNames(a.profileId, b.profileId, direction);
         case 'ood':
           order = Number(b.prediction.ood) - Number(a.prediction.ood); break;
         case 'greyout':
