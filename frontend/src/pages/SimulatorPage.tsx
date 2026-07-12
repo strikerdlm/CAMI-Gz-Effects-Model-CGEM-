@@ -37,6 +37,9 @@ import type {
 import { pilotConfigFromPrefs } from '../services/pilotConfig';
 import { useUserPrefs } from '../state/useUserPrefs';
 import { readManeuverParam, setSearchParam } from '../services/urlState';
+import { EvidenceRail } from '../components/ui/EvidenceRail';
+import { useResultActions } from '../components/ui/ResultActions';
+import { buildPredictionJsonExport } from '../services/exportResult';
 
 const CATEGORY_LABELS: Record<ManeuverCategory, string> = {
   championship: 'CHAMPIONSHIP',
@@ -77,12 +80,16 @@ export const SimulatorPage: React.FC = () => {
 
   // Fire one /predict per maneuver change.
   const predictMutation = usePredict();
+  const { registerExport } = useResultActions();
+  const predictionRequest = useMemo<PredictionRequest>(() => ({ pilot, maneuver: { maneuver: maneuver.id } }), [pilot, maneuver.id]);
   useEffect(() => {
     if (!apiAlive) return;
-    const req: PredictionRequest = { pilot, maneuver: { maneuver: maneuver.id } };
-    predictMutation.mutate(req);
+    predictMutation.mutate(predictionRequest);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [maneuver.id, apiAlive, pilot]);
+  }, [maneuver.id, apiAlive, pilot, predictionRequest]);
+
+  const exportSpec = useMemo(() => predictMutation.data ? buildPredictionJsonExport({ response: predictMutation.data, request: predictionRequest, exportedAt: new Date(predictMutation.submittedAt || 0).toISOString() }) : null, [predictMutation.data, predictMutation.submittedAt, predictionRequest]);
+  useEffect(() => { registerExport(exportSpec); return () => registerExport(null); }, [exportSpec, registerExport]);
 
   const targets = predictMutation.data?.targets ?? [];
   const glocPred: TargetPrediction | undefined = targets.find((t) => t.target === 'time_to_gloc_s');
@@ -205,6 +212,7 @@ export const SimulatorPage: React.FC = () => {
 
       {/* Right rail — live readouts + prediction */}
       <div className="flex flex-col gap-4">
+        {predictMutation.data && <EvidenceRail evidence={{ kind: 'surrogate', response: predictMutation.data }} />}
         <Bezel label="LIVE TELEMETRY" status="ok">
           <div className="space-y-3">
             <div className="flex items-center justify-between">

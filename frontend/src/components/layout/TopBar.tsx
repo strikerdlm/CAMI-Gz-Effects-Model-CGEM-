@@ -17,6 +17,8 @@ import { cn } from '../../utils';
 import { useHealth, useVersion } from '../../services/cgemApi';
 import { routeForPath } from '../../app/routes';
 import { ManeuverSearch } from '../ui/ManeuverSearch';
+import { useResultActions } from '../ui/ResultActions';
+import { downloadExport } from '../../services/exportResult';
 
 interface TopBarProps {
   onOpenNavigation: () => void;
@@ -36,6 +38,8 @@ export const TopBar: React.FC<TopBarProps> = ({
   const pageInfo = routeForPath(location.pathname);
   const [refreshing, setRefreshing] = React.useState(false);
   const [refreshStatus, setRefreshStatus] = React.useState('');
+  const [exportStatus, setExportStatus] = React.useState('');
+  const { activeExport } = useResultActions();
 
   const health = useHealth();
   const version = useVersion();
@@ -71,6 +75,11 @@ export const TopBar: React.FC<TopBarProps> = ({
     } finally {
       setRefreshing(false);
     }
+  };
+  const exportCurrentResult = () => {
+    if (!activeExport) return;
+    try { downloadExport(activeExport); setExportStatus(`Export complete: ${activeExport.filename}`); }
+    catch { setExportStatus('Export failed'); }
   };
 
   return (
@@ -152,14 +161,14 @@ export const TopBar: React.FC<TopBarProps> = ({
           >
             <RefreshCw className={cn('w-4 h-4', isRefreshing && 'animate-spin')} aria-hidden="true" />
           </button>
-          <button className="shell-secondary-action p-2 rounded-sm transition-colors duration-200 text-hud-ink-faint hover:text-hud-amber hover:bg-hud-panel" title="Export">
-            <Download className="w-4 h-4" />
-          </button>
+          {activeExport && <button type="button" onClick={exportCurrentResult} aria-label="Export current result" className="shell-secondary-action p-2 rounded-sm transition-colors duration-200 text-hud-ink-faint hover:text-hud-amber hover:bg-hud-panel" title="Export current result">
+            <Download className="w-4 h-4" aria-hidden="true" />
+          </button>}
           <a aria-label="Help" href={`/about${pageInfo.helpHash}`} className="shell-secondary-action p-2 rounded-sm transition-colors duration-200 text-hud-ink-faint hover:text-hud-amber hover:bg-hud-panel" title="Help">
             <HelpCircle className="w-4 h-4" aria-hidden="true" />
           </a>
         </div>
-        <span role="status" aria-live="polite" className="sr-only">{isRefreshing ? 'Refreshing API status' : refreshStatus}</span>
+        <span role="status" aria-live="polite" className="sr-only">{exportStatus || (isRefreshing ? 'Refreshing API status' : refreshStatus)}</span>
 
         {/* Callsign */}
         <div className="shell-callsign pl-3 border-l border-hud-line">

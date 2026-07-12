@@ -10,7 +10,7 @@
  * Reports a friendly "API unreachable" banner when the backend is offline.
  */
 
-import React, { useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -37,6 +37,9 @@ import type {
   SweepRequest,
 } from '../services/types';
 import { batchUrlState, type BatchCategory, type BatchDirection, type BatchOod, type BatchTarget } from '../services/urlState';
+import { EvidenceRail } from '../components/ui/EvidenceRail';
+import { useResultActions } from '../components/ui/ResultActions';
+import { buildBatchCsvExport } from '../services/exportResult';
 
 interface BatchRow {
   profileId: string;
@@ -85,6 +88,7 @@ export const BatchPage: React.FC = () => {
   const profileIds = useMemo(() => Object.keys(AEROBATIC_PROFILES), []);
   const versionQuery = useVersion();
   const sweepMutation = useSweep();
+  const { registerExport } = useResultActions();
   const [searchParams, setSearchParams] = useSearchParams();
   const parsed = batchUrlState.read(searchParams);
   const { target: sortKey, direction, ood, category } = parsed.value;
@@ -92,20 +96,16 @@ export const BatchPage: React.FC = () => {
     batchUrlState.write({ ...parsed.value, ...patch }), { replace: true },
   );
 
-  const handleRunSweep = () => {
-    const inputs: PredictionRequest[] = profileIds.map((id) => ({
+  const requestForProfile = useCallback((id: string): PredictionRequest => ({
       maneuver: { maneuver: id },
       pilot: {
-        who_profile: 2,
-        g_tolerance_multiplier: 1.0,
-        dehydration_level: 0.0,
-        countermeasures_label: 'none',
-        gsuit_max_psi: 0.0,
-        gsuit_coverage_fraction: 0.0,
-        agsm_effectiveness: 0.0,
-        pbg_max_mmhg: 0.0,
+        who_profile: 2, g_tolerance_multiplier: 1.0, dehydration_level: 0.0,
+        countermeasures_label: 'none', gsuit_max_psi: 0.0, gsuit_coverage_fraction: 0.0,
+        agsm_effectiveness: 0.0, pbg_max_mmhg: 0.0,
       },
-    }));
+    }), []);
+  const handleRunSweep = () => {
+    const inputs: PredictionRequest[] = profileIds.map(requestForProfile);
     const body: SweepRequest = { inputs };
     sweepMutation.mutate(body);
   };
@@ -145,6 +145,8 @@ export const BatchPage: React.FC = () => {
 
   const apiReachable = !versionQuery.isError;
   const oodCount = rows.filter((r) => r.prediction.ood).length;
+  const exportSpec = useMemo(() => sortedRows.length ? buildBatchCsvExport({ rows: sortedRows, requestFor: requestForProfile, exportedAt: new Date(sweepMutation.submittedAt || 0).toISOString() }) : null, [sortedRows, sweepMutation.submittedAt, requestForProfile]);
+  useEffect(() => { registerExport(exportSpec); return () => registerExport(null); }, [exportSpec, registerExport]);
 
   return (
     <div className="space-y-6">
@@ -252,6 +254,9 @@ export const BatchPage: React.FC = () => {
       )}
 
       {/* Results table */}
+      {rows.length > 0 && (
+        <EvidenceRail evidence={{ kind: 'surrogate', response: rows[0].prediction }} />
+      )}
       {rows.length > 0 && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}

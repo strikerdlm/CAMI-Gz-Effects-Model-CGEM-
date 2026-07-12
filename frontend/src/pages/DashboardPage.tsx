@@ -15,13 +15,14 @@ import {
   BarChart3,
   PieChart,
   Activity,
-  Download,
   Brain,
   Shield,
   Star,
 } from 'lucide-react';
 
 import { MetricCard, ProfileSelector, VariableInsightsPanel } from '../components/ui';
+import { EvidenceRail } from '../components/ui/EvidenceRail';
+import { useResultActions } from '../components/ui/ResultActions';
 import {
   ModelDynamicsChart,
   GForceLineChart,
@@ -49,6 +50,7 @@ import type { RunCGEMRequest, PilotConfigRequest } from '../services/types';
 import { pilotConfigFromPrefs, pilotConfigWithOverrides } from '../services/pilotConfig';
 import { useUserPrefs } from '../state/useUserPrefs';
 import { dashboardUrlState, type DashboardChart, type DashboardLayout, type DashboardPreset } from '../services/urlState';
+import { buildAuthoritativeJsonExport } from '../services/exportResult';
 
 type ViewMode = DashboardLayout;
 type ChartType = DashboardChart;
@@ -196,32 +198,24 @@ export const DashboardPage: React.FC = () => {
   const health = useHealth();
   const apiAlive = health.data?.status === 'ok';
   const runCgem = useRunCgem();
+  const versionQuery = useVersion();
+  const { registerExport } = useResultActions();
+  const runRequest = useMemo<RunCGEMRequest>(() => {
+    const overrides: Partial<PilotConfigRequest> = {
+      who_profile: selectedPreset.whoProfile, dehydration_level: 0,
+      gsuit_max_psi: selectedPreset.countermeasureOverrides.gsuit_max_psi ?? DEFAULT_COUNTERMEASURES.gsuit_max_psi ?? 0,
+      gsuit_coverage_fraction: selectedPreset.countermeasureOverrides.gsuit_coverage_fraction ?? DEFAULT_COUNTERMEASURES.gsuit_coverage_fraction ?? 0.6,
+      agsm_effectiveness: selectedPreset.countermeasureOverrides.agsm_effectiveness ?? DEFAULT_COUNTERMEASURES.agsm_effectiveness ?? 0,
+      pbg_max_mmhg: selectedPreset.countermeasureOverrides.pbg_max_mmhg ?? 0,
+    };
+    return { maneuver: selectedProfileId, pilot: pilotConfigWithOverrides(pilotConfigFromPrefs(prefs), overrides) };
+  }, [prefs, selectedPreset, selectedProfileId]);
 
   useEffect(() => {
     if (!apiAlive || !profile) return;
-    const overrides: Partial<PilotConfigRequest> = {
-      who_profile: selectedPreset.whoProfile,
-      // Standard Fortran profiles override custom physiology fields.
-      dehydration_level: 0,
-      gsuit_max_psi:
-        selectedPreset.countermeasureOverrides.gsuit_max_psi ??
-        DEFAULT_COUNTERMEASURES.gsuit_max_psi ??
-        0,
-      gsuit_coverage_fraction:
-        selectedPreset.countermeasureOverrides.gsuit_coverage_fraction ??
-        DEFAULT_COUNTERMEASURES.gsuit_coverage_fraction ??
-        0.6,
-      agsm_effectiveness:
-        selectedPreset.countermeasureOverrides.agsm_effectiveness ??
-        DEFAULT_COUNTERMEASURES.agsm_effectiveness ??
-        0,
-      pbg_max_mmhg: selectedPreset.countermeasureOverrides.pbg_max_mmhg ?? 0,
-    };
-    const pilot = pilotConfigWithOverrides(pilotConfigFromPrefs(prefs), overrides);
-    const req: RunCGEMRequest = { maneuver: selectedProfileId, pilot };
-    runCgem.mutate(req);
+    runCgem.mutate(runRequest);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedProfileId, selectedPresetId, apiAlive, prefs]);
+  }, [selectedProfileId, selectedPresetId, apiAlive, prefs, runRequest]);
 
   const result = useMemo<CGEMResult | null>(() => {
     if (apiAlive && runCgem.data) {
@@ -238,6 +232,8 @@ export const DashboardPage: React.FC = () => {
     if (!result) return null;
     return computeStateDurations(result.times_s, result.g_values, result.geff_values);
   }, [result]);
+  const exportSpec = useMemo(() => runCgem.data ? buildAuthoritativeJsonExport({ run: runCgem.data, request: runRequest, version: versionQuery.data, exportedAt: new Date(runCgem.submittedAt || 0).toISOString() }) : null, [runCgem.data, runCgem.submittedAt, runRequest, versionQuery.data]);
+  useEffect(() => { registerExport(exportSpec); return () => registerExport(null); }, [exportSpec, registerExport]);
 
   if (!profile || !stats) {
     return (
@@ -336,6 +332,7 @@ export const DashboardPage: React.FC = () => {
   return (
     <div className="space-y-6">
       {urlState.invalid.length > 0 && <p role="status" className="sr-only">Unsupported dashboard URL settings were replaced with safe defaults.</p>}
+      <EvidenceRail evidence={{ kind: 'authoritative', run: runCgem.data!, version: versionQuery.data }} />
       <ApiStatusBanner />
 
       {/* Header */}
@@ -386,10 +383,6 @@ export const DashboardPage: React.FC = () => {
               </button>
             </div>
 
-            <button className="btn-secondary">
-              <Download className="w-4 h-4" />
-              Export All
-            </button>
           </div>
         </div>
 

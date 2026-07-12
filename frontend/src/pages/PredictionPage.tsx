@@ -10,7 +10,7 @@
  * paths. The page reports backend unavailability without inventing physiology.
  */
 
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -31,6 +31,8 @@ import {
   PredictionTable,
   ProfileSelector,
 } from '../components/ui';
+import { EvidenceRail } from '../components/ui/EvidenceRail';
+import { useResultActions } from '../components/ui/ResultActions';
 import { GForceLineChart, CerebralFlowChart } from '../components/charts';
 import { MANEUVERS_BY_ID as AEROBATIC_PROFILES } from '../data/maneuvers';
 import { STANDARD_PROFILES, DEFAULT_COUNTERMEASURES } from '../utils/constants';
@@ -52,6 +54,7 @@ import type {
 import { pilotConfigFromPrefs, pilotConfigWithOverrides } from '../services/pilotConfig';
 import { useUserPrefs } from '../state/useUserPrefs';
 import { predictionUrlState, type PredictionView } from '../services/urlState';
+import { buildAuthoritativeJsonExport, buildPredictionJsonExport } from '../services/exportResult';
 
 /** Map the local Countermeasures + who_profile to a PredictionRequest body. */
 function buildRequest(
@@ -122,6 +125,7 @@ export const PredictionPage: React.FC = () => {
   const versionQuery = useVersion();
   const predictMutation = usePredict();
   const runCgemMutation = useRunCgem();
+  const { registerExport } = useResultActions();
 
   const requestBody = buildRequest(selectedProfileId, preferredPilot, effectiveWhoProfile, countermeasures);
 
@@ -140,10 +144,17 @@ export const PredictionPage: React.FC = () => {
   const cgemRun: CGEMResult | null = runCgemMutation.data
     ? adaptCGEMRunToResult(runCgemMutation.data)
     : null;
-
   const apiReachable = !versionQuery.isError;
   const showSurrogate = view === 'surrogate' || view === 'comparison';
   const showAuthoritative = view === 'authoritative' || view === 'comparison';
+  useEffect(() => {
+    const currentRequest = buildRequest(selectedProfileId, preferredPilot, effectiveWhoProfile, countermeasures);
+    const spec = showAuthoritative && runCgemMutation.data
+      ? buildAuthoritativeJsonExport({ run: runCgemMutation.data, request: { maneuver: selectedProfileId, pilot: currentRequest.pilot }, version: versionQuery.data, exportedAt: new Date(runCgemMutation.submittedAt || 0).toISOString() })
+      : showSurrogate && prediction
+        ? buildPredictionJsonExport({ response: prediction, request: currentRequest, exportedAt: new Date(predictMutation.submittedAt || 0).toISOString() }) : null;
+    registerExport(spec); return () => registerExport(null);
+  }, [showAuthoritative, showSurrogate, runCgemMutation.data, runCgemMutation.submittedAt, prediction, predictMutation.submittedAt, selectedProfileId, preferredPilot, effectiveWhoProfile, countermeasures, versionQuery.data, registerExport]);
 
   return (
     <div className="space-y-6">
@@ -392,6 +403,7 @@ export const PredictionPage: React.FC = () => {
         <div className="lg:col-span-2 space-y-6">
           {showSurrogate && prediction && (
             <>
+              <EvidenceRail evidence={{ kind: 'surrogate', response: prediction }} />
               <OODBanner
                 ood={prediction.ood}
                 oodScore={prediction.ood_score}
@@ -410,7 +422,7 @@ export const PredictionPage: React.FC = () => {
 
           {/* Authoritative CGEM event-time cards */}
           {showAuthoritative && cgemRun && (
-            <motion.div
+            <><EvidenceRail evidence={{ kind: 'authoritative', run: runCgemMutation.data!, version: versionQuery.data }} /><motion.div
               initial={{ opacity: 0, scale: 0.97 }}
               animate={{ opacity: 1, scale: 1 }}
               className="grid grid-cols-3 gap-4"
@@ -433,7 +445,7 @@ export const PredictionPage: React.FC = () => {
                 icon={<Brain className="w-5 h-5 text-purple-400" />}
                 color={cgemRun.time_to_gloc_s !== null ? 'danger' : 'default'}
               />
-            </motion.div>
+            </motion.div></>
           )}
 
           {showAuthoritative && runCgemMutation.isError && (

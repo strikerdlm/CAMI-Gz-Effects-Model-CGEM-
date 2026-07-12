@@ -12,6 +12,7 @@ import { Sidebar } from './Sidebar';
 import { TopBar } from './TopBar';
 import { ScanlineOverlay } from '../hud';
 import { MobileNavDrawer } from './MobileNavDrawer';
+import { ResultActionsProvider } from '../ui/ResultActions';
 
 export const MainLayout: React.FC = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -29,7 +30,8 @@ export const MainLayout: React.FC = () => {
   }, [location.pathname]);
 
   return (
-    <div className="min-h-screen bg-hud-bg relative">
+    <ResultActionsProvider>
+      <div className="min-h-screen bg-hud-bg relative">
       {/* CRT scanlines + slow sweep */}
       <ScanlineOverlay />
 
@@ -90,7 +92,8 @@ export const MainLayout: React.FC = () => {
         onClose={closeMobileNavigation}
         triggerRef={navigationTriggerRef}
       />
-    </div>
+      </div>
+    </ResultActionsProvider>
   );
 };
 
