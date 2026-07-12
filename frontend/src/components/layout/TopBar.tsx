@@ -4,7 +4,7 @@
  * Header with profile selector, status indicators, and quick actions.
  */
 
-import React from 'react';
+import React, { type RefObject } from 'react';
 import { useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -13,12 +13,23 @@ import {
   Download,
   RefreshCw,
   HelpCircle,
+  Menu,
 } from 'lucide-react';
 import { cn } from '../../utils';
 import { useHealth, useVersion } from '../../services/cgemApi';
 import { routeForPath } from '../../app/routes';
 
-export const TopBar: React.FC = () => {
+interface TopBarProps {
+  onOpenNavigation: () => void;
+  navigationTriggerRef: RefObject<HTMLButtonElement | null>;
+  sidebarCollapsed: boolean;
+}
+
+export const TopBar: React.FC<TopBarProps> = ({
+  onOpenNavigation,
+  navigationTriggerRef,
+  sidebarCollapsed,
+}) => {
   const location = useLocation();
   const pageInfo = routeForPath(location.pathname);
 
@@ -43,16 +54,25 @@ export const TopBar: React.FC = () => {
   return (
     <header
       className={cn(
-        'fixed top-0 right-0 z-30 h-16',
+        'shell-topbar fixed top-0 right-0 z-30 h-16',
+        sidebarCollapsed && 'shell-topbar-collapsed',
         'bg-hud-bg/85 backdrop-blur-xl',
         'border-b border-hud-line/70',
         'flex items-center justify-between px-6',
-        'transition-all duration-300'
+        'transition-[left] duration-300'
       )}
-      style={{ left: 'inherit' }}
     >
       {/* Left: Page Title */}
       <div className="flex items-center gap-4">
+        <button
+          ref={navigationTriggerRef}
+          type="button"
+          aria-label="Open navigation"
+          onClick={onOpenNavigation}
+          className="mobile-nav-trigger hidden min-h-11 min-w-11 rounded-sm text-hud-ink-faint transition-colors hover:bg-hud-panel hover:text-hud-amber sm:hidden"
+        >
+          <Menu className="mx-auto h-5 w-5" aria-hidden="true" />
+        </button>
         <motion.div
           key={location.pathname}
           initial={{ opacity: 0, x: -10 }}
@@ -80,14 +100,14 @@ export const TopBar: React.FC = () => {
               'bg-hud-panel-2 border border-hud-line',
               'text-hud-amber placeholder:text-hud-ink-faint placeholder:tracking-callsign',
               'focus:outline-none focus:border-hud-amber',
-              'transition-all duration-200'
+              'transition-colors duration-200'
             )}
           />
         </div>
       </div>
 
       {/* Right: Actions */}
-      <div className="flex items-center gap-3">
+      <div className="shell-topbar-actions flex items-center gap-3">
         {/* API status indicator */}
         <div className="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-sm bg-hud-panel border border-hud-line">
           <span className={cn('w-2 h-2 rounded-full', dotClass)} />
@@ -112,44 +132,26 @@ export const TopBar: React.FC = () => {
             onClick={() => { void health.refetch(); void version.refetch(); }}
             aria-label="Refresh API status"
             className={cn(
-              'p-2 rounded-sm transition-all duration-200',
+              'p-2 rounded-sm transition-colors duration-200',
               'text-hud-ink-faint hover:text-hud-amber hover:bg-hud-panel'
             )}
             title="Refresh API status"
           >
             <RefreshCw className="w-4 h-4" />
           </button>
-          <button
-            className={cn(
-              'p-2 rounded-sm transition-all duration-200',
-              'text-hud-ink-faint hover:text-hud-amber hover:bg-hud-panel'
-            )}
-            title="Export"
-          >
+          <button className="shell-secondary-action p-2 rounded-sm transition-colors duration-200 text-hud-ink-faint hover:text-hud-amber hover:bg-hud-panel" title="Export">
             <Download className="w-4 h-4" />
           </button>
-          <button
-            className={cn(
-              'p-2 rounded-sm transition-all duration-200',
-              'text-hud-ink-faint hover:text-hud-amber hover:bg-hud-panel'
-            )}
-            title="Notifications"
-          >
+          <button className="shell-secondary-action p-2 rounded-sm transition-colors duration-200 text-hud-ink-faint hover:text-hud-amber hover:bg-hud-panel" title="Notifications">
             <Bell className="w-4 h-4" />
           </button>
-          <button
-            className={cn(
-              'p-2 rounded-sm transition-all duration-200',
-              'text-hud-ink-faint hover:text-hud-amber hover:bg-hud-panel'
-            )}
-            title="Help"
-          >
+          <button className="shell-secondary-action p-2 rounded-sm transition-colors duration-200 text-hud-ink-faint hover:text-hud-amber hover:bg-hud-panel" title="Help">
             <HelpCircle className="w-4 h-4" />
           </button>
         </div>
 
         {/* Callsign */}
-        <div className="pl-3 border-l border-hud-line">
+        <div className="shell-callsign pl-3 border-l border-hud-line">
           <div className="font-mono text-[11px] tracking-callsign text-hud-ink-faint leading-tight">
             <div className="amber">CGEM-1</div>
             <div>DLM · BOG</div>

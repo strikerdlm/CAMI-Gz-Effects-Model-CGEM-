@@ -2,6 +2,14 @@
 
 /* Custom CSS Variables */
 :root {
+  --shell-sidebar-wide: 260px;
+  --shell-sidebar-rail: 72px;
+  --shell-header: 64px;
+  --shell-graphite: #10171a;
+  --shell-amber: #ffb400;
+  --shell-cyan: #6fd3ff;
+  --shell-green: #4fe773;
+  --shell-red: #ff3b30;
   --color-primary-50: #f0f9ff;
   --color-primary-100: #e0f2fe;
   --color-primary-200: #bae6fd;
@@ -51,7 +59,40 @@
   --hud-red: #FF3B30;
   --hud-ink: #e8eaea;
   --hud-ink-dim: #8c9692;
-  --hud-ink-faint: #566066;
+  --hud-ink-faint: #aab4c3;
+}
+
+:focus-visible {
+  outline: 2px solid var(--hud-ice);
+  outline-offset: 3px;
+}
+
+.shell-sidebar { width: var(--shell-sidebar-wide); }
+.shell-sidebar-collapsed { width: var(--shell-sidebar-rail); }
+.shell-topbar { left: var(--shell-sidebar-wide); }
+.shell-topbar-collapsed { left: var(--shell-sidebar-rail); }
+.shell-main { margin-left: var(--shell-sidebar-wide); }
+.shell-main-collapsed { margin-left: var(--shell-sidebar-rail); }
+
+@media (min-width: 640px) and (max-width: 1023px) {
+  .shell-sidebar { width: var(--shell-sidebar-rail); }
+  .shell-sidebar > div:first-child > div:first-child,
+  .shell-sidebar nav span,
+  .shell-sidebar nav div > span,
+  .shell-sidebar > div:last-child p { display: none; }
+  .shell-sidebar nav a { justify-content: center; padding-inline: 0.5rem; }
+  .shell-topbar { left: var(--shell-sidebar-rail); }
+  .shell-main { margin-left: var(--shell-sidebar-rail); }
+}
+
+@media (max-width: 639px) {
+  .shell-sidebar { display: none; }
+  .shell-topbar { left: 0; padding-inline: 0.75rem; }
+  .shell-main, .shell-main-collapsed { margin-left: 0; }
+  .mobile-nav-trigger { display: inline-flex; align-items: center; justify-content: center; }
+  .shell-secondary-action,
+  .shell-callsign { display: none; }
+  .shell-topbar-actions { gap: 0.25rem; }
 }
 
 /* Base Styles */
@@ -445,6 +486,23 @@ input[type="range"]::-moz-range-thumb {
   );
   animation: scanline 8s linear infinite;
   z-index: 99;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .scanline-sweep,
+  .animate-pulse,
+  .animate-pulse-amber,
+  .metric-card,
+  .chart-container {
+    animation: none !important;
+    transform: none !important;
+  }
 }
 
 ::selection {

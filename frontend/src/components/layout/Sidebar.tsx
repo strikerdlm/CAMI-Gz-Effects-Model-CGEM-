@@ -46,12 +46,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
   const location = useLocation();
 
   return (
-    <motion.aside
-      initial={false}
-      animate={{ width: isCollapsed ? 72 : 260 }}
-      transition={{ duration: 0.3, ease: 'easeInOut' }}
+    <aside
       className={cn(
-        'fixed left-0 top-0 h-screen z-40',
+        'shell-sidebar fixed left-0 top-0 h-screen z-40',
+        isCollapsed && 'shell-sidebar-collapsed',
         'bg-surface-950/95 backdrop-blur-xl',
         'border-r border-surface-800/50',
         'flex flex-col',
@@ -78,7 +76,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
           onClick={onToggle}
           aria-label={isCollapsed ? 'Expand navigation' : 'Collapse navigation'}
           className={cn(
-            'p-2 rounded-lg transition-all duration-200',
+            'p-2 rounded-lg transition-colors duration-200',
             'hover:bg-surface-800 text-surface-400 hover:text-white',
             isCollapsed && 'mx-auto'
           )}
@@ -109,7 +107,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
             to={item.path}
             className={({ isActive }) =>
               cn(
-                'group flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200',
+                'group flex items-center gap-3 px-3 py-2.5 rounded-xl transition-colors duration-200',
                 'text-surface-400 hover:text-white',
                 isActive
                   ? 'bg-primary-500/15 text-primary-400 border border-primary-500/30'
@@ -162,7 +160,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
             to={item.path}
             className={({ isActive }) =>
               cn(
-                'group flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200',
+                'group flex items-center gap-3 px-3 py-2.5 rounded-xl transition-colors duration-200',
                 'text-surface-400 hover:text-white',
                 isActive
                   ? 'bg-surface-800 text-white'
@@ -195,7 +193,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
           </div>
         )}
       </div>
-    </motion.aside>
+    </aside>
   );
 };
 
