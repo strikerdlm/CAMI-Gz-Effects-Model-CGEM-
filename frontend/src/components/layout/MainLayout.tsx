@@ -39,6 +39,9 @@ export const MainLayout: React.FC = () => {
         onToggle={() => setSidebarCollapsed(!sidebarCollapsed)}
       />
 
+      {/* Top Bar */}
+      <TopBar />
+
       {/* Main Content Area */}
       <motion.main
         id="main-content"
@@ -50,9 +53,6 @@ export const MainLayout: React.FC = () => {
         transition={{ duration: 0.3, ease: 'easeInOut' }}
         className="min-h-screen"
       >
-        {/* Top Bar */}
-        <TopBar />
-
         {/* Page Content */}
         <div className="p-6 pt-20">
           <AnimatePresence mode="wait">
