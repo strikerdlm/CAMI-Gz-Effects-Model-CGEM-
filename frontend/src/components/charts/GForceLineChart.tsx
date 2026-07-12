@@ -176,7 +176,7 @@ export const GForceLineChart: React.FC<GForceLineChartProps> = ({
               {
                 yAxis: PHYSIOLOGICAL_THRESHOLDS.safe_g_range[1],
                 lineStyle: { color: 'rgba(251, 191, 36, 0.6)' },
-                label: { formatter: 'Safe Limit', color: '#fbbf24' },
+                label: { formatter: '+4 G reference', color: '#fbbf24' },
               },
               {
                 yAxis: PHYSIOLOGICAL_THRESHOLDS.redout_g,

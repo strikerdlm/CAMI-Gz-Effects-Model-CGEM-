@@ -32,7 +32,6 @@ import {
   type ModelVariableKey,
 } from '../components/charts';
 import { MANEUVERS_BY_ID } from '../data/maneuvers';
-import { simulateCGEMResult } from '../services/mockData';
 import { DEFAULT_COUNTERMEASURES } from '../utils/constants';
 import {
   cgemApiBaseURL,
@@ -44,8 +43,10 @@ import {
 import { adaptCgemRun } from '../services/runCgemAdapter';
 import { calculateProfileStats, computeStateDurations } from '../utils/calculations';
 import { cn } from '../utils';
-import type { CGEMResult, Countermeasures, PilotConfig } from '../types';
+import type { CGEMResult, Countermeasures } from '../types';
 import type { RunCGEMRequest, PilotConfigRequest } from '../services/types';
+import { pilotConfigFromPrefs, pilotConfigWithOverrides } from '../services/pilotConfig';
+import { useUserPrefs } from '../state/useUserPrefs';
 
 type ViewMode = 'grid' | 'single';
 type ChartType = 'lines' | 'heatmap' | 'radar' | 'histogram' | 'durations' | 'flows';
@@ -72,14 +73,12 @@ const PILOT_PRESETS: PilotPreset[] = [
   {
     id: 'elite_balanced',
     label: 'Elite Balanced',
-    summary: 'Median physiology with moderate AGSM and seat optimization.',
+    summary: 'Standard profile 2 with moderate AGSM and G-suit support.',
     whoProfile: 2,
     tag: 'balanced',
     countermeasureOverrides: {
       agsm_effectiveness: 0.45,
       gsuit_max_psi: 3.0,
-      seat_tilt_deg: 12,
-      dehydration_level: 0.1,
     },
   },
   {
@@ -91,8 +90,6 @@ const PILOT_PRESETS: PilotPreset[] = [
     countermeasureOverrides: {
       agsm_effectiveness: 0.25,
       gsuit_max_psi: 1.5,
-      seat_tilt_deg: 8,
-      dehydration_level: 0.2,
     },
   },
   {
@@ -104,21 +101,17 @@ const PILOT_PRESETS: PilotPreset[] = [
     countermeasureOverrides: {
       agsm_effectiveness: 0.7,
       gsuit_max_psi: 5.0,
-      seat_tilt_deg: 15,
-      dehydration_level: 0.05,
     },
   },
   {
     id: 'degraded_state',
     label: 'Degraded State',
-    summary: 'Fatigue-like condition for conservative scenario analysis.',
+    summary: 'Standard profile 6 with limited active protection.',
     whoProfile: 6,
     tag: 'degraded',
     countermeasureOverrides: {
       agsm_effectiveness: 0.1,
       gsuit_max_psi: 0.5,
-      seat_tilt_deg: 6,
-      dehydration_level: 0.35,
     },
   },
 ];
@@ -167,6 +160,7 @@ const ApiStatusBanner: React.FC = () => {
 };
 
 export const DashboardPage: React.FC = () => {
+  const prefs = useUserPrefs();
   const [selectedProfileId, setSelectedProfileId] = useState('high_g_turn');
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
   const [selectedChart, setSelectedChart] = useState<ChartType>('lines');
@@ -190,23 +184,17 @@ export const DashboardPage: React.FC = () => {
   );
 
   // ── Real-API path ────────────────────────────────────────────────────
-  // Fire /run-cgem on the FastAPI service; fall back to mock simulator
-  // only when the service is unreachable.
+  // Fire /run-cgem on the authoritative FastAPI service.
   const health = useHealth();
   const apiAlive = health.data?.status === 'ok';
   const runCgem = useRunCgem();
 
   useEffect(() => {
     if (!apiAlive || !profile) return;
-    const pilot: PilotConfigRequest = {
+    const overrides: Partial<PilotConfigRequest> = {
       who_profile: selectedPreset.whoProfile,
-      g_tolerance_multiplier: 1.0,
-      dehydration_level:
-        selectedPreset.countermeasureOverrides.dehydration_level ??
-        DEFAULT_COUNTERMEASURES.dehydration_level ??
-        0,
-      countermeasures_label:
-        (selectedPreset.countermeasureOverrides.agsm_effectiveness ?? 0) > 0 ? 'agsm' : 'none',
+      // Standard Fortran profiles override custom physiology fields.
+      dehydration_level: 0,
       gsuit_max_psi:
         selectedPreset.countermeasureOverrides.gsuit_max_psi ??
         DEFAULT_COUNTERMEASURES.gsuit_max_psi ??
@@ -221,32 +209,22 @@ export const DashboardPage: React.FC = () => {
         0,
       pbg_max_mmhg: selectedPreset.countermeasureOverrides.pbg_max_mmhg ?? 0,
     };
+    const pilot = pilotConfigWithOverrides(pilotConfigFromPrefs(prefs), overrides);
     const req: RunCGEMRequest = { maneuver: selectedProfileId, pilot };
     runCgem.mutate(req);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedProfileId, selectedPresetId, apiAlive]);
+  }, [selectedProfileId, selectedPresetId, apiAlive, prefs]);
 
   const result = useMemo<CGEMResult | null>(() => {
-    if (runCgem.data) {
+    if (apiAlive && runCgem.data) {
       try {
         return adaptCgemRun(runCgem.data);
       } catch (e) {
-        console.error('Failed to adapt /run-cgem response, falling back to mock', e);
+        console.error('Failed to adapt /run-cgem response', e);
       }
     }
-    if (apiAlive) return null; // wait for response; do not fall back when API is up
-    // Offline fallback: mock simulator (legacy path)
-    if (!profile) return null;
-    const countermeasures: Countermeasures = {
-      ...DEFAULT_COUNTERMEASURES,
-      ...selectedPreset.countermeasureOverrides,
-    };
-    const config: PilotConfig = {
-      who_profile: selectedPreset.whoProfile,
-      countermeasures,
-    };
-    return simulateCGEMResult(profile, config);
-  }, [runCgem.data, apiAlive, profile, selectedPreset]);
+    return null;
+  }, [apiAlive, runCgem.data]);
 
   const durations = useMemo(() => {
     if (!result) return null;
@@ -278,8 +256,13 @@ export const DashboardPage: React.FC = () => {
   }
   if (!result || !durations) {
     return (
-      <div className="flex items-center justify-center h-96">
-        <p className="text-surface-400 font-mono">Loading dashboard data…</p>
+      <div className="flex flex-col items-center justify-center h-96 gap-3 text-center px-6">
+        <p className="text-hud-red font-mono tracking-callsign">CGEM RESULTS UNAVAILABLE</p>
+        <p className="text-surface-400 text-sm max-w-xl">
+          No physiological result is shown while the authoritative API is offline.
+          Start <code>uvicorn cgem_ext.api.main:app</code> at {cgemApiBaseURL}.
+          This research interface is not an operational flight-safety system.
+        </p>
       </div>
     );
   }

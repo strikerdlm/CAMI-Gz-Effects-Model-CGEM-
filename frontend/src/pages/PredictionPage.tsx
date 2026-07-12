@@ -2,14 +2,12 @@
  * Prediction Page — Phase-6 wiring
  *
  * Two prediction paths backed by the FastAPI service:
- *   • Surrogate (POST /predict)   — fast (~50 ms), conformal CI + OOD flag
+ *   • Surrogate (POST /predict)   — fast (~50 ms), conformal PI + OOD flag
  *   • Authoritative (POST /run-cgem) — Fortran subprocess (~3 s), full
  *     time-series + event scalars
  *
  * The form (profile picker + pilot config + countermeasures) drives both
- * paths. The page falls back gracefully when the backend is unreachable
- * — the legacy mock simulation is still available via
- * services/mockData.ts but is no longer the primary data source.
+ * paths. The page reports backend unavailability without inventing physiology.
  */
 
 import React, { useMemo, useState } from 'react';
@@ -46,35 +44,30 @@ import {
 } from '../services/cgemApi';
 import type {
   CGEMRunResponse,
-  CountermeasuresLabel,
+  PilotConfigRequest,
   PredictionRequest,
   PredictionResponse,
 } from '../services/types';
+import { pilotConfigFromPrefs, pilotConfigWithOverrides } from '../services/pilotConfig';
+import { useUserPrefs } from '../state/useUserPrefs';
 
 /** Map the local Countermeasures + who_profile to a PredictionRequest body. */
 function buildRequest(
   selectedProfileId: string,
+  basePilot: PilotConfigRequest,
   whoProfile: number | null,
   cm: typeof DEFAULT_COUNTERMEASURES,
 ): PredictionRequest {
-  const label: CountermeasuresLabel =
-    cm.gsuit_max_psi >= 5 && cm.agsm_effectiveness >= 0.5
-      ? 'suit_agsm'
-      : cm.agsm_effectiveness > 0
-      ? 'agsm'
-      : 'none';
   return {
     maneuver: { maneuver: selectedProfileId },
-    pilot: {
+    pilot: pilotConfigWithOverrides(basePilot, {
       who_profile: whoProfile,
-      g_tolerance_multiplier: 1.0,
       dehydration_level: cm.dehydration_level,
-      countermeasures_label: label,
       gsuit_max_psi: cm.gsuit_max_psi,
       gsuit_coverage_fraction: cm.gsuit_coverage_fraction,
       agsm_effectiveness: cm.agsm_effectiveness,
       pbg_max_mmhg: cm.pbg_max_mmhg ?? 0,
-    },
+    }),
   };
 }
 
@@ -103,9 +96,14 @@ const formatTime = (t: number | null | undefined): string =>
   t === null || t === undefined ? '—' : `${t.toFixed(2)}s`;
 
 export const PredictionPage: React.FC = () => {
+  const prefs = useUserPrefs();
+  const preferredPilot = useMemo(() => pilotConfigFromPrefs(prefs), [prefs]);
   const [selectedProfileId, setSelectedProfileId] = useState('high_g_turn');
-  const [whoProfile, setWhoProfile] = useState<number | null>(2);
-  const [countermeasures, setCountermeasures] = useState(DEFAULT_COUNTERMEASURES);
+  const [whoProfile, setWhoProfile] = useState<number | null>(preferredPilot.who_profile);
+  const [countermeasures, setCountermeasures] = useState({
+    ...DEFAULT_COUNTERMEASURES,
+    ...prefs.defaults,
+  });
 
   const profile = AEROBATIC_PROFILES[selectedProfileId];
   const selectedStandardProfile = STANDARD_PROFILES.find((p) => p.id === whoProfile);
@@ -115,8 +113,8 @@ export const PredictionPage: React.FC = () => {
   const runCgemMutation = useRunCgem();
 
   const requestBody = useMemo(
-    () => buildRequest(selectedProfileId, whoProfile, countermeasures),
-    [selectedProfileId, whoProfile, countermeasures],
+    () => buildRequest(selectedProfileId, preferredPilot, whoProfile, countermeasures),
+    [selectedProfileId, preferredPilot, whoProfile, countermeasures],
   );
 
   const handlePredict = () => {
@@ -480,7 +478,7 @@ export const PredictionPage: React.FC = () => {
               <h3 className="text-lg font-semibold text-white mb-2">Ready to run</h3>
               <p className="text-surface-400 max-w-md mx-auto">
                 Click <strong>Predict</strong> for a fast surrogate result with
-                conformal CI + OOD flag, or <strong>Run authoritative CGEM</strong>
+                conformal PI + OOD flag, or <strong>Run authoritative CGEM</strong>
                 {' '}for a full Fortran-binary simulation with time-series.
               </p>
             </motion.div>

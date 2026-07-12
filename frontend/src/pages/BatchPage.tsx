@@ -4,12 +4,10 @@
  * Sweeps all 72 registered maneuvers through the FastAPI surrogate via
  * a single POST /sweep call. The backend evaluates the trained
  * XGBoost emulator (~50 µs/row) so even with 72 inputs the round-trip
- * is sub-second. Each row carries point + conformal CI + OOD flag,
+ * is sub-second. Each row carries point + conformal PI + OOD flag,
  * which we project onto a sortable table.
  *
- * Falls back to a friendly "API unreachable" banner when the backend
- * is offline; the legacy mock sweep lives in services/mockData.ts but
- * is no longer the primary data source.
+ * Reports a friendly "API unreachable" banner when the backend is offline.
  */
 
 import React, { useMemo, useState } from 'react';
@@ -49,33 +47,26 @@ function getTarget(p: PredictionResponse, name: string) {
   return p.targets.find((t) => t.target === name);
 }
 
-function expectedTime(p: PredictionResponse, name: string): number | null {
-  const t = getTarget(p, name);
-  if (!t) return null;
-  if (t.censored && t.expected_time_s !== null && t.expected_time_s !== undefined) {
-    return t.expected_time_s;
-  }
-  return t.point;
-}
-
-function statusColor(p: PredictionResponse): string {
-  const gloc = getTarget(p, 'time_to_gloc_s');
-  const blackout = getTarget(p, 'time_to_blackout_s');
-  const greyout = getTarget(p, 'time_to_greyout_s');
-  const pGloc = gloc?.event_probability ?? 0;
-  const pBlackout = blackout?.event_probability ?? 0;
-  const pGreyout = greyout?.event_probability ?? 0;
-  if (pGloc >= 0.5) return 'danger';
-  if (pBlackout >= 0.5) return 'warning';
-  if (pGreyout >= 0.5) return 'caution';
-  return 'success';
+// This pure comparator is exported for deterministic ranking tests.
+// eslint-disable-next-line react-refresh/only-export-components
+export function compareEventRisk(
+  a: PredictionResponse,
+  b: PredictionResponse,
+  targetName: string,
+): number {
+  const left = getTarget(a, targetName);
+  const right = getTarget(b, targetName);
+  const probabilityOrder =
+    (right?.event_probability ?? -1) - (left?.event_probability ?? -1);
+  if (probabilityOrder !== 0) return probabilityOrder;
+  const conditionalTimeOrder = (left?.point ?? Infinity) - (right?.point ?? Infinity);
+  if (conditionalTimeOrder !== 0) return conditionalTimeOrder;
+  return a.resolved_maneuver.localeCompare(b.resolved_maneuver);
 }
 
 const STATUS_STYLES: Record<string, string> = {
-  success: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30',
-  caution: 'bg-yellow-500/15 text-yellow-300 border-yellow-500/30',
-  warning: 'bg-orange-500/15 text-orange-300 border-orange-500/30',
-  danger: 'bg-rose-500/15 text-rose-300 border-rose-500/30',
+  'in envelope': 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30',
+  OOD: 'bg-amber-500/15 text-amber-300 border-amber-500/30',
 };
 
 export const BatchPage: React.FC = () => {
@@ -119,21 +110,12 @@ export const BatchPage: React.FC = () => {
         case 'ood':
           return Number(b.prediction.ood) - Number(a.prediction.ood);
         case 'greyout':
-          return (
-            (expectedTime(a.prediction, 'time_to_greyout_s') ?? Infinity) -
-            (expectedTime(b.prediction, 'time_to_greyout_s') ?? Infinity)
-          );
+          return compareEventRisk(a.prediction, b.prediction, 'time_to_greyout_s');
         case 'blackout':
-          return (
-            (expectedTime(a.prediction, 'time_to_blackout_s') ?? Infinity) -
-            (expectedTime(b.prediction, 'time_to_blackout_s') ?? Infinity)
-          );
+          return compareEventRisk(a.prediction, b.prediction, 'time_to_blackout_s');
         case 'gloc':
         default:
-          return (
-            (expectedTime(a.prediction, 'time_to_gloc_s') ?? Infinity) -
-            (expectedTime(b.prediction, 'time_to_gloc_s') ?? Infinity)
-          );
+          return compareEventRisk(a.prediction, b.prediction, 'time_to_gloc_s');
       }
     });
     return items;
@@ -159,7 +141,7 @@ export const BatchPage: React.FC = () => {
               Sweep all {profileIds.length} registered maneuvers through the
               FastAPI surrogate (POST <code>/sweep</code>) at the default
               pilot configuration (who_profile = 2, no countermeasures).
-              Each row reports point estimate, conformal 95 % CI, event
+              Each row reports conditional point estimate, conformal 95 % PI, event
               probability, and OOD flag.
             </p>
             <div className="mt-2 text-xs text-surface-500">
@@ -230,7 +212,7 @@ export const BatchPage: React.FC = () => {
             icon={<ShieldAlert className="w-5 h-5 text-amber-400" />}
           />
           <SummaryCard
-            label="High G-LOC risk"
+            label="G-LOC probability ≥ 50%"
             value={String(
               rows.filter(
                 (r) =>
@@ -259,15 +241,18 @@ export const BatchPage: React.FC = () => {
                 <tr>
                   <th className="px-4 py-3 text-left font-medium">Maneuver</th>
                   <th className="px-4 py-3 text-right font-medium">Status</th>
-                  <th className="px-4 py-3 text-right font-medium">Greyout E[t]</th>
-                  <th className="px-4 py-3 text-right font-medium">Blackout E[t]</th>
-                  <th className="px-4 py-3 text-right font-medium">G-LOC E[t]</th>
+                  <th className="px-4 py-3 text-right font-medium">Greyout event probability</th>
+                  <th className="px-4 py-3 text-right font-medium">Greyout conditional time if event occurs</th>
+                  <th className="px-4 py-3 text-right font-medium">Blackout event probability</th>
+                  <th className="px-4 py-3 text-right font-medium">Blackout conditional time if event occurs</th>
+                  <th className="px-4 py-3 text-right font-medium">G-LOC event probability</th>
+                  <th className="px-4 py-3 text-right font-medium">G-LOC conditional time if event occurs</th>
                   <th className="px-4 py-3 text-right font-medium">OOD score</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-surface-700/40">
                 {sortedRows.map(({ profileId, prediction }) => {
-                  const status = statusColor(prediction);
+                  const status = prediction.ood ? 'OOD' : 'in envelope';
                   return (
                     <tr key={profileId} className="hover:bg-surface-800/30 transition-colors">
                       <td className="px-4 py-2 text-surface-200 font-medium">
@@ -284,13 +269,22 @@ export const BatchPage: React.FC = () => {
                         </span>
                       </td>
                       <td className="px-4 py-2 text-right tabular-nums text-surface-300">
-                        {fmt(expectedTime(prediction, 'time_to_greyout_s'))}
+                        {fmtProbability(prediction, 'time_to_greyout_s')}
                       </td>
                       <td className="px-4 py-2 text-right tabular-nums text-surface-300">
-                        {fmt(expectedTime(prediction, 'time_to_blackout_s'))}
+                        {fmtConditionalTime(prediction, 'time_to_greyout_s')}
                       </td>
                       <td className="px-4 py-2 text-right tabular-nums text-surface-300">
-                        {fmt(expectedTime(prediction, 'time_to_gloc_s'))}
+                        {fmtProbability(prediction, 'time_to_blackout_s')}
+                      </td>
+                      <td className="px-4 py-2 text-right tabular-nums text-surface-300">
+                        {fmtConditionalTime(prediction, 'time_to_blackout_s')}
+                      </td>
+                      <td className="px-4 py-2 text-right tabular-nums text-surface-300">
+                        {fmtProbability(prediction, 'time_to_gloc_s')}
+                      </td>
+                      <td className="px-4 py-2 text-right tabular-nums text-surface-300">
+                        {fmtConditionalTime(prediction, 'time_to_gloc_s')}
                       </td>
                       <td className="px-4 py-2 text-right tabular-nums">
                         <span
@@ -356,16 +350,25 @@ const SortControl: React.FC<{
       onChange={(e) => setSortKey(e.target.value as SortKey)}
       className="bg-surface-800/60 border border-surface-700 rounded-md px-2 py-1 text-surface-200"
     >
-      <option value="gloc">Sort: G-LOC time ↑</option>
-      <option value="blackout">Sort: Blackout time ↑</option>
-      <option value="greyout">Sort: Greyout time ↑</option>
+      <option value="gloc">Sort: G-LOC risk ↓</option>
+      <option value="blackout">Sort: Blackout risk ↓</option>
+      <option value="greyout">Sort: Greyout risk ↓</option>
       <option value="ood">Sort: OOD first</option>
       <option value="profile">Sort: profile name</option>
     </select>
   </div>
 );
 
-const fmt = (v: number | null | undefined): string =>
-  v === null || v === undefined ? '—' : v.toFixed(2);
+const fmtProbability = (prediction: PredictionResponse, name: string): string => {
+  const target = getTarget(prediction, name);
+  return target?.event_probability == null
+    ? '—'
+    : `${(target.event_probability * 100).toFixed(0)}%`;
+};
+
+const fmtConditionalTime = (prediction: PredictionResponse, name: string): string => {
+  const target = getTarget(prediction, name);
+  return target ? `${target.point.toFixed(2)}s` : '—';
+};
 
 export default BatchPage;

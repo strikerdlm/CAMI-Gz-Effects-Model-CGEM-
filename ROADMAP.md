@@ -116,13 +116,29 @@ Polish (deferred to follow-up commits, do not block Phase 4–7):
 - [x] `frontend/src/services/types.ts` — hand-maintained TypeScript wire contract mirroring `cgem_ext.api.schemas` (regenerable via `npx openapi-typescript ../docs/api/openapi.json`)
 - [x] `frontend/src/services/cgemApi.ts` — typed axios client + React Query hooks (`useHealth`, `useVersion`, `useSensitivity`, `usePredict`, `useSweep`, `useRunCgem`); base URL via `VITE_API_URL`
 - [x] `frontend/src/components/ui/OODBanner.tsx` — emerald "in-envelope" / amber "OOD" banner sourced from the `/predict` response
-- [x] `frontend/src/components/ui/PredictionTable.tsx` — per-target table (point + 95 % conformal CI; censored rows show P(event) + expected E[t])
+- [x] `frontend/src/components/ui/PredictionTable.tsx` — per-target table (point + 95 % conformal prediction interval; censored rows separate P(event), conditional time, and P × time)
 - [x] `frontend/src/components/charts/SensitivityChart.tsx` — Sobol S1 + ST bar chart per target driven by `useSensitivity`
 - [x] `PredictionPage` rewired: `usePredict` (surrogate, fast) + `useRunCgem` (Fortran subprocess, authoritative), OOD banner, conformal table, /version status header, error states with `apiErrorMessage`
 - [x] `BatchPage` rewired: `useSweep` over all 72 maneuvers in a single round-trip; sortable table; OOD-first sort; summary cards (total / in-envelope / OOD / high-G-LOC)
 - [x] `AnalysisPage`: appended a Sobol-sensitivity panel with target picker (5 targets); preserves the existing maneuver-explanation tree
 - [x] `DashboardPage`: API status banner showing `/version` (package version + binary SHA prefix + dataset seed)
 - [ ] `frontend/e2e/` Playwright golden-path test — deferred; the unit-test surface lives in the Python tests at `tests/test_api.py`
+
+### 2026 trust-contract stabilization (Phase 0 of the improvement plan)
+
+- [x] Named maneuvers resolve one server-owned descriptor/category context;
+  complete inline descriptors carry explicit global calibration scope.
+- [x] Non-binary API endpoint tests use injected deterministic state and run in
+  CI without fitting models or invoking the Fortran executable.
+- [x] `/run-cgem` uses bounded threadpool execution, a subprocess timeout, and
+  guaranteed temporary-run cleanup without changing its protected JSON shape.
+- [x] Simulator, Prediction, Dashboard, and Settings use one validated pilot
+  configuration builder backed by saved preferences.
+- [x] Offline result pages do not substitute heuristic fixture physiology.
+- [x] Batch results rank event probability separately from conditional event
+  time and use stable maneuver-ID tie-breaking.
+- [x] Frontend copy uses prediction-interval, contextual load/reference, source,
+  and research-use language.
 
 ## Phase 7 — Paper 1 (AMHP methods paper)
 
@@ -164,9 +180,10 @@ Polish (deferred to follow-up commits, do not block Phase 4–7):
 
 GitHub Actions (`.github/workflows/ci.yml`) runs on every push and pull request:
 
-1. `pytest tests/` (with `--strict-markers --strict-config`)
+1. Non-binary API and extension tests (with `--strict-markers --strict-config`)
 2. `ruff check cgem_ext tests`
 3. `mypy cgem_ext tests`
+4. Frontend unit tests, type-check, lint, and production build
 
 Failing CI blocks merging to `main`.
 
