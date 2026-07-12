@@ -17,6 +17,8 @@ export type ManeuverCategory =
 export interface ManeuverSample {
   nz: number;
   duration_ms: number;
+  pitch_deg?: number;
+  roll_deg?: number;
 }
 
 export interface Maneuver {

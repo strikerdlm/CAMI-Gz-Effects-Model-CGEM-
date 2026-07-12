@@ -15,9 +15,8 @@ const clamp = (v: number, lo: number, hi: number): number =>
  * Sky / ground rectangles are clipped to a circle, rotated by roll
  * and translated by pitch on a 2 px-per-degree ladder.
  *
- * NOTE: This is a visual proxy in the CGEM simulator — pitch is
- * integrated from the (Gz − 1) trace; roll is a cosmetic oscillation
- * tuned by maneuver category. NOT a physically faithful attitude.
+ * Pitch and roll are synthesized per maneuver template at build time
+ * (see scripts/attitude_synthesis.py) and interpolated during playback.
  */
 export const AttitudeIndicator: React.FC<AttitudeIndicatorProps> = ({
   roll,
@@ -25,8 +24,9 @@ export const AttitudeIndicator: React.FC<AttitudeIndicatorProps> = ({
   size = 240,
   showLabels = true,
 }) => {
-  const r = clamp(roll, -180, 180);
-  const p = clamp(pitch, -45, 45);
+  const displayRoll = ((roll % 360) + 360) % 360;
+  const displayRollSigned = displayRoll > 180 ? displayRoll - 360 : displayRoll;
+  const p = clamp(pitch, -90, 90);
   const pitchPx = p * 2;
 
   return (
@@ -53,7 +53,7 @@ export const AttitudeIndicator: React.FC<AttitudeIndicatorProps> = ({
       {/* Outer ring */}
       <circle cx="120" cy="120" r="100" fill="#0a0e0c" stroke="#2a3530" strokeWidth="1.5" />
 
-      <g clipPath="url(#adi-clip)" transform={`rotate(${-r} 120 120)`}>
+      <g clipPath="url(#adi-clip)" transform={`rotate(${-roll} 120 120)`}>
         <g transform={`translate(0 ${pitchPx})`}>
           <rect x="-120" y="-320" width="480" height="440" fill="url(#sky-grad)" />
           <rect x="-120" y="120" width="480" height="440" fill="url(#ground-grad)" />
@@ -123,7 +123,7 @@ export const AttitudeIndicator: React.FC<AttitudeIndicatorProps> = ({
       </g>
 
       {/* Roll pointer */}
-      <g transform={`rotate(${-r} 120 120)`}>
+      <g transform={`rotate(${-roll} 120 120)`}>
         <polygon points="120,30 115,42 125,42" fill="#FFB400" />
       </g>
 
@@ -148,7 +148,7 @@ export const AttitudeIndicator: React.FC<AttitudeIndicatorProps> = ({
           textAnchor="middle"
           letterSpacing="2"
         >
-          ATT  R {r.toFixed(0).padStart(3, ' ')}°  P {p.toFixed(0).padStart(3, ' ')}°
+          ATT  R {displayRollSigned.toFixed(0).padStart(4, ' ')}°  P {p.toFixed(0).padStart(3, ' ')}°
         </text>
       )}
     </svg>

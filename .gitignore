@@ -107,11 +107,10 @@ data/results/*
 !data/results/h6/
 !data/results/h6/*.json
 
-# Pandoc-rendered submission outputs are regenerable from the
-# markdown sources via `python -m scripts.render_manuscript`. The
-# binaries are large and re-render on every edit; keeping them out
-# of git avoids noise.
-docs/publication/rendered/
+# Publication manuscript & submission materials (local only — not for public repo)
+docs/publication/
+Docs/publication/
+
 cgem_ext/**/__pycache__/
 
 # Build artifacts
@@ -125,6 +124,7 @@ dist/
 # IDE
 .idea/
 .vscode/
+.cursor/
 *.swp
 # Node modules (npm install artefacts at the repo root, e.g., the
 # scripts/render_echarts_svg.mjs renderer pulls echarts + jsdom).

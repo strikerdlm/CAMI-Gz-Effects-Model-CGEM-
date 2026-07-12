@@ -19,75 +19,111 @@
     "samples": [
       {
         "nz": 0.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 14.5,
+        "roll_deg": 0.0
       },
       {
         "nz": 2.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 29.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 3.5,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 46.41,
+        "roll_deg": 0.0
       },
       {
         "nz": 5.0,
-        "duration_ms": 700.0
+        "duration_ms": 700.0,
+        "pitch_deg": 66.71,
+        "roll_deg": 0.0
       },
       {
         "nz": 5.5,
-        "duration_ms": 700.0
+        "duration_ms": 700.0,
+        "pitch_deg": 87.01,
+        "roll_deg": 0.0
       },
       {
         "nz": 4.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 8.0,
+        "roll_deg": 180.0
       },
       {
         "nz": 2.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 8.0,
+        "roll_deg": 180.0
       },
       {
         "nz": 0.5,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 90.0,
+        "roll_deg": 0.0
       },
       {
         "nz": -1.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 90.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.5,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 90.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 6.0,
-        "duration_ms": 250.0
+        "duration_ms": 250.0,
+        "pitch_deg": 90.0,
+        "roll_deg": 360.0
       },
       {
         "nz": 0.5,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 82.5,
+        "roll_deg": 0.0
       },
       {
         "nz": -0.8,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 72.5,
+        "roll_deg": 0.0
       },
       {
         "nz": 1.5,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 60.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 3.0,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 45.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 4.5,
-        "duration_ms": 700.0
+        "duration_ms": 700.0,
+        "pitch_deg": 27.5,
+        "roll_deg": 0.0
       },
       {
         "nz": 3.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 15.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 1.0,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       }
     ]
   },
@@ -111,51 +147,75 @@
     "samples": [
       {
         "nz": 1.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 5.16,
+        "roll_deg": 11.92
       },
       {
         "nz": 2.5,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 9.15,
+        "roll_deg": 21.46
       },
       {
         "nz": 4.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 12.87,
+        "roll_deg": 30.99
       },
       {
         "nz": 5.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 16.25,
+        "roll_deg": 40.53
       },
       {
         "nz": 5.0,
-        "duration_ms": 3000.0
+        "duration_ms": 3000.0,
+        "pitch_deg": 23.17,
+        "roll_deg": 112.05
       },
       {
         "nz": 4.5,
-        "duration_ms": 3000.0
+        "duration_ms": 3000.0,
+        "pitch_deg": -1.56,
+        "roll_deg": 183.58
       },
       {
         "nz": 5.0,
-        "duration_ms": 2000.0
+        "duration_ms": 2000.0,
+        "pitch_deg": -19.5,
+        "roll_deg": 231.26
       },
       {
         "nz": 4.5,
-        "duration_ms": 2000.0
+        "duration_ms": 2000.0,
+        "pitch_deg": -24.7,
+        "roll_deg": 278.94
       },
       {
         "nz": 4.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": -21.02,
+        "roll_deg": 302.78
       },
       {
         "nz": 3.0,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": -15.44,
+        "roll_deg": 321.85
       },
       {
         "nz": 1.5,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": -10.11,
+        "roll_deg": 336.16
       },
       {
         "nz": 1.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": -0.0,
+        "roll_deg": 360.0
       }
     ]
   },
@@ -179,67 +239,99 @@
     "samples": [
       {
         "nz": 1.0,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": 14.06,
+        "roll_deg": 0.0
       },
       {
         "nz": 4.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 21.09,
+        "roll_deg": 0.0
       },
       {
         "nz": 2.5,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": 35.16,
+        "roll_deg": 0.0
       },
       {
         "nz": 1.5,
-        "duration_ms": 1500.0
+        "duration_ms": 1500.0,
+        "pitch_deg": 61.52,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.5,
-        "duration_ms": 2000.0
+        "duration_ms": 2000.0,
+        "pitch_deg": 90.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.0,
-        "duration_ms": 1500.0
+        "duration_ms": 1500.0,
+        "pitch_deg": 90.0,
+        "roll_deg": 0.0
       },
       {
         "nz": -0.5,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": 63.28,
+        "roll_deg": 180.0
       },
       {
         "nz": -1.5,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 45.7,
+        "roll_deg": 180.0
       },
       {
         "nz": -2.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 28.13,
+        "roll_deg": 180.0
       },
       {
         "nz": -1.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 14.06,
+        "roll_deg": 180.0
       },
       {
         "nz": 0.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 180.0
       },
       {
         "nz": 1.5,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 22.5,
+        "roll_deg": 180.0
       },
       {
         "nz": 3.5,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 45.0,
+        "roll_deg": 180.0
       },
       {
         "nz": 2.0,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 78.75,
+        "roll_deg": 180.0
       },
       {
         "nz": 1.2,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": 56.25,
+        "roll_deg": 0.0
       },
       {
         "nz": 1.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       }
     ]
   },
@@ -263,55 +355,81 @@
     "samples": [
       {
         "nz": 1.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 14.29,
+        "roll_deg": 0.0
       },
       {
         "nz": 3.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 25.71,
+        "roll_deg": 0.0
       },
       {
         "nz": 5.0,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 34.29,
+        "roll_deg": 0.0
       },
       {
         "nz": 7.0,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 42.86,
+        "roll_deg": 0.0
       },
       {
         "nz": 7.0,
-        "duration_ms": 2500.0
+        "duration_ms": 2500.0,
+        "pitch_deg": 65.71,
+        "roll_deg": 180.0
       },
       {
         "nz": 6.0,
-        "duration_ms": 1500.0
+        "duration_ms": 1500.0,
+        "pitch_deg": 22.86,
+        "roll_deg": 180.0
       },
       {
         "nz": 4.0,
-        "duration_ms": 1500.0
+        "duration_ms": 1500.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 90.0
       },
       {
         "nz": 2.5,
-        "duration_ms": 1500.0
+        "duration_ms": 1500.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 180.0
       },
       {
         "nz": 1.5,
-        "duration_ms": 1500.0
+        "duration_ms": 1500.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 180.0
       },
       {
         "nz": 0.7,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 180.0
       },
       {
         "nz": 0.5,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 180.0
       },
       {
         "nz": 0.8,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 180.0
       },
       {
         "nz": 1.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 180.0
       }
     ]
   },
@@ -335,55 +453,81 @@
     "samples": [
       {
         "nz": 1.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 47.24
       },
       {
         "nz": 0.5,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 103.94
       },
       {
         "nz": -0.5,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 160.63
       },
       {
         "nz": 0.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 10.45,
+        "roll_deg": 360.0
       },
       {
         "nz": 2.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 28.17,
+        "roll_deg": 360.0
       },
       {
         "nz": 5.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 42.34,
+        "roll_deg": 360.0
       },
       {
         "nz": 7.0,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 52.97,
+        "roll_deg": 360.0
       },
       {
         "nz": 8.0,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 63.6,
+        "roll_deg": 360.0
       },
       {
         "nz": 8.0,
-        "duration_ms": 2500.0
+        "duration_ms": 2500.0,
+        "pitch_deg": 27.81,
+        "roll_deg": 180.0
       },
       {
         "nz": 6.0,
-        "duration_ms": 2000.0
+        "duration_ms": 2000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 180.0
       },
       {
         "nz": 3.0,
-        "duration_ms": 2000.0
+        "duration_ms": 2000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 180.0
       },
       {
         "nz": 1.5,
-        "duration_ms": 1500.0
+        "duration_ms": 1500.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 180.0
       },
       {
         "nz": 1.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 180.0
       }
     ]
   },
@@ -407,51 +551,75 @@
     "samples": [
       {
         "nz": 1.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 2.5,
-        "duration_ms": 200.0
+        "duration_ms": 200.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 66.42
       },
       {
         "nz": 4.5,
-        "duration_ms": 200.0
+        "duration_ms": 200.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 77.16
       },
       {
         "nz": 6.5,
-        "duration_ms": 200.0
+        "duration_ms": 200.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 81.15
       },
       {
         "nz": 8.0,
-        "duration_ms": 200.0
+        "duration_ms": 200.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 82.82
       },
       {
         "nz": 9.0,
-        "duration_ms": 200.0
+        "duration_ms": 200.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 83.62
       },
       {
         "nz": 9.0,
-        "duration_ms": 3000.0
+        "duration_ms": 3000.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 83.62
       },
       {
         "nz": 7.5,
-        "duration_ms": 1500.0
+        "duration_ms": 1500.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 82.34
       },
       {
         "nz": 6.0,
-        "duration_ms": 3000.0
+        "duration_ms": 3000.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 80.41
       },
       {
         "nz": 4.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 75.52
       },
       {
         "nz": 2.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 60.0
       },
       {
         "nz": 1.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       }
     ]
   },
@@ -475,83 +643,123 @@
     "samples": [
       {
         "nz": 0.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 18.14,
+        "roll_deg": 0.0
       },
       {
         "nz": 2.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 40.82,
+        "roll_deg": 0.0
       },
       {
         "nz": 3.5,
-        "duration_ms": 700.0
+        "duration_ms": 700.0,
+        "pitch_deg": 72.58,
+        "roll_deg": 0.0
       },
       {
         "nz": 4.8,
-        "duration_ms": 700.0
+        "duration_ms": 700.0,
+        "pitch_deg": 75.67,
+        "roll_deg": 180.0
       },
       {
         "nz": 3.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 52.99,
+        "roll_deg": 180.0
       },
       {
         "nz": 1.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 34.85,
+        "roll_deg": 180.0
       },
       {
         "nz": 0.2,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 21.24,
+        "roll_deg": 180.0
       },
       {
         "nz": 0.0,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 7.63,
+        "roll_deg": 180.0
       },
       {
         "nz": 0.1,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": -5.98,
+        "roll_deg": 180.0
       },
       {
         "nz": 0.2,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": -19.06,
+        "roll_deg": 180.0
       },
       {
         "nz": 0.1,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": -28.17,
+        "roll_deg": 180.0
       },
       {
         "nz": 0.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": -40.32,
+        "roll_deg": 180.0
       },
       {
         "nz": 2.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": -55.5,
+        "roll_deg": 180.0
       },
       {
         "nz": 3.6,
-        "duration_ms": 700.0
+        "duration_ms": 700.0,
+        "pitch_deg": -76.76,
+        "roll_deg": 360.0
       },
       {
         "nz": 4.6,
-        "duration_ms": 700.0
+        "duration_ms": 700.0,
+        "pitch_deg": -81.99,
+        "roll_deg": 360.0
       },
       {
         "nz": 2.8,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": -66.8,
+        "roll_deg": 360.0
       },
       {
         "nz": 1.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": -54.66,
+        "roll_deg": 360.0
       },
       {
         "nz": 0.3,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": -42.51,
+        "roll_deg": 360.0
       },
       {
         "nz": 0.0,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": -24.29,
+        "roll_deg": 360.0
       },
       {
         "nz": 0.0,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 360.0
       }
     ]
   },
@@ -575,55 +783,81 @@
     "samples": [
       {
         "nz": 1.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 1.5,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 48.19
       },
       {
         "nz": 3.0,
-        "duration_ms": 200.0
+        "duration_ms": 200.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 70.53
       },
       {
         "nz": 5.0,
-        "duration_ms": 200.0
+        "duration_ms": 200.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 78.46
       },
       {
         "nz": 7.0,
-        "duration_ms": 200.0
+        "duration_ms": 200.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 81.79
       },
       {
         "nz": 9.0,
-        "duration_ms": 200.0
+        "duration_ms": 200.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 83.62
       },
       {
         "nz": 9.0,
-        "duration_ms": 4000.0
+        "duration_ms": 4000.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 83.62
       },
       {
         "nz": 8.5,
-        "duration_ms": 2000.0
+        "duration_ms": 2000.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 83.24
       },
       {
         "nz": 7.0,
-        "duration_ms": 4000.0
+        "duration_ms": 4000.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 81.79
       },
       {
         "nz": 5.0,
-        "duration_ms": 2000.0
+        "duration_ms": 2000.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 78.46
       },
       {
         "nz": 3.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 70.53
       },
       {
         "nz": 1.5,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 48.19
       },
       {
         "nz": 1.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       }
     ]
   },
@@ -647,59 +881,87 @@
     "samples": [
       {
         "nz": 1.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 3.0,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 70.53
       },
       {
         "nz": 6.0,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 80.41
       },
       {
         "nz": 9.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 83.62
       },
       {
         "nz": 9.0,
-        "duration_ms": 2500.0
+        "duration_ms": 2500.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 83.62
       },
       {
         "nz": 0.5,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 2.0,
-        "duration_ms": 200.0
+        "duration_ms": 200.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 60.0
       },
       {
         "nz": 6.0,
-        "duration_ms": 200.0
+        "duration_ms": 200.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 80.41
       },
       {
         "nz": 8.0,
-        "duration_ms": 200.0
+        "duration_ms": 200.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 82.82
       },
       {
         "nz": 8.0,
-        "duration_ms": 2500.0
+        "duration_ms": 2500.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 82.82
       },
       {
         "nz": 6.0,
-        "duration_ms": 3000.0
+        "duration_ms": 3000.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 80.41
       },
       {
         "nz": 3.0,
-        "duration_ms": 1500.0
+        "duration_ms": 1500.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 70.53
       },
       {
         "nz": 1.5,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 48.19
       },
       {
         "nz": 1.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       }
     ]
   },
@@ -723,59 +985,87 @@
     "samples": [
       {
         "nz": 1.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 4.0,
-        "duration_ms": 200.0
+        "duration_ms": 200.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 75.52
       },
       {
         "nz": 6.5,
-        "duration_ms": 200.0
+        "duration_ms": 200.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 81.15
       },
       {
         "nz": 6.0,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 80.41
       },
       {
         "nz": 1.0,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": -0.5,
-        "duration_ms": 200.0
+        "duration_ms": 200.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 3.0,
-        "duration_ms": 200.0
+        "duration_ms": 200.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 70.53
       },
       {
         "nz": 6.0,
-        "duration_ms": 200.0
+        "duration_ms": 200.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 80.41
       },
       {
         "nz": 6.0,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 80.41
       },
       {
         "nz": 0.5,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 4.0,
-        "duration_ms": 200.0
+        "duration_ms": 200.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 75.52
       },
       {
         "nz": 6.0,
-        "duration_ms": 200.0
+        "duration_ms": 200.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 80.41
       },
       {
         "nz": 5.5,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 79.52
       },
       {
         "nz": 1.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       }
     ]
   },
@@ -799,51 +1089,75 @@
     "samples": [
       {
         "nz": 1.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 3.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 70.53
       },
       {
         "nz": 5.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 78.46
       },
       {
         "nz": 7.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 81.79
       },
       {
         "nz": 7.5,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 82.34
       },
       {
         "nz": 7.5,
-        "duration_ms": 5000.0
+        "duration_ms": 5000.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 82.34
       },
       {
         "nz": 7.0,
-        "duration_ms": 5000.0
+        "duration_ms": 5000.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 81.79
       },
       {
         "nz": 6.5,
-        "duration_ms": 5000.0
+        "duration_ms": 5000.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 81.15
       },
       {
         "nz": 5.0,
-        "duration_ms": 2000.0
+        "duration_ms": 2000.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 78.46
       },
       {
         "nz": 3.0,
-        "duration_ms": 1500.0
+        "duration_ms": 1500.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 70.53
       },
       {
         "nz": 1.5,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 48.19
       },
       {
         "nz": 1.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       }
     ]
   },
@@ -867,83 +1181,123 @@
     "samples": [
       {
         "nz": 0.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 18.35,
+        "roll_deg": 0.0
       },
       {
         "nz": 2.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 36.7,
+        "roll_deg": 0.0
       },
       {
         "nz": 3.5,
-        "duration_ms": 700.0
+        "duration_ms": 700.0,
+        "pitch_deg": 62.39,
+        "roll_deg": 0.0
       },
       {
         "nz": 5.0,
-        "duration_ms": 700.0
+        "duration_ms": 700.0,
+        "pitch_deg": 88.07,
+        "roll_deg": 0.0
       },
       {
         "nz": 3.0,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 69.91,
+        "roll_deg": 180.0
       },
       {
         "nz": 1.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 51.56,
+        "roll_deg": 180.0
       },
       {
         "nz": 0.2,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 36.88,
+        "roll_deg": 180.0
       },
       {
         "nz": 0.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 22.2,
+        "roll_deg": 180.0
       },
       {
         "nz": -0.5,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 7.52,
+        "roll_deg": 180.0
       },
       {
         "nz": 0.5,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 48.72
       },
       {
         "nz": 1.5,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 131.28
       },
       {
         "nz": 2.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 180.0
       },
       {
         "nz": 3.5,
-        "duration_ms": 700.0
+        "duration_ms": 700.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 180.0
       },
       {
         "nz": 5.0,
-        "duration_ms": 700.0
+        "duration_ms": 700.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 180.0
       },
       {
         "nz": 3.0,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 180.0
       },
       {
         "nz": 1.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 180.0
       },
       {
         "nz": 0.2,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 180.0
       },
       {
         "nz": 0.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 180.0
       },
       {
         "nz": 0.0,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 180.0
       },
       {
         "nz": 0.0,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 180.0
       }
     ]
   },
@@ -967,91 +1321,135 @@
     "samples": [
       {
         "nz": 0.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": -13.43,
+        "roll_deg": 180.0
       },
       {
         "nz": -1.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": -26.87,
+        "roll_deg": 180.0
       },
       {
         "nz": -2.5,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": -42.99,
+        "roll_deg": 180.0
       },
       {
         "nz": -3.5,
-        "duration_ms": 700.0
+        "duration_ms": 700.0,
+        "pitch_deg": -61.79,
+        "roll_deg": 180.0
       },
       {
         "nz": -4.5,
-        "duration_ms": 700.0
+        "duration_ms": 700.0,
+        "pitch_deg": -80.6,
+        "roll_deg": 180.0
       },
       {
         "nz": -4.0,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": -83.28,
+        "roll_deg": 0.0
       },
       {
         "nz": -3.0,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": -67.16,
+        "roll_deg": 0.0
       },
       {
         "nz": -2.5,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": -51.04,
+        "roll_deg": 0.0
       },
       {
         "nz": -2.0,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": -29.55,
+        "roll_deg": 0.0
       },
       {
         "nz": -2.5,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": -13.43,
+        "roll_deg": 0.0
       },
       {
         "nz": -3.0,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 2.69,
+        "roll_deg": 0.0
       },
       {
         "nz": -3.5,
-        "duration_ms": 700.0
+        "duration_ms": 700.0,
+        "pitch_deg": 21.49,
+        "roll_deg": 0.0
       },
       {
         "nz": -4.5,
-        "duration_ms": 700.0
+        "duration_ms": 700.0,
+        "pitch_deg": 40.3,
+        "roll_deg": 0.0
       },
       {
         "nz": -4.0,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 56.42,
+        "roll_deg": 0.0
       },
       {
         "nz": -3.0,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 72.54,
+        "roll_deg": 0.0
       },
       {
         "nz": -2.5,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 88.66,
+        "roll_deg": 0.0
       },
       {
         "nz": -2.0,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 75.22,
+        "roll_deg": 180.0
       },
       {
         "nz": -1.5,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 59.1,
+        "roll_deg": 180.0
       },
       {
         "nz": -1.0,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 42.99,
+        "roll_deg": 180.0
       },
       {
         "nz": -0.5,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 29.55,
+        "roll_deg": 180.0
       },
       {
         "nz": 0.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 16.12,
+        "roll_deg": 180.0
       },
       {
         "nz": 0.5,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 180.0
       }
     ]
   },
@@ -1075,83 +1473,123 @@
     "samples": [
       {
         "nz": 1.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 33.33,
+        "roll_deg": 137.89
       },
       {
         "nz": 1.8,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 50.0,
+        "roll_deg": 173.87
       },
       {
         "nz": 2.5,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 63.33,
+        "roll_deg": 179.32
       },
       {
         "nz": 1.5,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 80.0,
+        "roll_deg": 155.88
       },
       {
         "nz": 0.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 83.33,
+        "roll_deg": 283.24
       },
       {
         "nz": -1.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 66.67,
+        "roll_deg": 211.26
       },
       {
         "nz": -0.5,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 53.33,
+        "roll_deg": 148.74
       },
       {
         "nz": 1.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 36.67,
+        "roll_deg": 76.76
       },
       {
         "nz": 2.2,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 20.0,
+        "roll_deg": 24.12
       },
       {
         "nz": 1.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 3.33,
+        "roll_deg": 0.68
       },
       {
         "nz": -0.5,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": -13.33,
+        "roll_deg": 10.86
       },
       {
         "nz": -1.2,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": -30.0,
+        "roll_deg": 52.72
       },
       {
         "nz": 0.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": -46.67,
+        "roll_deg": 118.44
       },
       {
         "nz": 1.5,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": -63.33,
+        "roll_deg": 195.69
       },
       {
         "nz": 2.5,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": -80.0,
+        "roll_deg": 270.0
       },
       {
         "nz": 1.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": -83.33,
+        "roll_deg": 507.45
       },
       {
         "nz": -0.8,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": -66.67,
+        "roll_deg": 537.27
       },
       {
         "nz": 0.5,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": -50.0,
+        "roll_deg": 533.87
       },
       {
         "nz": 1.5,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": -33.33,
+        "roll_deg": 497.89
       },
       {
         "nz": 1.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 360.0
       }
     ]
   },
@@ -1175,59 +1613,87 @@
     "samples": [
       {
         "nz": 1.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 6.12,
+        "roll_deg": 14.17
       },
       {
         "nz": 3.0,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 9.64,
+        "roll_deg": 22.68
       },
       {
         "nz": 4.5,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 13.99,
+        "roll_deg": 34.02
       },
       {
         "nz": 4.0,
-        "duration_ms": 1500.0
+        "duration_ms": 1500.0,
+        "pitch_deg": 24.31,
+        "roll_deg": 76.54
       },
       {
         "nz": 1.5,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 24.95,
+        "roll_deg": 93.54
       },
       {
         "nz": 3.5,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 24.16,
+        "roll_deg": 104.88
       },
       {
         "nz": 4.5,
-        "duration_ms": 1500.0
+        "duration_ms": 1500.0,
+        "pitch_deg": 13.47,
+        "roll_deg": 147.4
       },
       {
         "nz": 4.0,
-        "duration_ms": 1500.0
+        "duration_ms": 1500.0,
+        "pitch_deg": -4.31,
+        "roll_deg": 189.92
       },
       {
         "nz": 1.0,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": -11.32,
+        "roll_deg": 206.93
       },
       {
         "nz": 3.5,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": -15.48,
+        "roll_deg": 218.27
       },
       {
         "nz": 4.5,
-        "duration_ms": 1500.0
+        "duration_ms": 1500.0,
+        "pitch_deg": -24.68,
+        "roll_deg": 260.79
       },
       {
         "nz": 3.5,
-        "duration_ms": 1500.0
+        "duration_ms": 1500.0,
+        "pitch_deg": -20.89,
+        "roll_deg": 303.31
       },
       {
         "nz": 1.5,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": -11.87,
+        "roll_deg": 331.65
       },
       {
         "nz": 1.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": -0.0,
+        "roll_deg": 360.0
       }
     ]
   },
@@ -1251,75 +1717,111 @@
     "samples": [
       {
         "nz": 0.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 56.54,
+        "roll_deg": 19.77
       },
       {
         "nz": 0.8,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 64.0,
+        "roll_deg": 28.87
       },
       {
         "nz": 1.5,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 69.35,
+        "roll_deg": 27.1
       },
       {
         "nz": 2.0,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": 66.45,
+        "roll_deg": -0.72
       },
       {
         "nz": 2.5,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 46.8,
+        "roll_deg": -29.83
       },
       {
         "nz": 2.5,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 64.38,
+        "roll_deg": -7.13
       },
       {
         "nz": 2.5,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 69.06,
+        "roll_deg": 27.95
       },
       {
         "nz": 2.5,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 53.24,
+        "roll_deg": 14.48
       },
       {
         "nz": 2.5,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 59.6,
+        "roll_deg": -24.14
       },
       {
         "nz": 2.5,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 70.0,
+        "roll_deg": -20.83
       },
       {
         "nz": 2.5,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 59.11,
+        "roll_deg": 18.66
       },
       {
         "nz": 2.0,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": 49.18,
+        "roll_deg": 29.05
       },
       {
         "nz": 1.5,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 61.92,
+        "roll_deg": 13.2
       },
       {
         "nz": 0.5,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 68.5,
+        "roll_deg": -7.82
       },
       {
         "nz": -0.5,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 69.98,
+        "roll_deg": -22.33
       },
       {
         "nz": 1.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 66.75,
+        "roll_deg": -30.0
       },
       {
         "nz": 2.5,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 58.61,
+        "roll_deg": -22.8
       },
       {
         "nz": 1.0,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 45.0,
+        "roll_deg": -0.0
       }
     ]
   },
@@ -1343,111 +1845,165 @@
     "samples": [
       {
         "nz": 0.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 2.5,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.5,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.5,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.3,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": -0.8,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": -1.7,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": -2.1,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": -0.2,
-        "duration_ms": 3000.0
+        "duration_ms": 3000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": -0.2,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": -0.4,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.4,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.2,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.2,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": -0.5,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": -0.7,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": -0.15,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": -0.15,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": -0.5,
-        "duration_ms": 3000.0
+        "duration_ms": 3000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.7,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 1.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": -0.4,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.9,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 50.32
       },
       {
         "nz": -0.8,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 127.74
       },
       {
         "nz": 0.9,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 205.16
       },
       {
         "nz": -1.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 282.58
       },
       {
         "nz": 0.6,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 360.0
       }
     ]
   },
@@ -1471,91 +2027,135 @@
     "samples": [
       {
         "nz": 0.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 8.33,
+        "roll_deg": 0.0
       },
       {
         "nz": 2.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 16.67,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.3,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 25.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.8,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 33.33,
+        "roll_deg": 0.0
       },
       {
         "nz": -0.4,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 41.67,
+        "roll_deg": 0.0
       },
       {
         "nz": -0.8,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 50.0,
+        "roll_deg": 0.0
       },
       {
         "nz": -2.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 58.33,
+        "roll_deg": 0.0
       },
       {
         "nz": -0.8,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 66.67,
+        "roll_deg": 0.0
       },
       {
         "nz": -0.1,
-        "duration_ms": 3000.0
+        "duration_ms": 3000.0,
+        "pitch_deg": 90.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 90.0,
+        "roll_deg": 0.0
       },
       {
         "nz": -0.1,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 90.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 76.67,
+        "roll_deg": 0.0
       },
       {
         "nz": -0.1,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 60.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 43.33,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.4,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 26.67,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.9,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 10.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 1.9,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": -6.67,
+        "roll_deg": 0.0
       },
       {
         "nz": -0.4,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": -23.33,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.5,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": -40.0,
+        "roll_deg": 0.0
       },
       {
         "nz": -1.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": -56.67,
+        "roll_deg": 0.0
       },
       {
         "nz": 1.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": -73.33,
+        "roll_deg": 0.0
       },
       {
         "nz": -0.9,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": -90.0,
+        "roll_deg": 0.0
       }
     ]
   },
@@ -1579,55 +2179,81 @@
     "samples": [
       {
         "nz": 1.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 8.14,
+        "roll_deg": 0.0
       },
       {
         "nz": 1.5,
-        "duration_ms": 1500.0
+        "duration_ms": 1500.0,
+        "pitch_deg": 32.55,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.8,
-        "duration_ms": 2000.0
+        "duration_ms": 2000.0,
+        "pitch_deg": 65.1,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.3,
-        "duration_ms": 1500.0
+        "duration_ms": 1500.0,
+        "pitch_deg": 89.51,
+        "roll_deg": 0.0
       },
       {
         "nz": -0.3,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 90.0,
+        "roll_deg": 0.0
       },
       {
         "nz": -0.7,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 90.0,
+        "roll_deg": 0.0
       },
       {
         "nz": -0.3,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": 90.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.5,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 90.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 2.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 90.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 3.5,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 90.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 4.5,
-        "duration_ms": 2500.0
+        "duration_ms": 2500.0,
+        "pitch_deg": 56.96,
+        "roll_deg": 0.0
       },
       {
         "nz": 2.5,
-        "duration_ms": 2000.0
+        "duration_ms": 2000.0,
+        "pitch_deg": 24.41,
+        "roll_deg": 0.0
       },
       {
         "nz": 1.0,
-        "duration_ms": 1500.0
+        "duration_ms": 1500.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       }
     ]
   },
@@ -1651,59 +2277,87 @@
     "samples": [
       {
         "nz": 1.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 20.57,
+        "roll_deg": 0.0
       },
       {
         "nz": 2.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 30.86,
+        "roll_deg": 0.0
       },
       {
         "nz": 1.5,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 51.43,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.5,
-        "duration_ms": 1500.0
+        "duration_ms": 1500.0,
+        "pitch_deg": 82.29,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.2,
-        "duration_ms": 2000.0
+        "duration_ms": 2000.0,
+        "pitch_deg": 90.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.0,
-        "duration_ms": 2000.0
+        "duration_ms": 2000.0,
+        "pitch_deg": 90.0,
+        "roll_deg": 0.0
       },
       {
         "nz": -0.5,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 82.29,
+        "roll_deg": 0.0
       },
       {
         "nz": -1.2,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 72.0,
+        "roll_deg": 0.0
       },
       {
         "nz": -0.5,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 63.77,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.5,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 53.49,
+        "roll_deg": 0.0
       },
       {
         "nz": 2.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 45.26,
+        "roll_deg": 0.0
       },
       {
         "nz": 3.5,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 34.97,
+        "roll_deg": 0.0
       },
       {
         "nz": 1.5,
-        "duration_ms": 700.0
+        "duration_ms": 700.0,
+        "pitch_deg": 20.57,
+        "roll_deg": 0.0
       },
       {
         "nz": 1.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       }
     ]
   },
@@ -1727,63 +2381,93 @@
     "samples": [
       {
         "nz": 1.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 28.35,
+        "roll_deg": 121.65
       },
       {
         "nz": 1.8,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 42.52,
+        "roll_deg": 161.48
       },
       {
         "nz": 3.0,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 59.53,
+        "roll_deg": 179.99
       },
       {
         "nz": 3.8,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": 82.2,
+        "roll_deg": 150.43
       },
       {
         "nz": 3.2,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 69.45,
+        "roll_deg": 224.07
       },
       {
         "nz": 2.0,
-        "duration_ms": 1500.0
+        "duration_ms": 1500.0,
+        "pitch_deg": 26.93,
+        "roll_deg": 42.91
       },
       {
         "nz": 1.0,
-        "duration_ms": 1500.0
+        "duration_ms": 1500.0,
+        "pitch_deg": -15.59,
+        "roll_deg": 14.79
       },
       {
         "nz": 0.8,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": -43.94,
+        "roll_deg": 106.52
       },
       {
         "nz": 0.2,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": -66.61,
+        "roll_deg": 211.01
       },
       {
         "nz": -0.3,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": -83.62,
+        "roll_deg": 284.36
       },
       {
         "nz": -0.5,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": -82.2,
+        "roll_deg": 510.43
       },
       {
         "nz": 0.5,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": -68.03,
+        "roll_deg": 536.04
       },
       {
         "nz": 1.5,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": -51.02,
+        "roll_deg": 535.05
       },
       {
         "nz": 1.2,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": -28.35,
+        "roll_deg": 481.65
       },
       {
         "nz": 1.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 360.0
       }
     ]
   },
@@ -1807,55 +2491,81 @@
     "samples": [
       {
         "nz": 0.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 1.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 1.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.3,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 90.0
       },
       {
         "nz": 0.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 90.0
       },
       {
         "nz": -0.3,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 90.0
       },
       {
         "nz": -1.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 180.0
       },
       {
         "nz": -1.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 180.0
       },
       {
         "nz": -0.3,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 180.0
       },
       {
         "nz": 0.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 270.0
       },
       {
         "nz": 0.3,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 270.0
       },
       {
         "nz": 1.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 270.0
       },
       {
         "nz": 1.0,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 360.0
       }
     ]
   },
@@ -1879,71 +2589,105 @@
     "samples": [
       {
         "nz": 0.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 1.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 45.0
       },
       {
         "nz": 0.7,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 45.0
       },
       {
         "nz": 0.3,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 45.0
       },
       {
         "nz": 0.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 90.0
       },
       {
         "nz": -0.3,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 90.0
       },
       {
         "nz": -0.7,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 135.0
       },
       {
         "nz": -1.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 135.0
       },
       {
         "nz": -1.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 180.0
       },
       {
         "nz": -0.7,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 180.0
       },
       {
         "nz": -0.3,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 225.0
       },
       {
         "nz": 0.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 225.0
       },
       {
         "nz": 0.3,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 225.0
       },
       {
         "nz": 0.7,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 270.0
       },
       {
         "nz": 1.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 270.0
       },
       {
         "nz": 1.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 315.0
       },
       {
         "nz": 1.0,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 360.0
       }
     ]
   },
@@ -1967,55 +2711,81 @@
     "samples": [
       {
         "nz": 0.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 2.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 60.0
       },
       {
         "nz": 4.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 75.52
       },
       {
         "nz": 5.5,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 79.52
       },
       {
         "nz": 6.5,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 81.15
       },
       {
         "nz": 6.8,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 81.54
       },
       {
         "nz": 6.5,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 81.15
       },
       {
         "nz": 6.8,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 81.54
       },
       {
         "nz": 6.5,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 81.15
       },
       {
         "nz": 5.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 78.46
       },
       {
         "nz": 3.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 70.53
       },
       {
         "nz": 1.5,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 48.19
       },
       {
         "nz": 1.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       }
     ]
   },
@@ -2039,55 +2809,81 @@
     "samples": [
       {
         "nz": 1.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 3.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 70.53
       },
       {
         "nz": 5.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 78.46
       },
       {
         "nz": 6.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 80.41
       },
       {
         "nz": 6.0,
-        "duration_ms": 2000.0
+        "duration_ms": 2000.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 80.41
       },
       {
         "nz": 3.0,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 70.53
       },
       {
         "nz": 1.0,
-        "duration_ms": 1500.0
+        "duration_ms": 1500.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.5,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 2.0,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 60.0
       },
       {
         "nz": 4.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 75.52
       },
       {
         "nz": 5.0,
-        "duration_ms": 1500.0
+        "duration_ms": 1500.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 78.46
       },
       {
         "nz": 3.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 70.53
       },
       {
         "nz": 1.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       }
     ]
   },
@@ -2111,135 +2907,201 @@
     "samples": [
       {
         "nz": 0.0,
-        "duration_ms": 893.0
+        "duration_ms": 893.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 10.91
       },
       {
         "nz": 1.12,
-        "duration_ms": 893.0
+        "duration_ms": 893.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 21.82
       },
       {
         "nz": -3.695,
-        "duration_ms": 893.0
+        "duration_ms": 893.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 32.73
       },
       {
         "nz": -1.08,
-        "duration_ms": 893.0
+        "duration_ms": 893.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 43.64
       },
       {
         "nz": -0.224,
-        "duration_ms": 893.0
+        "duration_ms": 893.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 54.55
       },
       {
         "nz": 0.224,
-        "duration_ms": 893.0
+        "duration_ms": 893.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 65.45
       },
       {
         "nz": 2.576,
-        "duration_ms": 893.0
+        "duration_ms": 893.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 76.36
       },
       {
         "nz": 2.91,
-        "duration_ms": 893.0
+        "duration_ms": 893.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 87.27
       },
       {
         "nz": 0.56,
-        "duration_ms": 893.0
+        "duration_ms": 893.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 98.18
       },
       {
         "nz": 0.112,
-        "duration_ms": 893.0
+        "duration_ms": 893.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 109.09
       },
       {
         "nz": -0.56,
-        "duration_ms": 893.0
+        "duration_ms": 893.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 120.0
       },
       {
         "nz": -2.651,
-        "duration_ms": 893.0
+        "duration_ms": 893.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 130.91
       },
       {
         "nz": -1.904,
-        "duration_ms": 893.0
+        "duration_ms": 893.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 141.82
       },
       {
         "nz": -1.08,
-        "duration_ms": 893.0
+        "duration_ms": 893.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 152.73
       },
       {
         "nz": -0.336,
-        "duration_ms": 893.0
+        "duration_ms": 893.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 163.64
       },
       {
         "nz": 0.336,
-        "duration_ms": 893.0
+        "duration_ms": 893.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 174.55
       },
       {
         "nz": 1.904,
-        "duration_ms": 893.0
+        "duration_ms": 893.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 185.45
       },
       {
         "nz": 2.688,
-        "duration_ms": 893.0
+        "duration_ms": 893.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 196.36
       },
       {
         "nz": 1.08,
-        "duration_ms": 893.0
+        "duration_ms": 893.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 207.27
       },
       {
         "nz": -0.784,
-        "duration_ms": 893.0
+        "duration_ms": 893.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 218.18
       },
       {
         "nz": -1.12,
-        "duration_ms": 893.0
+        "duration_ms": 893.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 229.09
       },
       {
         "nz": -0.56,
-        "duration_ms": 893.0
+        "duration_ms": 893.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 240.0
       },
       {
         "nz": -2.352,
-        "duration_ms": 893.0
+        "duration_ms": 893.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 250.91
       },
       {
         "nz": -1.12,
-        "duration_ms": 893.0
+        "duration_ms": 893.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 261.82
       },
       {
         "nz": -0.448,
-        "duration_ms": 893.0
+        "duration_ms": 893.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 272.73
       },
       {
         "nz": 0.448,
-        "duration_ms": 893.0
+        "duration_ms": 893.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 283.64
       },
       {
         "nz": 1.12,
-        "duration_ms": 893.0
+        "duration_ms": 893.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 294.55
       },
       {
         "nz": 2.91,
-        "duration_ms": 893.0
+        "duration_ms": 893.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 305.45
       },
       {
         "nz": 1.12,
-        "duration_ms": 893.0
+        "duration_ms": 893.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 316.36
       },
       {
         "nz": 0.448,
-        "duration_ms": 893.0
+        "duration_ms": 893.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 327.27
       },
       {
         "nz": 0.896,
-        "duration_ms": 893.0
+        "duration_ms": 893.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 338.18
       },
       {
         "nz": -0.896,
-        "duration_ms": 893.0
+        "duration_ms": 893.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 349.09
       },
       {
         "nz": -1.568,
-        "duration_ms": 893.0
+        "duration_ms": 893.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 360.0
       }
     ]
   },
@@ -2263,83 +3125,123 @@
     "samples": [
       {
         "nz": 0.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 11.38,
+        "roll_deg": 0.0
       },
       {
         "nz": 2.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 22.76,
+        "roll_deg": 0.0
       },
       {
         "nz": 4.5,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 36.41,
+        "roll_deg": 0.0
       },
       {
         "nz": 5.5,
-        "duration_ms": 700.0
+        "duration_ms": 700.0,
+        "pitch_deg": 52.34,
+        "roll_deg": 0.0
       },
       {
         "nz": 4.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 63.72,
+        "roll_deg": 0.0
       },
       {
         "nz": 1.5,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 75.09,
+        "roll_deg": 0.0
       },
       {
         "nz": 1.0,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": 90.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.5,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 90.0,
+        "roll_deg": 0.0
       },
       {
         "nz": -2.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 90.0,
+        "roll_deg": 0.0
       },
       {
         "nz": -4.0,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 90.0,
+        "roll_deg": 0.0
       },
       {
         "nz": -4.0,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 90.0,
+        "roll_deg": 0.0
       },
       {
         "nz": -2.5,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 90.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 90.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 1.0,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 81.92,
+        "roll_deg": 0.0
       },
       {
         "nz": 1.5,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": 63.72,
+        "roll_deg": 0.0
       },
       {
         "nz": 2.5,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 52.34,
+        "roll_deg": 0.0
       },
       {
         "nz": 4.5,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 38.69,
+        "roll_deg": 0.0
       },
       {
         "nz": 5.5,
-        "duration_ms": 700.0
+        "duration_ms": 700.0,
+        "pitch_deg": 22.76,
+        "roll_deg": 0.0
       },
       {
         "nz": 3.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 11.38,
+        "roll_deg": 0.0
       },
       {
         "nz": 1.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       }
     ]
   },
@@ -2363,83 +3265,123 @@
     "samples": [
       {
         "nz": 0.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 11.18,
+        "roll_deg": 0.0
       },
       {
         "nz": 2.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 22.36,
+        "roll_deg": 0.0
       },
       {
         "nz": 4.0,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 35.78,
+        "roll_deg": 0.0
       },
       {
         "nz": 5.0,
-        "duration_ms": 700.0
+        "duration_ms": 700.0,
+        "pitch_deg": 51.43,
+        "roll_deg": 0.0
       },
       {
         "nz": 5.5,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 64.84,
+        "roll_deg": 0.0
       },
       {
         "nz": 3.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 76.02,
+        "roll_deg": 0.0
       },
       {
         "nz": 1.5,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 89.44,
+        "roll_deg": 0.0
       },
       {
         "nz": 1.0,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": 90.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 1.5,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 90.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 3.5,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 90.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 4.5,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 90.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 2.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 90.0,
+        "roll_deg": 0.0
       },
       {
         "nz": -0.5,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 90.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 1.5,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 82.73,
+        "roll_deg": 0.0
       },
       {
         "nz": 1.0,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": 64.84,
+        "roll_deg": 0.0
       },
       {
         "nz": 1.5,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 53.66,
+        "roll_deg": 0.0
       },
       {
         "nz": 4.0,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 40.25,
+        "roll_deg": 0.0
       },
       {
         "nz": 5.5,
-        "duration_ms": 700.0
+        "duration_ms": 700.0,
+        "pitch_deg": 24.6,
+        "roll_deg": 0.0
       },
       {
         "nz": 3.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 13.42,
+        "roll_deg": 0.0
       },
       {
         "nz": 1.0,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       }
     ]
   },
@@ -2463,55 +3405,81 @@
     "samples": [
       {
         "nz": 0.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 30.3,
+        "roll_deg": 0.0
       },
       {
         "nz": 2.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 60.61,
+        "roll_deg": 0.0
       },
       {
         "nz": 3.5,
-        "duration_ms": 700.0
+        "duration_ms": 700.0,
+        "pitch_deg": 76.97,
+        "roll_deg": 180.0
       },
       {
         "nz": 5.0,
-        "duration_ms": 700.0
+        "duration_ms": 700.0,
+        "pitch_deg": 34.55,
+        "roll_deg": 180.0
       },
       {
         "nz": 3.0,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 8.18
       },
       {
         "nz": 1.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 144.55
       },
       {
         "nz": 0.2,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 180.0
       },
       {
         "nz": 0.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 180.0
       },
       {
         "nz": 0.1,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 180.0
       },
       {
         "nz": 0.2,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 180.0
       },
       {
         "nz": 0.1,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 180.0
       },
       {
         "nz": 0.0,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 180.0
       },
       {
         "nz": 0.0,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 180.0
       }
     ]
   },
@@ -2535,59 +3503,87 @@
     "samples": [
       {
         "nz": 1.0,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 37.71,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.0,
-        "duration_ms": 200.0
+        "duration_ms": 200.0,
+        "pitch_deg": 50.29,
+        "roll_deg": 0.0
       },
       {
         "nz": -1.5,
-        "duration_ms": 200.0
+        "duration_ms": 200.0,
+        "pitch_deg": 62.86,
+        "roll_deg": 0.0
       },
       {
         "nz": -3.0,
-        "duration_ms": 200.0
+        "duration_ms": 200.0,
+        "pitch_deg": 75.43,
+        "roll_deg": 0.0
       },
       {
         "nz": -5.0,
-        "duration_ms": 200.0
+        "duration_ms": 200.0,
+        "pitch_deg": 88.0,
+        "roll_deg": 0.0
       },
       {
         "nz": -5.5,
-        "duration_ms": 250.0
+        "duration_ms": 250.0,
+        "pitch_deg": 76.29,
+        "roll_deg": 180.0
       },
       {
         "nz": -3.5,
-        "duration_ms": 250.0
+        "duration_ms": 250.0,
+        "pitch_deg": 80.5,
+        "roll_deg": 180.0
       },
       {
         "nz": -1.5,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 78.5,
+        "roll_deg": 0.0
       },
       {
         "nz": -0.2,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 43.5,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.5,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 33.78,
+        "roll_deg": 0.0
       },
       {
         "nz": -0.3,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 28.44,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.2,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 23.11,
+        "roll_deg": 0.0
       },
       {
         "nz": 1.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 14.22,
+        "roll_deg": 0.0
       },
       {
         "nz": 1.0,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       }
     ]
   },
@@ -2611,75 +3607,111 @@
     "samples": [
       {
         "nz": 0.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 56.54,
+        "roll_deg": 19.77
       },
       {
         "nz": -0.5,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 64.0,
+        "roll_deg": 28.87
       },
       {
         "nz": -1.5,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 69.35,
+        "roll_deg": 27.1
       },
       {
         "nz": -2.0,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": 66.45,
+        "roll_deg": -0.72
       },
       {
         "nz": -2.5,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 46.8,
+        "roll_deg": -29.83
       },
       {
         "nz": -2.5,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 64.38,
+        "roll_deg": -7.13
       },
       {
         "nz": -2.5,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 69.06,
+        "roll_deg": 27.95
       },
       {
         "nz": -2.5,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 53.24,
+        "roll_deg": 14.48
       },
       {
         "nz": -2.5,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 59.6,
+        "roll_deg": -24.14
       },
       {
         "nz": -2.5,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 70.0,
+        "roll_deg": -20.83
       },
       {
         "nz": -2.5,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 59.11,
+        "roll_deg": 18.66
       },
       {
         "nz": -2.0,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": 49.18,
+        "roll_deg": 29.05
       },
       {
         "nz": -1.5,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 61.92,
+        "roll_deg": 13.2
       },
       {
         "nz": -0.5,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 68.5,
+        "roll_deg": -7.82
       },
       {
         "nz": 0.5,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 69.98,
+        "roll_deg": -22.33
       },
       {
         "nz": 2.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 66.75,
+        "roll_deg": -30.0
       },
       {
         "nz": 1.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 58.61,
+        "roll_deg": -22.8
       },
       {
         "nz": 0.0,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 45.0,
+        "roll_deg": -0.0
       }
     ]
   },
@@ -2703,75 +3735,111 @@
     "samples": [
       {
         "nz": 0.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 57.31,
+        "roll_deg": 20.94
       },
       {
         "nz": 0.5,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 66.43,
+        "roll_deg": 29.99
       },
       {
         "nz": 0.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 69.79,
+        "roll_deg": 24.89
       },
       {
         "nz": -0.5,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 68.16,
+        "roll_deg": 6.14
       },
       {
         "nz": -1.5,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 60.52,
+        "roll_deg": -16.1
       },
       {
         "nz": -2.0,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": 48.85,
+        "roll_deg": -29.2
       },
       {
         "nz": -2.5,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 68.16,
+        "roll_deg": 6.14
       },
       {
         "nz": -2.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 65.0,
+        "roll_deg": 29.51
       },
       {
         "nz": -2.5,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 47.57,
+        "roll_deg": -4.62
       },
       {
         "nz": -2.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 67.64,
+        "roll_deg": -29.75
       },
       {
         "nz": -2.5,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 65.74,
+        "roll_deg": 3.08
       },
       {
         "nz": -2.0,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": 48.85,
+        "roll_deg": 29.2
       },
       {
         "nz": -1.5,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 56.18,
+        "roll_deg": 23.04
       },
       {
         "nz": -0.5,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 65.74,
+        "roll_deg": 3.08
       },
       {
         "nz": 1.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 69.93,
+        "roll_deg": -18.62
       },
       {
         "nz": 3.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 67.64,
+        "roll_deg": -29.75
       },
       {
         "nz": 2.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 59.49,
+        "roll_deg": -24.0
       },
       {
         "nz": 0.5,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 45.0,
+        "roll_deg": -0.0
       }
     ]
   },
@@ -2795,75 +3863,111 @@
     "samples": [
       {
         "nz": 1.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 66.76,
+        "roll_deg": 30.0
       },
       {
         "nz": 0.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 70.0,
+        "roll_deg": 20.79
       },
       {
         "nz": -1.5,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": 61.35,
+        "roll_deg": -14.42
       },
       {
         "nz": -2.5,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 53.41,
+        "roll_deg": -26.11
       },
       {
         "nz": -2.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 69.63,
+        "roll_deg": 15.11
       },
       {
         "nz": -1.5,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 60.84,
+        "roll_deg": 25.71
       },
       {
         "nz": -1.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 54.03,
+        "roll_deg": -15.79
       },
       {
         "nz": -0.5,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": 68.43,
+        "roll_deg": -29.06
       },
       {
         "nz": 0.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 69.63,
+        "roll_deg": -15.11
       },
       {
         "nz": 1.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 65.72,
+        "roll_deg": 3.16
       },
       {
         "nz": 2.5,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 60.33,
+        "roll_deg": 16.46
       },
       {
         "nz": 4.5,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 53.41,
+        "roll_deg": 26.11
       },
       {
         "nz": 6.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 46.98,
+        "roll_deg": 29.79
       },
       {
         "nz": 6.0,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 54.64,
+        "roll_deg": 24.86
       },
       {
         "nz": 4.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 63.25,
+        "roll_deg": 10.1
       },
       {
         "nz": 2.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 69.37,
+        "roll_deg": -13.02
       },
       {
         "nz": 1.2,
-        "duration_ms": 700.0
+        "duration_ms": 700.0,
+        "pitch_deg": 66.76,
+        "roll_deg": -30.0
       },
       {
         "nz": 1.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 45.0,
+        "roll_deg": -0.0
       }
     ]
   },
@@ -2887,59 +3991,87 @@
     "samples": [
       {
         "nz": 0.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 26.16
       },
       {
         "nz": 2.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 52.33
       },
       {
         "nz": 4.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 78.49
       },
       {
         "nz": 5.5,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 90.0
       },
       {
         "nz": 6.0,
-        "duration_ms": 700.0
+        "duration_ms": 700.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 90.0
       },
       {
         "nz": 6.0,
-        "duration_ms": 700.0
+        "duration_ms": 700.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 90.0
       },
       {
         "nz": 3.0,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 90.0
       },
       {
         "nz": 0.5,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 90.0
       },
       {
         "nz": 0.0,
-        "duration_ms": 1500.0
+        "duration_ms": 1500.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 90.0
       },
       {
         "nz": 0.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 90.0
       },
       {
         "nz": 1.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 90.0
       },
       {
         "nz": 3.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 90.0
       },
       {
         "nz": 1.5,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 90.0
       },
       {
         "nz": 0.5,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 90.0
       }
     ]
   },
@@ -2963,75 +4095,111 @@
     "samples": [
       {
         "nz": 1.0,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 37.24,
+        "roll_deg": 148.98
       },
       {
         "nz": 2.0,
-        "duration_ms": 150.0
+        "duration_ms": 150.0,
+        "pitch_deg": 46.55,
+        "roll_deg": 168.96
       },
       {
         "nz": 5.0,
-        "duration_ms": 150.0
+        "duration_ms": 150.0,
+        "pitch_deg": 55.86,
+        "roll_deg": 178.94
       },
       {
         "nz": 7.5,
-        "duration_ms": 200.0
+        "duration_ms": 200.0,
+        "pitch_deg": 68.28,
+        "roll_deg": 175.79
       },
       {
         "nz": 8.0,
-        "duration_ms": 200.0
+        "duration_ms": 200.0,
+        "pitch_deg": 80.69,
+        "roll_deg": 154.23
       },
       {
         "nz": 5.0,
-        "duration_ms": 250.0
+        "duration_ms": 250.0,
+        "pitch_deg": 83.79,
+        "roll_deg": 285.01
       },
       {
         "nz": 2.0,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 65.17,
+        "roll_deg": 204.3
       },
       {
         "nz": 0.0,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 46.55,
+        "roll_deg": 117.93
       },
       {
         "nz": -1.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 21.72,
+        "roll_deg": 28.34
       },
       {
         "nz": -1.8,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": -3.1,
+        "roll_deg": 0.59
       },
       {
         "nz": -1.2,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": -21.72,
+        "roll_deg": 28.34
       },
       {
         "nz": 0.0,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": -40.34,
+        "roll_deg": 91.41
       },
       {
         "nz": 2.0,
-        "duration_ms": 200.0
+        "duration_ms": 200.0,
+        "pitch_deg": -52.76,
+        "roll_deg": 146.08
       },
       {
         "nz": 5.5,
-        "duration_ms": 200.0
+        "duration_ms": 200.0,
+        "pitch_deg": -65.17,
+        "roll_deg": 204.3
       },
       {
         "nz": 7.0,
-        "duration_ms": 250.0
+        "duration_ms": 250.0,
+        "pitch_deg": -80.69,
+        "roll_deg": 272.8
       },
       {
         "nz": 4.0,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": -80.69,
+        "roll_deg": 514.23
       },
       {
         "nz": 1.5,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": -49.66,
+        "roll_deg": 533.44
       },
       {
         "nz": 1.0,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 360.0
       }
     ]
   },
@@ -3055,47 +4223,69 @@
     "samples": [
       {
         "nz": 1.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 5.89,
+        "roll_deg": 13.64
       },
       {
         "nz": 2.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 10.39,
+        "roll_deg": 24.55
       },
       {
         "nz": 3.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 14.5,
+        "roll_deg": 35.45
       },
       {
         "nz": 4.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 18.09,
+        "roll_deg": 46.36
       },
       {
         "nz": 4.0,
-        "duration_ms": 4000.0
+        "duration_ms": 4000.0,
+        "pitch_deg": 10.39,
+        "roll_deg": 155.45
       },
       {
         "nz": 3.5,
-        "duration_ms": 2000.0
+        "duration_ms": 2000.0,
+        "pitch_deg": -12.5,
+        "roll_deg": 210.0
       },
       {
         "nz": 3.0,
-        "duration_ms": 2000.0
+        "duration_ms": 2000.0,
+        "pitch_deg": -24.89,
+        "roll_deg": 264.55
       },
       {
         "nz": 2.5,
-        "duration_ms": 1500.0
+        "duration_ms": 1500.0,
+        "pitch_deg": -20.36,
+        "roll_deg": 305.45
       },
       {
         "nz": 2.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": -11.46,
+        "roll_deg": 332.73
       },
       {
         "nz": 1.5,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": -5.89,
+        "roll_deg": 346.36
       },
       {
         "nz": 1.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": -0.0,
+        "roll_deg": 360.0
       }
     ]
   },
@@ -3119,51 +4309,75 @@
     "samples": [
       {
         "nz": 1.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": -1.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.0,
-        "duration_ms": 200.0
+        "duration_ms": 200.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 3.0,
-        "duration_ms": 100.0
+        "duration_ms": 100.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 70.53
       },
       {
         "nz": 6.0,
-        "duration_ms": 100.0
+        "duration_ms": 100.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 80.41
       },
       {
         "nz": 9.0,
-        "duration_ms": 100.0
+        "duration_ms": 100.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 83.62
       },
       {
         "nz": 9.5,
-        "duration_ms": 1500.0
+        "duration_ms": 1500.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 83.96
       },
       {
         "nz": 8.0,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 82.82
       },
       {
         "nz": 5.0,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 78.46
       },
       {
         "nz": 3.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 70.53
       },
       {
         "nz": 1.5,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 48.19
       },
       {
         "nz": 1.0,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       }
     ]
   },
@@ -3187,83 +4401,123 @@
     "samples": [
       {
         "nz": 1.0,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": 4.79,
+        "roll_deg": 11.62
       },
       {
         "nz": 1.5,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 10.35,
+        "roll_deg": 22.14
       },
       {
         "nz": 2.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 14.97,
+        "roll_deg": 24.82
       },
       {
         "nz": 2.5,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 18.24,
+        "roll_deg": 18.71
       },
       {
         "nz": 2.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 19.85,
+        "roll_deg": 5.98
       },
       {
         "nz": 1.5,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 19.67,
+        "roll_deg": -8.87
       },
       {
         "nz": 1.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 17.71,
+        "roll_deg": -20.57
       },
       {
         "nz": 0.7,
-        "duration_ms": 1200.0
+        "duration_ms": 1200.0,
+        "pitch_deg": 13.26,
+        "roll_deg": -24.82
       },
       {
         "nz": 0.5,
-        "duration_ms": 1200.0
+        "duration_ms": 1200.0,
+        "pitch_deg": 7.09,
+        "roll_deg": -16.58
       },
       {
         "nz": 0.7,
-        "duration_ms": 1200.0
+        "duration_ms": 1200.0,
+        "pitch_deg": 0.0,
+        "roll_deg": -0.0
       },
       {
         "nz": 1.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": -5.95,
+        "roll_deg": 14.2
       },
       {
         "nz": 1.5,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": -11.36,
+        "roll_deg": 23.38
       },
       {
         "nz": 2.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": -15.74,
+        "roll_deg": 24.27
       },
       {
         "nz": 2.5,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": -18.7,
+        "roll_deg": 16.58
       },
       {
         "nz": 2.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": -19.96,
+        "roll_deg": 3.01
       },
       {
         "nz": 1.5,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": -19.42,
+        "roll_deg": -11.62
       },
       {
         "nz": 1.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": -17.12,
+        "roll_deg": -22.14
       },
       {
         "nz": 0.7,
-        "duration_ms": 1200.0
+        "duration_ms": 1200.0,
+        "pitch_deg": -12.33,
+        "roll_deg": -24.27
       },
       {
         "nz": 0.5,
-        "duration_ms": 1200.0
+        "duration_ms": 1200.0,
+        "pitch_deg": -5.95,
+        "roll_deg": -14.2
       },
       {
         "nz": 1.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": -0.0,
+        "roll_deg": -0.0
       }
     ]
   },
@@ -3287,83 +4541,123 @@
     "samples": [
       {
         "nz": 1.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 25.0,
+        "roll_deg": 109.58
       },
       {
         "nz": 3.5,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 40.0,
+        "roll_deg": 155.88
       },
       {
         "nz": 6.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 60.0,
+        "roll_deg": 180.0
       },
       {
         "nz": 2.0,
-        "duration_ms": 200.0
+        "duration_ms": 200.0,
+        "pitch_deg": 70.0,
+        "roll_deg": 173.87
       },
       {
         "nz": -3.0,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 85.0,
+        "roll_deg": 142.8
       },
       {
         "nz": -5.5,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 75.0,
+        "roll_deg": 248.88
       },
       {
         "nz": -2.0,
-        "duration_ms": 200.0
+        "duration_ms": 200.0,
+        "pitch_deg": 65.0,
+        "roll_deg": 203.49
       },
       {
         "nz": 3.0,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 50.0,
+        "roll_deg": 133.41
       },
       {
         "nz": 6.5,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 30.0,
+        "roll_deg": 52.72
       },
       {
         "nz": 2.0,
-        "duration_ms": 200.0
+        "duration_ms": 200.0,
+        "pitch_deg": 20.0,
+        "roll_deg": 24.12
       },
       {
         "nz": -3.5,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 1.54
       },
       {
         "nz": -5.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": -15.0,
+        "roll_deg": 13.7
       },
       {
         "nz": -1.5,
-        "duration_ms": 200.0
+        "duration_ms": 200.0,
+        "pitch_deg": -25.0,
+        "roll_deg": 37.2
       },
       {
         "nz": 4.0,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": -40.0,
+        "roll_deg": 90.0
       },
       {
         "nz": 6.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": -60.0,
+        "roll_deg": 180.0
       },
       {
         "nz": 1.0,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": -75.0,
+        "roll_deg": 248.88
       },
       {
         "nz": -1.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": -85.0,
+        "roll_deg": 502.8
       },
       {
         "nz": 0.5,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": -65.0,
+        "roll_deg": 538.46
       },
       {
         "nz": 2.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": -40.0,
+        "roll_deg": 515.88
       },
       {
         "nz": 1.0,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 360.0
       }
     ]
   },
@@ -3387,91 +4681,135 @@
     "samples": [
       {
         "nz": 1.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 17.78,
+        "roll_deg": 80.78
       },
       {
         "nz": 6.0,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 31.11,
+        "roll_deg": 130.93
       },
       {
         "nz": -5.0,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 44.44,
+        "roll_deg": 165.28
       },
       {
         "nz": 5.5,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 57.78,
+        "roll_deg": 179.7
       },
       {
         "nz": -5.5,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 71.11,
+        "roll_deg": 172.44
       },
       {
         "nz": 2.0,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 84.44,
+        "roll_deg": 144.38
       },
       {
         "nz": 6.0,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 82.22,
+        "roll_deg": 278.91
       },
       {
         "nz": -5.5,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 68.89,
+        "roll_deg": 221.51
       },
       {
         "nz": 6.0,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 55.56,
+        "roll_deg": 159.1
       },
       {
         "nz": -5.0,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 42.22,
+        "roll_deg": 99.22
       },
       {
         "nz": 2.0,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 28.89,
+        "roll_deg": 49.07
       },
       {
         "nz": 6.5,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 15.56,
+        "roll_deg": 14.72
       },
       {
         "nz": -5.5,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 2.22,
+        "roll_deg": 0.3
       },
       {
         "nz": 5.5,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": -11.11,
+        "roll_deg": 7.56
       },
       {
         "nz": -5.0,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": -24.44,
+        "roll_deg": 35.62
       },
       {
         "nz": 1.5,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": -42.22,
+        "roll_deg": 99.22
       },
       {
         "nz": 3.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": -64.44,
+        "roll_deg": 200.9
       },
       {
         "nz": 1.5,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": -86.67,
+        "roll_deg": 295.7
       },
       {
         "nz": 0.5,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": -71.11,
+        "roll_deg": 532.44
       },
       {
         "nz": -0.5,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": -53.33,
+        "roll_deg": 537.27
       },
       {
         "nz": 0.5,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": -35.56,
+        "roll_deg": 504.38
       },
       {
         "nz": 1.0,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 360.0
       }
     ]
   },
@@ -3495,63 +4833,93 @@
     "samples": [
       {
         "nz": 0.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 11.16,
+        "roll_deg": 0.0
       },
       {
         "nz": 2.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 22.32,
+        "roll_deg": 0.0
       },
       {
         "nz": 3.5,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": 40.18,
+        "roll_deg": 0.0
       },
       {
         "nz": 4.5,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": 58.04,
+        "roll_deg": 0.0
       },
       {
         "nz": 3.0,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 71.43,
+        "roll_deg": 0.0
       },
       {
         "nz": 1.2,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 84.82,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.4,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 8.0,
+        "roll_deg": 180.0
       },
       {
         "nz": 0.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 8.0,
+        "roll_deg": 180.0
       },
       {
         "nz": 0.6,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 8.0,
+        "roll_deg": 180.0
       },
       {
         "nz": 2.5,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": 80.36,
+        "roll_deg": 0.0
       },
       {
         "nz": 3.8,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": 62.5,
+        "roll_deg": 0.0
       },
       {
         "nz": 2.2,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 49.11,
+        "roll_deg": 0.0
       },
       {
         "nz": 1.0,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 35.71,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.2,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": 17.86,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.0,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": -0.0,
+        "roll_deg": 0.0
       }
     ]
   },
@@ -3575,51 +4943,75 @@
     "samples": [
       {
         "nz": 1.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 4.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 75.52
       },
       {
         "nz": 5.0,
-        "duration_ms": 1500.0
+        "duration_ms": 1500.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 78.46
       },
       {
         "nz": 2.0,
-        "duration_ms": 700.0
+        "duration_ms": 700.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 60.0
       },
       {
         "nz": 1.0,
-        "duration_ms": 1500.0
+        "duration_ms": 1500.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 3.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 70.53
       },
       {
         "nz": 5.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 78.46
       },
       {
         "nz": 7.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 81.79
       },
       {
         "nz": 7.0,
-        "duration_ms": 2500.0
+        "duration_ms": 2500.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 81.79
       },
       {
         "nz": 5.0,
-        "duration_ms": 1500.0
+        "duration_ms": 1500.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 78.46
       },
       {
         "nz": 2.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 60.0
       },
       {
         "nz": 1.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       }
     ]
   },
@@ -3643,151 +5035,225 @@
     "samples": [
       {
         "nz": 0.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": -9.23,
+        "roll_deg": 180.0
       },
       {
         "nz": -2.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": -18.46,
+        "roll_deg": 180.0
       },
       {
         "nz": -0.1,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": -27.69,
+        "roll_deg": 180.0
       },
       {
         "nz": -0.2,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": -36.92,
+        "roll_deg": 180.0
       },
       {
         "nz": 0.2,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": -46.15,
+        "roll_deg": 180.0
       },
       {
         "nz": 0.1,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": -55.38,
+        "roll_deg": 180.0
       },
       {
         "nz": -0.4,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": -64.62,
+        "roll_deg": 180.0
       },
       {
         "nz": -0.2,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": -73.85,
+        "roll_deg": 180.0
       },
       {
         "nz": 0.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": -83.08,
+        "roll_deg": 180.0
       },
       {
         "nz": 0.1,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": -87.69,
+        "roll_deg": 0.0
       },
       {
         "nz": -0.1,
-        "duration_ms": 2000.0
+        "duration_ms": 2000.0,
+        "pitch_deg": -69.23,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": -60.0,
+        "roll_deg": 0.0
       },
       {
         "nz": -0.1,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": -50.77,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": -41.54,
+        "roll_deg": 0.0
       },
       {
         "nz": -0.1,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": -32.31,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.1,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": -23.08,
+        "roll_deg": 0.0
       },
       {
         "nz": -0.1,
-        "duration_ms": 2000.0
+        "duration_ms": 2000.0,
+        "pitch_deg": -4.62,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 4.62,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.1,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 13.85,
+        "roll_deg": 0.0
       },
       {
         "nz": -0.1,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 23.08,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 32.31,
+        "roll_deg": 0.0
       },
       {
         "nz": -0.1,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 41.54,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 50.77,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.1,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 60.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 69.23,
+        "roll_deg": 0.0
       },
       {
         "nz": -0.2,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 78.46,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 87.69,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.2,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 83.08,
+        "roll_deg": 180.0
       },
       {
         "nz": 1.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 73.85,
+        "roll_deg": 180.0
       },
       {
         "nz": 0.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 64.62,
+        "roll_deg": 180.0
       },
       {
         "nz": -0.1,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 55.38,
+        "roll_deg": 180.0
       },
       {
         "nz": 0.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 46.15,
+        "roll_deg": 180.0
       },
       {
         "nz": -0.2,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 36.92,
+        "roll_deg": 180.0
       },
       {
         "nz": 0.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 27.69,
+        "roll_deg": 180.0
       },
       {
         "nz": 0.9,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 18.46,
+        "roll_deg": 180.0
       },
       {
         "nz": 1.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 9.23,
+        "roll_deg": 180.0
       },
       {
         "nz": 0.3,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 180.0
       }
     ]
   },
@@ -3811,131 +5277,195 @@
     "samples": [
       {
         "nz": 0.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": -8.57,
+        "roll_deg": 180.0
       },
       {
         "nz": -3.2,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": -17.14,
+        "roll_deg": 180.0
       },
       {
         "nz": -0.1,
-        "duration_ms": 3000.0
+        "duration_ms": 3000.0,
+        "pitch_deg": -42.86,
+        "roll_deg": 180.0
       },
       {
         "nz": 0.0,
-        "duration_ms": 2000.0
+        "duration_ms": 2000.0,
+        "pitch_deg": -60.0,
+        "roll_deg": 180.0
       },
       {
         "nz": 0.3,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": -68.57,
+        "roll_deg": 180.0
       },
       {
         "nz": 0.5,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": -77.14,
+        "roll_deg": 180.0
       },
       {
         "nz": 0.3,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": -85.71,
+        "roll_deg": 180.0
       },
       {
         "nz": 1.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": -85.71,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.3,
-        "duration_ms": 2000.0
+        "duration_ms": 2000.0,
+        "pitch_deg": -68.57,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.2,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": -60.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.1,
-        "duration_ms": 2000.0
+        "duration_ms": 2000.0,
+        "pitch_deg": -42.86,
+        "roll_deg": 0.0
       },
       {
         "nz": -0.1,
-        "duration_ms": 2000.0
+        "duration_ms": 2000.0,
+        "pitch_deg": -25.71,
+        "roll_deg": 0.0
       },
       {
         "nz": -0.7,
-        "duration_ms": 2000.0
+        "duration_ms": 2000.0,
+        "pitch_deg": -8.57,
+        "roll_deg": 0.0
       },
       {
         "nz": -2.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": -0.6,
-        "duration_ms": 2000.0
+        "duration_ms": 2000.0,
+        "pitch_deg": 17.14,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.8,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 25.71,
+        "roll_deg": 0.0
       },
       {
         "nz": 7.8,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 34.29,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.6,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 42.86,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.8,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 51.43,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.2,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 60.0,
+        "roll_deg": 0.0
       },
       {
         "nz": -1.1,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 68.57,
+        "roll_deg": 0.0
       },
       {
         "nz": -0.9,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 77.14,
+        "roll_deg": 0.0
       },
       {
         "nz": -0.6,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 85.71,
+        "roll_deg": 0.0
       },
       {
         "nz": -0.3,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 85.71,
+        "roll_deg": 180.0
       },
       {
         "nz": -0.5,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 77.14,
+        "roll_deg": 180.0
       },
       {
         "nz": -0.2,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 68.57,
+        "roll_deg": 180.0
       },
       {
         "nz": 0.1,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 60.0,
+        "roll_deg": 180.0
       },
       {
         "nz": -1.7,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 51.43,
+        "roll_deg": 180.0
       },
       {
         "nz": -0.3,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 42.86,
+        "roll_deg": 180.0
       },
       {
         "nz": -0.1,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 34.29,
+        "roll_deg": 180.0
       },
       {
         "nz": -0.2,
-        "duration_ms": 2000.0
+        "duration_ms": 2000.0,
+        "pitch_deg": 17.14,
+        "roll_deg": 180.0
       },
       {
         "nz": -0.3,
-        "duration_ms": 2000.0
+        "duration_ms": 2000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 180.0
       }
     ]
   },
@@ -3959,51 +5489,75 @@
     "samples": [
       {
         "nz": 0.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 1.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.8,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.5,
-        "duration_ms": 250.0
+        "duration_ms": 250.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": -2.0,
-        "duration_ms": 250.0
+        "duration_ms": 250.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": -4.5,
-        "duration_ms": 250.0
+        "duration_ms": 250.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": -3.0,
-        "duration_ms": 250.0
+        "duration_ms": 250.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": -0.5,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 1.5,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 1.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 1.0,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 32.73
       },
       {
         "nz": 1.0,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 360.0
       }
     ]
   },
@@ -4027,59 +5581,87 @@
     "samples": [
       {
         "nz": 1.0,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": 48.82,
+        "roll_deg": 0.0
       },
       {
         "nz": 1.5,
-        "duration_ms": 150.0
+        "duration_ms": 150.0,
+        "pitch_deg": 57.98,
+        "roll_deg": 0.0
       },
       {
         "nz": 3.0,
-        "duration_ms": 150.0
+        "duration_ms": 150.0,
+        "pitch_deg": 67.13,
+        "roll_deg": 0.0
       },
       {
         "nz": 5.5,
-        "duration_ms": 200.0
+        "duration_ms": 200.0,
+        "pitch_deg": 79.33,
+        "roll_deg": 0.0
       },
       {
         "nz": 6.5,
-        "duration_ms": 200.0
+        "duration_ms": 200.0,
+        "pitch_deg": 88.46,
+        "roll_deg": 180.0
       },
       {
         "nz": 4.0,
-        "duration_ms": 250.0
+        "duration_ms": 250.0,
+        "pitch_deg": 73.2,
+        "roll_deg": 180.0
       },
       {
         "nz": 1.5,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 86.82,
+        "roll_deg": 180.0
       },
       {
         "nz": 0.2,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 52.4,
+        "roll_deg": 0.0
       },
       {
         "nz": -0.4,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 36.25,
+        "roll_deg": 0.0
       },
       {
         "nz": -0.2,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 31.07,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.5,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 25.89,
+        "roll_deg": 0.0
       },
       {
         "nz": 1.8,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 20.71,
+        "roll_deg": 0.0
       },
       {
         "nz": 1.2,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 12.08,
+        "roll_deg": 0.0
       },
       {
         "nz": 1.0,
-        "duration_ms": 700.0
+        "duration_ms": 700.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       }
     ]
   },
@@ -4103,51 +5685,75 @@
     "samples": [
       {
         "nz": 1.0,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 15.41,
+        "roll_deg": 0.0
       },
       {
         "nz": -0.5,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 25.97,
+        "roll_deg": 0.0
       },
       {
         "nz": -1.5,
-        "duration_ms": 2000.0
+        "duration_ms": 2000.0,
+        "pitch_deg": 24.75,
+        "roll_deg": 0.0
       },
       {
         "nz": -1.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 13.8,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 3.54,
+        "roll_deg": 0.0
       },
       {
         "nz": 3.0,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": -4.42,
+        "roll_deg": 0.0
       },
       {
         "nz": 5.0,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": -12.16,
+        "roll_deg": 0.0
       },
       {
         "nz": 7.0,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": -19.26,
+        "roll_deg": 0.0
       },
       {
         "nz": 7.0,
-        "duration_ms": 3500.0
+        "duration_ms": 3500.0,
+        "pitch_deg": 3.54,
+        "roll_deg": 0.0
       },
       {
         "nz": 5.0,
-        "duration_ms": 2000.0
+        "duration_ms": 2000.0,
+        "pitch_deg": 34.96,
+        "roll_deg": 0.0
       },
       {
         "nz": 2.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 24.11,
+        "roll_deg": 0.0
       },
       {
         "nz": 1.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       }
     ]
   },
@@ -4171,67 +5777,99 @@
     "samples": [
       {
         "nz": 0.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 26.51,
+        "roll_deg": 0.0
       },
       {
         "nz": 2.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 53.01,
+        "roll_deg": 0.0
       },
       {
         "nz": 3.5,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 84.82,
+        "roll_deg": 0.0
       },
       {
         "nz": 5.0,
-        "duration_ms": 700.0
+        "duration_ms": 700.0,
+        "pitch_deg": 58.07,
+        "roll_deg": 180.0
       },
       {
         "nz": 4.0,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 26.27,
+        "roll_deg": 180.0
       },
       {
         "nz": 2.5,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": -0.24,
+        "roll_deg": 180.0
       },
       {
         "nz": 1.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": -23.86,
+        "roll_deg": 180.0
       },
       {
         "nz": 0.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": -38.05,
+        "roll_deg": 180.0
       },
       {
         "nz": -0.5,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": -52.25,
+        "roll_deg": 180.0
       },
       {
         "nz": 0.5,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": -66.44,
+        "roll_deg": 180.0
       },
       {
         "nz": 1.5,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": -84.18,
+        "roll_deg": 180.0
       },
       {
         "nz": 1.0,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": -74.52,
+        "roll_deg": 360.0
       },
       {
         "nz": 2.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": -56.78,
+        "roll_deg": 360.0
       },
       {
         "nz": 3.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": -39.04,
+        "roll_deg": 360.0
       },
       {
         "nz": 1.5,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": -21.29,
+        "roll_deg": 360.0
       },
       {
         "nz": 0.5,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 360.0
       }
     ]
   },
@@ -4255,67 +5893,99 @@
     "samples": [
       {
         "nz": 0.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": -0.9,
-        "duration_ms": 900.0
+        "duration_ms": 900.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.33,
-        "duration_ms": 900.0
+        "duration_ms": 900.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.22,
-        "duration_ms": 900.0
+        "duration_ms": 900.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": -0.44,
-        "duration_ms": 900.0
+        "duration_ms": 900.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": -0.66,
-        "duration_ms": 900.0
+        "duration_ms": 900.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": -1.1,
-        "duration_ms": 900.0
+        "duration_ms": 900.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 1.1,
-        "duration_ms": 900.0
+        "duration_ms": 900.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": -1.0,
-        "duration_ms": 900.0
+        "duration_ms": 900.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 2.5,
-        "duration_ms": 900.0
+        "duration_ms": 900.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 4.1,
-        "duration_ms": 900.0
+        "duration_ms": 900.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": -1.9,
-        "duration_ms": 900.0
+        "duration_ms": 900.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": -2.2,
-        "duration_ms": 900.0
+        "duration_ms": 900.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 2.2,
-        "duration_ms": 900.0
+        "duration_ms": 900.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 62.07
       },
       {
         "nz": 0.55,
-        "duration_ms": 900.0
+        "duration_ms": 900.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 211.03
       },
       {
         "nz": 1.32,
-        "duration_ms": 900.0
+        "duration_ms": 900.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 360.0
       }
     ]
   },
@@ -4339,55 +6009,81 @@
     "samples": [
       {
         "nz": 1.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 3.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 70.53
       },
       {
         "nz": 5.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 78.46
       },
       {
         "nz": 7.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 81.79
       },
       {
         "nz": 8.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 82.82
       },
       {
         "nz": 8.0,
-        "duration_ms": 8000.0
+        "duration_ms": 8000.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 82.82
       },
       {
         "nz": 7.5,
-        "duration_ms": 6000.0
+        "duration_ms": 6000.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 82.34
       },
       {
         "nz": 7.0,
-        "duration_ms": 4000.0
+        "duration_ms": 4000.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 81.79
       },
       {
         "nz": 6.0,
-        "duration_ms": 4000.0
+        "duration_ms": 4000.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 80.41
       },
       {
         "nz": 4.0,
-        "duration_ms": 2000.0
+        "duration_ms": 2000.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 75.52
       },
       {
         "nz": 2.0,
-        "duration_ms": 1500.0
+        "duration_ms": 1500.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 60.0
       },
       {
         "nz": 1.5,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 48.19
       },
       {
         "nz": 1.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       }
     ]
   },
@@ -4411,91 +6107,135 @@
     "samples": [
       {
         "nz": 0.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 15.71,
+        "roll_deg": 0.0
       },
       {
         "nz": 2.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 35.36,
+        "roll_deg": 0.0
       },
       {
         "nz": 3.8,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 58.93,
+        "roll_deg": 0.0
       },
       {
         "nz": 5.0,
-        "duration_ms": 700.0
+        "duration_ms": 700.0,
+        "pitch_deg": 86.43,
+        "roll_deg": 0.0
       },
       {
         "nz": 4.5,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 70.0,
+        "roll_deg": 180.0
       },
       {
         "nz": 2.5,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 50.36,
+        "roll_deg": 180.0
       },
       {
         "nz": 1.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 30.71,
+        "roll_deg": 180.0
       },
       {
         "nz": 0.2,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 15.0,
+        "roll_deg": 180.0
       },
       {
         "nz": -1.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": -0.71,
+        "roll_deg": 180.0
       },
       {
         "nz": 0.5,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": -16.43,
+        "roll_deg": 180.0
       },
       {
         "nz": 1.5,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": -30.1,
+        "roll_deg": 180.0
       },
       {
         "nz": 0.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": -43.25,
+        "roll_deg": 180.0
       },
       {
         "nz": 2.2,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": -56.4,
+        "roll_deg": 180.0
       },
       {
         "nz": 4.0,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": -72.18,
+        "roll_deg": 180.0
       },
       {
         "nz": 5.0,
-        "duration_ms": 700.0
+        "duration_ms": 700.0,
+        "pitch_deg": -89.42,
+        "roll_deg": 360.0
       },
       {
         "nz": 4.0,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": -73.64,
+        "roll_deg": 360.0
       },
       {
         "nz": 2.5,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": -60.49,
+        "roll_deg": 360.0
       },
       {
         "nz": 1.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": -47.34,
+        "roll_deg": 360.0
       },
       {
         "nz": 0.2,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": -36.82,
+        "roll_deg": 360.0
       },
       {
         "nz": -1.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": -26.3,
+        "roll_deg": 360.0
       },
       {
         "nz": 0.5,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": -15.78,
+        "roll_deg": 360.0
       },
       {
         "nz": 0.0,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 360.0
       }
     ]
   },
@@ -4519,59 +6259,87 @@
     "samples": [
       {
         "nz": 0.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 24.11,
+        "roll_deg": 0.0
       },
       {
         "nz": 2.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 54.25,
+        "roll_deg": 0.0
       },
       {
         "nz": 3.5,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 89.59,
+        "roll_deg": 180.0
       },
       {
         "nz": 4.0,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 53.42,
+        "roll_deg": 180.0
       },
       {
         "nz": 2.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 23.29,
+        "roll_deg": 180.0
       },
       {
         "nz": 0.5,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": -0.82,
+        "roll_deg": 180.0
       },
       {
         "nz": -1.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": -22.64,
+        "roll_deg": 180.0
       },
       {
         "nz": 0.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": -38.78,
+        "roll_deg": 180.0
       },
       {
         "nz": 1.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": -58.95,
+        "roll_deg": 180.0
       },
       {
         "nz": 3.0,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": -83.16,
+        "roll_deg": 180.0
       },
       {
         "nz": 5.0,
-        "duration_ms": 700.0
+        "duration_ms": 700.0,
+        "pitch_deg": -68.59,
+        "roll_deg": 360.0
       },
       {
         "nz": 3.5,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": -44.38,
+        "roll_deg": 360.0
       },
       {
         "nz": 1.5,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": -24.21,
+        "roll_deg": 360.0
       },
       {
         "nz": 0.5,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 360.0
       }
     ]
   },
@@ -4595,59 +6363,87 @@
     "samples": [
       {
         "nz": 1.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 4.91,
+        "roll_deg": 11.32
       },
       {
         "nz": 3.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 8.71,
+        "roll_deg": 20.38
       },
       {
         "nz": 5.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 13.14,
+        "roll_deg": 31.7
       },
       {
         "nz": 5.0,
-        "duration_ms": 2000.0
+        "duration_ms": 2000.0,
+        "pitch_deg": 24.36,
+        "roll_deg": 76.98
       },
       {
         "nz": 3.0,
-        "duration_ms": 1500.0
+        "duration_ms": 1500.0,
+        "pitch_deg": 23.35,
+        "roll_deg": 110.94
       },
       {
         "nz": 2.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 18.11,
+        "roll_deg": 133.58
       },
       {
         "nz": 4.5,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 14.37,
+        "roll_deg": 144.91
       },
       {
         "nz": 5.0,
-        "duration_ms": 2000.0
+        "duration_ms": 2000.0,
+        "pitch_deg": -4.42,
+        "roll_deg": 190.19
       },
       {
         "nz": 4.5,
-        "duration_ms": 1500.0
+        "duration_ms": 1500.0,
+        "pitch_deg": -17.41,
+        "roll_deg": 224.15
       },
       {
         "nz": 2.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": -22.98,
+        "roll_deg": 246.79
       },
       {
         "nz": 4.5,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": -24.46,
+        "roll_deg": 258.11
       },
       {
         "nz": 5.0,
-        "duration_ms": 2000.0
+        "duration_ms": 2000.0,
+        "pitch_deg": -20.87,
+        "roll_deg": 303.4
       },
       {
         "nz": 3.0,
-        "duration_ms": 1500.0
+        "duration_ms": 1500.0,
+        "pitch_deg": -9.62,
+        "roll_deg": 337.36
       },
       {
         "nz": 1.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": -0.0,
+        "roll_deg": 360.0
       }
     ]
   },
@@ -4671,55 +6467,81 @@
     "samples": [
       {
         "nz": 1.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 3.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 70.53
       },
       {
         "nz": 5.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 78.46
       },
       {
         "nz": 7.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 81.79
       },
       {
         "nz": 7.5,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 82.34
       },
       {
         "nz": 7.5,
-        "duration_ms": 6000.0
+        "duration_ms": 6000.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 82.34
       },
       {
         "nz": 7.2,
-        "duration_ms": 3000.0
+        "duration_ms": 3000.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 82.02
       },
       {
         "nz": 7.0,
-        "duration_ms": 3000.0
+        "duration_ms": 3000.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 81.79
       },
       {
         "nz": 5.5,
-        "duration_ms": 2000.0
+        "duration_ms": 2000.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 79.52
       },
       {
         "nz": 3.5,
-        "duration_ms": 2000.0
+        "duration_ms": 2000.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 73.4
       },
       {
         "nz": 2.0,
-        "duration_ms": 1500.0
+        "duration_ms": 1500.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 60.0
       },
       {
         "nz": 1.5,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 48.19
       },
       {
         "nz": 1.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       }
     ]
   },
@@ -4743,55 +6565,81 @@
     "samples": [
       {
         "nz": 0.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 36.0
       },
       {
         "nz": 1.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 64.8
       },
       {
         "nz": 0.7,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 86.4
       },
       {
         "nz": 0.0,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 108.0
       },
       {
         "nz": -0.7,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 129.6
       },
       {
         "nz": -1.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 158.4
       },
       {
         "nz": -1.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 187.2
       },
       {
         "nz": -0.7,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 208.8
       },
       {
         "nz": 0.0,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 230.4
       },
       {
         "nz": 0.7,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 252.0
       },
       {
         "nz": 1.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 280.8
       },
       {
         "nz": 1.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 316.8
       },
       {
         "nz": 0.0,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 360.0
       }
     ]
   },
@@ -4815,91 +6663,135 @@
     "samples": [
       {
         "nz": 1.0,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": 29.69,
+        "roll_deg": 126.24
       },
       {
         "nz": 2.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 44.54,
+        "roll_deg": 165.45
       },
       {
         "nz": 3.5,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 59.38,
+        "roll_deg": 179.98
       },
       {
         "nz": 2.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 74.23,
+        "roll_deg": 167.66
       },
       {
         "nz": 0.5,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 89.07,
+        "roll_deg": 130.33
       },
       {
         "nz": -1.5,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 76.08,
+        "roll_deg": 253.57
       },
       {
         "nz": -2.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 61.24,
+        "roll_deg": 185.83
       },
       {
         "nz": -0.5,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 46.39,
+        "roll_deg": 117.22
       },
       {
         "nz": 1.5,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 31.55,
+        "roll_deg": 57.98
       },
       {
         "nz": 3.5,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 16.7,
+        "roll_deg": 16.93
       },
       {
         "nz": 2.5,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 1.86,
+        "roll_deg": 0.21
       },
       {
         "nz": 0.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": -12.99,
+        "roll_deg": 10.31
       },
       {
         "nz": -1.8,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": -27.84,
+        "roll_deg": 45.72
       },
       {
         "nz": -2.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": -42.68,
+        "roll_deg": 101.15
       },
       {
         "nz": -0.5,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": -57.53,
+        "roll_deg": 168.35
       },
       {
         "nz": 2.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": -72.37,
+        "roll_deg": 237.28
       },
       {
         "nz": 3.8,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": -87.22,
+        "roll_deg": 297.67
       },
       {
         "nz": 2.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": -77.94,
+        "roll_deg": 520.51
       },
       {
         "nz": 0.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": -63.09,
+        "roll_deg": 539.41
       },
       {
         "nz": -1.5,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": -48.25,
+        "roll_deg": 531.55
       },
       {
         "nz": 0.5,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": -29.69,
+        "roll_deg": 486.24
       },
       {
         "nz": 1.0,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 360.0
       }
     ]
   },
@@ -4923,75 +6815,111 @@
     "samples": [
       {
         "nz": 0.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": -2.0,
-        "duration_ms": 900.0
+        "duration_ms": 900.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 1.8,
-        "duration_ms": 900.0
+        "duration_ms": 900.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 1.65,
-        "duration_ms": 900.0
+        "duration_ms": 900.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": -1.0,
-        "duration_ms": 900.0
+        "duration_ms": 900.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": -0.45,
-        "duration_ms": 900.0
+        "duration_ms": 900.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": -1.3,
-        "duration_ms": 900.0
+        "duration_ms": 900.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": -0.45,
-        "duration_ms": 900.0
+        "duration_ms": 900.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 6.0,
-        "duration_ms": 900.0
+        "duration_ms": 900.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": -3.0,
-        "duration_ms": 900.0
+        "duration_ms": 900.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": -0.55,
-        "duration_ms": 900.0
+        "duration_ms": 900.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 1.7,
-        "duration_ms": 900.0
+        "duration_ms": 900.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": -2.0,
-        "duration_ms": 900.0
+        "duration_ms": 900.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 2.2,
-        "duration_ms": 900.0
+        "duration_ms": 900.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": -0.88,
-        "duration_ms": 900.0
+        "duration_ms": 900.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": -1.1,
-        "duration_ms": 900.0
+        "duration_ms": 900.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 94.97
       },
       {
         "nz": 0.88,
-        "duration_ms": 900.0
+        "duration_ms": 900.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 227.48
       },
       {
         "nz": 0.77,
-        "duration_ms": 900.0
+        "duration_ms": 900.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 360.0
       }
     ]
   },
@@ -5015,51 +6943,75 @@
     "samples": [
       {
         "nz": 0.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 1.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 1.2,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 2.0,
-        "duration_ms": 250.0
+        "duration_ms": 250.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 6.0,
-        "duration_ms": 250.0
+        "duration_ms": 250.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 4.0,
-        "duration_ms": 250.0
+        "duration_ms": 250.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 28.57
       },
       {
         "nz": 1.5,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 62.86
       },
       {
         "nz": -1.0,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 97.14
       },
       {
         "nz": 0.5,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 142.86
       },
       {
         "nz": 1.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 200.0
       },
       {
         "nz": 1.0,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 268.57
       },
       {
         "nz": 1.0,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 360.0
       }
     ]
   },
@@ -5083,59 +7035,87 @@
     "samples": [
       {
         "nz": 0.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 72.29
       },
       {
         "nz": 0.2,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 130.12
       },
       {
         "nz": 0.1,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 173.49
       },
       {
         "nz": 0.0,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 13.83,
+        "roll_deg": 360.0
       },
       {
         "nz": 1.5,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 40.93,
+        "roll_deg": 360.0
       },
       {
         "nz": 3.0,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 73.46,
+        "roll_deg": 360.0
       },
       {
         "nz": 4.5,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": 63.16,
+        "roll_deg": 180.0
       },
       {
         "nz": 5.2,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": 19.79,
+        "roll_deg": 180.0
       },
       {
         "nz": 4.0,
-        "duration_ms": 700.0
+        "duration_ms": 700.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 180.0
       },
       {
         "nz": 2.5,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 180.0
       },
       {
         "nz": 1.2,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 180.0
       },
       {
         "nz": 0.4,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 180.0
       },
       {
         "nz": 0.0,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 180.0
       },
       {
         "nz": 0.0,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 180.0
       }
     ]
   },
@@ -5159,83 +7139,123 @@
     "samples": [
       {
         "nz": 0.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 13.74,
+        "roll_deg": 0.0
       },
       {
         "nz": 2.5,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 24.73,
+        "roll_deg": 0.0
       },
       {
         "nz": 5.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 38.47,
+        "roll_deg": 0.0
       },
       {
         "nz": 6.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 49.47,
+        "roll_deg": 0.0
       },
       {
         "nz": 1.0,
-        "duration_ms": 1500.0
+        "duration_ms": 1500.0,
+        "pitch_deg": 89.31,
+        "roll_deg": 180.0
       },
       {
         "nz": 5.5,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 75.57,
+        "roll_deg": 180.0
       },
       {
         "nz": 6.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 64.58,
+        "roll_deg": 180.0
       },
       {
         "nz": 2.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 50.84,
+        "roll_deg": 180.0
       },
       {
         "nz": -0.2,
-        "duration_ms": 1500.0
+        "duration_ms": 1500.0,
+        "pitch_deg": 9.62,
+        "roll_deg": 180.0
       },
       {
         "nz": -0.2,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 17.86,
+        "roll_deg": 180.0
       },
       {
         "nz": 1.5,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 31.6,
+        "roll_deg": 180.0
       },
       {
         "nz": 5.5,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 42.6,
+        "roll_deg": 180.0
       },
       {
         "nz": 6.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 56.34,
+        "roll_deg": 180.0
       },
       {
         "nz": 1.0,
-        "duration_ms": 1500.0
+        "duration_ms": 1500.0,
+        "pitch_deg": 82.44,
+        "roll_deg": 0.0
       },
       {
         "nz": 5.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 68.7,
+        "roll_deg": 0.0
       },
       {
         "nz": 6.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 57.71,
+        "roll_deg": 0.0
       },
       {
         "nz": 2.5,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 43.97,
+        "roll_deg": 0.0
       },
       {
         "nz": 1.0,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 27.48,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.5,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 16.49,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.0,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       }
     ]
   },
@@ -5259,55 +7279,81 @@
     "samples": [
       {
         "nz": 1.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.0,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": -1.0,
-        "duration_ms": 2000.0
+        "duration_ms": 2000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": -0.5,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.0,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 2.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 60.0
       },
       {
         "nz": 4.0,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 75.52
       },
       {
         "nz": 6.0,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 80.41
       },
       {
         "nz": 7.0,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 81.79
       },
       {
         "nz": 7.0,
-        "duration_ms": 3000.0
+        "duration_ms": 3000.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 81.79
       },
       {
         "nz": 4.0,
-        "duration_ms": 2000.0
+        "duration_ms": 2000.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 75.52
       },
       {
         "nz": 2.0,
-        "duration_ms": 2000.0
+        "duration_ms": 2000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 60.0
       },
       {
         "nz": 1.0,
-        "duration_ms": 1500.0
+        "duration_ms": 1500.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       }
     ]
   },
@@ -5331,55 +7377,81 @@
     "samples": [
       {
         "nz": 1.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 2.0,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 60.0
       },
       {
         "nz": 4.0,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 75.52
       },
       {
         "nz": 6.0,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 80.41
       },
       {
         "nz": 8.0,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 82.82
       },
       {
         "nz": 9.0,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 83.62
       },
       {
         "nz": 9.0,
-        "duration_ms": 25000.0
+        "duration_ms": 25000.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 83.62
       },
       {
         "nz": 8.5,
-        "duration_ms": 3000.0
+        "duration_ms": 3000.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 83.24
       },
       {
         "nz": 7.0,
-        "duration_ms": 2000.0
+        "duration_ms": 2000.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 81.79
       },
       {
         "nz": 5.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 78.46
       },
       {
         "nz": 3.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 70.53
       },
       {
         "nz": 1.5,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 48.19
       },
       {
         "nz": 1.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       }
     ]
   },
@@ -5403,71 +7475,105 @@
     "samples": [
       {
         "nz": 0.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 11.84,
+        "roll_deg": 0.0
       },
       {
         "nz": 3.5,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 26.05,
+        "roll_deg": 0.0
       },
       {
         "nz": 1.0,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": 45.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 1.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 68.68,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.5,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 80.53,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 90.0,
+        "roll_deg": 0.0
       },
       {
         "nz": -0.2,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 90.0,
+        "roll_deg": 0.0
       },
       {
         "nz": -0.5,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 90.0,
+        "roll_deg": 0.0
       },
       {
         "nz": -1.5,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 86.45,
+        "roll_deg": 180.0
       },
       {
         "nz": -2.5,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 62.76,
+        "roll_deg": 180.0
       },
       {
         "nz": -2.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 39.08,
+        "roll_deg": 180.0
       },
       {
         "nz": -1.2,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 15.39,
+        "roll_deg": 180.0
       },
       {
         "nz": -0.6,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 13.26,
+        "roll_deg": 180.0
       },
       {
         "nz": -0.2,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 51.16,
+        "roll_deg": 180.0
       },
       {
         "nz": 0.2,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 89.05,
+        "roll_deg": 180.0
       },
       {
         "nz": 0.0,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 45.47,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.0,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       }
     ]
   },
@@ -5491,71 +7597,105 @@
     "samples": [
       {
         "nz": 0.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 11.72,
+        "roll_deg": 0.0
       },
       {
         "nz": 3.5,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 25.78,
+        "roll_deg": 0.0
       },
       {
         "nz": 1.0,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": 44.53,
+        "roll_deg": 0.0
       },
       {
         "nz": 1.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 67.97,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.6,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 82.03,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.2,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 90.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 90.0,
+        "roll_deg": 0.0
       },
       {
         "nz": -0.2,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 90.0,
+        "roll_deg": 0.0
       },
       {
         "nz": -0.5,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 70.31,
+        "roll_deg": 180.0
       },
       {
         "nz": 0.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 51.56,
+        "roll_deg": 180.0
       },
       {
         "nz": 1.5,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 32.81,
+        "roll_deg": 180.0
       },
       {
         "nz": 3.5,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 9.38,
+        "roll_deg": 180.0
       },
       {
         "nz": 2.5,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 22.5,
+        "roll_deg": 180.0
       },
       {
         "nz": 1.5,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 60.0,
+        "roll_deg": 180.0
       },
       {
         "nz": 0.8,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 82.5,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.2,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 45.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.0,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       }
     ]
   },
@@ -5579,83 +7719,123 @@
     "samples": [
       {
         "nz": 1.0,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": 32.36,
+        "roll_deg": 134.89
       },
       {
         "nz": 4.5,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 48.54,
+        "roll_deg": 171.96
       },
       {
         "nz": 2.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 64.72,
+        "roll_deg": 178.63
       },
       {
         "nz": 0.5,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 88.99,
+        "roll_deg": 130.6
       },
       {
         "nz": -0.5,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 66.74,
+        "roll_deg": 211.6
       },
       {
         "nz": -1.2,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": 34.38,
+        "roll_deg": 68.13
       },
       {
         "nz": -0.8,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 10.11,
+        "roll_deg": 6.27
       },
       {
         "nz": -0.2,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": -6.07,
+        "roll_deg": 2.27
       },
       {
         "nz": 3.0,
-        "duration_ms": 200.0
+        "duration_ms": 200.0,
+        "pitch_deg": -14.16,
+        "roll_deg": 12.22
       },
       {
         "nz": 6.0,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": -26.29,
+        "roll_deg": 40.98
       },
       {
         "nz": -2.0,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": -38.43,
+        "roll_deg": 83.66
       },
       {
         "nz": -5.0,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": -50.56,
+        "roll_deg": 135.97
       },
       {
         "nz": 2.0,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": -62.7,
+        "roll_deg": 192.7
       },
       {
         "nz": 5.5,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": -74.83,
+        "roll_deg": 248.15
       },
       {
         "nz": -3.0,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": -86.97,
+        "roll_deg": 296.78
       },
       {
         "nz": -4.0,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": -80.9,
+        "roll_deg": 513.72
       },
       {
         "nz": 2.0,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": -68.76,
+        "roll_deg": 535.28
       },
       {
         "nz": 6.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": -52.58,
+        "roll_deg": 536.62
       },
       {
         "nz": 3.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": -32.36,
+        "roll_deg": 494.89
       },
       {
         "nz": 1.0,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 360.0
       }
     ]
   },
@@ -5679,59 +7859,87 @@
     "samples": [
       {
         "nz": 0.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 19.57
       },
       {
         "nz": 3.0,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 43.04
       },
       {
         "nz": 1.5,
-        "duration_ms": 700.0
+        "duration_ms": 700.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 70.43
       },
       {
         "nz": 1.0,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 101.74
       },
       {
         "nz": 0.5,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 133.04
       },
       {
         "nz": 0.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 172.17
       },
       {
         "nz": -0.2,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 211.3
       },
       {
         "nz": -0.5,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 242.61
       },
       {
         "nz": 0.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 262.17
       },
       {
         "nz": 0.5,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 277.83
       },
       {
         "nz": 1.5,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 297.39
       },
       {
         "nz": 2.5,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 316.96
       },
       {
         "nz": 1.5,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 336.52
       },
       {
         "nz": 0.5,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 360.0
       }
     ]
   },
@@ -5755,75 +7963,111 @@
     "samples": [
       {
         "nz": 0.0,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": 17.95,
+        "roll_deg": 0.0
       },
       {
         "nz": -1.2,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 32.77,
+        "roll_deg": 0.0
       },
       {
         "nz": -0.3,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 34.96,
+        "roll_deg": 0.0
       },
       {
         "nz": 2.8,
-        "duration_ms": 1200.0
+        "duration_ms": 1200.0,
+        "pitch_deg": 23.03,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.8,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": 6.25,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": -3.14,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.5,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": -12.3,
+        "roll_deg": 0.0
       },
       {
         "nz": -1.3,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": -30.05,
+        "roll_deg": 0.0
       },
       {
         "nz": -0.4,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": -34.68,
+        "roll_deg": 0.0
       },
       {
         "nz": 3.0,
-        "duration_ms": 1200.0
+        "duration_ms": 1200.0,
+        "pitch_deg": -27.36,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.9,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": -12.3,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": -3.14,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.6,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 6.25,
+        "roll_deg": 0.0
       },
       {
         "nz": -1.4,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 26.36,
+        "roll_deg": 0.0
       },
       {
         "nz": -0.4,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 33.29,
+        "roll_deg": 0.0
       },
       {
         "nz": 3.1,
-        "duration_ms": 1200.0
+        "duration_ms": 1200.0,
+        "pitch_deg": 30.82,
+        "roll_deg": 0.0
       },
       {
         "nz": 1.0,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": 17.95,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.2,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       }
     ]
   },
@@ -5847,63 +8091,93 @@
     "samples": [
       {
         "nz": 0.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 18.92,
+        "roll_deg": 0.0
       },
       {
         "nz": -1.5,
-        "duration_ms": 1200.0
+        "duration_ms": 1200.0,
+        "pitch_deg": 33.29,
+        "roll_deg": 0.0
       },
       {
         "nz": -0.4,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": 34.64,
+        "roll_deg": 0.0
       },
       {
         "nz": 3.8,
-        "duration_ms": 1500.0
+        "duration_ms": 1500.0,
+        "pitch_deg": 18.92,
+        "roll_deg": 0.0
       },
       {
         "nz": 1.2,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": -1.6,
-        "duration_ms": 1200.0
+        "duration_ms": 1200.0,
+        "pitch_deg": -22.16,
+        "roll_deg": 0.0
       },
       {
         "nz": -0.3,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": -31.84,
+        "roll_deg": 0.0
       },
       {
         "nz": 4.0,
-        "duration_ms": 1500.0
+        "duration_ms": 1500.0,
+        "pitch_deg": -31.84,
+        "roll_deg": 0.0
       },
       {
         "nz": 1.1,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": -18.92,
+        "roll_deg": 0.0
       },
       {
         "nz": -1.4,
-        "duration_ms": 1200.0
+        "duration_ms": 1200.0,
+        "pitch_deg": 3.99,
+        "roll_deg": 0.0
       },
       {
         "nz": -0.2,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": 18.92,
+        "roll_deg": 0.0
       },
       {
         "nz": 3.6,
-        "duration_ms": 1500.0
+        "duration_ms": 1500.0,
+        "pitch_deg": 34.64,
+        "roll_deg": 0.0
       },
       {
         "nz": 1.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 31.84,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.2,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 18.92,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       }
     ]
   },
@@ -5927,79 +8201,117 @@
     "samples": [
       {
         "nz": 0.0,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": 18.55,
+        "roll_deg": 0.0
       },
       {
         "nz": -1.4,
-        "duration_ms": 900.0
+        "duration_ms": 900.0,
+        "pitch_deg": 32.45,
+        "roll_deg": 0.0
       },
       {
         "nz": -0.5,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 34.98,
+        "roll_deg": 0.0
       },
       {
         "nz": 2.2,
-        "duration_ms": 900.0
+        "duration_ms": 900.0,
+        "pitch_deg": 27.58,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.7,
-        "duration_ms": 700.0
+        "duration_ms": 700.0,
+        "pitch_deg": 14.24,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 4.87,
+        "roll_deg": 0.0
       },
       {
         "nz": -1.5,
-        "duration_ms": 900.0
+        "duration_ms": 900.0,
+        "pitch_deg": -16.43,
+        "roll_deg": 0.0
       },
       {
         "nz": -0.5,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": -27.58,
+        "roll_deg": 0.0
       },
       {
         "nz": 2.4,
-        "duration_ms": 900.0
+        "duration_ms": 900.0,
+        "pitch_deg": -34.98,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.8,
-        "duration_ms": 700.0
+        "duration_ms": 700.0,
+        "pitch_deg": -31.46,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": -26.01,
+        "roll_deg": 0.0
       },
       {
         "nz": -1.6,
-        "duration_ms": 900.0
+        "duration_ms": 900.0,
+        "pitch_deg": -7.28,
+        "roll_deg": 0.0
       },
       {
         "nz": -0.5,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 7.28,
+        "roll_deg": 0.0
       },
       {
         "nz": 2.6,
-        "duration_ms": 900.0
+        "duration_ms": 900.0,
+        "pitch_deg": 26.01,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.9,
-        "duration_ms": 700.0
+        "duration_ms": 700.0,
+        "pitch_deg": 33.96,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 34.98,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.3,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 31.46,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.0,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": 18.55,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.0,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       }
     ]
   },
@@ -6023,55 +8335,81 @@
     "samples": [
       {
         "nz": 1.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 3.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 70.53
       },
       {
         "nz": 5.0,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 78.46
       },
       {
         "nz": 7.0,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 81.79
       },
       {
         "nz": 7.0,
-        "duration_ms": 2500.0
+        "duration_ms": 2500.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 81.79
       },
       {
         "nz": 4.0,
-        "duration_ms": 1500.0
+        "duration_ms": 1500.0,
+        "pitch_deg": 5.0,
+        "roll_deg": 75.52
       },
       {
         "nz": 2.0,
-        "duration_ms": 1500.0
+        "duration_ms": 1500.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 60.0
       },
       {
         "nz": 1.2,
-        "duration_ms": 4000.0
+        "duration_ms": 4000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 33.56
       },
       {
         "nz": 1.0,
-        "duration_ms": 4000.0
+        "duration_ms": 4000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.5,
-        "duration_ms": 2000.0
+        "duration_ms": 2000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.7,
-        "duration_ms": 2000.0
+        "duration_ms": 2000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 1.0,
-        "duration_ms": 2000.0
+        "duration_ms": 2000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 1.0,
-        "duration_ms": 1000.0
+        "duration_ms": 1000.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0
       }
     ]
   },
@@ -6095,99 +8433,147 @@
     "samples": [
       {
         "nz": 0.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": -12.1,
+        "roll_deg": 180.0
       },
       {
         "nz": 2.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": -27.23,
+        "roll_deg": 180.0
       },
       {
         "nz": 3.5,
-        "duration_ms": 700.0
+        "duration_ms": 700.0,
+        "pitch_deg": -48.4,
+        "roll_deg": 180.0
       },
       {
         "nz": 4.2,
-        "duration_ms": 700.0
+        "duration_ms": 700.0,
+        "pitch_deg": -69.58,
+        "roll_deg": 180.0
       },
       {
         "nz": 3.8,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": -87.73,
+        "roll_deg": 180.0
       },
       {
         "nz": 2.5,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": -77.14,
+        "roll_deg": 0.0
       },
       {
         "nz": 1.2,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": -62.02,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": -49.92,
+        "roll_deg": 0.0
       },
       {
         "nz": -0.3,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": -40.84,
+        "roll_deg": 0.0
       },
       {
         "nz": -0.7,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": -31.76,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.0,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": -22.69,
+        "roll_deg": 0.0
       },
       {
         "nz": 2.2,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": -7.56,
+        "roll_deg": 0.0
       },
       {
         "nz": 3.8,
-        "duration_ms": 700.0
+        "duration_ms": 700.0,
+        "pitch_deg": 13.61,
+        "roll_deg": 0.0
       },
       {
         "nz": 4.5,
-        "duration_ms": 700.0
+        "duration_ms": 700.0,
+        "pitch_deg": 34.79,
+        "roll_deg": 0.0
       },
       {
         "nz": 3.6,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 52.94,
+        "roll_deg": 0.0
       },
       {
         "nz": 2.2,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 68.07,
+        "roll_deg": 0.0
       },
       {
         "nz": 1.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 83.19,
+        "roll_deg": 0.0
       },
       {
         "nz": 0.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 84.71,
+        "roll_deg": 180.0
       },
       {
         "nz": -0.3,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 75.63,
+        "roll_deg": 180.0
       },
       {
         "nz": -0.5,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 66.55,
+        "roll_deg": 180.0
       },
       {
         "nz": 0.0,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 57.48,
+        "roll_deg": 180.0
       },
       {
         "nz": 0.4,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 42.35,
+        "roll_deg": 180.0
       },
       {
         "nz": 0.2,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 24.2,
+        "roll_deg": 180.0
       },
       {
         "nz": 0.0,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": 0.0,
+        "roll_deg": 180.0
       }
     ]
   },
@@ -6211,59 +8597,87 @@
     "samples": [
       {
         "nz": 0.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 90.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 2.5,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 90.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 4.5,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 90.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 3.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 90.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 1.0,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 90.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 1.0,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 90.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 6.0,
-        "duration_ms": 250.0
+        "duration_ms": 250.0,
+        "pitch_deg": 90.0,
+        "roll_deg": 0.0
       },
       {
         "nz": 4.0,
-        "duration_ms": 250.0
+        "duration_ms": 250.0,
+        "pitch_deg": 90.0,
+        "roll_deg": 26.09
       },
       {
         "nz": -1.5,
-        "duration_ms": 300.0
+        "duration_ms": 300.0,
+        "pitch_deg": 90.0,
+        "roll_deg": 57.39
       },
       {
         "nz": 0.5,
-        "duration_ms": 400.0
+        "duration_ms": 400.0,
+        "pitch_deg": 90.0,
+        "roll_deg": 99.13
       },
       {
         "nz": 1.0,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 90.0,
+        "roll_deg": 161.74
       },
       {
         "nz": 1.0,
-        "duration_ms": 800.0
+        "duration_ms": 800.0,
+        "pitch_deg": 90.0,
+        "roll_deg": 245.22
       },
       {
         "nz": 0.5,
-        "duration_ms": 600.0
+        "duration_ms": 600.0,
+        "pitch_deg": 90.0,
+        "roll_deg": 307.83
       },
       {
         "nz": 0.0,
-        "duration_ms": 500.0
+        "duration_ms": 500.0,
+        "pitch_deg": 90.0,
+        "roll_deg": 360.0
       }
     ]
   }
