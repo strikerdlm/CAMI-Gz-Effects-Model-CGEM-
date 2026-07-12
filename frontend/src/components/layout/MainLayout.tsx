@@ -5,7 +5,7 @@
  * and responsive content area.
  */
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { Sidebar } from './Sidebar';
@@ -19,6 +19,8 @@ export const MainLayout: React.FC = () => {
   const location = useLocation();
   const reduceMotion = useReducedMotion();
   const navigationTriggerRef = useRef<HTMLButtonElement>(null);
+  const openMobileNavigation = useCallback(() => setMobileNavigationOpen(true), []);
+  const closeMobileNavigation = useCallback(() => setMobileNavigationOpen(false), []);
 
   useEffect(() => {
     // A route may change from browser history or another shell control while the drawer is open.
@@ -52,9 +54,10 @@ export const MainLayout: React.FC = () => {
 
       {/* Top Bar */}
       <TopBar
-        onOpenNavigation={() => setMobileNavigationOpen(true)}
+        onOpenNavigation={openMobileNavigation}
         navigationTriggerRef={navigationTriggerRef}
         sidebarCollapsed={sidebarCollapsed}
+        reduceMotion={reduceMotion}
       />
 
       {/* Main Content Area */}
@@ -84,7 +87,7 @@ export const MainLayout: React.FC = () => {
       </div>
       <MobileNavDrawer
         open={mobileNavigationOpen}
-        onClose={() => setMobileNavigationOpen(false)}
+        onClose={closeMobileNavigation}
         triggerRef={navigationTriggerRef}
       />
     </div>

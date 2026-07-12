@@ -1,5 +1,5 @@
 /// <reference types="node" />
-import { fireEvent, render, screen, waitFor, within } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { readFileSync } from 'node:fs';
@@ -9,6 +9,7 @@ import { MainLayout } from './MainLayout';
 const styles = readFileSync(join(process.cwd(), 'src/index.css'), 'utf8');
 
 const reducedMotion = vi.hoisted(() => ({ value: false }));
+const originalMatchMedia = window.matchMedia;
 
 vi.mock('framer-motion', async (importOriginal) => {
   const actual = await importOriginal<typeof import('framer-motion')>();
@@ -17,6 +18,7 @@ vi.mock('framer-motion', async (importOriginal) => {
 
 afterEach(() => {
   reducedMotion.value = false;
+  window.matchMedia = originalMatchMedia;
 });
 
 vi.mock('../../services/cgemApi', () => ({
@@ -153,6 +155,37 @@ describe('MainLayout semantics', () => {
 
     expect(transition).toHaveAttribute('data-motion-mode', 'reduced');
     expect(transition).not.toHaveStyle({ transform: 'translateY(10px)' });
+    const titleTransition = container.querySelector('[data-title-transition]');
+    expect(titleTransition).toHaveAttribute('data-motion-mode', 'reduced');
+    expect(titleTransition).not.toHaveStyle({ transform: 'translateX(-10px)' });
+  });
+
+  it('closes and cleans up the drawer when the viewport enters tablet mode', () => {
+    let changeListener: ((event: MediaQueryListEvent) => void) | undefined;
+    const addEventListener = vi.fn((_type: string, listener: (event: MediaQueryListEvent) => void) => {
+      changeListener = listener;
+    });
+    const removeEventListener = vi.fn();
+    window.matchMedia = vi.fn().mockReturnValue({
+      matches: false,
+      media: '(min-width: 768px)',
+      onchange: null,
+      addEventListener,
+      removeEventListener,
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    });
+    renderLayout();
+    fireEvent.click(screen.getByRole('button', { name: 'Open navigation' }));
+    expect(document.body.style.overflow).toBe('hidden');
+
+    act(() => changeListener?.({ matches: true } as MediaQueryListEvent));
+
+    expect(screen.queryByRole('dialog', { name: 'Navigation' })).not.toBeInTheDocument();
+    expect(screen.getByTestId('shell-background')).not.toHaveAttribute('inert');
+    expect(document.body.style.overflow).toBe('');
+    expect(removeEventListener).toHaveBeenCalledWith('change', changeListener);
   });
 
   it('closes the drawer after navigation and restores focus on unmount cleanup', () => {

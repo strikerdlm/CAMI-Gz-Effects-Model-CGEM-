@@ -26,6 +26,15 @@ export function MobileNavDrawer({ open, onClose, triggerRef }: MobileNavDrawerPr
 
   useEffect(() => {
     if (!open) return;
+    const tabletQuery = window.matchMedia?.('(min-width: 768px)');
+    if (tabletQuery?.matches) {
+      onClose();
+      return;
+    }
+    const handleViewportChange = (event: MediaQueryListEvent) => {
+      if (event.matches) onClose();
+    };
+    tabletQuery?.addEventListener('change', handleViewportChange);
     const previousOverflow = document.body.style.overflow;
     const trigger = triggerRef.current;
     const background = document.querySelector<HTMLElement>('[data-shell-background]');
@@ -34,11 +43,12 @@ export function MobileNavDrawer({ open, onClose, triggerRef }: MobileNavDrawerPr
     closeRef.current?.focus();
 
     return () => {
+      tabletQuery?.removeEventListener('change', handleViewportChange);
       background?.removeAttribute('inert');
       document.body.style.overflow = previousOverflow;
       trigger?.focus();
     };
-  }, [open, triggerRef]);
+  }, [onClose, open, triggerRef]);
 
   if (!open) return null;
 

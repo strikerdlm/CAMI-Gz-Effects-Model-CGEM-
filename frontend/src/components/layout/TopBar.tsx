@@ -23,12 +23,14 @@ interface TopBarProps {
   onOpenNavigation: () => void;
   navigationTriggerRef: RefObject<HTMLButtonElement | null>;
   sidebarCollapsed: boolean;
+  reduceMotion: boolean | null;
 }
 
 export const TopBar: React.FC<TopBarProps> = ({
   onOpenNavigation,
   navigationTriggerRef,
   sidebarCollapsed,
+  reduceMotion,
 }) => {
   const location = useLocation();
   const pageInfo = routeForPath(location.pathname);
@@ -75,9 +77,11 @@ export const TopBar: React.FC<TopBarProps> = ({
         </button>
         <motion.div
           key={location.pathname}
-          initial={{ opacity: 0, x: -10 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.2 }}
+          data-title-transition
+          data-motion-mode={reduceMotion ? 'reduced' : 'animated'}
+          initial={reduceMotion ? false : { opacity: 0, x: -10 }}
+          animate={reduceMotion ? { opacity: 1 } : { opacity: 1, x: 0 }}
+          transition={reduceMotion ? undefined : { duration: 0.2 }}
         >
           <h1 className="font-condensed text-lg tracking-callsign uppercase text-hud-ink">
             {pageInfo.title}
