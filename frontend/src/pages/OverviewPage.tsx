@@ -47,12 +47,12 @@ export const OverviewPage: React.FC = () => {
 
   const getRiskLevel = (): { level: string; color: string } => {
     if (stats.max_positive_g > 6 || stats.max_negative_g < -2) {
-      return { level: 'High Risk', color: 'text-danger-400' };
+      return { level: 'High Load', color: 'text-danger-400' };
     }
     if (stats.max_positive_g > 4 || stats.max_negative_g < -1) {
-      return { level: 'Moderate Risk', color: 'text-warning-400' };
+      return { level: 'Moderate Load', color: 'text-warning-400' };
     }
-    return { level: 'Low Risk', color: 'text-accent-400' };
+    return { level: 'Lower Load', color: 'text-accent-400' };
   };
 
   const riskInfo = getRiskLevel();
@@ -73,7 +73,7 @@ export const OverviewPage: React.FC = () => {
             <p className="text-surface-400 max-w-2xl">
               Select a maneuver profile to visualize G-force characteristics and 
               review physiological risk factors. Data represents typical G-loading 
-              patterns from in-flight measurements.
+              patterns from measured, literature-encoded, and conceptual records.
             </p>
           </div>
           
@@ -232,8 +232,9 @@ export const OverviewPage: React.FC = () => {
         className="glass-light rounded-xl p-4 text-sm text-surface-400"
       >
         <p>
-          <strong className="text-surface-300">Note:</strong> G-force profiles are derived from 
-          in-flight measurements of aerobatic maneuvers. Physiological thresholds are based on 
+          <strong className="text-surface-300">Note:</strong> G-force profiles are derived from
+          measured, literature-encoded, and conceptual kinematic records; they are not all flight measurements.
+          Physiological thresholds are based on
           validated centrifuge research. See{' '}
           <a 
             href="https://doi.org/10.21949/1524446" 

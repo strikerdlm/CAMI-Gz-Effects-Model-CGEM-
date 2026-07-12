@@ -23,7 +23,6 @@ import {
   StatusStrip,
   AttitudeIndicator,
   GTracePlayer,
-  type RiskTier,
 } from '../components/hud';
 import {
   usePredict,
@@ -31,11 +30,11 @@ import {
   apiErrorMessage,
 } from '../services/cgemApi';
 import type {
-  ManeuverDescriptors,
-  PilotConfigRequest,
   PredictionRequest,
   TargetPrediction,
 } from '../services/types';
+import { pilotConfigFromPrefs } from '../services/pilotConfig';
+import { useUserPrefs } from '../state/useUserPrefs';
 
 const CATEGORY_LABELS: Record<ManeuverCategory, string> = {
   championship: 'CHAMPIONSHIP',
@@ -45,30 +44,9 @@ const CATEGORY_LABELS: Record<ManeuverCategory, string> = {
   conceptual: 'CONCEPTUAL',
 };
 
-const DEFAULT_PILOT: PilotConfigRequest = {
-  who_profile: 4,
-  g_tolerance_multiplier: 1.0,
-  dehydration_level: 0.0,
-  // G-suit + AGSM both active → "suit_agsm" (not "agsm" alone)
-  countermeasures_label: 'suit_agsm',
-  gsuit_max_psi: 5.0,
-  gsuit_coverage_fraction: 0.6,
-  agsm_effectiveness: 0.5,
-  pbg_max_mmhg: 0.0,
-};
-
-function riskFromPrediction(
-  point: number | null,
-  eventProb: number | null | undefined,
-): RiskTier {
-  if (eventProb == null) return 'CLEAR';
-  if (eventProb < 0.05) return 'CLEAR';
-  if (eventProb < 0.25 && (point ?? Infinity) > 10) return 'CAUTION';
-  if (eventProb < 0.6) return 'WARNING';
-  return 'G-LOC';
-}
-
 export const SimulatorPage: React.FC = () => {
+  const prefs = useUserPrefs();
+  const pilot = useMemo(() => pilotConfigFromPrefs(prefs), [prefs]);
   const health = useHealth();
   const apiAlive = health.data?.status === 'ok';
 
@@ -110,16 +88,10 @@ export const SimulatorPage: React.FC = () => {
   const predictMutation = usePredict();
   useEffect(() => {
     if (!apiAlive) return;
-    const desc: ManeuverDescriptors = {
-      maneuver: maneuver.id,
-      g_peak_abs: Math.abs(maneuver.peak_pos_gz),
-      dgdt_max_g_per_s: maneuver.onset_rate_g_per_s,
-      profile_duration_s: maneuver.total_duration_s,
-    };
-    const req: PredictionRequest = { pilot: DEFAULT_PILOT, maneuver: desc };
+    const req: PredictionRequest = { pilot, maneuver: { maneuver: maneuver.id } };
     predictMutation.mutate(req);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [maneuver.id, apiAlive]);
+  }, [maneuver.id, apiAlive, pilot]);
 
   const targets = predictMutation.data?.targets ?? [];
   const glocPred: TargetPrediction | undefined = targets.find((t) => t.target === 'time_to_gloc_s');
@@ -130,10 +102,9 @@ export const SimulatorPage: React.FC = () => {
   const expectedT = glocPred?.expected_time_s ?? null;
   const conformal =
     point != null && lo != null && hi != null
-      ? { median_s: point, low_s: lo, high_s: hi, label: '95% CI' }
+      ? { median_s: point, low_s: lo, high_s: hi, label: '95% PI' }
       : null;
 
-  const risk = riskFromPrediction(point, eventProb);
   const ood = predictMutation.data?.ood ?? false;
 
   return (
@@ -185,7 +156,10 @@ export const SimulatorPage: React.FC = () => {
         />
         <div className="grid grid-cols-1 lg:grid-cols-[auto_1fr] gap-4">
           <Bezel label="ATTITUDE · VISUAL PROXY" status="caution" className="flex items-center justify-center min-h-[280px]">
-            <AttitudeIndicator roll={roll} pitch={pitchRef.current} size={260} />
+            <div className="text-center">
+              <AttitudeIndicator roll={roll} pitch={pitchRef.current} size={260} />
+              <p className="mt-2 text-[10px] text-hud-ink-faint font-mono">ILLUSTRATIVE · NOT AIRCRAFT KINEMATICS</p>
+            </div>
           </Bezel>
           <Bezel label="MANEUVER BRIEFING" status="ok" className="text-sm leading-relaxed text-hud-ink-dim">
             <div className="font-condensed text-2xl text-hud-ink mb-2 tracking-wide uppercase">
@@ -275,39 +249,41 @@ export const SimulatorPage: React.FC = () => {
           {apiAlive && predictMutation.isSuccess && glocPred && (
             <div className="space-y-3">
               <div className="flex justify-between items-baseline">
-                <span className="font-mono text-[10px] text-hud-ink-faint tracking-callsign">T-LOC POINT</span>
+                <span className="font-mono text-[10px] text-hud-ink-faint tracking-callsign">CONDITIONAL TIME IF EVENT OCCURS</span>
                 <SegmentReadout value={point} unit="s" tone="amber" size="lg" precision={1} width={5} />
               </div>
               <div className="flex justify-between items-center">
-                <span className="font-mono text-[10px] text-hud-ink-faint tracking-callsign">95% CI</span>
+                <span className="font-mono text-[10px] text-hud-ink-faint tracking-callsign">95% PREDICTION INTERVAL</span>
                 <span className="font-mono text-sm phosphor tabular-nums">
                   [{lo != null ? lo.toFixed(1) : '—'}, {hi != null ? hi.toFixed(1) : '—'}]
                 </span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="font-mono text-[10px] text-hud-ink-faint tracking-callsign">E[T] · P·μ</span>
+                <span className="font-mono text-[10px] text-hud-ink-faint tracking-callsign">P × CONDITIONAL TIME</span>
                 <SegmentReadout value={expectedT} unit="s" tone="phosphor" size="md" precision={1} width={5} />
               </div>
               <div className="flex justify-between items-center">
-                <span className="font-mono text-[10px] text-hud-ink-faint tracking-callsign">P(event)</span>
+                <span className="font-mono text-[10px] text-hud-ink-faint tracking-callsign">EVENT PROBABILITY</span>
                 <SegmentReadout value={eventProb} tone="ice" size="md" precision={3} width={5} />
               </div>
               <div className="pt-2 border-t border-hud-line flex justify-center gap-2 flex-wrap">
-                <RiskBadge tier={risk} pulse={risk === 'G-LOC' || risk === 'WARNING'} />
                 {ood && <RiskBadge tier="OOD" />}
               </div>
+              <p className="text-[10px] leading-relaxed text-hud-ink-faint font-mono">
+                RESEARCH USE ONLY · PROBABILISTIC SURROGATE OUTPUT, NOT AN OBSERVED EVENT OR FLIGHT-SAFETY VERDICT
+              </p>
             </div>
           )}
         </Bezel>
 
         <Bezel label="PILOT CONFIG" status="idle">
           <div className="grid grid-cols-2 gap-x-3 gap-y-1 font-mono text-xs">
-            <div className="text-hud-ink-faint">WHO</div><div className="amber">FAA-{DEFAULT_PILOT.who_profile}</div>
-            <div className="text-hud-ink-faint">G-SUIT</div><div className="amber">{DEFAULT_PILOT.gsuit_max_psi} psi · {(DEFAULT_PILOT.gsuit_coverage_fraction * 100).toFixed(0)}%</div>
-            <div className="text-hud-ink-faint">AGSM</div><div className="amber">{DEFAULT_PILOT.agsm_effectiveness.toFixed(2)}</div>
-            <div className="text-hud-ink-faint">PBG</div><div className="amber">{DEFAULT_PILOT.pbg_max_mmhg} mmHg</div>
-            <div className="text-hud-ink-faint">DEHYD</div><div className="amber">{DEFAULT_PILOT.dehydration_level.toFixed(2)}</div>
-            <div className="text-hud-ink-faint">CM</div><div className="amber uppercase">{DEFAULT_PILOT.countermeasures_label}</div>
+            <div className="text-hud-ink-faint">WHO</div><div className="amber">{pilot.who_profile === null ? 'CUSTOM' : `FAA-${pilot.who_profile}`}</div>
+            <div className="text-hud-ink-faint">G-SUIT</div><div className="amber">{pilot.gsuit_max_psi} psi · {(pilot.gsuit_coverage_fraction * 100).toFixed(0)}%</div>
+            <div className="text-hud-ink-faint">AGSM</div><div className="amber">{pilot.agsm_effectiveness.toFixed(2)}</div>
+            <div className="text-hud-ink-faint">PBG</div><div className="amber">{pilot.pbg_max_mmhg} mmHg</div>
+            <div className="text-hud-ink-faint">DEHYD</div><div className="amber">{pilot.dehydration_level.toFixed(2)}</div>
+            <div className="text-hud-ink-faint">CM</div><div className="amber uppercase">{pilot.countermeasures_label}</div>
           </div>
           <div className="mt-3 text-hud-ink-faint font-mono text-[11px]">
             Edit defaults in <a href="/settings" className="phosphor hover:underline">/settings</a>

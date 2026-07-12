@@ -1,8 +1,8 @@
 /**
  * Mock Data Service
  * 
- * Provides static aerobatic profile data and simulated CGEM results
- * for frontend development and demonstration purposes.
+ * Test/development fixtures only. These heuristic results must never feed
+ * production result views or be represented as authoritative CGEM output.
  */
 
 import type { 

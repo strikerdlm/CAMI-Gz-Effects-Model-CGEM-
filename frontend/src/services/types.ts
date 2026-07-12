@@ -27,15 +27,20 @@ export interface PilotConfigRequest {
   pbg_max_mmhg: number;
 }
 
-export interface ManeuverDescriptors {
-  /** Identifier from the registered maneuver library. If supplied, the
-   * service computes g_peak_abs / dgdt_max_g_per_s / profile_duration_s
-   * itself. */
-  maneuver?: string | null;
-  g_peak_abs?: number | null;
-  dgdt_max_g_per_s?: number | null;
-  profile_duration_s?: number | null;
-}
+/** Named maneuvers are server-owned; inline inputs must be complete. */
+export type ManeuverDescriptors =
+  | {
+      maneuver: string;
+      g_peak_abs?: never;
+      dgdt_max_g_per_s?: never;
+      profile_duration_s?: never;
+    }
+  | {
+      maneuver?: null;
+      g_peak_abs: number;
+      dgdt_max_g_per_s: number;
+      profile_duration_s: number;
+    };
 
 // ── /predict + /sweep ────────────────────────────────────────────────
 
@@ -67,6 +72,9 @@ export interface PredictionResponse {
   in_envelope: boolean;
   model_version: string;
   cgem_binary_sha256: string;
+  resolved_maneuver: string;
+  maneuver_category: string;
+  calibration_scope: 'category' | 'global';
   source: string;
 }
 

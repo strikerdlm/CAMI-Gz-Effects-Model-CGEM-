@@ -108,12 +108,19 @@ export const SettingsPage: React.FC = () => {
               key={k}
               className="flex items-center justify-between py-1 border-b border-hud-line/40 last:border-0"
             >
-              <label className="font-mono text-[11px] text-hud-ink-faint tracking-callsign uppercase">
+              <label
+                htmlFor={`default-${k}`}
+                className="font-mono text-[11px] text-hud-ink-faint tracking-callsign uppercase"
+              >
                 {k.replace(/_/g, ' ')}
               </label>
               <input
+                id={`default-${k}`}
+                name={`default-${k}`}
                 type="number"
                 step={k === 'who_profile' ? 1 : 0.05}
+                min={k === 'who_profile' ? 1 : 0}
+                max={k === 'who_profile' ? 6 : k === 'pbg_max_mmhg' ? 60 : k === 'gsuit_max_psi' ? 20 : 1}
                 value={prefs.defaults[k]}
                 onChange={(e) => updateDefault(k, Number(e.target.value))}
                 className="w-28 bg-hud-bg border border-hud-line text-hud-amber font-mono text-sm px-2 py-0.5 rounded-sm text-right tabular-nums focus:outline-none focus:border-hud-amber"
@@ -122,9 +129,9 @@ export const SettingsPage: React.FC = () => {
           ))}
         </div>
         <p className="mt-3 text-hud-ink-faint font-mono text-[11px] leading-relaxed">
-          These values seed every <span className="phosphor">/predict</span> and{' '}
-          <span className="phosphor">/run-cgem</span> request from the Simulator and Dashboard
-          unless overridden inline.
+          These values seed Simulator, Prediction, and Dashboard requests unless a page
+          explicitly overrides them. For standard profiles 1–6, the Fortran core overrides
+          custom physiology fields such as dehydration and G-tolerance multiplier.
         </p>
       </Bezel>
 

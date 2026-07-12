@@ -2,7 +2,7 @@
  * Prediction table — renders the per-target output from POST /predict.
  *
  * Per the Phase-3 model card, censored time targets show
- *   P(event) · E[t | event=1]    (point + conformal CI on the same scale)
+ *   P(event) · E[t | event=1]    (point + conformal PI on the same scale)
  *   plus a separate event probability badge
  * Continuous targets show
  *   point ± conformal interval
@@ -40,10 +40,10 @@ export const PredictionTable: React.FC<PredictionTableProps> = ({ targets }) => 
         <thead className="bg-surface-800/60 text-surface-400 uppercase text-xs tracking-wider">
           <tr>
             <th className="px-4 py-3 text-left font-medium">Target</th>
-            <th className="px-4 py-3 text-right font-medium">P(event)</th>
-            <th className="px-4 py-3 text-right font-medium">Point</th>
-            <th className="px-4 py-3 text-right font-medium">95 % CI</th>
-            <th className="px-4 py-3 text-right font-medium">Expected</th>
+            <th className="px-4 py-3 text-right font-medium">Event probability</th>
+            <th className="px-4 py-3 text-right font-medium">Conditional time if event occurs</th>
+            <th className="px-4 py-3 text-right font-medium">95 % prediction interval</th>
+            <th className="px-4 py-3 text-right font-medium">P × conditional time</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-surface-700/50">
@@ -75,9 +75,9 @@ export const PredictionTable: React.FC<PredictionTableProps> = ({ targets }) => 
         </tbody>
       </table>
       <p className="bg-surface-800/40 text-xs text-surface-500 px-4 py-2 leading-relaxed">
-        For censored time targets the <em>Point</em> is the conditional time
-        E[t | event=1] and the 95 % CI is the Mondrian split-conformal
-        interval on that quantity. <em>Expected</em> = P(event) × Point.
+        For censored time targets, conditional time means E[t | event=1], and
+        the 95 % prediction interval is the Mondrian split-conformal interval
+        on that quantity. P × conditional time is a separate convenience value.
         Continuous targets (HLAP, c-bank) report direct surrogate output ±
         conformal interval on the same scale.
       </p>
