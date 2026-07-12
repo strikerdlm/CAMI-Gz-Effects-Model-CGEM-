@@ -35,3 +35,12 @@ it('does not clear a competing active export when another registrar unmounts', (
   view.rerender(<ResultActionsProvider><NamedRegistrar spec={two} /><Probe /></ResultActionsProvider>);
   expect(screen.getByText('two.json')).toBeInTheDocument();
 });
+
+let nullCleanup: unknown;
+function NullRegistrar() { const { registerExport } = useResultActions(); useEffect(() => { nullCleanup = registerExport(null); return typeof nullCleanup === 'function' ? nullCleanup as () => void : undefined; }, [registerExport]); return null; }
+
+it('treats a competing null registration and its cleanup as no-ops', () => {
+  render(<ResultActionsProvider><NamedRegistrar spec={spec} /><NullRegistrar /><Probe /></ResultActionsProvider>);
+  expect(screen.getByText('one.json')).toBeInTheDocument();
+  expect(nullCleanup).toBeTypeOf('function');
+});

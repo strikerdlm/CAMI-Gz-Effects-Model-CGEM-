@@ -8,7 +8,7 @@ export function ResultActionsProvider({ children }: { children: React.ReactNode 
   const registrations = useRef(new Map<number, ExportSpec>());
   const nextId = useRef(0);
   const registerExport = useCallback((spec: ExportSpec | null) => {
-    if (!spec) { registrations.current.clear(); setActiveExport(null); return; }
+    if (!spec) return () => undefined;
     const id = ++nextId.current; registrations.current.set(id, spec); setActiveExport(spec);
     return () => {
       registrations.current.delete(id);
