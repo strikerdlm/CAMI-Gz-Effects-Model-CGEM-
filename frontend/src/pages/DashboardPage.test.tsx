@@ -1,5 +1,5 @@
-import { cleanup, render, screen } from '@testing-library/react';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { render, screen } from '@testing-library/react';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { DashboardPage } from './DashboardPage';
 
@@ -23,8 +23,6 @@ vi.mock('../services/cgemApi', () => ({
 }));
 
 describe('Dashboard offline state', () => {
-  afterEach(cleanup);
-
   beforeEach(() => {
     apiState.healthStatus = 'degraded';
     apiState.runData = undefined;

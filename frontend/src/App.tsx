@@ -8,6 +8,7 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
+import { APP_ROUTES } from './app/routes';
 import { MainLayout } from './components/layout';
 import {
   OverviewPage,
@@ -20,18 +21,24 @@ import {
   AboutPage,
 } from './pages';
 
+const PAGE_COMPONENTS: Record<string, React.ReactElement> = {
+  overview: <OverviewPage />,
+  simulator: <SimulatorPage />,
+  prediction: <PredictionPage />,
+  dashboard: <DashboardPage />,
+  batch: <BatchPage />,
+  analysis: <AnalysisPage />,
+  settings: <SettingsPage />,
+  about: <AboutPage />,
+};
+
 const App: React.FC = () => (
   <BrowserRouter>
     <Routes>
       <Route element={<MainLayout />}>
-        <Route path="/" element={<OverviewPage />} />
-        <Route path="/simulator" element={<SimulatorPage />} />
-        <Route path="/prediction" element={<PredictionPage />} />
-        <Route path="/dashboard" element={<DashboardPage />} />
-        <Route path="/batch" element={<BatchPage />} />
-        <Route path="/analysis" element={<AnalysisPage />} />
-        <Route path="/settings" element={<SettingsPage />} />
-        <Route path="/about" element={<AboutPage />} />
+        {APP_ROUTES.map((route) => (
+          <Route key={route.id} path={route.path} element={PAGE_COMPONENTS[route.id]} />
+        ))}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
     </Routes>

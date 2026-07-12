@@ -18,6 +18,12 @@ export const MainLayout: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-hud-bg relative">
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50"
+      >
+        Skip to main content
+      </a>
       {/* CRT scanlines + slow sweep */}
       <ScanlineOverlay />
 
@@ -35,6 +41,8 @@ export const MainLayout: React.FC = () => {
 
       {/* Main Content Area */}
       <motion.main
+        id="main-content"
+        tabIndex={-1}
         initial={false}
         animate={{
           marginLeft: sidebarCollapsed ? 72 : 260,

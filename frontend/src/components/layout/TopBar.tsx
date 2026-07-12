@@ -16,48 +16,11 @@ import {
 } from 'lucide-react';
 import { cn } from '../../utils';
 import { useHealth, useVersion } from '../../services/cgemApi';
-
-const PAGE_TITLES: Record<string, { title: string; subtitle: string }> = {
-  '/': {
-    title: 'G-FORCE PROFILE OVERVIEW',
-    subtitle: 'Maneuver library · risk preview',
-  },
-  '/simulator': {
-    title: 'TACTICAL SIMULATOR',
-    subtitle: 'Attitude · G-trace · live conformal T-LOC',
-  },
-  '/prediction': {
-    title: 'CGEM PREDICTION',
-    subtitle: 'Conformal /predict on the trained surrogate',
-  },
-  '/dashboard': {
-    title: 'SCIENTIFIC DASHBOARD',
-    subtitle: 'Publication-quality CGEM time-series',
-  },
-  '/batch': {
-    title: 'BATCH ANALYSIS',
-    subtitle: 'Compare predictions across all maneuvers',
-  },
-  '/analysis': {
-    title: 'PHYSIOLOGICAL ANALYSIS',
-    subtitle: 'Sobol sensitivity · maneuver briefings',
-  },
-  '/settings': {
-    title: 'SETTINGS',
-    subtitle: 'API URL · default pilot config · display',
-  },
-  '/about': {
-    title: 'ABOUT',
-    subtitle: 'Project information and references',
-  },
-};
+import { routeForPath } from '../../app/routes';
 
 export const TopBar: React.FC = () => {
   const location = useLocation();
-  const pageInfo = PAGE_TITLES[location.pathname] || {
-    title: 'G-EFFECTS TACTICAL DISPLAY',
-    subtitle: 'Aerospace safety management',
-  };
+  const pageInfo = routeForPath(location.pathname);
 
   const health = useHealth();
   const version = useVersion();
@@ -147,6 +110,7 @@ export const TopBar: React.FC = () => {
         <div className="flex items-center gap-1">
           <button
             onClick={() => { void health.refetch(); void version.refetch(); }}
+            aria-label="Refresh API status"
             className={cn(
               'p-2 rounded-sm transition-all duration-200',
               'text-hud-ink-faint hover:text-hud-amber hover:bg-hud-panel'

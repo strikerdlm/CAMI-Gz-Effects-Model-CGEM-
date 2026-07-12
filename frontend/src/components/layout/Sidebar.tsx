@@ -21,76 +21,21 @@ import {
   ChevronRight,
 } from 'lucide-react';
 import { cn } from '../../utils';
+import { APP_ROUTES } from '../../app/routes';
 
-interface NavItem {
-  id: string;
-  label: string;
-  icon: React.ElementType;
-  path: string;
-  description: string;
-}
+const ROUTE_ICONS: Record<string, React.ElementType> = {
+  overview: LayoutDashboard,
+  simulator: Plane,
+  prediction: Play,
+  dashboard: BarChart3,
+  batch: Activity,
+  analysis: FileText,
+  settings: Settings,
+  about: Info,
+};
 
-const NAV_ITEMS: NavItem[] = [
-  {
-    id: 'overview',
-    label: 'Overview',
-    icon: LayoutDashboard,
-    path: '/',
-    description: 'Profile selection & G-force visualization',
-  },
-  {
-    id: 'simulator',
-    label: 'Simulator',
-    icon: Plane,
-    path: '/simulator',
-    description: 'Live attitude + G-trace + prediction',
-  },
-  {
-    id: 'prediction',
-    label: 'Prediction',
-    icon: Play,
-    path: '/prediction',
-    description: 'CGEM model simulation',
-  },
-  {
-    id: 'dashboard',
-    label: 'Dashboard',
-    icon: BarChart3,
-    path: '/dashboard',
-    description: 'Scientific visualization suite',
-  },
-  {
-    id: 'batch',
-    label: 'Batch Analysis',
-    icon: Activity,
-    path: '/batch',
-    description: 'Compare all maneuvers',
-  },
-  {
-    id: 'analysis',
-    label: 'Analysis',
-    icon: FileText,
-    path: '/analysis',
-    description: 'Physiological explanations',
-  },
-];
-
-const SECONDARY_ITEMS: NavItem[] = [
-  {
-    id: 'settings',
-    label: 'Settings',
-    icon: Settings,
-    path: '/settings',
-    description: 'Configure preferences',
-  },
-  {
-    id: 'about',
-    label: 'About',
-    icon: Info,
-    path: '/about',
-    description: 'Project information',
-  },
-];
+const NAV_ITEMS = APP_ROUTES.filter((route) => route.group !== 'System');
+const SECONDARY_ITEMS = APP_ROUTES.filter((route) => route.group === 'System');
 
 interface SidebarProps {
   isCollapsed: boolean;
@@ -131,6 +76,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
 
         <button
           onClick={onToggle}
+          aria-label={isCollapsed ? 'Expand navigation' : 'Collapse navigation'}
           className={cn(
             'p-2 rounded-lg transition-all duration-200',
             'hover:bg-surface-800 text-surface-400 hover:text-white',
@@ -146,7 +92,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
       </div>
 
       {/* Main Navigation */}
-      <nav className="flex-1 p-3 space-y-1 overflow-y-auto custom-scrollbar">
+      <nav aria-label="Primary" className="flex-1 p-3 space-y-1 overflow-y-auto custom-scrollbar">
         <div className={cn('mb-2', !isCollapsed && 'px-3')}>
           {!isCollapsed && (
             <span className="text-xs font-semibold text-surface-500 uppercase tracking-wider">
@@ -155,7 +101,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
           )}
         </div>
 
-        {NAV_ITEMS.map((item) => (
+        {NAV_ITEMS.map((item) => {
+          const Icon = ROUTE_ICONS[item.id];
+          return (
           <NavLink
             key={item.id}
             to={item.path}
@@ -170,7 +118,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
               )
             }
           >
-            <item.icon
+            <Icon
               className={cn(
                 'w-5 h-5 flex-shrink-0 transition-transform duration-200',
                 'group-hover:scale-110'
@@ -194,7 +142,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
               />
             )}
           </NavLink>
-        ))}
+          );
+        })}
 
         {/* Secondary Navigation */}
         <div className={cn('mt-6 mb-2', !isCollapsed && 'px-3')}>
@@ -205,7 +154,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
           )}
         </div>
 
-        {SECONDARY_ITEMS.map((item) => (
+        {SECONDARY_ITEMS.map((item) => {
+          const Icon = ROUTE_ICONS[item.id];
+          return (
           <NavLink
             key={item.id}
             to={item.path}
@@ -220,12 +171,13 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
               )
             }
           >
-            <item.icon className="w-5 h-5 flex-shrink-0" />
+            <Icon className="w-5 h-5 flex-shrink-0" />
             {!isCollapsed && (
               <span className="font-medium whitespace-nowrap">{item.label}</span>
             )}
           </NavLink>
-        ))}
+          );
+        })}
       </nav>
 
       {/* Footer */}
