@@ -19,7 +19,9 @@ schema:
 
 from __future__ import annotations
 
-from pydantic import BaseModel, ConfigDict, Field
+from typing import Literal
+
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 # ──────────────────────────────────────────────────────────────────────
 # Liveness / version
@@ -60,7 +62,7 @@ class PilotConfigRequest(BaseModel):
     )
     g_tolerance_multiplier: float = Field(default=1.0, ge=0.5, le=2.0)
     dehydration_level: float = Field(default=0.0, ge=0.0, le=1.0)
-    countermeasures_label: str = Field(
+    countermeasures_label: Literal["none", "agsm", "suit_agsm"] = Field(
         default="none",
         description='one of "none", "agsm", "suit_agsm"',
     )
@@ -87,6 +89,26 @@ class ManeuverDescriptors(BaseModel):
     g_peak_abs: float | None = Field(default=None, ge=0.0, le=15.0)
     dgdt_max_g_per_s: float | None = Field(default=None, ge=0.0, le=60.0)
     profile_duration_s: float | None = Field(default=None, ge=0.0, le=120.0)
+
+    @model_validator(mode="after")
+    def validate_named_or_inline(self) -> ManeuverDescriptors:
+        descriptors = (
+            self.g_peak_abs,
+            self.dgdt_max_g_per_s,
+            self.profile_duration_s,
+        )
+        if self.maneuver is not None:
+            if any(value is not None for value in descriptors):
+                raise ValueError(
+                    "registered maneuvers are authoritative and cannot include "
+                    "descriptor overrides"
+                )
+        elif any(value is None for value in descriptors):
+            raise ValueError(
+                "inline maneuvers require g_peak_abs, dgdt_max_g_per_s, "
+                "and profile_duration_s"
+            )
+        return self
 
 
 # ──────────────────────────────────────────────────────────────────────
@@ -153,6 +175,9 @@ class PredictionResponse(BaseModel):
     in_envelope: bool
     model_version: str
     cgem_binary_sha256: str
+    resolved_maneuver: str
+    maneuver_category: str
+    calibration_scope: Literal["category", "global"]
     source: str = Field(default="surrogate", description='"surrogate" or "fortran".')
 
 

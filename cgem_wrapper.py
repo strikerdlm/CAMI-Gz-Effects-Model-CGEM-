@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 import shutil
 import subprocess
 import tempfile
@@ -12,6 +13,19 @@ from aerobatic_profiles import Sample, load_profile
 
 
 BASE_GLOC_INP = Path(__file__).resolve().parent / "gloc_inp.dat"
+
+
+def _positive_float_env(name: str, default: float) -> float:
+    try:
+        value = float(os.getenv(name, str(default)))
+    except ValueError:
+        return default
+    return value if value > 0 else default
+
+
+CGEM_SUBPROCESS_TIMEOUT_S = _positive_float_env("CGEM_SUBPROCESS_TIMEOUT_S", 30.0)
+
+
 def _resolve_cgem_executable() -> Path:
     """Resolve the correct CGEM executable path for the current OS.
 
@@ -377,7 +391,14 @@ def _extract_numeric(line: str, default: float = 0.0) -> float:
 
 def _run_cgem(temp_dir: Path) -> None:
     exe_path = _resolve_cgem_executable()
-    subprocess.run([str(exe_path)], cwd=str(temp_dir), check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    subprocess.run(
+        [str(exe_path)],
+        cwd=str(temp_dir),
+        check=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        timeout=CGEM_SUBPROCESS_TIMEOUT_S,
+    )
 
 
 def _parse_cgem_output(out_path: Path) -> CGEMResult:

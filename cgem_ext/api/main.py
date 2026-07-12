@@ -20,15 +20,20 @@ development; production deployments should narrow ``allow_origins``.
 
 from __future__ import annotations
 
-from collections.abc import AsyncIterator
+import asyncio
+import os
+import shutil
+import subprocess
+from collections.abc import AsyncIterator, Callable
 from contextlib import asynccontextmanager
 
 import numpy as np
-import pandas as pd
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from starlette.concurrency import run_in_threadpool
 
+from cgem_ext.api.inference import build_inference_row
 from cgem_ext.api.schemas import (
     CGEMRunData,
     CGEMRunResponse,
@@ -49,13 +54,16 @@ from cgem_ext.surrogate import TARGETS
 # ── Lifespan: build app state once on startup ────────────────────────
 
 
-@asynccontextmanager
-async def lifespan(app: FastAPI) -> AsyncIterator[None]:
-    app.state.cgem = AppState.build()
-    yield
+def _lifespan(state_factory: Callable[[], AppState]):
+    @asynccontextmanager
+    async def lifespan(app: FastAPI) -> AsyncIterator[None]:
+        app.state.cgem = state_factory()
+        yield
+
+    return lifespan
 
 
-def create_app() -> FastAPI:
+def create_app(state_factory: Callable[[], AppState] = AppState.build) -> FastAPI:
     app = FastAPI(
         title="CGEM ML Extension API",
         version="0.1.0",
@@ -66,7 +74,7 @@ def create_app() -> FastAPI:
             "path. The Fortran physiology core is unchanged; this API "
             "is additive."
         ),
-        lifespan=lifespan,
+        lifespan=_lifespan(state_factory),
     )
     app.add_middleware(
         CORSMiddleware,
@@ -75,6 +83,11 @@ def create_app() -> FastAPI:
         allow_methods=["*"],
         allow_headers=["*"],
     )
+    try:
+        max_runs = int(os.getenv("CGEM_MAX_CONCURRENT_RUNS", "2"))
+    except ValueError:
+        max_runs = 2
+    app.state.cgem_run_semaphore = asyncio.Semaphore(max(1, max_runs))
     _register_routes(app)
     return app
 
@@ -87,61 +100,8 @@ def _state(request: Request) -> AppState:
     return state
 
 
-def _maneuver_features(state: AppState, req: PredictionRequest) -> dict[str, float]:
-    md = req.maneuver
-    if md.maneuver and (md.g_peak_abs is None or md.dgdt_max_g_per_s is None or md.profile_duration_s is None):
-        # Auto-fill from the registered profile
-        from cgem_ext.data.generate_dataset import _maneuver_summary
-
-        summary = _maneuver_summary(md.maneuver)
-        return {
-            "g_peak_abs": float(summary["g_peak_abs"]),
-            "dgdt_max_g_per_s": float(summary["dgdt_max_g_per_s"]),
-            "profile_duration_s": float(summary["profile_duration_s"]),
-        }
-    if md.g_peak_abs is None or md.dgdt_max_g_per_s is None or md.profile_duration_s is None:
-        raise HTTPException(
-            status_code=400,
-            detail=(
-                "ManeuverDescriptors must provide either `maneuver` (a "
-                "registered profile id) or all three of g_peak_abs / "
-                "dgdt_max_g_per_s / profile_duration_s."
-            ),
-        )
-    return {
-        "g_peak_abs": float(md.g_peak_abs),
-        "dgdt_max_g_per_s": float(md.dgdt_max_g_per_s),
-        "profile_duration_s": float(md.profile_duration_s),
-    }
-
-
-def _build_inference_row(state: AppState, req: PredictionRequest) -> pd.DataFrame:
-    """Assemble a 1-row DataFrame matching the dataset schema for
-    feature extraction."""
-    feats = _maneuver_features(state, req)
-    pilot = req.pilot
-    row = {
-        "maneuver": req.maneuver.maneuver or "<inline>",
-        "maneuver_category": "unregistered",
-        "arm": "custom" if pilot.who_profile is None else "standard",
-        "who_profile": pilot.who_profile,
-        "g_tolerance_multiplier": pilot.g_tolerance_multiplier,
-        "dehydration_label": "none" if pilot.dehydration_level == 0 else "varied",
-        "dehydration_level": pilot.dehydration_level,
-        "countermeasures_label": pilot.countermeasures_label,
-        "gsuit_max_psi": pilot.gsuit_max_psi,
-        "gsuit_coverage_fraction": pilot.gsuit_coverage_fraction,
-        "agsm_effectiveness": pilot.agsm_effectiveness,
-        "pbg_max_mmhg": pilot.pbg_max_mmhg,
-        "g_peak_abs": feats["g_peak_abs"],
-        "dgdt_max_g_per_s": feats["dgdt_max_g_per_s"],
-        "profile_duration_s": feats["profile_duration_s"],
-    }
-    return pd.DataFrame([row])
-
-
 def _predict_one(state: AppState, req: PredictionRequest) -> PredictionResponse:
-    df = _build_inference_row(state, req)
+    df, resolved = build_inference_row(req)
     target_outputs: list[TargetPrediction] = []
 
     for spec in TARGETS:
@@ -203,6 +163,9 @@ def _predict_one(state: AppState, req: PredictionRequest) -> PredictionResponse:
         in_envelope=in_envelope,
         model_version=state.package_version,
         cgem_binary_sha256=state.cgem_binary_sha256,
+        resolved_maneuver=resolved.maneuver_id,
+        maneuver_category=resolved.category,
+        calibration_scope=resolved.calibration_scope,
         source="surrogate",
     )
 
@@ -305,51 +268,65 @@ def _register_routes(app: FastAPI) -> None:
         }
         if req.pilot.who_profile is None:
             cfg_kwargs["g_tolerance_multiplier"] = req.pilot.g_tolerance_multiplier
+        run_dir = None
         try:
             cfg = PilotConfig(**cfg_kwargs)
-            result, _run_dir = run_cgem_for_profile(req.maneuver, cfg)
+            async with request.app.state.cgem_run_semaphore:
+                result, run_dir = await run_in_threadpool(
+                    run_cgem_for_profile, req.maneuver, cfg
+                )
+        except subprocess.TimeoutExpired as exc:
+            raise HTTPException(status_code=504, detail="cgem execution timed out") from exc
         except Exception as exc:
-            raise HTTPException(status_code=500, detail=f"cgem failed: {exc}") from exc
+            raise HTTPException(status_code=500, detail="cgem execution failed") from exc
 
-        # Build the v2.2.0 CGEMRun JSON shape
-        n = len(result.times_s) if result.times_s else 0
+        try:
+            # Build the protected v2.2.0 CGEMRun JSON shape.
+            n = len(result.times_s) if result.times_s else 0
 
-        def _ts(values: list[float] | None) -> list[float]:
-            return [float(v) for v in (values or [0.0] * n)][:n] if n else []
+            def _ts(values: list[float] | None) -> list[float]:
+                return [float(v) for v in (values or [0.0] * n)][:n] if n else []
 
-        def _flag(values: list[int] | None) -> list[int]:
-            return [int(v) for v in (values or [0] * n)][:n] if n else []
+            def _flag(values: list[int] | None) -> list[int]:
+                return [int(v) for v in (values or [0] * n)][:n] if n else []
 
-        data = CGEMRunData(
-            **{  # type: ignore[arg-type]
-                "Time(s)": _ts(result.times_s),
-                "G": _ts(result.g_values),
-                "G_eff": _ts(result.geff_values),
-                "HLAP(mmHg)": _ts(result.hlap_values),
-                "F_con(dl/min)": _ts(result.f_con_values),
-                "F_vis(dl/min)": _ts(result.f_vis_values),
-                "F_bo(dl/min)": _ts(result.f_bo_values),
-                "c_bank(s)": _ts(result.c_bank_values),
-                "bo_bank(s)": _ts(result.bo_bank_values),
-                "Conscious": _flag(result.flags_n2),
-                "Greyout": _flag(result.flags_ne2),
-                "Blackout": _flag(result.flags_non2),
-            }
-        )
-        duration = float(max(result.times_s)) if (result.times_s and len(result.times_s)) else 0.0
-        return CGEMRunResponse(
-            maneuver=req.maneuver,
-            pilot_profile=(
-                f"who_profile={req.pilot.who_profile}"
-                if req.pilot.who_profile is not None
-                else "custom"
-            ),
-            duration_s=duration,
-            time_to_greyout_s=result.time_to_greyout_s,
-            time_to_blackout_s=result.time_to_blackout_s,
-            time_to_gloc_s=result.time_to_gloc_s,
-            data=data,
-        )
+            data = CGEMRunData(
+                **{  # type: ignore[arg-type]
+                    "Time(s)": _ts(result.times_s),
+                    "G": _ts(result.g_values),
+                    "G_eff": _ts(result.geff_values),
+                    "HLAP(mmHg)": _ts(result.hlap_values),
+                    "F_con(dl/min)": _ts(result.f_con_values),
+                    "F_vis(dl/min)": _ts(result.f_vis_values),
+                    "F_bo(dl/min)": _ts(result.f_bo_values),
+                    "c_bank(s)": _ts(result.c_bank_values),
+                    "bo_bank(s)": _ts(result.bo_bank_values),
+                    "Conscious": _flag(result.flags_n2),
+                    "Greyout": _flag(result.flags_ne2),
+                    "Blackout": _flag(result.flags_non2),
+                }
+            )
+            duration = (
+                float(max(result.times_s))
+                if (result.times_s and len(result.times_s))
+                else 0.0
+            )
+            return CGEMRunResponse(
+                maneuver=req.maneuver,
+                pilot_profile=(
+                    f"who_profile={req.pilot.who_profile}"
+                    if req.pilot.who_profile is not None
+                    else "custom"
+                ),
+                duration_s=duration,
+                time_to_greyout_s=result.time_to_greyout_s,
+                time_to_blackout_s=result.time_to_blackout_s,
+                time_to_gloc_s=result.time_to_gloc_s,
+                data=data,
+            )
+        finally:
+            if run_dir is not None:
+                shutil.rmtree(run_dir, ignore_errors=True)
 
 
 # Module-level app for `uvicorn cgem_ext.api.main:app`
