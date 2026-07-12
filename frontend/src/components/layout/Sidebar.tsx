@@ -22,6 +22,7 @@ import {
 } from 'lucide-react';
 import { cn } from '../../utils';
 import { APP_ROUTES } from '../../app/routes';
+import { MANEUVERS_BY_ID } from '../../data/maneuvers';
 
 const ROUTE_ICONS: Record<string, React.ElementType> = {
   overview: LayoutDashboard,
@@ -36,6 +37,7 @@ const ROUTE_ICONS: Record<string, React.ElementType> = {
 
 const NAV_ITEMS = APP_ROUTES.filter((route) => route.group !== 'System');
 const SECONDARY_ITEMS = APP_ROUTES.filter((route) => route.group === 'System');
+const MANEUVER_ROUTES = new Set(['simulator', 'prediction', 'dashboard', 'analysis']);
 
 interface SidebarProps {
   isCollapsed: boolean;
@@ -44,6 +46,13 @@ interface SidebarProps {
 
 export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
   const location = useLocation();
+  const requestedManeuver = new URLSearchParams(location.search).get('maneuver');
+  const selectedManeuver = requestedManeuver && requestedManeuver in MANEUVERS_BY_ID
+    ? requestedManeuver
+    : null;
+  const routeTarget = (item: (typeof APP_ROUTES)[number]) => selectedManeuver && MANEUVER_ROUTES.has(item.id)
+    ? `${item.path}?maneuver=${encodeURIComponent(selectedManeuver)}`
+    : item.path;
 
   return (
     <aside
@@ -104,7 +113,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
           return (
           <NavLink
             key={item.id}
-            to={item.path}
+            to={routeTarget(item)}
             aria-label={item.label}
             className={({ isActive }) =>
               cn(

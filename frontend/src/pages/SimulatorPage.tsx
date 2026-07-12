@@ -7,7 +7,7 @@
  *   • Right: live telemetry, /predict-driven T-LOC + 95 % conformal bracket,
  *           OOD status, pilot config snapshot
  */
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import {
   MANEUVERS,
@@ -72,6 +72,10 @@ export const SimulatorPage: React.FC = () => {
   useEffect(() => {
     setNow({ t: 0, g: maneuver.samples[0]?.nz ?? 0 });
   }, [maneuver]);
+
+  const handleTimeChange = useCallback((t: number, g: number) => {
+    setNow((current) => current.t === t && current.g === g ? current : { t, g });
+  }, []);
 
   const attitude = useMemo(
     () => attitudeAtTime(maneuver, now.t),
@@ -208,7 +212,7 @@ export const SimulatorPage: React.FC = () => {
             maneuver={maneuver}
             conformal={conformal}
             height={300}
-            onTimeChange={(t, g) => setNow({ t, g })}
+            onTimeChange={handleTimeChange}
           />
         </Bezel>
       </div>

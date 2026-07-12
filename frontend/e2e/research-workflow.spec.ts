@@ -23,6 +23,8 @@ test('mobile drawer traps focus, closes on Escape, and restores its trigger', as
   await expect(page.getByRole('button', { name: 'Close navigation' })).toBeFocused();
   await page.keyboard.press('Shift+Tab');
   await expect(dialog.getByRole('link', { name: 'About' })).toBeFocused();
+  await page.keyboard.press('Tab');
+  await expect(page.getByRole('button', { name: 'Close navigation' })).toBeFocused();
   await page.keyboard.press('Escape');
   await expect(dialog).toBeHidden();
   await expect(trigger).toBeFocused();
@@ -40,16 +42,24 @@ test('keyboard search navigates to a shareable simulator selection', async ({ pa
 });
 
 test('URL state survives reload and browser back/forward navigation', async ({ page }) => {
-  await page.goto('/prediction?maneuver=hammerhead&pilot=2&view=surrogate');
+  await page.goto('/prediction?maneuver=hammerhead&pilot=6&view=comparison');
   await page.getByRole('combobox', { name: 'Maneuver profile' }).click();
   await page.getByRole('option', { name: /^Split S Roll inverted/i }).click();
   await expect(page).toHaveURL(/maneuver=split_s/);
   await page.reload();
   await expect(page.getByRole('combobox', { name: 'Maneuver profile' })).toContainText(/split s/i);
+  await expect(page.getByRole('combobox', { name: 'Subject profile' })).toHaveValue('6');
+  await expect(page.getByRole('button', { name: 'comparison', exact: true })).toHaveAttribute('aria-pressed', 'true');
   await page.goBack();
   await expect(page).toHaveURL(/maneuver=hammerhead/);
+  await expect(page.getByRole('combobox', { name: 'Maneuver profile' })).toContainText(/hammerhead/i);
+  await expect(page.getByRole('combobox', { name: 'Subject profile' })).toHaveValue('6');
+  await expect(page.getByRole('button', { name: 'comparison', exact: true })).toHaveAttribute('aria-pressed', 'true');
   await page.goForward();
   await expect(page).toHaveURL(/maneuver=split_s/);
+  await expect(page.getByRole('combobox', { name: 'Maneuver profile' })).toContainText(/split s/i);
+  await expect(page.getByRole('combobox', { name: 'Subject profile' })).toHaveValue('6');
+  await expect(page.getByRole('button', { name: 'comparison', exact: true })).toHaveAttribute('aria-pressed', 'true');
 });
 
 test('Explore to Predict to Verify to Compare preserves evidence and working actions', async ({ page }) => {
@@ -59,8 +69,12 @@ test('Explore to Predict to Verify to Compare preserves evidence and working act
   await page.keyboard.press('ArrowDown');
   await page.keyboard.press('Enter');
   await expect(page.getByRole('heading', { name: 'TACTICAL SIMULATOR' })).toBeVisible();
-  await page.goto('/prediction?maneuver=hammerhead');
+  const predictionLink = page.getByRole('link', { name: 'Prediction' });
+  await predictionLink.focus();
+  await page.keyboard.press('Enter');
+  await expect(page).toHaveURL(/\/prediction\?maneuver=hammerhead$/);
   await expect(page.getByRole('heading', { name: 'CGEM PREDICTION' })).toBeVisible();
+  await expect(page.getByRole('combobox', { name: 'Maneuver profile' })).toContainText(/hammerhead/i);
 
   await page.getByRole('button', { name: /Predict \(surrogate/i }).click();
   const surrogateEvidence = page.getByRole('complementary', { name: 'Result evidence' });
@@ -84,7 +98,14 @@ test('Explore to Predict to Verify to Compare preserves evidence and working act
   await page.getByRole('button', { name: 'Run All Profiles' }).click();
   await expect(page.getByRole('complementary', { name: 'Result evidence' })).toContainText('Surrogate batch');
 
+  const downloadPromise = page.waitForEvent('download');
+  await page.getByRole('button', { name: 'Export current result' }).click();
+  const download = await downloadPromise;
+  expect(download.suggestedFilename()).toMatch(/^cgem-batch-.*\.csv$/);
+
   await page.getByRole('button', { name: 'Refresh API status' }).click();
   await expect(page.locator('header [role="status"]')).toContainText('API status refreshed');
-  await expect(page.getByRole('link', { name: 'Help' })).toHaveAttribute('href', /\/about#batch$/);
+  await page.getByRole('link', { name: 'Help' }).click();
+  await expect(page).toHaveURL(/\/about#batch$/);
+  await expect(page.getByRole('heading', { name: 'ABOUT', exact: true })).toBeVisible();
 });
