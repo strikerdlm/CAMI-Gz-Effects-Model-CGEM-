@@ -88,7 +88,9 @@ export const SimulatorPage: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [maneuver.id, apiAlive, pilot, predictionRequest]);
 
-  const exportSpec = useMemo(() => predictMutation.data ? buildPredictionJsonExport({ response: predictMutation.data, request: predictionRequest, exportedAt: new Date(predictMutation.submittedAt || 0).toISOString() }) : null, [predictMutation.data, predictMutation.submittedAt, predictionRequest]);
+  const exportSpec = useMemo(() => predictMutation.data && predictMutation.variables ? buildPredictionJsonExport({ response: predictMutation.data, request: predictMutation.variables, exportedAt: new Date(predictMutation.submittedAt || 0).toISOString() }) : null,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [predictMutation.data, predictMutation.submittedAt]);
   useEffect(() => { registerExport(exportSpec); return () => registerExport(null); }, [exportSpec, registerExport]);
 
   const targets = predictMutation.data?.targets ?? [];

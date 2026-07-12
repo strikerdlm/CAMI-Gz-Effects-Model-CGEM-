@@ -50,6 +50,7 @@ function renderDashboard(url: string) {
 describe('URL-backed page controls', () => {
   it('initializes dashboard controls from a non-default URL', () => {
     renderDashboard('/dashboard?maneuver=hammerhead&preset=max_protection&chart=flows&layout=single');
+    expect(screen.getByRole('complementary', { name: 'Result evidence' })).toHaveTextContent('Fortran / authoritative CGEM');
     expect(screen.getByRole('button', { name: 'Maneuver: hammerhead' })).toBeTruthy();
     expect(screen.getByTitle('Single Chart')).toHaveAttribute('aria-pressed', 'true');
     expect(screen.getAllByText('Cerebral Flow').find((node) => node.closest('button'))?.closest('button')).toHaveClass('text-primary-400');

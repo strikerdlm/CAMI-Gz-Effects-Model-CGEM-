@@ -36,3 +36,16 @@ it('describes authoritative evidence and omits unavailable version values', () =
   expect(screen.getByText(/not an operational flight-safety system/i)).toBeInTheDocument();
   expect(screen.queryByText(/binary SHA/i)).not.toBeInTheDocument();
 });
+
+it('summarizes mixed batch evidence without claiming one maneuver', () => {
+  render(<EvidenceRail evidence={{ kind: 'batch', responses: [surrogate, { ...surrogate, resolved_maneuver: 'loop', ood: false, in_envelope: true }] }} />);
+  expect(screen.getByText('2 maneuvers')).toBeInTheDocument();
+  expect(screen.getByText('1 outside training envelope (OOD); 1 inside')).toBeInTheDocument();
+  expect(screen.queryByText('hammerhead')).not.toBeInTheDocument();
+});
+
+it('reports the currently filtered batch aggregate', () => {
+  render(<EvidenceRail evidence={{ kind: 'batch', responses: [{ ...surrogate, ood: false, in_envelope: true }] }} />);
+  expect(screen.getByText('1 maneuver')).toBeInTheDocument();
+  expect(screen.getByText('0 outside training envelope (OOD); 1 inside')).toBeInTheDocument();
+});

@@ -232,7 +232,9 @@ export const DashboardPage: React.FC = () => {
     if (!result) return null;
     return computeStateDurations(result.times_s, result.g_values, result.geff_values);
   }, [result]);
-  const exportSpec = useMemo(() => runCgem.data ? buildAuthoritativeJsonExport({ run: runCgem.data, request: runRequest, version: versionQuery.data, exportedAt: new Date(runCgem.submittedAt || 0).toISOString() }) : null, [runCgem.data, runCgem.submittedAt, runRequest, versionQuery.data]);
+  const exportSpec = useMemo(() => runCgem.data && runCgem.variables ? buildAuthoritativeJsonExport({ run: runCgem.data, request: runCgem.variables, version: versionQuery.data, exportedAt: new Date(runCgem.submittedAt || 0).toISOString() }) : null,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [runCgem.data, runCgem.submittedAt, versionQuery.data]);
   useEffect(() => { registerExport(exportSpec); return () => registerExport(null); }, [exportSpec, registerExport]);
 
   if (!profile || !stats) {

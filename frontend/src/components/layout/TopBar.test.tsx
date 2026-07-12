@@ -1,11 +1,16 @@
+import { useEffect } from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import { describe, expect, it, vi } from 'vitest';
 
 import { TopBar } from './TopBar';
+import { ResultActionsProvider, useResultActions } from '../ui/ResultActions';
+import type { ExportSpec } from '../../services/exportResult';
 
 const api = vi.hoisted(() => ({ refetchHealth: vi.fn(), refetchVersion: vi.fn(), fetching: false }));
+const exportsApi = vi.hoisted(() => ({ download: vi.fn() }));
+vi.mock('../../services/exportResult', () => ({ downloadExport: exportsApi.download }));
 vi.mock('../../services/cgemApi', () => ({
   useHealth: () => ({ data: { status: 'ok' }, isPending: false, isFetching: api.fetching, refetch: api.refetchHealth }),
   useVersion: () => ({ data: { package_version: '1.0' }, isFetching: api.fetching, refetch: api.refetchVersion }),
@@ -13,6 +18,11 @@ vi.mock('../../services/cgemApi', () => ({
 
 function renderTopBar(path = '/simulator') {
   return render(<MemoryRouter initialEntries={[path]}><TopBar onOpenNavigation={vi.fn()} navigationTriggerRef={{ current: null }} sidebarCollapsed={false} reduceMotion={false} /></MemoryRouter>);
+}
+const spec: ExportSpec = { filename: 'result.json', mediaType: 'application/json', content: '{}' };
+function RegisterExport({ value }: { value: ExportSpec | null }) { const { registerExport } = useResultActions(); useEffect(() => { registerExport(value); return () => registerExport(null); }, [value, registerExport]); return null; }
+function renderTopBarWithExport(value: ExportSpec | null) {
+  return render(<MemoryRouter><ResultActionsProvider><RegisterExport value={value} /><TopBar onOpenNavigation={vi.fn()} navigationTriggerRef={{ current: null }} sidebarCollapsed={false} reduceMotion={false} /></ResultActionsProvider></MemoryRouter>);
 }
 
 describe('TopBar actions', () => {
@@ -54,5 +64,23 @@ describe('TopBar actions', () => {
     expect(screen.getByRole('button', { name: 'Refresh API status' })).toBeDisabled();
     expect(screen.getByRole('status')).toHaveTextContent('Refreshing API status');
     api.fetching = false;
+  });
+
+  it('shows export only for registered real content and announces success', async () => {
+    const user = userEvent.setup();
+    const view = renderTopBarWithExport(null);
+    expect(screen.queryByRole('button', { name: 'Export current result' })).not.toBeInTheDocument();
+    view.unmount();
+    renderTopBarWithExport(spec);
+    await user.click(await screen.findByRole('button', { name: 'Export current result' }));
+    expect(exportsApi.download).toHaveBeenCalledWith(spec);
+    expect(screen.getByRole('status')).toHaveTextContent('Export complete: result.json');
+  });
+
+  it('announces export errors', async () => {
+    exportsApi.download.mockImplementationOnce(() => { throw new Error('blocked'); });
+    renderTopBarWithExport(spec);
+    await userEvent.click(await screen.findByRole('button', { name: 'Export current result' }));
+    expect(screen.getByRole('status')).toHaveTextContent('Export failed');
   });
 });

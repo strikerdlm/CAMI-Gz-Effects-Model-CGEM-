@@ -20,13 +20,23 @@ describe('result exports', () => {
   });
 
   it('escapes RFC 4180 CSV and emits one row per target', () => {
-    const csv = buildBatchCsvExport({ rows: [{ profileId: 'loop,"one"', prediction: response }],
+    const csv = buildBatchCsvExport({ rows: [{ profileId: 'requested,"one"', prediction: { ...response, resolved_maneuver: 'resolved-loop' } }],
       requestFor: () => request, exportedAt: '2026-07-12T12:00:00Z' });
-    expect(csv.content).toContain('"loop,""one"""');
+    expect(csv.content).toContain('resolved-loop');
+    expect(csv.content).toContain('"requested,""one"""');
+    expect(csv.content).toContain('requested_maneuver');
     expect(csv.content.split('\r\n')).toHaveLength(3);
     expect(csv.content).toContain('model_version');
     expect(csv.content).toContain('calibration_scope');
     expect(csv.content).toContain('input');
+  });
+
+  it('exports authoritative results with submitted input and available binary identity', async () => {
+    const { buildAuthoritativeJsonExport } = await import('./exportResult');
+    const run = { maneuver: 'loop', pilot_profile: 'WHO 2', duration_s: 1, time_to_greyout_s: null, time_to_blackout_s: null, time_to_gloc_s: null,
+      data: { 'Time(s)': [], G: [], G_eff: [], 'HLAP(mmHg)': [], 'F_con(dl/min)': [], 'F_vis(dl/min)': [], 'F_bo(dl/min)': [], 'c_bank(s)': [], 'bo_bank(s)': [], Conscious: [], Greyout: [], Blackout: [] } };
+    const spec = buildAuthoritativeJsonExport({ run, request: { maneuver: 'requested-loop', pilot: request.pilot }, version: { package_version: '1', cgem_binary_sha256: 'abc', dataset_name: 'd', dataset_master_seed: 1, targets: [] }, exportedAt: '2026-07-12T12:00:00Z' });
+    expect(JSON.parse(spec.content)).toMatchObject({ maneuver: 'loop', cgem_binary_sha256: 'abc', input: { maneuver: 'requested-loop', pilot: request.pilot } });
   });
 
   it('sanitizes filenames', () => expect(sanitizeExportFilename('../bad name?.json')).toBe('bad-name.json'));

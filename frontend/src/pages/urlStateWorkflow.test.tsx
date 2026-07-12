@@ -7,16 +7,24 @@ import { BatchPage } from './BatchPage';
 import { OverviewPage } from './OverviewPage';
 import { PredictionPage } from './PredictionPage';
 import { SimulatorPage } from './SimulatorPage';
+import { ResultActionsProvider, useResultActions } from '../components/ui/ResultActions';
 
-const api = vi.hoisted(() => ({ predict: vi.fn(), run: vi.fn(), sweep: vi.fn() }));
+const api = vi.hoisted(() => ({ predict: vi.fn(), run: vi.fn(), sweep: vi.fn(),
+  predictData: { targets: [], ood: false, ood_score: 0, in_envelope: true, model_version: 'test', cgem_binary_sha256: 'abc', source: 'surrogate', resolved_maneuver: 'high_g_turn', maneuver_category: 'training', calibration_scope: 'category' },
+  predictVariables: { maneuver: { maneuver: 'high_g_turn' }, pilot: { who_profile: 2, g_tolerance_multiplier: 1, dehydration_level: 0, countermeasures_label: 'none', gsuit_max_psi: 0, gsuit_coverage_fraction: 0, agsm_effectiveness: 0, pbg_max_mmhg: 0 } },
+  runData: { maneuver: 'hammerhead', pilot_profile: 'who_profile=2', duration_s: 1, time_to_greyout_s: null, time_to_blackout_s: null, time_to_gloc_s: null, data: { 'Time(s)': [0, 1], G: [1, 1], G_eff: [1, 1], 'HLAP(mmHg)': [100, 100], 'F_con(dl/min)': [1, 1], 'F_vis(dl/min)': [1, 1], 'F_bo(dl/min)': [1, 1], 'c_bank(s)': [7, 7], 'bo_bank(s)': [7, 7], Conscious: [1, 1], Greyout: [0, 0], Blackout: [0, 0] } },
+  versionData: { package_version: 'test', cgem_binary_sha256: 'abcdef123', dataset_master_seed: 1 },
+  sweepData: { results: [{ targets: [], ood: true, ood_score: 2, in_envelope: false, model_version: 'test', cgem_binary_sha256: 'abc', source: 'surrogate', resolved_maneuver: 'hammerhead', maneuver_category: 'training', calibration_scope: 'category' }] },
+  sweepVariables: { inputs: [{ maneuver: { maneuver: 'hammerhead' }, pilot: { who_profile: 2, g_tolerance_multiplier: 1, dehydration_level: 0, countermeasures_label: 'none', gsuit_max_psi: 0, gsuit_coverage_fraction: 0, agsm_effectiveness: 0, pbg_max_mmhg: 0 } }] },
+}));
 
 vi.mock('../services/cgemApi', () => ({
   cgemApiBaseURL: 'http://localhost:8000', apiErrorMessage: String,
   useHealth: () => ({ data: { status: 'ok' } }),
-  useVersion: () => ({ data: { package_version: 'test', cgem_binary_sha256: 'abcdef123', dataset_master_seed: 1 }, isError: false, isLoading: false }),
-  usePredict: () => ({ data: { targets: [], ood: false, ood_score: 0, in_envelope: true, model_version: 'test', cgem_binary_sha256: 'abc', source: 'surrogate', resolved_maneuver: 'hammerhead', maneuver_category: 'training', calibration_scope: 'category' }, mutate: api.predict, isError: false, isPending: false }),
-  useRunCgem: () => ({ data: { maneuver: 'hammerhead', pilot_profile: 'who_profile=2', duration_s: 1, time_to_greyout_s: null, time_to_blackout_s: null, time_to_gloc_s: null, data: { 'Time(s)': [0, 1], G: [1, 1], G_eff: [1, 1], 'HLAP(mmHg)': [100, 100], 'F_con(dl/min)': [1, 1], 'F_vis(dl/min)': [1, 1], 'F_bo(dl/min)': [1, 1], 'c_bank(s)': [7, 7], 'bo_bank(s)': [7, 7], Conscious: [1, 1], Greyout: [0, 0], Blackout: [0, 0] } }, mutate: api.run, isError: false, isPending: false }),
-  useSweep: () => ({ data: undefined, mutate: api.sweep, isError: false, isPending: false }),
+  useVersion: () => ({ data: api.versionData, isError: false, isLoading: false }),
+  usePredict: () => ({ data: api.predictData, variables: api.predictVariables, submittedAt: 1, mutate: api.predict, isError: false, isPending: false }),
+  useRunCgem: () => ({ data: api.runData, mutate: api.run, isError: false, isPending: false }),
+  useSweep: () => ({ data: api.sweepData, variables: api.sweepVariables, submittedAt: 1, mutate: api.sweep, isError: false, isPending: false }),
 }));
 
 vi.mock('../components/ui', () => ({
@@ -40,9 +48,10 @@ vi.mock('../components/hud', () => ({
 }));
 
 function LocationProbe() { const location = useLocation(); return <output aria-label="location">{location.pathname}{location.search}</output>; }
+function ExportProbe() { const { activeExport } = useResultActions(); return <output aria-label="active-export">{activeExport?.content ?? 'none'}</output>; }
 function renderRoute(path: string, element: React.ReactNode) {
   const pathname = path.split('?')[0];
-  const router = createMemoryRouter([{ path: pathname, element: <>{element}<LocationProbe /></> }], { initialEntries: [path] });
+  const router = createMemoryRouter([{ path: pathname, element: <ResultActionsProvider>{element}<LocationProbe /><ExportProbe /></ResultActionsProvider> }], { initialEntries: [path] });
   render(<RouterProvider router={router} />);
   return router;
 }
@@ -57,6 +66,7 @@ describe('shareable research workflows', () => {
 
   it('renders Prediction sections according to view and keeps custom drafts out of the URL', () => {
     renderRoute('/prediction?maneuver=hammerhead&pilot=6&view=authoritative', <PredictionPage />);
+    expect(screen.getByRole('complementary', { name: 'Result evidence' })).toBeInTheDocument();
     expect(screen.queryByTestId('surrogate-result')).toBeNull();
     expect(screen.getByText('Time to G-LOC')).toBeTruthy();
     fireEvent.change(screen.getByRole('combobox'), { target: { value: 'custom' } });
@@ -77,6 +87,21 @@ describe('shareable research workflows', () => {
     expect(api.predict).not.toHaveBeenCalledWith(expect.objectContaining({ maneuver: { maneuver: 'unsupported' } }));
   });
 
+  it('keeps a completed prediction export bound to its submitted request across every input edit', async () => {
+    renderRoute('/prediction?maneuver=high_g_turn', <PredictionPage />);
+    await waitFor(() => expect(screen.getByLabelText('active-export').textContent).not.toBe('none'));
+    const completed = screen.getByLabelText('active-export').textContent;
+    expect(completed).toContain('"maneuver": "high_g_turn"');
+    fireEvent.click(screen.getByRole('button', { name: /Maneuver:/ }));
+    expect(screen.getByLabelText('active-export').textContent).toBe(completed);
+    fireEvent.change(screen.getByRole('combobox'), { target: { value: '6' } });
+    expect(screen.getByLabelText('active-export').textContent).toBe(completed);
+    for (const [slider, value] of screen.getAllByRole('slider').map((element, index) => [element, ['5', '0.7', '0.4'][index]] as const)) {
+      fireEvent.change(slider, { target: { value } });
+      expect(screen.getByLabelText('active-export').textContent).toBe(completed);
+    }
+  });
+
   it('shows sensitivity only in Analysis sensitivity view and restores view through history', async () => {
     const router = renderRoute('/analysis', <AnalysisPage />);
     expect(screen.queryByTestId('sensitivity-request')).toBeNull();
@@ -90,6 +115,7 @@ describe('shareable research workflows', () => {
 
   it('rejects invalid Simulator maneuvers and resets parent playback on URL navigation', async () => {
     const router = renderRoute('/simulator?maneuver=invalid', <SimulatorPage />);
+    expect(screen.getByRole('complementary', { name: 'Result evidence' })).toBeInTheDocument();
     expect(screen.getByTestId('player-maneuver')).toHaveTextContent('hammerhead');
     expect(api.predict).not.toHaveBeenCalledWith(expect.objectContaining({ maneuver: { maneuver: 'invalid' } }));
     fireEvent.click(screen.getByRole('button', { name: 'Advance playback' }));
@@ -101,6 +127,7 @@ describe('shareable research workflows', () => {
 
   it('initializes and updates Batch filters without rerunning the sweep', () => {
     renderRoute('/batch?target=blackout&direction=asc&ood=ood&category=training', <BatchPage />);
+    expect(screen.getByRole('complementary', { name: 'Result evidence' })).toHaveTextContent('Surrogate batch');
     expect(screen.getByLabelText('Sort target')).toHaveValue('blackout');
     fireEvent.change(screen.getByLabelText('OOD filter'), { target: { value: 'all' } });
     expect(screen.getByLabelText('location')).not.toHaveTextContent('ood=');

@@ -112,10 +112,7 @@ export const BatchPage: React.FC = () => {
 
   const rows: BatchRow[] = useMemo(() => {
     if (!sweepMutation.data) return [];
-    return profileIds.map((id, i) => ({
-      profileId: id,
-      prediction: sweepMutation.data!.results[i],
-    }));
+    return sweepMutation.data.results.map((prediction, i) => ({ profileId: profileIds[i], prediction }));
   }, [sweepMutation.data, profileIds]);
 
   const sortedRows = useMemo(() => {
@@ -145,7 +142,13 @@ export const BatchPage: React.FC = () => {
 
   const apiReachable = !versionQuery.isError;
   const oodCount = rows.filter((r) => r.prediction.ood).length;
-  const exportSpec = useMemo(() => sortedRows.length ? buildBatchCsvExport({ rows: sortedRows, requestFor: requestForProfile, exportedAt: new Date(sweepMutation.submittedAt || 0).toISOString() }) : null, [sortedRows, sweepMutation.submittedAt, requestForProfile]);
+  const exportSpec = useMemo(() => {
+    const submitted = sweepMutation.variables?.inputs;
+    if (!sortedRows.length || !submitted) return null;
+    return buildBatchCsvExport({ rows: sortedRows, requestFor: (profileId) => submitted.find((input) => input.maneuver.maneuver === profileId) ?? requestForProfile(profileId), exportedAt: new Date(sweepMutation.submittedAt || 0).toISOString() });
+    // Submitted variables are bound to submittedAt and must not follow later UI edits.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sortedRows, sweepMutation.submittedAt, requestForProfile]);
   useEffect(() => { registerExport(exportSpec); return () => registerExport(null); }, [exportSpec, registerExport]);
 
   return (
@@ -255,7 +258,7 @@ export const BatchPage: React.FC = () => {
 
       {/* Results table */}
       {rows.length > 0 && (
-        <EvidenceRail evidence={{ kind: 'surrogate', response: rows[0].prediction }} />
+        <EvidenceRail evidence={{ kind: 'batch', responses: sortedRows.map(({ prediction }) => prediction) }} />
       )}
       {rows.length > 0 && (
         <motion.div
