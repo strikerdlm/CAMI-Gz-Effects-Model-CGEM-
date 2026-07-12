@@ -1,12 +1,23 @@
 /// <reference types="node" />
-import { fireEvent, render, screen, within } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 import { MainLayout } from './MainLayout';
 const styles = readFileSync(join(process.cwd(), 'src/index.css'), 'utf8');
+
+const reducedMotion = vi.hoisted(() => ({ value: false }));
+
+vi.mock('framer-motion', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('framer-motion')>();
+  return { ...actual, useReducedMotion: () => reducedMotion.value };
+});
+
+afterEach(() => {
+  reducedMotion.value = false;
+});
 
 vi.mock('../../services/cgemApi', () => ({
   useHealth: () => ({
@@ -58,8 +69,7 @@ describe('MainLayout semantics', () => {
     expect(screen.getByRole('button', { name: 'Refresh API status' })).toBeInTheDocument();
   });
 
-  it('offers a 44 px mobile navigation trigger and hides the persistent sidebar at 390 px', () => {
-    window.innerWidth = 390;
+  it('uses the exact 767/768 mobile-to-tablet boundary for the persistent navigation', () => {
     renderLayout();
 
     expect(screen.getByRole('complementary')).toHaveClass('shell-sidebar');
@@ -68,7 +78,9 @@ describe('MainLayout semantics', () => {
       'min-h-11',
       'min-w-11',
     );
-    expect(styles).toMatch(/@media\s*\(max-width:\s*639px\)[\s\S]*\.shell-sidebar\s*{[\s\S]*display:\s*none/);
+    expect(styles).toMatch(/@media\s*\(max-width:\s*767px\)[\s\S]*\.shell-sidebar\s*{[\s\S]*display:\s*none/);
+    expect(styles).toMatch(/@media\s*\(min-width:\s*768px\)\s*and\s*\(max-width:\s*1023px\)/);
+    expect(styles).not.toContain('sm:hidden');
   });
 
   it('contains focus in the mobile Navigation dialog and closes on Escape', () => {
@@ -99,11 +111,48 @@ describe('MainLayout semantics', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Open navigation' }));
 
     expect(document.body.style.overflow).toBe('hidden');
-    expect(screen.getByTestId('shell-background')).toHaveAttribute('inert');
+    const background = screen.getByTestId('shell-background');
+    expect(background).toHaveAttribute('inert');
+    expect(background).toContainElement(screen.getByRole('link', { name: 'Skip to main content', hidden: true }));
 
     fireEvent.click(screen.getByRole('button', { name: 'Close navigation' }));
     expect(document.body.style.overflow).toBe('');
     expect(screen.getByTestId('shell-background')).not.toHaveAttribute('inert');
+  });
+
+  it('removes inert before restoring focus to the navigation trigger', () => {
+    renderLayout();
+    const trigger = screen.getByRole('button', { name: 'Open navigation' });
+    const background = screen.getByTestId('shell-background');
+    let inertAtFocus: boolean | undefined;
+    trigger.addEventListener('focus', () => {
+      inertAtFocus = background.hasAttribute('inert');
+    });
+
+    fireEvent.click(trigger);
+    fireEvent.click(screen.getByRole('button', { name: 'Close navigation' }));
+
+    expect(inertAtFocus).toBe(false);
+  });
+
+  it('closes the drawer when location changes outside the drawer', async () => {
+    renderLayout();
+    fireEvent.click(screen.getByRole('button', { name: 'Open navigation' }));
+    const simulatorLinks = screen.getAllByRole('link', { name: 'Simulator', hidden: true });
+    fireEvent.click(simulatorLinks[0]);
+
+    await waitFor(() => {
+      expect(screen.queryByRole('dialog', { name: 'Navigation' })).not.toBeInTheDocument();
+    });
+  });
+
+  it('omits page translation when reduced motion is requested', () => {
+    reducedMotion.value = true;
+    const { container } = renderLayoutWithContainer();
+    const transition = container.querySelector('[data-page-transition]');
+
+    expect(transition).toHaveAttribute('data-motion-mode', 'reduced');
+    expect(transition).not.toHaveStyle({ transform: 'translateY(10px)' });
   });
 
   it('closes the drawer after navigation and restores focus on unmount cleanup', () => {

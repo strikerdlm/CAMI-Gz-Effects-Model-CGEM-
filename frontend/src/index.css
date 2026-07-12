@@ -73,8 +73,10 @@
 .shell-topbar-collapsed { left: var(--shell-sidebar-rail); }
 .shell-main { margin-left: var(--shell-sidebar-wide); }
 .shell-main-collapsed { margin-left: var(--shell-sidebar-rail); }
+.mobile-nav-trigger,
+.mobile-nav-layer { display: none; }
 
-@media (min-width: 640px) and (max-width: 1023px) {
+@media (min-width: 768px) and (max-width: 1023px) {
   .shell-sidebar { width: var(--shell-sidebar-rail); }
   .shell-sidebar > div:first-child > div:first-child,
   .shell-sidebar nav span,
@@ -85,11 +87,12 @@
   .shell-main { margin-left: var(--shell-sidebar-rail); }
 }
 
-@media (max-width: 639px) {
+@media (max-width: 767px) {
   .shell-sidebar { display: none; }
   .shell-topbar { left: 0; padding-inline: 0.75rem; }
   .shell-main, .shell-main-collapsed { margin-left: 0; }
   .mobile-nav-trigger { display: inline-flex; align-items: center; justify-content: center; }
+  .mobile-nav-layer { display: block; }
   .shell-secondary-action,
   .shell-callsign { display: none; }
   .shell-topbar-actions { gap: 0.25rem; }

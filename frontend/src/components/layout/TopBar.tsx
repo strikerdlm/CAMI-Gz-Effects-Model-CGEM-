@@ -69,7 +69,7 @@ export const TopBar: React.FC<TopBarProps> = ({
           type="button"
           aria-label="Open navigation"
           onClick={onOpenNavigation}
-          className="mobile-nav-trigger hidden min-h-11 min-w-11 rounded-sm text-hud-ink-faint transition-colors hover:bg-hud-panel hover:text-hud-amber sm:hidden"
+          className="mobile-nav-trigger min-h-11 min-w-11 rounded-sm text-hud-ink-faint transition-colors hover:bg-hud-panel hover:text-hud-amber"
         >
           <Menu className="mx-auto h-5 w-5" aria-hidden="true" />
         </button>

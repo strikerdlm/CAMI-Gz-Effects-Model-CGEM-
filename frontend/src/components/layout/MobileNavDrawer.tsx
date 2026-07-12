@@ -28,10 +28,13 @@ export function MobileNavDrawer({ open, onClose, triggerRef }: MobileNavDrawerPr
     if (!open) return;
     const previousOverflow = document.body.style.overflow;
     const trigger = triggerRef.current;
+    const background = document.querySelector<HTMLElement>('[data-shell-background]');
+    background?.setAttribute('inert', '');
     document.body.style.overflow = 'hidden';
     closeRef.current?.focus();
 
     return () => {
+      background?.removeAttribute('inert');
       document.body.style.overflow = previousOverflow;
       trigger?.focus();
     };
@@ -64,7 +67,7 @@ export function MobileNavDrawer({ open, onClose, triggerRef }: MobileNavDrawerPr
   }
 
   return (
-    <div className="mobile-nav-layer fixed inset-0 z-[110] sm:hidden">
+    <div className="mobile-nav-layer fixed inset-0 z-[110]">
       <div
         className="absolute inset-0 bg-black/70"
         aria-hidden="true"
