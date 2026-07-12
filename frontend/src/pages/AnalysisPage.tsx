@@ -44,6 +44,9 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({
   onToggle,
 }) => (
   <button
+    type="button"
+    aria-expanded={isExpanded}
+    aria-controls={`${id}-section`}
     onClick={() => onToggle(id)}
     className="w-full flex items-center justify-between p-4 hover:bg-surface-800/50 transition-colors"
   >
@@ -101,7 +104,7 @@ export const AnalysisPage: React.FC = () => {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="glass rounded-2xl p-6"
+        className="instrument-panel rounded-2xl p-6"
       >
         <h2 className="text-2xl font-bold text-white mb-2">
           Physiological Analysis
@@ -127,7 +130,7 @@ export const AnalysisPage: React.FC = () => {
       {analysisView === 'sensitivity' && <motion.div
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
-        className="glass rounded-2xl p-6"
+        className="instrument-panel rounded-2xl p-6"
       >
         <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
           <div>
@@ -145,6 +148,8 @@ export const AnalysisPage: React.FC = () => {
             </p>
           </div>
           <select
+            aria-label="Sensitivity target"
+            name="sensitivity-target"
             value={sobolTarget}
             onChange={(e) => setSobolTarget(e.target.value as TargetName)}
             className="bg-surface-800/60 border border-surface-700 rounded-md px-3 py-2 text-sm text-surface-200"
@@ -168,7 +173,7 @@ export const AnalysisPage: React.FC = () => {
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="glass rounded-2xl overflow-hidden"
+                className="instrument-panel rounded-2xl overflow-hidden"
               >
                 <SectionHeader
                   id="description"
@@ -181,6 +186,7 @@ export const AnalysisPage: React.FC = () => {
                 <AnimatePresence>
                   {expandedSections.has('description') && (
                     <motion.div
+                      id="description-section"
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: 'auto', opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
@@ -201,7 +207,7 @@ export const AnalysisPage: React.FC = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 }}
-                className="glass rounded-2xl overflow-hidden"
+                className="instrument-panel rounded-2xl overflow-hidden"
               >
                 <SectionHeader
                   id="effects"
@@ -214,6 +220,7 @@ export const AnalysisPage: React.FC = () => {
                 <AnimatePresence>
                   {expandedSections.has('effects') && (
                     <motion.div
+                      id="effects-section"
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: 'auto', opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
@@ -234,7 +241,7 @@ export const AnalysisPage: React.FC = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
-                className="glass rounded-2xl overflow-hidden"
+                className="instrument-panel rounded-2xl overflow-hidden"
               >
                 <SectionHeader
                   id="risks"
@@ -247,6 +254,7 @@ export const AnalysisPage: React.FC = () => {
                 <AnimatePresence>
                   {expandedSections.has('risks') && (
                     <motion.div
+                      id="risks-section"
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: 'auto', opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
@@ -273,7 +281,7 @@ export const AnalysisPage: React.FC = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
-                className="glass rounded-2xl overflow-hidden"
+                className="instrument-panel rounded-2xl overflow-hidden"
               >
                 <SectionHeader
                   id="mitigation"
@@ -286,6 +294,7 @@ export const AnalysisPage: React.FC = () => {
                 <AnimatePresence>
                   {expandedSections.has('mitigation') && (
                     <motion.div
+                      id="mitigation-section"
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: 'auto', opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
@@ -308,7 +317,7 @@ export const AnalysisPage: React.FC = () => {
               </motion.div>
             </>
           ) : (
-            <div className="glass rounded-2xl p-12 text-center">
+            <div className="instrument-panel rounded-2xl p-12 text-center">
               <FileText className="w-12 h-12 text-surface-600 mx-auto mb-4" />
               <h3 className="text-lg font-semibold text-white mb-2">
                 Analysis Not Available
@@ -327,7 +336,7 @@ export const AnalysisPage: React.FC = () => {
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
-              className="glass rounded-2xl p-5"
+              className="instrument-panel rounded-2xl p-5"
             >
               <h3 className="text-lg font-semibold text-white mb-4">
                 Profile Statistics
@@ -366,7 +375,7 @@ export const AnalysisPage: React.FC = () => {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.1 }}
-            className="glass rounded-2xl p-5"
+            className="instrument-panel rounded-2xl p-5"
           >
             <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
               <BookOpen className="w-5 h-5 text-primary-400" />

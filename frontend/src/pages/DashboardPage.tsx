@@ -135,7 +135,7 @@ const ApiStatusBanner: React.FC = () => {
     ? { label: 'unreachable', color: 'text-rose-400 border-rose-500/30' }
     : { label: 'online', color: 'text-emerald-400 border-emerald-500/30' };
   return (
-    <div className={`glass-light rounded-xl p-3 text-xs border flex items-center justify-between gap-3 ${status.color}`}>
+    <div className={`instrument-panel rounded-xl p-3 text-xs border flex items-center justify-between gap-3 ${status.color}`}>
       <div className="text-surface-400">
         <span className="text-surface-500">CGEM API:</span>{' '}
         <code className="text-surface-300">{prefs.apiUrl}</code>{' '}
@@ -341,7 +341,7 @@ export const DashboardPage: React.FC = () => {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="glass rounded-2xl p-6"
+        className="instrument-panel rounded-2xl p-6"
       >
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           <div>
@@ -360,8 +360,9 @@ export const DashboardPage: React.FC = () => {
               <button
                 onClick={() => setViewMode('grid')}
                 aria-pressed={viewMode === 'grid'}
+                aria-label="Grid view"
                 className={cn(
-                  'p-2 rounded-lg transition-all',
+                  'p-2 min-h-11 min-w-11 rounded-lg transition-colors',
                   viewMode === 'grid' 
                     ? 'bg-primary-500/20 text-primary-400' 
                     : 'text-surface-400 hover:text-white'
@@ -373,8 +374,9 @@ export const DashboardPage: React.FC = () => {
               <button
                 onClick={() => setViewMode('single')}
                 aria-pressed={viewMode === 'single'}
+                aria-label="Single chart view"
                 className={cn(
-                  'p-2 rounded-lg transition-all',
+                  'p-2 min-h-11 min-w-11 rounded-lg transition-colors',
                   viewMode === 'single' 
                     ? 'bg-primary-500/20 text-primary-400' 
                     : 'text-surface-400 hover:text-white'
@@ -409,7 +411,7 @@ export const DashboardPage: React.FC = () => {
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
-        className="glass rounded-2xl p-5"
+        className="instrument-panel rounded-2xl p-5"
       >
         <div className="flex items-center justify-between gap-3 mb-4">
           <div>
@@ -431,9 +433,11 @@ export const DashboardPage: React.FC = () => {
             return (
               <button
                 key={preset.id}
+                type="button"
+                aria-pressed={isSelected}
                 onClick={() => setSelectedPresetId(preset.id)}
                 className={cn(
-                  'text-left rounded-xl border p-3 transition-all duration-200',
+                  'min-h-11 text-left rounded-xl border p-3 transition-colors duration-200',
                   isSelected
                     ? PRESET_STYLES[preset.tag]
                     : 'border-surface-700/60 bg-surface-900/55 hover:border-surface-600 text-surface-300'
@@ -498,7 +502,7 @@ export const DashboardPage: React.FC = () => {
         <motion.div
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
-          className="chart-container premium-panel"
+          className="chart-container instrument-panel"
         >
           <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
             <div className="chart-title mb-0">
@@ -544,9 +548,11 @@ export const DashboardPage: React.FC = () => {
           {CHART_OPTIONS.map((opt) => (
             <button
               key={opt.id}
+              type="button"
+              aria-pressed={selectedChart === opt.id}
               onClick={() => setSelectedChart(opt.id)}
               className={cn(
-                'flex items-center gap-2 px-4 py-2 rounded-lg transition-all',
+                'flex min-h-11 items-center gap-2 px-4 py-2 rounded-lg transition-colors',
                 selectedChart === opt.id
                   ? 'bg-primary-500/20 text-primary-400 border border-primary-500/30'
                   : 'bg-surface-800/60 text-surface-400 hover:text-white hover:bg-surface-800'
@@ -603,7 +609,7 @@ export const DashboardPage: React.FC = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.5 }}
-        className="glass-light rounded-xl p-4"
+        className="instrument-panel rounded-xl p-4"
       >
         <h4 className="text-sm font-semibold text-surface-300 mb-2">
           Suggested Citation

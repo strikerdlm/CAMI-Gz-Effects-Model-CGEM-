@@ -24,8 +24,8 @@ const TARGET_LABELS: Record<string, string> = {
   c_bank_min: 'Consciousness bank min',
 };
 
-const formatRange = (lo: number | null, hi: number | null): string => {
-  if (lo === null || hi === null) return '—';
+const formatRange = (lo: number | null | undefined, hi: number | null | undefined): string => {
+  if (lo == null || hi == null) return '—';
   return `[${lo.toFixed(2)}, ${hi.toFixed(2)}]`;
 };
 

@@ -159,7 +159,7 @@ export const BatchPage: React.FC = () => {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="glass rounded-2xl p-6"
+        className="instrument-panel rounded-2xl p-6"
       >
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           <div>
@@ -184,6 +184,7 @@ export const BatchPage: React.FC = () => {
           </div>
 
           <button
+            type="button"
             onClick={handleRunSweep}
             disabled={!apiReachable || sweepMutation.isPending}
             className="btn-primary min-w-[200px]"
@@ -203,20 +204,20 @@ export const BatchPage: React.FC = () => {
         </div>
 
         {!apiReachable && (
-          <div className="mt-4 glass-light rounded-xl p-3 text-sm border border-rose-500/30 text-rose-300">
+          <div className="mt-4 instrument-panel rounded-xl p-3 text-sm border border-rose-500/30 text-rose-300">
             API unreachable. Start it with{' '}
             <code className="text-surface-200">uvicorn cgem_ext.api.main:app</code>.
           </div>
         )}
       </motion.div>
 
-      <div className="glass-light rounded-xl p-3">
+      <div className="instrument-panel rounded-xl p-3">
         <SortControl sortKey={sortKey} direction={direction} ood={ood} category={category} update={updateUrl} />
       </div>
 
       {/* Sweep error banner */}
       {sweepMutation.isError && (
-        <div className="glass-light rounded-xl p-4 text-sm border border-rose-500/30">
+        <div className="instrument-panel rounded-xl p-4 text-sm border border-rose-500/30">
           <p className="text-rose-300 font-semibold mb-1">Sweep failed</p>
           <p className="text-surface-400">{apiErrorMessage(sweepMutation.error)}</p>
         </div>
@@ -265,7 +266,7 @@ export const BatchPage: React.FC = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="glass rounded-2xl overflow-hidden"
+          className="instrument-panel rounded-2xl overflow-hidden"
         >
           <div className="px-6 py-4 border-b border-surface-700/50 flex items-center justify-between">
             <h3 className="text-lg font-semibold text-white">Per-maneuver predictions</h3>
@@ -345,7 +346,7 @@ export const BatchPage: React.FC = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="glass-light rounded-xl p-8 text-center"
+          className="instrument-panel rounded-xl p-8 text-center"
         >
           <AlertTriangle className="w-10 h-10 text-warning-400 mx-auto mb-3" />
           <h3 className="text-lg font-semibold text-white mb-2">Ready to sweep</h3>
@@ -365,7 +366,7 @@ const SummaryCard: React.FC<{ label: string; value: string; icon: React.ReactNod
   value,
   icon,
 }) => (
-  <div className="glass-light rounded-xl p-4 flex items-center gap-3">
+  <div className="instrument-panel rounded-xl p-4 flex items-center gap-3">
     <div className="bg-surface-800/60 rounded-lg p-2">{icon}</div>
     <div>
       <div className="text-xs uppercase tracking-wider text-surface-500">{label}</div>
@@ -384,10 +385,11 @@ const SortControl: React.FC<{
   <div className="flex flex-wrap items-center gap-2 text-xs text-surface-400">
     <ArrowDownAZ className="w-4 h-4" />
     <select
+      name="batch-sort-target"
       value={sortKey}
       aria-label="Sort target"
       onChange={(e) => update({ target: e.target.value as SortKey })}
-      className="bg-surface-800/60 border border-surface-700 rounded-md px-2 py-1 text-surface-200"
+      className="min-h-11 bg-surface-800/60 border border-surface-700 rounded-md px-2 py-1 text-surface-200"
     >
       <option value="gloc">Sort: G-LOC risk ↓</option>
       <option value="blackout">Sort: Blackout risk ↓</option>
@@ -395,13 +397,13 @@ const SortControl: React.FC<{
       <option value="ood">Sort: OOD first</option>
       <option value="profile">Sort: profile name</option>
     </select>
-    <select aria-label="Sort direction" value={direction} onChange={(e) => update({ direction: e.target.value as BatchDirection })} className="bg-surface-800/60 border border-surface-700 rounded-md px-2 py-1 text-surface-200">
+    <select name="batch-sort-direction" aria-label="Sort direction" value={direction} onChange={(e) => update({ direction: e.target.value as BatchDirection })} className="min-h-11 bg-surface-800/60 border border-surface-700 rounded-md px-2 py-1 text-surface-200">
       <option value="desc">Descending</option><option value="asc">Ascending</option>
     </select>
-    <select aria-label="OOD filter" value={ood} onChange={(e) => update({ ood: e.target.value as BatchOod })} className="bg-surface-800/60 border border-surface-700 rounded-md px-2 py-1 text-surface-200">
+    <select name="batch-ood-filter" aria-label="OOD filter" value={ood} onChange={(e) => update({ ood: e.target.value as BatchOod })} className="min-h-11 bg-surface-800/60 border border-surface-700 rounded-md px-2 py-1 text-surface-200">
       <option value="all">All envelopes</option><option value="in-envelope">In envelope</option><option value="ood">OOD only</option>
     </select>
-    <select aria-label="Maneuver category" value={category} onChange={(e) => update({ category: e.target.value as BatchCategory })} className="bg-surface-800/60 border border-surface-700 rounded-md px-2 py-1 text-surface-200">
+    <select name="batch-maneuver-category" aria-label="Maneuver category" value={category} onChange={(e) => update({ category: e.target.value as BatchCategory })} className="min-h-11 bg-surface-800/60 border border-surface-700 rounded-md px-2 py-1 text-surface-200">
       <option value="all">All categories</option><option value="championship">Championship</option><option value="military_acm">Military ACM</option><option value="extreme_post_stall">Extreme/post-stall</option><option value="training">Training</option><option value="conceptual">Conceptual</option>
     </select>
   </div>

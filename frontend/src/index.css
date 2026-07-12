@@ -2,6 +2,7 @@
 
 /* Custom CSS Variables */
 :root {
+  color-scheme: dark;
   --shell-sidebar-wide: 260px;
   --shell-sidebar-rail: 72px;
   --shell-header: 64px;
@@ -165,17 +166,13 @@ body {
 
 /* Metric cards */
 .metric-card {
-  background-color: rgba(15, 23, 42, 0.8);
-  backdrop-filter: blur(16px);
-  border: 1px solid rgba(51, 65, 85, 0.5);
   border-radius: 0.75rem;
   padding: 1rem;
-  transition: all 0.3s;
+  transition: border-color 0.2s, color 0.2s;
 }
 
 .metric-card:hover {
-  border-color: rgba(14, 165, 233, 0.3);
-  box-shadow: 0 0 15px -3px rgba(14, 165, 233, 0.3);
+  border-color: #526159;
 }
 
 .metric-value {
@@ -198,7 +195,7 @@ body {
   border-radius: 1rem;
   padding: 1rem;
   overflow: hidden;
-  transition: all 0.3s;
+  transition: border-color 0.2s, color 0.2s;
 }
 
 .chart-container:hover {
@@ -222,8 +219,9 @@ body {
   border: 1px solid rgba(51, 65, 85, 0.5);
   border-radius: 0.5rem;
   padding: 0.625rem 1rem;
+  min-height: 44px;
   color: var(--color-surface-100);
-  transition: all 0.2s;
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s;
 }
 
 .input-field::placeholder {
@@ -231,8 +229,6 @@ body {
 }
 
 .input-field:focus {
-  outline: none;
-  ring: 2px solid rgba(14, 165, 233, 0.5);
   border-color: var(--color-primary-500);
 }
 
@@ -242,6 +238,7 @@ body {
   border: 1px solid rgba(51, 65, 85, 0.5);
   border-radius: 0.5rem;
   padding: 0.625rem 2.5rem 0.625rem 1rem;
+  min-height: 44px;
   color: var(--color-surface-100);
   cursor: pointer;
   appearance: none;
@@ -249,11 +246,10 @@ body {
   background-position: right 0.75rem center;
   background-repeat: no-repeat;
   background-size: 1rem;
-  transition: all 0.2s;
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s;
 }
 
 .select-field:focus {
-  outline: none;
   border-color: var(--color-primary-500);
 }
 
@@ -264,12 +260,13 @@ body {
   justify-content: center;
   gap: 0.5rem;
   padding: 0.75rem 1.5rem;
+  min-height: 44px;
   border-radius: 0.75rem;
   background: linear-gradient(to right, var(--color-primary-600), var(--color-primary-500));
   color: white;
   font-weight: 600;
   box-shadow: 0 10px 15px -3px rgba(14, 165, 233, 0.25);
-  transition: all 0.2s;
+  transition: background-color 0.2s, box-shadow 0.2s, color 0.2s, transform 0.2s;
 }
 
 .btn-primary:hover {
@@ -292,12 +289,13 @@ body {
   justify-content: center;
   gap: 0.5rem;
   padding: 0.75rem 1.5rem;
+  min-height: 44px;
   border-radius: 0.75rem;
   background-color: var(--color-surface-800);
   color: var(--color-surface-100);
   font-weight: 600;
   border: 1px solid var(--color-surface-700);
-  transition: all 0.2s;
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s;
 }
 
 .btn-secondary:hover {
@@ -411,6 +409,28 @@ input[type="range"]::-moz-range-thumb {
    These coexist with the legacy .glass / .metric-card classes used by
    older pages until those pages are migrated.
    ─────────────────────────────────────────────────────────────────── */
+
+.instrument-panel {
+  background: #151a19;
+  border: 1px solid #35403b;
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 35%);
+  color-scheme: dark;
+}
+
+.instrument-panel:focus-within {
+  border-color: #8ea89c;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .instrument-panel,
+  .instrument-panel * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
 
 .bezel {
   background: linear-gradient(180deg, var(--hud-panel) 0%, var(--hud-panel-2) 100%);

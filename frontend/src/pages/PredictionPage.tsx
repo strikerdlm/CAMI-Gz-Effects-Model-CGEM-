@@ -164,7 +164,7 @@ export const PredictionPage: React.FC = () => {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="glass rounded-2xl p-6"
+        className="instrument-panel rounded-2xl p-6"
       >
         <div className="flex items-start justify-between gap-4 flex-wrap">
           <div>
@@ -205,7 +205,7 @@ export const PredictionPage: React.FC = () => {
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
-            className="glass rounded-2xl p-5"
+            className="instrument-panel rounded-2xl p-5"
           >
             <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
               <Activity className="w-5 h-5 text-primary-400" />
@@ -221,13 +221,15 @@ export const PredictionPage: React.FC = () => {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.1 }}
-            className="glass rounded-2xl p-5"
+            className="instrument-panel rounded-2xl p-5"
           >
             <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
               <User className="w-5 h-5 text-accent-400" />
               Subject Profile
             </h3>
             <select
+              aria-label="Subject profile"
+              name="subject-profile"
               value={customProfile ? 'custom' : whoProfile}
               onChange={(e) => {
                 if (e.target.value === 'custom') setCustomProfile(true);
@@ -267,7 +269,7 @@ export const PredictionPage: React.FC = () => {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 }}
-            className="glass rounded-2xl p-5"
+            className="instrument-panel rounded-2xl p-5"
           >
             <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
               <Settings className="w-5 h-5 text-warning-400" />
@@ -279,6 +281,8 @@ export const PredictionPage: React.FC = () => {
                   G-suit pressure (PSI)
                 </label>
                 <input
+                  aria-label="G-suit pressure in PSI"
+                  name="gsuit-pressure"
                   type="range"
                   min={0}
                   max={10}
@@ -301,6 +305,8 @@ export const PredictionPage: React.FC = () => {
                   AGSM effectiveness
                 </label>
                 <input
+                  aria-label="AGSM effectiveness"
+                  name="agsm-effectiveness"
                   type="range"
                   min={0}
                   max={1}
@@ -323,6 +329,8 @@ export const PredictionPage: React.FC = () => {
                   Dehydration level
                 </label>
                 <input
+                  aria-label="Dehydration level"
+                  name="dehydration-level"
                   type="range"
                   min={0}
                   max={1}
@@ -415,7 +423,7 @@ export const PredictionPage: React.FC = () => {
           )}
 
           {showSurrogate && predictMutation.isError && (
-            <div className="glass-light rounded-xl p-4 text-sm border border-rose-500/30">
+            <div className="instrument-panel rounded-xl p-4 text-sm border border-rose-500/30">
               <p className="text-rose-300 font-semibold mb-1">Surrogate request failed</p>
               <p className="text-surface-400">{apiErrorMessage(predictMutation.error)}</p>
             </div>
@@ -450,7 +458,7 @@ export const PredictionPage: React.FC = () => {
           )}
 
           {showAuthoritative && runCgemMutation.isError && (
-            <div className="glass-light rounded-xl p-4 text-sm border border-rose-500/30">
+            <div className="instrument-panel rounded-xl p-4 text-sm border border-rose-500/30">
               <p className="text-rose-300 font-semibold mb-1">CGEM subprocess failed</p>
               <p className="text-surface-400">{apiErrorMessage(runCgemMutation.error)}</p>
             </div>
@@ -510,7 +518,7 @@ export const PredictionPage: React.FC = () => {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="glass-light rounded-xl p-6 text-center"
+              className="instrument-panel rounded-xl p-6 text-center"
             >
               <Play className="w-12 h-12 text-primary-400 mx-auto mb-4" />
               <h3 className="text-lg font-semibold text-white mb-2">Ready to run</h3>
@@ -529,7 +537,7 @@ export const PredictionPage: React.FC = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.4 }}
-        className="glass-light rounded-xl p-4 text-sm text-surface-400 flex items-start gap-3"
+        className="instrument-panel rounded-xl p-4 text-sm text-surface-400 flex items-start gap-3"
       >
         <AlertTriangle className="w-4 h-4 text-amber-400 mt-0.5 flex-shrink-0" />
         <p>

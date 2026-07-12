@@ -72,7 +72,7 @@ export const OverviewPage: React.FC = () => {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="glass rounded-2xl p-6"
+        className="instrument-panel rounded-2xl p-6"
       >
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           <div>
@@ -186,7 +186,7 @@ export const OverviewPage: React.FC = () => {
         className="grid md:grid-cols-2 gap-6"
       >
         {/* Exposure Times */}
-        <div className="glass rounded-2xl p-6">
+        <div className="instrument-panel rounded-2xl p-6">
           <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
             <Timer className="w-5 h-5 text-warning-400" />
             Exposure Analysis
@@ -214,7 +214,7 @@ export const OverviewPage: React.FC = () => {
         </div>
 
         {/* Profile Description */}
-        <div className="glass rounded-2xl p-6">
+        <div className="instrument-panel rounded-2xl p-6">
           <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
             <AlertTriangle className="w-5 h-5 text-primary-400" />
             Profile Description
@@ -238,7 +238,7 @@ export const OverviewPage: React.FC = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
-        className="glass-light rounded-xl p-4 text-sm text-surface-400"
+        className="instrument-panel rounded-xl p-4 text-sm text-surface-400"
       >
         <p>
           <strong className="text-surface-300">Note:</strong> G-force profiles are derived from

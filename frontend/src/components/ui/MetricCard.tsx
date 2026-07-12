@@ -6,7 +6,6 @@
  */
 
 import React from 'react';
-import { motion } from 'framer-motion';
 import { TrendingUp, TrendingDown, Minus } from 'lucide-react';
 import { cn } from '../../utils';
 
@@ -58,11 +57,9 @@ export const MetricCard: React.FC<MetricCardProps> = ({
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
+    <div
       className={cn(
-        'metric-card',
+        'instrument-panel metric-card',
         colorStyles[color],
         sizeStyles[size].card,
         className
@@ -116,7 +113,7 @@ export const MetricCard: React.FC<MetricCardProps> = ({
           </div>
         )}
       </div>
-    </motion.div>
+    </div>
   );
 };
 

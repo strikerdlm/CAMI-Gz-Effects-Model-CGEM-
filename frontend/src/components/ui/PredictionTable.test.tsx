@@ -31,4 +31,10 @@ describe('PredictionTable target semantics', () => {
     expect(screen.getByText('Conditional time if event occurs')).toBeTruthy();
     expect(screen.getByText('Direct surrogate output')).toBeTruthy();
   });
+
+  it('renders unavailable optional confidence bounds without crashing', () => {
+    render(<PredictionTable targets={[{ target: 'hlap_min', censored: false, point: 82 }]} />);
+
+    expect(screen.getAllByText('—')).toHaveLength(3);
+  });
 });

@@ -178,7 +178,7 @@ export const VariableInsightsPanel: React.FC<VariableInsightsPanelProps> = ({
   };
 
   return (
-    <div className={cn('premium-panel rounded-2xl p-4 space-y-3', className)}>
+    <div className={cn('instrument-panel rounded-2xl p-4 space-y-3', className)}>
       <div className="flex items-center justify-between">
         <h3 className="text-base font-semibold text-white">Variable Explanations</h3>
         <span className="text-xs text-surface-400">CGEM internals</span>
@@ -190,10 +190,12 @@ export const VariableInsightsPanel: React.FC<VariableInsightsPanelProps> = ({
           const isSelected = insight.key === selectedVariable;
           return (
             <button
+              type="button"
+              aria-pressed={isSelected}
               key={insight.key}
               onClick={() => onSelect(insight.key)}
               className={cn(
-                'w-full text-left rounded-xl p-3 border transition-all duration-200',
+                'w-full min-h-11 text-left rounded-xl p-3 border transition-colors duration-200',
                 insight.accentClass,
                 isSelected ? 'ring-1 ring-white/25 shadow-lg shadow-black/25' : 'opacity-80 hover:opacity-100'
               )}

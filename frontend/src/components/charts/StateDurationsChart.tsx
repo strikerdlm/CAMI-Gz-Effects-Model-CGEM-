@@ -132,7 +132,10 @@ export const StateDurationsChart: React.FC<StateDurationsChartProps> = ({
     };
   }, [durations, title]);
 
-  return <BaseChart option={option} height={height} />;
+  const summary = (Object.keys(STATE_LABELS) as PhysiologicalState[])
+    .map((state) => `${STATE_LABELS[state]} ${(durations[state] || 0).toFixed(1)} seconds`)
+    .join('; ') + '.';
+  return <BaseChart option={option} height={height} accessibleName={title} accessibleSummary={summary} />;
 };
 
 export default StateDurationsChart;

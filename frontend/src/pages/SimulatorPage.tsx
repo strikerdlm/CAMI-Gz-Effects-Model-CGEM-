@@ -127,9 +127,10 @@ export const SimulatorPage: React.FC = () => {
                   return (
                     <li key={m.id}>
                       <button
+                        type="button"
                         onClick={() => setSelectedId(m.id)}
                         className={
-                          'w-full text-left px-2 py-1 rounded-sm font-mono text-xs flex justify-between items-center transition-colors ' +
+                          'w-full min-h-11 text-left px-2 py-1 rounded-sm font-mono text-xs flex justify-between items-center transition-colors ' +
                           (active
                             ? 'bg-hud-amber/15 text-hud-amber border border-hud-amber/40'
                             : 'border border-transparent text-hud-ink-dim hover:bg-hud-panel-2 hover:text-hud-ink')
