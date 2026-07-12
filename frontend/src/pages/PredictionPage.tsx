@@ -12,7 +12,6 @@
 
 import React, { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import {
   Activity,
   AlertTriangle,
@@ -54,6 +53,7 @@ import { pilotConfigFromPrefs, pilotConfigWithOverrides } from '../services/pilo
 import { useUserPrefs } from '../state/useUserPrefs';
 import { predictionUrlState, type PredictionView } from '../services/urlState';
 import { buildAuthoritativeJsonExport, buildPredictionJsonExport } from '../services/exportResult';
+import { predictionRunAnnouncement } from './asyncStatus';
 
 /** Map the local Countermeasures + who_profile to a PredictionRequest body. */
 function buildRequest(
@@ -159,11 +159,13 @@ export const PredictionPage: React.FC = () => {
 
   return (
     <div className="space-y-6">
+      <p role="status" aria-live="polite" aria-atomic="true" className="sr-only">
+        {predictionRunAnnouncement('surrogate', predictMutation)}{' '}
+        {predictionRunAnnouncement('authoritative', runCgemMutation)}
+      </p>
       {urlState.invalid.length > 0 && <p role="status" className="sr-only">Unsupported prediction URL settings were replaced with safe defaults.</p>}
       {/* Header */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
+      <div
         className="instrument-panel rounded-2xl p-6"
       >
         <div className="flex items-start justify-between gap-4 flex-wrap">
@@ -197,14 +199,12 @@ export const PredictionPage: React.FC = () => {
             </div>
           </div>
         </div>
-      </motion.div>
+      </div>
 
       <div className="grid lg:grid-cols-3 gap-6">
         {/* ── Configuration panel ──────────────────────────────── */}
         <div className="lg:col-span-1 space-y-6">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
+          <div
             className="instrument-panel rounded-2xl p-5"
           >
             <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
@@ -215,12 +215,9 @@ export const PredictionPage: React.FC = () => {
               selectedProfileId={selectedProfileId}
               onSelect={setSelectedProfileId}
             />
-          </motion.div>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.1 }}
+          <div
             className="instrument-panel rounded-2xl p-5"
           >
             <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
@@ -263,12 +260,9 @@ export const PredictionPage: React.FC = () => {
                 </p>
               </div>
             )}
-          </motion.div>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.2 }}
+          <div
             className="instrument-panel rounded-2xl p-5"
           >
             <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
@@ -349,12 +343,9 @@ export const PredictionPage: React.FC = () => {
                 </span>
               </div>
             </div>
-          </motion.div>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
+          <div
             className="space-y-3"
           >
             <fieldset className="grid grid-cols-3 gap-2">
@@ -405,7 +396,7 @@ export const PredictionPage: React.FC = () => {
                 <code>uvicorn cgem_ext.api.main:app</code>.
               </p>
             )}
-          </motion.div>
+          </div>
         </div>
 
         {/* ── Results panel ────────────────────────────────────── */}
@@ -431,9 +422,7 @@ export const PredictionPage: React.FC = () => {
 
           {/* Authoritative CGEM event-time cards */}
           {showAuthoritative && cgemRun && (
-            <><EvidenceRail evidence={{ kind: 'authoritative', run: runCgemMutation.data!, version: versionQuery.data }} /><motion.div
-              initial={{ opacity: 0, scale: 0.97 }}
-              animate={{ opacity: 1, scale: 1 }}
+            <><EvidenceRail evidence={{ kind: 'authoritative', run: runCgemMutation.data!, version: versionQuery.data }} /><div
               className="grid grid-cols-3 gap-4"
             >
               <MetricCard
@@ -454,7 +443,7 @@ export const PredictionPage: React.FC = () => {
                 icon={<Brain className="w-5 h-5 text-purple-400" />}
                 color={cgemRun.time_to_gloc_s !== null ? 'danger' : 'default'}
               />
-            </motion.div></>
+            </div></>
           )}
 
           {showAuthoritative && runCgemMutation.isError && (
@@ -465,9 +454,7 @@ export const PredictionPage: React.FC = () => {
           )}
 
           {/* G-Force chart */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+          <div
             className="chart-container"
           >
             <div className="chart-title">
@@ -494,14 +481,11 @@ export const PredictionPage: React.FC = () => {
                 Select a profile and run a prediction
               </div>
             )}
-          </motion.div>
+          </div>
 
           {/* Cerebral flow chart — requires a CGEM run */}
           {showAuthoritative && cgemRun && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
+            <div
               className="chart-container"
             >
               <div className="chart-title">
@@ -509,15 +493,13 @@ export const PredictionPage: React.FC = () => {
                 Cerebral blood flow
               </div>
               <CerebralFlowChart result={cgemRun} height={350} />
-            </motion.div>
+            </div>
           )}
 
           {!(showSurrogate && prediction) && !(showAuthoritative && cgemRun)
             && !(showSurrogate && predictMutation.isPending)
             && !(showAuthoritative && runCgemMutation.isPending) && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
+            <div
               className="instrument-panel rounded-xl p-6 text-center"
             >
               <Play className="w-12 h-12 text-primary-400 mx-auto mb-4" />
@@ -527,16 +509,13 @@ export const PredictionPage: React.FC = () => {
                 conformal PI + OOD flag, or <strong>Run authoritative CGEM</strong>
                 {' '}for a full Fortran-binary simulation with time-series.
               </p>
-            </motion.div>
+            </div>
           )}
         </div>
       </div>
 
       {/* Footer / references */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.4 }}
+      <div
         className="instrument-panel rounded-xl p-4 text-sm text-surface-400 flex items-start gap-3"
       >
         <AlertTriangle className="w-4 h-4 text-amber-400 mt-0.5 flex-shrink-0" />
@@ -555,7 +534,7 @@ export const PredictionPage: React.FC = () => {
           for the validated CGEM Fortran model and the project ROADMAP for the
           ongoing centrifuge-validation work.
         </p>
-      </motion.div>
+      </div>
     </div>
   );
 };

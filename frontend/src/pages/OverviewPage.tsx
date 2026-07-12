@@ -6,7 +6,6 @@
  */
 
 import React, { useMemo } from 'react';
-import { motion } from 'framer-motion';
 import { 
   Gauge, 
   Timer, 
@@ -69,9 +68,7 @@ export const OverviewPage: React.FC = () => {
         <p role="status" className="sr-only">The requested maneuver was unavailable. Showing the default maneuver.</p>
       )}
       {/* Header Section */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
+      <div
         className="instrument-panel rounded-2xl p-6"
       >
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
@@ -108,12 +105,12 @@ export const OverviewPage: React.FC = () => {
           />
           <Link
             to={`/simulator?maneuver=${selectedProfileId}`}
-            className="inline-flex items-center justify-center gap-2 px-4 py-2 bg-hud-amber/15 border border-hud-amber text-hud-amber font-mono text-sm tracking-callsign uppercase hover:bg-hud-amber/25 rounded-sm shadow-hud-glow-amber transition-colors"
+            className="inline-flex min-h-11 items-center justify-center gap-2 px-4 py-2 bg-hud-amber/15 border border-hud-amber text-hud-amber font-mono text-sm tracking-callsign uppercase hover:bg-hud-amber/25 rounded-sm transition-colors"
           >
             <span className="text-base">▶</span> Open in Simulator
           </Link>
         </div>
-      </motion.div>
+      </div>
 
       {/* Metrics Grid */}
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
@@ -158,10 +155,7 @@ export const OverviewPage: React.FC = () => {
       </div>
 
       {/* Main Chart */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.1 }}
+      <div
         className="chart-container"
       >
         <div className="chart-title">
@@ -176,13 +170,10 @@ export const OverviewPage: React.FC = () => {
           showThresholds={true}
           showZones={true}
         />
-      </motion.div>
+      </div>
 
       {/* Additional Stats */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2 }}
+      <div
         className="grid md:grid-cols-2 gap-6"
       >
         {/* Exposure Times */}
@@ -231,13 +222,10 @@ export const OverviewPage: React.FC = () => {
             </div>
           </div>
         </div>
-      </motion.div>
+      </div>
 
       {/* Scientific Reference */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3 }}
+      <div
         className="instrument-panel rounded-xl p-4 text-sm text-surface-400"
       >
         <p>
@@ -255,7 +243,7 @@ export const OverviewPage: React.FC = () => {
           </a>{' '}
           for CGEM model details and validation.
         </p>
-      </motion.div>
+      </div>
     </div>
   );
 };

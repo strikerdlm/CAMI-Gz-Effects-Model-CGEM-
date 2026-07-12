@@ -12,7 +12,6 @@
 
 import React, { useCallback, useEffect, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import {
   Activity,
   AlertTriangle,
@@ -39,6 +38,7 @@ import { batchUrlState, type BatchCategory, type BatchDirection, type BatchOod, 
 import { EvidenceRail } from '../components/ui/EvidenceRail';
 import { useResultActions } from '../components/ui/ResultActions';
 import { buildBatchCsvExport } from '../services/exportResult';
+import { batchSweepAnnouncement } from './asyncStatus';
 import { useUserPrefs } from '../state/useUserPrefs';
 
 interface BatchRow {
@@ -154,11 +154,12 @@ export const BatchPage: React.FC = () => {
 
   return (
     <div className="space-y-6">
+      <p role="status" aria-live="polite" aria-atomic="true" className="sr-only">
+        {batchSweepAnnouncement(sweepMutation)}
+      </p>
       {parsed.invalid.length > 0 && <p role="status" className="sr-only">Unsupported batch URL filters were replaced with safe defaults.</p>}
       {/* Header + run button */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
+      <div
         className="instrument-panel rounded-2xl p-6"
       >
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
@@ -209,7 +210,7 @@ export const BatchPage: React.FC = () => {
             <code className="text-surface-200">uvicorn cgem_ext.api.main:app</code>.
           </div>
         )}
-      </motion.div>
+      </div>
 
       <div className="instrument-panel rounded-xl p-3">
         <SortControl sortKey={sortKey} direction={direction} ood={ood} category={category} update={updateUrl} />
@@ -225,9 +226,7 @@ export const BatchPage: React.FC = () => {
 
       {/* Summary cards */}
       {rows.length > 0 && (
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
+        <div
           className="grid grid-cols-2 md:grid-cols-4 gap-4"
         >
           <SummaryCard
@@ -255,7 +254,7 @@ export const BatchPage: React.FC = () => {
             )}
             icon={<Eye className="w-5 h-5 text-rose-400" />}
           />
-        </motion.div>
+        </div>
       )}
 
       {/* Results table */}
@@ -263,9 +262,7 @@ export const BatchPage: React.FC = () => {
         <EvidenceRail evidence={{ kind: 'batch', responses: sortedRows.map(({ prediction }) => prediction) }} />
       )}
       {rows.length > 0 && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+        <div
           className="instrument-panel rounded-2xl overflow-hidden"
         >
           <div className="px-6 py-4 border-b border-surface-700/50 flex items-center justify-between">
@@ -338,14 +335,12 @@ export const BatchPage: React.FC = () => {
               </tbody>
             </table>
           </div>
-        </motion.div>
+        </div>
       )}
 
       {/* Empty state */}
       {rows.length === 0 && !sweepMutation.isPending && !sweepMutation.isError && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+        <div
           className="instrument-panel rounded-xl p-8 text-center"
         >
           <AlertTriangle className="w-10 h-10 text-warning-400 mx-auto mb-3" />
@@ -355,7 +350,7 @@ export const BatchPage: React.FC = () => {
             POST <code>/sweep</code> request with all {profileIds.length}{' '}
             registered maneuvers. The surrogate evaluates them in milliseconds.
           </p>
-        </motion.div>
+        </div>
       )}
     </div>
   );

@@ -7,7 +7,6 @@
 
 import React, { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import {
   LayoutGrid,
   Maximize2,
@@ -338,9 +337,7 @@ export const DashboardPage: React.FC = () => {
       <ApiStatusBanner />
 
       {/* Header */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
+      <div
         className="instrument-panel rounded-2xl p-6"
       >
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
@@ -405,12 +402,10 @@ export const DashboardPage: React.FC = () => {
             </div>
           </div>
         </div>
-      </motion.div>
+      </div>
 
       {/* Premium Preset Selection */}
-      <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
+      <div
         className="instrument-panel rounded-2xl p-5"
       >
         <div className="flex items-center justify-between gap-3 mb-4">
@@ -452,7 +447,7 @@ export const DashboardPage: React.FC = () => {
             );
           })}
         </div>
-      </motion.div>
+      </div>
 
       {/* Quick Metrics */}
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
@@ -499,9 +494,7 @@ export const DashboardPage: React.FC = () => {
 
       {/* Model Dynamics Studio */}
       <div className="grid xl:grid-cols-[minmax(0,1.75fr)_minmax(320px,1fr)] gap-6">
-        <motion.div
-          initial={{ opacity: 0, y: 18 }}
-          animate={{ opacity: 1, y: 0 }}
+        <div
           className="chart-container instrument-panel"
         >
           <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
@@ -523,26 +516,21 @@ export const DashboardPage: React.FC = () => {
             height={430}
             focusVariable={focusedVariable}
           />
-        </motion.div>
+        </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 18 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.05 }}
+        <div
         >
           <VariableInsightsPanel
             result={result}
             selectedVariable={focusedVariable}
             onSelect={setFocusedVariable}
           />
-        </motion.div>
+        </div>
       </div>
 
       {/* Chart Selection (Single View) */}
       {viewMode === 'single' && (
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
+        <div
           className="flex flex-wrap gap-2"
         >
           {CHART_OPTIONS.map((opt) => (
@@ -562,18 +550,15 @@ export const DashboardPage: React.FC = () => {
               {opt.label}
             </button>
           ))}
-        </motion.div>
+        </div>
       )}
 
       {/* Charts */}
       {viewMode === 'grid' ? (
         <div className="grid md:grid-cols-2 gap-6">
-          {CHART_OPTIONS.map((opt, index) => (
-            <motion.div
+          {CHART_OPTIONS.map((opt) => (
+            <div
               key={opt.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
               className="chart-container"
             >
               <div className="chart-title">
@@ -581,14 +566,12 @@ export const DashboardPage: React.FC = () => {
                 {opt.label}
               </div>
               {renderChart(opt.id, 320)}
-            </motion.div>
+            </div>
           ))}
         </div>
       ) : (
-        <motion.div
+        <div
           key={selectedChart}
-          initial={{ opacity: 0, scale: 0.98 }}
-          animate={{ opacity: 1, scale: 1 }}
           className="chart-container"
         >
           <div className="chart-title text-lg">
@@ -601,14 +584,11 @@ export const DashboardPage: React.FC = () => {
             {CHART_OPTIONS.find(o => o.id === selectedChart)?.label}
           </div>
           {renderChart(selectedChart, 550)}
-        </motion.div>
+        </div>
       )}
 
       {/* Citation Footer */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.5 }}
+      <div
         className="instrument-panel rounded-xl p-4"
       >
         <h4 className="text-sm font-semibold text-surface-300 mb-2">
@@ -620,7 +600,7 @@ export const DashboardPage: React.FC = () => {
           computer modeling of Gz-induced effects (DOT/FAA/AM-23/6). Office of Aerospace Medicine, 
           FAA. DOI: https://doi.org/10.21949/1524446
         </p>
-      </motion.div>
+      </div>
     </div>
   );
 };
