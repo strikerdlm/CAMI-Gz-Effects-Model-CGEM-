@@ -5,11 +5,9 @@
  */
 
 import React, { type RefObject } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
-  Bell,
-  Search,
   Download,
   RefreshCw,
   HelpCircle,
@@ -18,6 +16,7 @@ import {
 import { cn } from '../../utils';
 import { useHealth, useVersion } from '../../services/cgemApi';
 import { routeForPath } from '../../app/routes';
+import { ManeuverSearch } from '../ui/ManeuverSearch';
 
 interface TopBarProps {
   onOpenNavigation: () => void;
@@ -33,7 +32,10 @@ export const TopBar: React.FC<TopBarProps> = ({
   reduceMotion,
 }) => {
   const location = useLocation();
+  const navigate = useNavigate();
   const pageInfo = routeForPath(location.pathname);
+  const [refreshing, setRefreshing] = React.useState(false);
+  const [refreshStatus, setRefreshStatus] = React.useState('');
 
   const health = useHealth();
   const version = useVersion();
@@ -52,6 +54,21 @@ export const TopBar: React.FC<TopBarProps> = ({
     apiState === 'ok' ? 'API LINK' : apiState === 'down' ? 'NO LINK' : 'HANDSHAKE';
   const linkTextClass =
     apiState === 'ok' ? 'phosphor' : apiState === 'down' ? 'text-hud-red' : 'amber';
+  const isRefreshing = refreshing || health.isFetching || version.isFetching;
+
+  const refreshApiStatus = async () => {
+    if (isRefreshing) return;
+    setRefreshing(true);
+    setRefreshStatus('Refreshing API status');
+    try {
+      await Promise.all([health.refetch(), version.refetch()]);
+      setRefreshStatus('API status refreshed');
+    } catch {
+      setRefreshStatus('API status refresh failed');
+    } finally {
+      setRefreshing(false);
+    }
+  };
 
   return (
     <header
@@ -94,20 +111,7 @@ export const TopBar: React.FC<TopBarProps> = ({
 
       {/* Center: Search */}
       <div className="hidden md:flex items-center flex-1 max-w-md mx-8">
-        <div className="relative w-full">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-hud-ink-faint" />
-          <input
-            type="text"
-            placeholder="SEARCH MANEUVER · TAG · CATEGORY"
-            className={cn(
-              'w-full pl-10 pr-4 py-1.5 rounded-sm font-mono text-xs tracking-callsign',
-              'bg-hud-panel-2 border border-hud-line',
-              'text-hud-amber placeholder:text-hud-ink-faint placeholder:tracking-callsign',
-              'focus:outline-none focus:border-hud-amber',
-              'transition-colors duration-200'
-            )}
-          />
-        </div>
+        <ManeuverSearch onNavigate={(path) => navigate(path)} />
       </div>
 
       {/* Right: Actions */}
@@ -133,7 +137,9 @@ export const TopBar: React.FC<TopBarProps> = ({
         {/* Action buttons */}
         <div className="flex items-center gap-1">
           <button
-            onClick={() => { void health.refetch(); void version.refetch(); }}
+            type="button"
+            onClick={() => { void refreshApiStatus(); }}
+            disabled={isRefreshing}
             aria-label="Refresh API status"
             className={cn(
               'p-2 rounded-sm transition-colors duration-200',
@@ -141,18 +147,16 @@ export const TopBar: React.FC<TopBarProps> = ({
             )}
             title="Refresh API status"
           >
-            <RefreshCw className="w-4 h-4" />
+            <RefreshCw className={cn('w-4 h-4', isRefreshing && 'animate-spin')} aria-hidden="true" />
           </button>
           <button className="shell-secondary-action p-2 rounded-sm transition-colors duration-200 text-hud-ink-faint hover:text-hud-amber hover:bg-hud-panel" title="Export">
             <Download className="w-4 h-4" />
           </button>
-          <button className="shell-secondary-action p-2 rounded-sm transition-colors duration-200 text-hud-ink-faint hover:text-hud-amber hover:bg-hud-panel" title="Notifications">
-            <Bell className="w-4 h-4" />
-          </button>
-          <button className="shell-secondary-action p-2 rounded-sm transition-colors duration-200 text-hud-ink-faint hover:text-hud-amber hover:bg-hud-panel" title="Help">
-            <HelpCircle className="w-4 h-4" />
-          </button>
+          <a aria-label="Help" href={`/about${pageInfo.helpHash}`} className="shell-secondary-action p-2 rounded-sm transition-colors duration-200 text-hud-ink-faint hover:text-hud-amber hover:bg-hud-panel" title="Help">
+            <HelpCircle className="w-4 h-4" aria-hidden="true" />
+          </a>
         </div>
+        <span role="status" aria-live="polite" className="sr-only">{isRefreshing ? 'Refreshing API status' : refreshStatus}</span>
 
         {/* Callsign */}
         <div className="shell-callsign pl-3 border-l border-hud-line">

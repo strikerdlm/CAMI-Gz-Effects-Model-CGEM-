@@ -3,6 +3,7 @@
  */
 
 export { MetricCard } from './MetricCard';
+export { ManeuverSearch } from './ManeuverSearch';
 export { OODBanner } from './OODBanner';
 export { PredictionTable } from './PredictionTable';
 export { ProfileSelector } from './ProfileSelector';
