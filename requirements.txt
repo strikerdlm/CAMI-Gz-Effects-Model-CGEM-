@@ -17,7 +17,7 @@ pre-commit>=3.7.0
 fpdf2>=2.7.9
 openpyxl>=3.1.0
 
-# Legacy Streamlit UI (retained for legacy/streamlit/ — deprecated, see ROADMAP.md)
+# Legacy Streamlit UI (retained for legacy/streamlit/ compatibility)
 streamlit>=1.28.0
 
 # ML extension layer (cgem_ext) — see pyproject.toml for the canonical extras.
@@ -43,11 +43,11 @@ pytest-cov>=4.1.0
 ruff>=0.3.0
 mypy>=1.8.0
 
-# HRV Integration (deferred to post-paper-1 work; see Docs/Manual.md §HRV).
+# Optional HRV integration dependencies (see Docs/Manual.md §HRV).
 # bleak>=0.21.0       # Bluetooth LE for Polar H10 connection
 # neurokit2>=0.2.0    # HRV analysis algorithms
 # torch>=2.0.0        # LSTM models for temporal HRV patterns
 
 # Note: this file is the union of "Streamlit-legacy" + "cgem_ext". When the
-# legacy Streamlit dashboards are retired (post-paper-1), `streamlit`,
-# `kaleido`, `plotly`, `seaborn`, and `fpdf2` can be dropped.
+# legacy Streamlit dashboards require `streamlit`, `kaleido`, `plotly`,
+# `seaborn`, and `fpdf2`.

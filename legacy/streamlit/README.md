@@ -2,7 +2,7 @@
 
 This directory contains the original Streamlit-based UI for CGEM. As of `feat/ml-layer-phase-0`, the Streamlit dashboards are **deprecated** in favour of the FastAPI service (`cgem_ext.api`) and the Vite/React/TypeScript frontend in `frontend/`. They are retained here to keep existing demonstrations runnable until the new stack reaches feature parity.
 
-See `ROADMAP.md` at the repo root for the migration timeline.
+Use the FastAPI and frontend instructions in the root `README.md` for the supported interface.
 
 ## Files
 

@@ -1,5 +1,5 @@
 /**
- * Prediction Page — Phase-6 wiring
+ * Prediction page
  *
  * Two prediction paths backed by the FastAPI service:
  *   • Surrogate (POST /predict)   — fast (~50 ms), conformal PI + OOD flag
@@ -506,8 +506,7 @@ export const PredictionPage: React.FC = () => {
           >
             Copeland & Whinnery (2023)
           </a>{' '}
-          for the validated CGEM Fortran model and the project ROADMAP for the
-          ongoing centrifuge-validation work.
+          for the validated CGEM Fortran model.
         </p>
       </motion.div>
     </div>

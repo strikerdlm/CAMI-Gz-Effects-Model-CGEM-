@@ -4,85 +4,79 @@
 [![Platform](https://img.shields.io/badge/Platform-Linux%20%7C%20macOS%20%7C%20Windows-lightgrey)](https://en.wikipedia.org/wiki/Cross-platform)
 [![Frontend](https://img.shields.io/badge/Frontend-React%20%2B%20TypeScript-3178C6?logo=react&logoColor=white)](https://react.dev)
 [![API](https://img.shields.io/badge/API-FastAPI-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
-[![Status](https://img.shields.io/badge/Status-Pre--publication%20alpha-blueviolet)](#project-status)
 [![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
-[![ORCID](https://img.shields.io/badge/ORCID-0000--0002--2257--4940-A6CE39?logo=orcid&logoColor=white)](https://orcid.org/0000-0002-2257-4940)
 
-**Research platform for modelling G-induced loss of consciousness (G-LOC)** built on the validated FAA CAMI G-Effects Model (CGEM) with an additive ML extension layer. The original FAA Fortran physiology core (`src/cgem.f`) is preserved byte-for-byte; the Python extension (`cgem_ext/`) wraps it with a fast surrogate emulator, out-of-distribution (OOD) detection, global sensitivity analysis, and conformal uncertainty quantification — all served through a FastAPI service backing a Vite + React + TypeScript frontend.
+Software platform for modelling G-induced loss of consciousness (G-LOC) with the FAA CAMI G-Effects Model (CGEM) and an additive machine-learning extension layer. The original FAA Fortran physiology core (`src/cgem.f`) is preserved byte-for-byte. The Python extension (`cgem_ext/`) provides a surrogate emulator, out-of-distribution (OOD) detection, global sensitivity analysis, conformal uncertainty quantification, and a FastAPI service consumed by a Vite + React + TypeScript frontend.
 
 Developed by **Dr. Diego Malpica** (Direction of Aerospace Medicine, Colombian Aerospace Force — Aerospace Scientific Department). Forked from the original [FAA AAM-631 CGEM project](https://doi.org/10.21949/1524439).
 
-> **Publication target**: *Aerospace Medicine and Human Performance* (AMHP). See [`ROADMAP.md`](ROADMAP.md) and [`docs/publication/osf_preregistration.md`](docs/publication/osf_preregistration.md) for the pre-registered validation protocol.
-
 ---
 
-## Preliminary Findings
+## Validation Benchmarks
 
-> **Status**: Phases 0–4 complete. The results below were produced from the pre-registered synthetic dataset `cgem_synthetic_v1` (3,240 rows × 60 columns; 72 aerobatic / military / extreme-post-stall maneuvers; master seed 42). All thresholds were locked in the OSF pre-registration draft prior to test-set evaluation. Full reproduction scripts are in `tests/`.
+The metrics below were produced from `cgem_synthetic_v1` (3,240 rows × 60 columns; 72 aerobatic, military, and extreme-post-stall maneuvers; master seed 42). Reproduction checks are implemented in `tests/`.
 
-### H1 — Surrogate emulator accuracy
+### Surrogate emulator
 
-**H1a — Continuous targets** (threshold: test R² ≥ 0.90)
+#### Continuous targets
 
-| Target | Test R² | RMSE | RF baseline R² | Passes |
-|---|---|---|---|---|
-| `hlap_min` (head-level arterial pressure) | **1.000** | 0.008 mmHg | 1.000 | ✅ |
-| `c_bank_min` (consciousness reserve bank) | **0.938** | 0.950 s | 0.939 | ✅ |
+| Target | Test R² | RMSE | RF baseline R² |
+|---|---|---|---|
+| `hlap_min` (head-level arterial pressure) | **1.000** | 0.008 mmHg | 1.000 |
+| `c_bank_min` (consciousness reserve bank) | **0.938** | 0.950 s | 0.939 |
 
-**H1b — Event classifiers** (threshold: test AUROC ≥ 0.95)
+#### Event classifiers
 
-| Target | Test AUROC | Passes |
-|---|---|---|
-| `time_to_greyout_s` — event flag | **0.996** | ✅ |
-| `time_to_blackout_s` — event flag | **0.999** | ✅ |
-| `time_to_gloc_s` — event flag | **0.996** | ✅ |
+| Target | Test AUROC |
+|---|---|
+| `time_to_greyout_s` — event flag | **0.996** |
+| `time_to_blackout_s` — event flag | **0.999** |
+| `time_to_gloc_s` — event flag | **0.996** |
 
-**H1c — Conditional regressors** (threshold: R² ≥ 0.75 on event = 1 rows)
+#### Conditional regressors
 
-| Target | Test R² | RMSE | RF baseline R² | Passes |
-|---|---|---|---|---|
-| `time_to_greyout_s` | **0.880** | 0.519 s | −0.835 | ✅ |
-| `time_to_blackout_s` | **0.903** | 0.458 s | −1.427 | ✅ |
-| `time_to_gloc_s` | **0.821** | 1.142 s | −1.029 | ✅ |
+| Target | Test R² | RMSE | RF baseline R² |
+|---|---|---|---|
+| `time_to_greyout_s` | **0.880** | 0.519 s | −0.835 |
+| `time_to_blackout_s` | **0.903** | 0.458 s | −1.427 |
+| `time_to_gloc_s` | **0.821** | 1.142 s | −1.029 |
 
 The RandomForest baseline shows negative R² on censored targets because its `predict_expected_time = P(event) × E[time | event]` is heavily damped on high-event-rate test rows; XGBoost's monotonicity-constrained two-stage approach is not subject to this issue.
 
-### H2 — Mondrian split-conformal coverage
+### Mondrian split-conformal coverage
 
-Empirical coverage of 95 % prediction intervals on the held-out test split, calibrated on the validation split. Threshold: within ±5 percentage points of nominal 95 %.
+Empirical coverage of 95 % prediction intervals on the held-out test split, calibrated on the validation split.
 
-| Target | Empirical coverage | Passes |
+| Target | Empirical coverage | Observation |
 |---|---|---|
-| `hlap_min` | 0.928 | ✅ |
-| `c_bank_min` | 0.949 | ✅ |
-| `time_to_greyout_s` (event = 1) | 1.000 | ✅ (over-coverage) |
-| `time_to_blackout_s` (event = 1) | 1.000 | ✅ (over-coverage) |
-| `time_to_gloc_s` (event = 1) | 0.861 | ⚠️ (−9 pp; under-coverage on long tail; reframed as exploratory — motivates heteroscedastic conformal extension in paper 3) |
+| `hlap_min` | 0.928 | Below nominal |
+| `c_bank_min` | 0.949 | Near nominal |
+| `time_to_greyout_s` (event = 1) | 1.000 | Over-coverage |
+| `time_to_blackout_s` (event = 1) | 1.000 | Over-coverage |
+| `time_to_gloc_s` (event = 1) | 0.861 | Under-coverage on long-tail cases |
 
-### H3 — OOD detector calibration and discrimination
+### OOD detector calibration and discrimination
 
-**H3a — Calibration** (primary; threshold: in-envelope rate within ±2 pp of nominal 95 %)
+#### Calibration
 
-| Detector | Test in-envelope rate | Within ±2 pp? |
-|---|---|---|
-| Mahalanobis + split-conformal abstention | **0.953** | ✅ |
+| Detector | Test in-envelope rate |
+|---|---|
+| Mahalanobis + split-conformal abstention | **0.953** |
 
-**H3b — Leave-one-group-out discrimination** (exploratory; threshold: AUROC > 0.60 on ≥ 2 of 4 LOGO folds)
+#### Leave-one-group-out discrimination
 
 | Fold held out | Mahalanobis AUROC | IsolationForest AUROC |
 |---|---|---|
 | `championship` | 0.576 | 0.551 |
-| `military_acm` | **0.659** | 0.594 |
-| `extreme_post_stall` | **0.600** | 0.588 |
+| `military_acm` | 0.659 | 0.594 |
+| `extreme_post_stall` | 0.600 | 0.588 |
 | `conceptual` | 0.527 | 0.540 |
 
-H3b passes on 2 of 4 folds with the Mahalanobis detector. The moderate AUROC values reflect category overlap in continuous feature space (maneuver categories are not cleanly separable by the 9 input dimensions) rather than detector failure. This reframing is documented in the OOD model card (`docs/models/ood_card.md`); H3a (calibration) carries the paper's operational claim.
+The moderate AUROC values reflect overlap between maneuver categories in the continuous feature space; the categories are not cleanly separable by the nine input dimensions. Additional details are documented in `docs/models/ood_card.md`.
 
-### H4 — Sensitivity analysis stability
+### Sensitivity analysis stability
 
 First-order (S1) and total-order (ST) Sobol indices computed via the surrogate at n_base = 1,024 (102,000 evaluations), wall-clock ~38 s. Stability assessed via Spearman rank correlation across two independent Saltelli samples.
-
-**Headline sensitivity rankings**
 
 | Target | Top driver (S1 / ST) | Second driver | ST > S1 note |
 |---|---|---|---|
@@ -92,11 +86,9 @@ First-order (S1) and total-order (ST) Sobol indices computed via the surrogate a
 | `hlap_min` | `dehydration_level` (1.00 / 1.00) | `profile_duration_s` (~0) | Deterministically dominated by dehydration |
 | `c_bank_min` | `g_peak_abs` (0.74 / 0.79) | `profile_duration_s` (0.17 / 0.22) | Weaker interaction than time targets |
 
-**H4a** (primary; ST Spearman rank correlation ≥ 0.95): anchored at 0.983–1.000 across all 5 targets. ✅
+Total-order Spearman rank correlations range from 0.983 to 1.000 across the five targets. First-order correlations range from 0.466 to 0.983; near-zero S1 values are sensitive to small changes in features whose effects are primarily interaction-mediated.
 
-**H4b** (exploratory; S1 Spearman rank correlation ≥ 0.60): anchored at 0.466–0.983. Near-zero S1 on features with interaction-mediated effects makes this threshold hard to meet; paper 1 uses ST rankings.
-
-### Surrogate speedup
+### Evaluation speed
 
 | Method | Time per row | Notes |
 |---|---|---|
@@ -104,7 +96,7 @@ First-order (S1) and total-order (ST) Sobol indices computed via the surrogate a
 | XGBoost surrogate | ~50 µs | In-process, single core |
 | **Speedup** | **~180×** | Vectorises across batches |
 
-At 10⁴ Saltelli samples, the surrogate makes global sensitivity analysis tractable in ~38 s; direct subprocess invocation would take days.
+The surrogate reduces the per-row evaluation time used by large Sobol and Morris batches.
 
 ---
 
@@ -147,62 +139,14 @@ cgem-ext/
 │   ├── datasets/               # cgem_synthetic_v1.parquet + sidecar
 │   └── results/sensitivity/    # Sobol + Morris CSVs + manifest
 ├── scripts/                    # run_sensitivity.py · export_openapi.py
-├── tests/                      # 80 tests across all phases (all green)
+├── tests/                      # Contract, model, API, and integration tests
 └── docs/
     ├── api/openapi.json        # Auto-exported OpenAPI spec
     ├── models/                 # Model cards (Mitchell et al. 2019)
-    ├── publication/            # OSF pre-registration + paper plan
     └── data/                   # Datasheet (Gebru et al. 2018)
 ```
 
 The validated FAA Fortran binary is invoked unchanged through `cgem_wrapper.run_cgem_for_profile`, **and** the FastAPI `/run-cgem` response mirrors the v2.2.0 `CGEMRun` JSON shape that pulse-sim's `cgem_bridge.load_cgem_json` consumes. Both contracts are enforced by regression tests in `tests/test_contract.py` and `tests/test_api.py` on every push.
-
----
-
-## Project Status
-
-| Phase | Description | Status |
-|---|---|---|
-| 0 | Foundation & contract preservation | ✅ Done |
-| 1 | Synthetic dataset generation (3,240 rows, 72 maneuvers) | ✅ Done |
-| 2 | OOD detector (Mahalanobis + conformal abstention) | ✅ Done |
-| 3 | Surrogate emulator (XGBoost, 5 targets, conformal intervals) | ✅ Core done |
-| 4 | Global sensitivity analysis (Sobol + Morris) | ✅ Done |
-| 5 | FastAPI service (7 endpoints, Dockerfile, OpenAPI spec) | ✅ Done |
-| 6 | Frontend integration (React ↔ FastAPI; OOD banner, Sobol panel, sweep table) | ✅ Done |
-| 7 | Paper 1 — IJNMBE methods paper | 🚧 Manuscript revised against pre-submission self-audit (2026-05-06); OSF + Zenodo DOI minting pending |
-| 8 | Paper 2 — external re-analysis vs centrifuge literature | ⬜ Post paper 1 |
-| 9 | Paper 3 — own-centrifuge validation (subjects) | ⬜ Requires ethics + subjects |
-
-### Manuscript status (2026-05-06)
-
-**Target venue:** *International Journal for Numerical Methods in Biomedical Engineering* (IJNMBE), Wiley, ISSN 2040-7947. Article type: Research Paper. Q1 fallback if IJNMBE bounces on the *"standard procedure on standard problem"* scope filter: *PLOS Computational Biology*. Pure-Q2 fallback: *Bioengineering* (MDPI).
-
-**Latest manuscript revisions (commit [`e2aae45`](docs/publication/peer_review_2026-05-06_self_audit.md))** — applied against a pre-submission self-audit:
-
-- **Abstract.** Promoted the H6 archival-cohort result (`δ̄ = +26.6 s [95 % CI +6.3, +52.1]` slow-onset bias) to a top-level Results sentence so the only real-world validation is visible at first read. Now 397 / 400 words (IJNMBE cap).
-- **§1 Introduction.** Cited Portela, Banga & Matabuena 2025 (*PLOS Comp Biol* 21:e1013098) — the direct methodological precedent for conformal prediction on dynamic biological ODE models — and positioned the present work as its per-stratum + heteroscedastic + OOD-abstention extension.
-- **§2.4 Surrogate emulator.** Added a "Relation to conformalized survival analysis" paragraph naming Candès-Lei-Ren 2023, Gui-Hannig-Hofmann 2024 (*Biometrika*), and Davidov et al. 2025 (ICLR) as the principled successor to the present two-stage classifier-then-regressor pattern; replacement scoped to paper 2.
-- **§2.5 OOD.** Mahalanobis-on-mixed-features caveat (9 numeric + 7 binary one-hot + 1 ordinal) made explicit; conformal abstention reframed as the empirical compensation for that misspecification.
-- **§3.2 Reporting framework.** Explicit no-Bonferroni / no-FDR justification — distinct estimands, not parallel tests of the same effect.
-- **§3.3 Conformal coverage.** Added per-stratum Clopper-Pearson exact 95 % binomial CIs at the n = 35 military_acm slice; CQR result reframed as *operationally* closer to nominal rather than statistically dominant.
-- **§3.7 H6.** Clarified the n = 8 H6 evaluation set vs the n = 23 archival cohort registry (Phase A locked; Phase B narrow-range and abstract anchors not on the H6 query path); reconciled the W&F2013 729-relaxed-subject vs 888-total figure.
-- **§3.8 Multi-fidelity.** Honest reframe — MF-NARGP at n_high ≤ 50 is a catastrophic GP discrepancy over-fit (RMSE 53–56 s), not "no point-estimate gain"; MF-DNN (Meng & Karniadakis 2020, *J. Comp. Phys.* 401:109020) cited as the SOTA successor for paper 2.
-- **§4.6 Future work.** Structured 5-point list — conformalized survival, adaptive conformal (FACI / AgACI / SAOCP for streaming cockpit deployment), MF-DNN replacement of NARGP, distributional / multi-output conformal, Bayesian per-pilot calibration.
-- **References.** 22 → 27 (added Portela 2025, Candès-Lei-Ren 2023, Gui-Hannig-Hofmann 2024 *Biometrika*, Davidov et al. 2025 ICLR, Meng & Karniadakis 2020 *J. Comp. Phys.*).
-
-**Submission blockers (manual, in order):**
-
-1. Mint the **Zenodo DOI** for `cgem_synthetic_v1.parquet` and replace the "TBD at submission" placeholders.
-2. Mint the **OSF pre-registration** with the 2026-05-06 H5/H6 amendment timestamped before any further test-set runs.
-3. Re-render Figure 1 (parity plots) with CQR bracket overlays on panels (G) and (H); audit Figs 3 and 4 for greyscale tints (IJNMBE rule 6.2).
-4. Re-target the cover letter to Prof. Perumal Nithiarasu (IJNMBE Editor-in-Chief) with the IJNMBE scope-filter pre-emption paragraph.
-
-The full pre-submission self-audit is at [`docs/publication/peer_review_2026-05-06_self_audit.md`](docs/publication/peer_review_2026-05-06_self_audit.md). The IJNMBE-specific check-list is at [`docs/publication/2026-05-01_ijnmbe-status.md`](docs/publication/2026-05-01_ijnmbe-status.md).
-
-**Test coverage**: 80 tests across all phases, all green (~16 s locally; CI matrix on Python 3.10 / 3.11 / 3.12 finishes in ~1 min 20 s per leg).
-**CI status**: GitHub Actions (`.github/workflows/ci.yml`) runs `ruff` + `mypy` + `pytest` matrix + the pulse-sim contract job on every push and pull request. All five jobs currently green.
-**Pulse-sim contract**: preserved at two wire levels (Python import + JSON), enforced as a dedicated CI job that depends on the test matrix.
 
 ---
 
@@ -307,7 +251,7 @@ docker run --rm -p 8000:8000 cgem-ext-api:0.1.0
 # Healthcheck on /healthz with a 90 s start grace.
 ```
 
-### React + TypeScript frontend (Phase 6, wired to FastAPI)
+### React + TypeScript frontend
 
 The frontend talks to the FastAPI service exclusively. The default is
 `http://127.0.0.1:8000`; set `VITE_API_URL` before `npm run dev` if the API is elsewhere.
@@ -329,7 +273,7 @@ npm run dev
 
 The Sobol CSV is committed at `data/results/sensitivity/sobol_first_total.csv`, so the Global Sensitivity panel works as soon as the API is ready. To deliberately regenerate Sobol and Morris results, run `python -m scripts.run_sensitivity` from the repository root and restart the API afterward.
 
-What lights up:
+Frontend features:
 
 - **Prediction page** — surrogate `/predict` (~50 ms) with conformal CI + OOD banner, plus authoritative `/run-cgem` (~3 s) for full Fortran time-series.
 - **Batch page** — a single `POST /sweep` over all 72 maneuvers; sortable table with per-row OOD score and event probability.
@@ -401,7 +345,7 @@ abstain = ConformalAbstention(alpha=0.05).calibrate(ood.score(val_df))
 in_envelope = abstain.is_in_envelope(ood.score(test_df))   # True → in-distribution
 ```
 
-### FastAPI client (post Phase 5)
+### FastAPI client
 
 ```python
 import httpx
@@ -476,43 +420,9 @@ Key finding: **dehydration_level fully controls `hlap_min`** (S1 = ST = 1.0), in
 ## Reproducibility
 
 - **Fortran core**: deterministic for a given `gloc_inp.dat` and EGP profile; SHA-256 of the binary logged in `data/datasets/cgem_synthetic_v1.meta.json`.
-- **Dataset**: `cgem_synthetic_v1.parquet` — 3,240 rows, master seed 42, per-row seeds derived deterministically. DVC tracking deferred pending remote provisioning; hash is in the sidecar.
-- **Splits**: `cgem_ext.data.splits.stratified_split(df, seed=42)` — deterministic, no test-set leakage. Split indices to be frozen at OSF posting (`docs/publication/osf_split_indices.parquet`).
-- **OSF pre-registration**: `docs/publication/osf_preregistration.md` — posting blocked on Phase-3 hyperparameter-search-space freeze. No test-set metrics have been touched before posting.
+- **Dataset**: `cgem_synthetic_v1.parquet` — 3,240 rows, master seed 42, per-row seeds derived deterministically; the file hash is recorded in the metadata sidecar.
+- **Splits**: `cgem_ext.data.splits.stratified_split(df, seed=42)` — deterministic stratified train, validation, and test partitions with no test-set leakage.
 - **CI**: GitHub Actions matrix (Python 3.10/3.11/3.12) — `pytest`, `ruff`, `mypy`, plus a dedicated `pulse-sim-contract` job on every push.
-
----
-
-## How to Cite
-
-When publishing results derived from this code or the CGEM model:
-
-```bibtex
-@techreport{copeland2023cgem,
-  author       = {Copeland, Kyle and Whinnery, James E.},
-  title        = {Cerebral blood flow-based computer modeling of Gz-induced effects},
-  number       = {DOT/FAA/AM-23/6},
-  institution  = {Office of Aerospace Medicine, FAA},
-  year         = {2023},
-  doi          = {10.21949/1524446}
-}
-
-@techreport{copeland2021userguide,
-  author       = {Copeland, Kyle},
-  title        = {CGEM User's Guide},
-  number       = {DOT/FAA/AM-23/5},
-  institution  = {Office of Aerospace Medicine, FAA},
-  year         = {2021},
-  doi          = {10.21949/1524438}
-}
-
-@misc{cgem_software,
-  title        = {CGEM software (archived package)},
-  doi          = {10.21949/1524439}
-}
-```
-
-For this fork and the ML extension layer, include the repository URL and commit hash.
 
 ---
 
@@ -540,9 +450,9 @@ For historical FAA technical reports, see the [FAA Office of Aerospace Medicine 
 ## Attribution
 
 - **Original FAA CGEM model**: Kyle Copeland and collaborators, FAA Civil Aerospace Medical Institute (CAMI), AAM-631. See source headers in `src/cgem.f`. Please retain attribution to the FAA CGEM model in derivative works.
-- **This fork and ML extension layer**: Dr. Diego Malpica, MD — Direction of Aerospace Medicine, Colombian Aerospace Force, Aerospace Scientific Department. ORCID: [0000-0002-2257-4940](https://orcid.org/0000-0002-2257-4940).
+- **This fork and ML extension layer**: Dr. Diego Malpica, MD — Direction of Aerospace Medicine, Colombian Aerospace Force, Aerospace Scientific Department.
 
-AI assistants were used for code scaffolding, documentation drafts, and editorial assistance (disclosed in the Methods section of the forthcoming paper). All commits are sole-authored by `strikerdlm`.
+AI assistants were used for code scaffolding and documentation editing. All commits are sole-authored by `strikerdlm`.
 
 ---
 

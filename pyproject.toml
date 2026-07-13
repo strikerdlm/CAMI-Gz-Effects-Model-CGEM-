@@ -59,7 +59,6 @@ all = ["cgem-ext[ml,api,dev]"]
 [project.urls]
 Homepage = "https://github.com/strikerdlm/CAMI-Gz-Effects-Model-CGEM-"
 Changelog = "https://github.com/strikerdlm/CAMI-Gz-Effects-Model-CGEM-/blob/main/CHANGELOG.md"
-Roadmap = "https://github.com/strikerdlm/CAMI-Gz-Effects-Model-CGEM-/blob/main/ROADMAP.md"
 
 [tool.setuptools.packages.find]
 include = ["cgem_ext*"]
