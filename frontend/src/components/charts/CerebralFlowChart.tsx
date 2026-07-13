@@ -200,7 +200,11 @@ export const CerebralFlowChart: React.FC<CerebralFlowChartProps> = ({
     };
   }, [result, title]);
 
-  return <BaseChart option={option} height={height} />;
+  const range = (values: number[]) => values.length
+    ? `${Math.min(...values).toFixed(1)} to ${Math.max(...values).toFixed(1)}`
+    : 'unavailable';
+  const summary = `Cerebral flow ranges in deciliters per minute: consciousness ${range(result.f_con_values)}, vision ${range(result.f_vis_values)}, blackout ${range(result.f_bo_values)}.`;
+  return <BaseChart option={option} height={height} accessibleName={title} accessibleSummary={summary} />;
 };
 
 export default CerebralFlowChart;

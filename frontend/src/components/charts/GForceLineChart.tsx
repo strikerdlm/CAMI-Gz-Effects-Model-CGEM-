@@ -222,7 +222,12 @@ export const GForceLineChart: React.FC<GForceLineChartProps> = ({
     };
   }, [times, gValues, geffValues, title, showThresholds, showZones]);
 
-  return <BaseChart option={option} height={height} />;
+  const duration = times.length > 1 ? Math.max(...times) - Math.min(...times) : 0;
+  const peakG = gValues.length ? Math.max(...gValues.map(Math.abs)) : 0;
+  const peakGeff = geffValues?.length ? Math.max(...geffValues.map(Math.abs)) : null;
+  const summary = `Duration ${duration.toFixed(1)} seconds; peak G ${peakG.toFixed(1)}${peakGeff === null ? '.' : `; peak effective G ${peakGeff.toFixed(1)}.`}`;
+
+  return <BaseChart option={option} height={height} accessibleName={title} accessibleSummary={summary} />;
 };
 
 export default GForceLineChart;

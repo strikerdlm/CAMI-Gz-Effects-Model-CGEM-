@@ -5,8 +5,7 @@
  * Displays profile statistics and basic physiological metrics.
  */
 
-import React, { useState, useMemo } from 'react';
-import { motion } from 'framer-motion';
+import React, { useMemo } from 'react';
 import { 
   Gauge, 
   Timer, 
@@ -17,15 +16,21 @@ import {
   Zap,
 } from 'lucide-react';
 
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { ProfileSelector, MetricCard } from '../components/ui';
 import { GForceLineChart } from '../components/charts';
 import { MANEUVERS_BY_ID as AEROBATIC_PROFILES } from '../data/maneuvers';
 import { calculateProfileStats, buildTimeSeries } from '../utils/calculations';
 import { cn } from '../utils';
+import { readManeuverParam, setSearchParam } from '../services/urlState';
 
 export const OverviewPage: React.FC = () => {
-  const [selectedProfileId, setSelectedProfileId] = useState('high_g_turn');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const selectedProfileId = readManeuverParam(searchParams);
+  const invalidManeuver = searchParams.has('maneuver') && searchParams.get('maneuver') !== selectedProfileId;
+  const selectProfile = (id: string) => setSearchParams(
+    setSearchParam(searchParams, 'maneuver', id, 'high_g_turn'),
+  );
   
   const profile = AEROBATIC_PROFILES[selectedProfileId];
   const stats = useMemo(() => 
@@ -59,11 +64,12 @@ export const OverviewPage: React.FC = () => {
 
   return (
     <div className="space-y-6">
+      {invalidManeuver && (
+        <p role="status" className="sr-only">The requested maneuver was unavailable. Showing the default maneuver.</p>
+      )}
       {/* Header Section */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="glass rounded-2xl p-6"
+      <div
+        className="instrument-panel rounded-2xl p-6"
       >
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           <div>
@@ -94,17 +100,17 @@ export const OverviewPage: React.FC = () => {
         <div className="mt-6 flex flex-col lg:flex-row lg:items-center gap-4">
           <ProfileSelector
             selectedProfileId={selectedProfileId}
-            onSelect={setSelectedProfileId}
+            onSelect={selectProfile}
             className="max-w-xl flex-1"
           />
           <Link
-            to={`/simulator?id=${selectedProfileId}`}
-            className="inline-flex items-center justify-center gap-2 px-4 py-2 bg-hud-amber/15 border border-hud-amber text-hud-amber font-mono text-sm tracking-callsign uppercase hover:bg-hud-amber/25 rounded-sm shadow-hud-glow-amber transition-colors"
+            to={`/simulator?maneuver=${selectedProfileId}`}
+            className="inline-flex min-h-11 items-center justify-center gap-2 px-4 py-2 bg-hud-amber/15 border border-hud-amber text-hud-amber font-mono text-sm tracking-callsign uppercase hover:bg-hud-amber/25 rounded-sm transition-colors"
           >
             <span className="text-base">▶</span> Open in Simulator
           </Link>
         </div>
-      </motion.div>
+      </div>
 
       {/* Metrics Grid */}
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
@@ -149,10 +155,7 @@ export const OverviewPage: React.FC = () => {
       </div>
 
       {/* Main Chart */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.1 }}
+      <div
         className="chart-container"
       >
         <div className="chart-title">
@@ -167,17 +170,14 @@ export const OverviewPage: React.FC = () => {
           showThresholds={true}
           showZones={true}
         />
-      </motion.div>
+      </div>
 
       {/* Additional Stats */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2 }}
+      <div
         className="grid md:grid-cols-2 gap-6"
       >
         {/* Exposure Times */}
-        <div className="glass rounded-2xl p-6">
+        <div className="instrument-panel rounded-2xl p-6">
           <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
             <Timer className="w-5 h-5 text-warning-400" />
             Exposure Analysis
@@ -205,7 +205,7 @@ export const OverviewPage: React.FC = () => {
         </div>
 
         {/* Profile Description */}
-        <div className="glass rounded-2xl p-6">
+        <div className="instrument-panel rounded-2xl p-6">
           <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
             <AlertTriangle className="w-5 h-5 text-primary-400" />
             Profile Description
@@ -222,14 +222,11 @@ export const OverviewPage: React.FC = () => {
             </div>
           </div>
         </div>
-      </motion.div>
+      </div>
 
       {/* Scientific Reference */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3 }}
-        className="glass-light rounded-xl p-4 text-sm text-surface-400"
+      <div
+        className="instrument-panel rounded-xl p-4 text-sm text-surface-400"
       >
         <p>
           <strong className="text-surface-300">Note:</strong> G-force profiles are derived from
@@ -246,7 +243,7 @@ export const OverviewPage: React.FC = () => {
           </a>{' '}
           for CGEM model details and validation.
         </p>
-      </motion.div>
+      </div>
     </div>
   );
 };

@@ -15,6 +15,27 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  generated-contracts:
+    name: Generated API contracts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+          cache: pip
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: pip install -e .[api]
+      - run: npm ci
+        working-directory: frontend
+      - run: npm run generate:contracts
+        working-directory: frontend
+      - run: git diff --exit-code docs/api/openapi.json frontend/src/services/generated/api.ts
+
   frontend-static:
     name: Frontend static checks
     runs-on: ubuntu-latest
@@ -33,6 +54,32 @@ jobs:
       - run: npm run lint
       - run: npm test -- --run
       - run: npm run build
+
+  frontend-e2e:
+    name: Frontend browser workflow
+    runs-on: ubuntu-latest
+    needs: [frontend-static, generated-contracts]
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e
+      - name: Upload Playwright report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: frontend/playwright-report/
+          if-no-files-found: ignore
+          retention-days: 14
 
   lint:
     name: Lint (ruff + mypy)

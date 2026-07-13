@@ -10,8 +10,8 @@
  * paths. The page reports backend unavailability without inventing physiology.
  */
 
-import React, { useMemo, useState } from 'react';
-import { motion } from 'framer-motion';
+import React, { useEffect, useMemo, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import {
   Activity,
   AlertTriangle,
@@ -30,6 +30,8 @@ import {
   PredictionTable,
   ProfileSelector,
 } from '../components/ui';
+import { EvidenceRail } from '../components/ui/EvidenceRail';
+import { useResultActions } from '../components/ui/ResultActions';
 import { GForceLineChart, CerebralFlowChart } from '../components/charts';
 import { MANEUVERS_BY_ID as AEROBATIC_PROFILES } from '../data/maneuvers';
 import { STANDARD_PROFILES, DEFAULT_COUNTERMEASURES } from '../utils/constants';
@@ -37,7 +39,6 @@ import { buildTimeSeries } from '../utils/calculations';
 import type { CGEMResult } from '../types';
 import {
   apiErrorMessage,
-  cgemApiBaseURL,
   usePredict,
   useRunCgem,
   useVersion,
@@ -50,6 +51,9 @@ import type {
 } from '../services/types';
 import { pilotConfigFromPrefs, pilotConfigWithOverrides } from '../services/pilotConfig';
 import { useUserPrefs } from '../state/useUserPrefs';
+import { predictionUrlState, type PredictionView } from '../services/urlState';
+import { buildAuthoritativeJsonExport, buildPredictionJsonExport } from '../services/exportResult';
+import { predictionRunAnnouncement } from './asyncStatus';
 
 /** Map the local Countermeasures + who_profile to a PredictionRequest body. */
 function buildRequest(
@@ -98,24 +102,31 @@ const formatTime = (t: number | null | undefined): string =>
 export const PredictionPage: React.FC = () => {
   const prefs = useUserPrefs();
   const preferredPilot = useMemo(() => pilotConfigFromPrefs(prefs), [prefs]);
-  const [selectedProfileId, setSelectedProfileId] = useState('high_g_turn');
-  const [whoProfile, setWhoProfile] = useState<number | null>(preferredPilot.who_profile);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const urlState = predictionUrlState.read(searchParams);
+  const { maneuver: selectedProfileId, pilot: whoProfile, view } = urlState.value;
+  const [customProfile, setCustomProfile] = useState(false);
+  const effectiveWhoProfile = customProfile ? null : whoProfile;
+  const updateUrl = (patch: Partial<typeof urlState.value>, replace = false) => setSearchParams(
+    predictionUrlState.write({ ...urlState.value, ...patch }), { replace },
+  );
+  const setSelectedProfileId = (maneuver: string) => updateUrl({ maneuver });
+  const setWhoProfile = (pilot: number) => updateUrl({ pilot });
+  const setView = (nextView: PredictionView) => updateUrl({ view: nextView }, true);
   const [countermeasures, setCountermeasures] = useState({
     ...DEFAULT_COUNTERMEASURES,
     ...prefs.defaults,
   });
 
   const profile = AEROBATIC_PROFILES[selectedProfileId];
-  const selectedStandardProfile = STANDARD_PROFILES.find((p) => p.id === whoProfile);
+  const selectedStandardProfile = STANDARD_PROFILES.find((p) => p.id === effectiveWhoProfile);
 
   const versionQuery = useVersion();
   const predictMutation = usePredict();
   const runCgemMutation = useRunCgem();
+  const { registerExport } = useResultActions();
 
-  const requestBody = useMemo(
-    () => buildRequest(selectedProfileId, preferredPilot, whoProfile, countermeasures),
-    [selectedProfileId, preferredPilot, whoProfile, countermeasures],
-  );
+  const requestBody = buildRequest(selectedProfileId, preferredPilot, effectiveWhoProfile, countermeasures);
 
   const handlePredict = () => {
     predictMutation.mutate(requestBody);
@@ -132,16 +143,30 @@ export const PredictionPage: React.FC = () => {
   const cgemRun: CGEMResult | null = runCgemMutation.data
     ? adaptCGEMRunToResult(runCgemMutation.data)
     : null;
-
   const apiReachable = !versionQuery.isError;
+  const showSurrogate = view === 'surrogate' || view === 'comparison';
+  const showAuthoritative = view === 'authoritative' || view === 'comparison';
+  useEffect(() => {
+    const spec = showAuthoritative && runCgemMutation.data && runCgemMutation.variables
+      ? buildAuthoritativeJsonExport({ run: runCgemMutation.data, request: runCgemMutation.variables, version: versionQuery.data, exportedAt: new Date(runCgemMutation.submittedAt || 0).toISOString() })
+      : showSurrogate && prediction && predictMutation.variables
+        ? buildPredictionJsonExport({ response: prediction, request: predictMutation.variables, exportedAt: new Date(predictMutation.submittedAt || 0).toISOString() }) : null;
+    const unregister = registerExport(spec);
+    return typeof unregister === 'function' ? unregister : undefined;
+    // Mutation variables are the immutable submitted snapshot; submittedAt/data identify its completion.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [showAuthoritative, showSurrogate, runCgemMutation.data, runCgemMutation.submittedAt, prediction, predictMutation.submittedAt, versionQuery.data, registerExport]);
 
   return (
     <div className="space-y-6">
+      <p role="status" aria-live="polite" aria-atomic="true" className="sr-only">
+        {predictionRunAnnouncement('surrogate', predictMutation)}{' '}
+        {predictionRunAnnouncement('authoritative', runCgemMutation)}
+      </p>
+      {urlState.invalid.length > 0 && <p role="status" className="sr-only">Unsupported prediction URL settings were replaced with safe defaults.</p>}
       {/* Header */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="glass rounded-2xl p-6"
+      <div
+        className="instrument-panel rounded-2xl p-6"
       >
         <div className="flex items-start justify-between gap-4 flex-wrap">
           <div>
@@ -157,7 +182,7 @@ export const PredictionPage: React.FC = () => {
           <div className="text-xs text-surface-400 text-right space-y-1">
             <div>
               <span className="text-surface-500">API:</span>{' '}
-              <code className="text-surface-300">{cgemApiBaseURL}</code>
+              <code className="text-surface-300">{prefs.apiUrl}</code>
             </div>
             <div>
               <span className="text-surface-500">Status:</span>{' '}
@@ -174,15 +199,13 @@ export const PredictionPage: React.FC = () => {
             </div>
           </div>
         </div>
-      </motion.div>
+      </div>
 
-      <div className="grid lg:grid-cols-3 gap-6">
+      <div className="grid min-w-0 gap-6 lg:grid-cols-3">
         {/* ── Configuration panel ──────────────────────────────── */}
-        <div className="lg:col-span-1 space-y-6">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="glass rounded-2xl p-5"
+        <div className="min-w-0 space-y-6 lg:col-span-1">
+          <div
+            className="instrument-panel rounded-2xl p-5"
           >
             <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
               <Activity className="w-5 h-5 text-primary-400" />
@@ -192,23 +215,26 @@ export const PredictionPage: React.FC = () => {
               selectedProfileId={selectedProfileId}
               onSelect={setSelectedProfileId}
             />
-          </motion.div>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.1 }}
-            className="glass rounded-2xl p-5"
+          <div
+            className="instrument-panel rounded-2xl p-5"
           >
             <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
               <User className="w-5 h-5 text-accent-400" />
               Subject Profile
             </h3>
             <select
-              value={whoProfile ?? 'custom'}
-              onChange={(e) =>
-                setWhoProfile(e.target.value === 'custom' ? null : parseInt(e.target.value))
-              }
+              aria-label="Subject profile"
+              name="subject-profile"
+              value={customProfile ? 'custom' : whoProfile}
+              onChange={(e) => {
+                if (e.target.value === 'custom') setCustomProfile(true);
+                else {
+                  setCustomProfile(false);
+                  setWhoProfile(parseInt(e.target.value));
+                }
+              }}
               className="select-field w-full"
             >
               <option value="custom">Custom Configuration</option>
@@ -234,13 +260,10 @@ export const PredictionPage: React.FC = () => {
                 </p>
               </div>
             )}
-          </motion.div>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.2 }}
-            className="glass rounded-2xl p-5"
+          <div
+            className="instrument-panel rounded-2xl p-5"
           >
             <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
               <Settings className="w-5 h-5 text-warning-400" />
@@ -252,6 +275,8 @@ export const PredictionPage: React.FC = () => {
                   G-suit pressure (PSI)
                 </label>
                 <input
+                  aria-label="G-suit pressure in PSI"
+                  name="gsuit-pressure"
                   type="range"
                   min={0}
                   max={10}
@@ -274,6 +299,8 @@ export const PredictionPage: React.FC = () => {
                   AGSM effectiveness
                 </label>
                 <input
+                  aria-label="AGSM effectiveness"
+                  name="agsm-effectiveness"
                   type="range"
                   min={0}
                   max={1}
@@ -296,6 +323,8 @@ export const PredictionPage: React.FC = () => {
                   Dehydration level
                 </label>
                 <input
+                  aria-label="Dehydration level"
+                  name="dehydration-level"
                   type="range"
                   min={0}
                   max={1}
@@ -314,14 +343,19 @@ export const PredictionPage: React.FC = () => {
                 </span>
               </div>
             </div>
-          </motion.div>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
+          <div
             className="space-y-3"
           >
+            <fieldset className="grid grid-cols-1 gap-2 sm:grid-cols-3">
+              <legend className="sr-only">Result view</legend>
+              {(['surrogate', 'authoritative', 'comparison'] as const).map((option) => (
+                <button key={option} type="button" aria-pressed={view === option} onClick={() => setView(option)} className="btn-secondary px-2 text-xs">
+                  {option}
+                </button>
+              ))}
+            </fieldset>
             <button
               onClick={handlePredict}
               disabled={!apiReachable || predictMutation.isPending}
@@ -362,13 +396,14 @@ export const PredictionPage: React.FC = () => {
                 <code>uvicorn cgem_ext.api.main:app</code>.
               </p>
             )}
-          </motion.div>
+          </div>
         </div>
 
         {/* ── Results panel ────────────────────────────────────── */}
-        <div className="lg:col-span-2 space-y-6">
-          {prediction && (
+        <div className="min-w-0 space-y-6 lg:col-span-2">
+          {showSurrogate && prediction && (
             <>
+              <EvidenceRail evidence={{ kind: 'surrogate', response: prediction }} />
               <OODBanner
                 ood={prediction.ood}
                 oodScore={prediction.ood_score}
@@ -378,18 +413,16 @@ export const PredictionPage: React.FC = () => {
             </>
           )}
 
-          {predictMutation.isError && (
-            <div className="glass-light rounded-xl p-4 text-sm border border-rose-500/30">
+          {showSurrogate && predictMutation.isError && (
+            <div className="instrument-panel rounded-xl p-4 text-sm border border-rose-500/30">
               <p className="text-rose-300 font-semibold mb-1">Surrogate request failed</p>
               <p className="text-surface-400">{apiErrorMessage(predictMutation.error)}</p>
             </div>
           )}
 
           {/* Authoritative CGEM event-time cards */}
-          {cgemRun && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.97 }}
-              animate={{ opacity: 1, scale: 1 }}
+          {showAuthoritative && cgemRun && (
+            <><EvidenceRail evidence={{ kind: 'authoritative', run: runCgemMutation.data!, version: versionQuery.data }} /><div
               className="grid grid-cols-3 gap-4"
             >
               <MetricCard
@@ -410,27 +443,25 @@ export const PredictionPage: React.FC = () => {
                 icon={<Brain className="w-5 h-5 text-purple-400" />}
                 color={cgemRun.time_to_gloc_s !== null ? 'danger' : 'default'}
               />
-            </motion.div>
+            </div></>
           )}
 
-          {runCgemMutation.isError && (
-            <div className="glass-light rounded-xl p-4 text-sm border border-rose-500/30">
+          {showAuthoritative && runCgemMutation.isError && (
+            <div className="instrument-panel rounded-xl p-4 text-sm border border-rose-500/30">
               <p className="text-rose-300 font-semibold mb-1">CGEM subprocess failed</p>
               <p className="text-surface-400">{apiErrorMessage(runCgemMutation.error)}</p>
             </div>
           )}
 
           {/* G-Force chart */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+          <div
             className="chart-container"
           >
             <div className="chart-title">
               <Activity className="w-5 h-5 text-primary-400" />
               G-force profile with G_eff
             </div>
-            {cgemRun ? (
+            {showAuthoritative && cgemRun ? (
               <GForceLineChart
                 times={cgemRun.times_s}
                 gValues={cgemRun.g_values}
@@ -450,14 +481,11 @@ export const PredictionPage: React.FC = () => {
                 Select a profile and run a prediction
               </div>
             )}
-          </motion.div>
+          </div>
 
           {/* Cerebral flow chart — requires a CGEM run */}
-          {cgemRun && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
+          {showAuthoritative && cgemRun && (
+            <div
               className="chart-container"
             >
               <div className="chart-title">
@@ -465,14 +493,14 @@ export const PredictionPage: React.FC = () => {
                 Cerebral blood flow
               </div>
               <CerebralFlowChart result={cgemRun} height={350} />
-            </motion.div>
+            </div>
           )}
 
-          {!prediction && !cgemRun && !predictMutation.isPending && !runCgemMutation.isPending && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="glass-light rounded-xl p-6 text-center"
+          {!(showSurrogate && prediction) && !(showAuthoritative && cgemRun)
+            && !(showSurrogate && predictMutation.isPending)
+            && !(showAuthoritative && runCgemMutation.isPending) && (
+            <div
+              className="instrument-panel rounded-xl p-6 text-center"
             >
               <Play className="w-12 h-12 text-primary-400 mx-auto mb-4" />
               <h3 className="text-lg font-semibold text-white mb-2">Ready to run</h3>
@@ -481,17 +509,14 @@ export const PredictionPage: React.FC = () => {
                 conformal PI + OOD flag, or <strong>Run authoritative CGEM</strong>
                 {' '}for a full Fortran-binary simulation with time-series.
               </p>
-            </motion.div>
+            </div>
           )}
         </div>
       </div>
 
       {/* Footer / references */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.4 }}
-        className="glass-light rounded-xl p-4 text-sm text-surface-400 flex items-start gap-3"
+      <div
+        className="instrument-panel rounded-xl p-4 text-sm text-surface-400 flex items-start gap-3"
       >
         <AlertTriangle className="w-4 h-4 text-amber-400 mt-0.5 flex-shrink-0" />
         <p>
@@ -509,7 +534,7 @@ export const PredictionPage: React.FC = () => {
           for the validated CGEM Fortran model and the project ROADMAP for the
           ongoing centrifuge-validation work.
         </p>
-      </motion.div>
+      </div>
     </div>
   );
 };

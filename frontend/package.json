@@ -13,9 +13,13 @@
     "lint": "eslint .",
     "test": "vitest",
     "test:run": "vitest run",
+    "test:e2e": "playwright test",
     "preview": "vite preview",
     "type-check": "tsc --noEmit",
-    "regen:maneuvers": "cd .. && python3 scripts/export_maneuvers_json.py"
+    "regen:maneuvers": "cd .. && python3 scripts/export_maneuvers_json.py",
+    "generate:openapi": "cd .. && python3 scripts/export_openapi.py",
+    "generate:types": "openapi-typescript ../docs/api/openapi.json -o src/services/generated/api.ts",
+    "generate:contracts": "npm run generate:openapi && npm run generate:types"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.90.20",
@@ -33,9 +37,11 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
+    "@playwright/test": "^1.61.1",
     "@tailwindcss/postcss": "^4.1.18",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
     "@types/node": "^24.10.1",
     "@types/react": "^19.2.5",
     "@types/react-dom": "^19.2.3",
@@ -46,6 +52,7 @@
     "eslint-plugin-react-refresh": "^0.4.24",
     "globals": "^16.5.0",
     "jsdom": "^29.1.1",
+    "openapi-typescript": "^7.13.0",
     "postcss": "^8.5.6",
     "tailwindcss": "^4.1.18",
     "typescript": "~5.9.3",

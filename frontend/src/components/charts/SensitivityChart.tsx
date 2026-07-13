@@ -7,10 +7,9 @@
  */
 
 import React from 'react';
-import ReactECharts from 'echarts-for-react';
-import { motion } from 'framer-motion';
 import { useSensitivity } from '../../services/cgemApi';
 import type { TargetName } from '../../services/types';
+import { BaseChart } from './BaseChart';
 
 interface SensitivityChartProps {
   target: TargetName;
@@ -34,14 +33,14 @@ export const SensitivityChart: React.FC<SensitivityChartProps> = ({ target, heig
 
   if (query.isLoading) {
     return (
-      <div className="flex items-center justify-center text-surface-400" style={{ height }}>
+      <div role="status" aria-live="polite" className="flex items-center justify-center text-surface-400" style={{ height }}>
         Loading sensitivity for {target}…
       </div>
     );
   }
   if (query.isError || !query.data) {
     return (
-      <div className="flex items-center justify-center text-rose-400 text-sm" style={{ height }}>
+      <div role="alert" className="flex items-center justify-center text-rose-400 text-sm" style={{ height }}>
         Sensitivity unavailable. Run{' '}
         <code className="text-surface-300 mx-1">python -m scripts.run_sensitivity</code>{' '}
         and restart the API.
@@ -112,11 +111,12 @@ export const SensitivityChart: React.FC<SensitivityChartProps> = ({ target, heig
     ],
   };
 
-  return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-      <ReactECharts option={option} style={{ height, width: '100%' }} />
-    </motion.div>
-  );
+  const top = sorted[0];
+  const topLabel = top ? FEATURE_LABELS[top.feature] ?? top.feature : 'none';
+  const summary = top
+    ? `Highest total-order sensitivity is ${topLabel} with ST ${top.ST.toFixed(3)} for ${target}.`
+    : `No sensitivity indices available for ${target}.`;
+  return <BaseChart option={option} height={height} accessibleName={`Sobol sensitivity for ${target}`} accessibleSummary={summary} />;
 };
 
 export default SensitivityChart;

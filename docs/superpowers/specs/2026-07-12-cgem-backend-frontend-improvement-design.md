@@ -269,12 +269,12 @@ The interface should feel like a calibrated research instrument, not a tactical 
 
 ### Phase 1 — Usable research instrument (approximately 1–2 weeks)
 
-- F1 responsive shell.
-- F6 visual-system consolidation.
-- F7 accessibility.
-- F8 URL-backed shareable state.
-- F9 implement/remove dead controls.
-- F10 generated API types.
+- [x] F1 responsive shell.
+- [x] F6 visual-system consolidation.
+- [x] F7 accessibility.
+- [x] F8 URL-backed shareable state.
+- [x] F9 implement/remove dead controls.
+- [x] F10 generated API types.
 
 **Exit:** complete keyboard path; AA small-text contrast; usable 390/768/1440 layouts; every visible control works; every result shows source and calibration scope.
 

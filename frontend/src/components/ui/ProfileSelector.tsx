@@ -1,270 +1,114 @@
-/**
- * Profile Selector Component
- * 
- * Dropdown selector for aerobatic maneuver profiles with preview information.
- */
+import React, { useId, useMemo, useRef, useState } from 'react';
+import { ChevronDown, Clock, Plane, Search } from 'lucide-react';
 
-import React, { useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown, Plane, AlertTriangle, Clock, Search } from 'lucide-react';
-import { cn } from '../../utils';
 import { MANEUVERS_BY_ID as AEROBATIC_PROFILES } from '../../data/maneuvers';
+import { cn } from '../../utils';
 import { calculateProfileStats } from '../../utils/calculations';
-import type { AerobaticProfile } from '../../types';
 
 interface ProfileSelectorProps {
   selectedProfileId: string;
   onSelect: (profileId: string) => void;
   className?: string;
+  label?: string;
 }
 
-export const ProfileSelector: React.FC<ProfileSelectorProps> = ({
-  selectedProfileId,
-  onSelect,
-  className,
-}) => {
-  const [isOpen, setIsOpen] = React.useState(false);
-  const [searchQuery, setSearchQuery] = React.useState('');
-  const [activeFilter, setActiveFilter] = React.useState<'all' | 'high_g' | 'negative_g' | 'mixed'>('all');
-  const dropdownRef = React.useRef<HTMLDivElement>(null);
+const formatProfileName = (id: string) => id.replace(/_/g, ' ').replace(/\b\w/g, (letter) => letter.toUpperCase());
 
-  // Close dropdown when clicking outside
+export const ProfileSelector: React.FC<ProfileSelectorProps> = ({ selectedProfileId, onSelect, className, label = 'Maneuver profile' }) => {
+  const listId = useId();
+  const rootRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const searchInputRef = useRef<HTMLInputElement>(null);
+  const optionRefs = useRef<Array<HTMLLIElement | null>>([]);
+  const [isOpen, setIsOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [activeIndex, setActiveIndex] = useState(-1);
+  const selectedProfile = AEROBATIC_PROFILES[selectedProfileId];
+  const profiles = useMemo(() => Object.values(AEROBATIC_PROFILES), []);
+  const filteredProfiles = useMemo(() => {
+    const query = searchQuery.trim().toLowerCase();
+    return profiles.filter((profile) => !query || [profile.id, profile.description, profile.aircraft, ...profile.tags]
+      .some((value) => value.toLowerCase().includes(query)));
+  }, [profiles, searchQuery]);
+
+  const close = (restoreFocus = false) => {
+    setIsOpen(false); setActiveIndex(-1);
+    if (restoreFocus) triggerRef.current?.focus();
+  };
+  const activate = (index: number) => {
+    setActiveIndex(index);
+    requestAnimationFrame(() => optionRefs.current[index]?.scrollIntoView?.({ block: 'nearest' }));
+  };
+  const choose = (index: number) => {
+    const profile = filteredProfiles[index];
+    if (!profile) return;
+    onSelect(profile.id); close(true);
+  };
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === 'Escape') { event.preventDefault(); close(true); return; }
+    if (event.key === 'ArrowDown' && filteredProfiles.length) {
+      event.preventDefault(); if (!isOpen) setIsOpen(true); activate(Math.min(activeIndex + 1, filteredProfiles.length - 1));
+    } else if (event.key === 'ArrowUp' && filteredProfiles.length) {
+      event.preventDefault(); if (!isOpen) setIsOpen(true); activate(activeIndex <= 0 ? filteredProfiles.length - 1 : activeIndex - 1);
+    } else if (event.key === 'Enter' && isOpen && activeIndex >= 0) { event.preventDefault(); choose(activeIndex); }
+  };
+
   React.useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setIsOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    const outside = (event: MouseEvent) => { if (!rootRef.current?.contains(event.target as Node)) close(false); };
+    document.addEventListener('mousedown', outside);
+    return () => document.removeEventListener('mousedown', outside);
   }, []);
 
-  const profiles = useMemo(() => Object.values(AEROBATIC_PROFILES), []);
-  const selectedProfile = AEROBATIC_PROFILES[selectedProfileId];
-
-  const formatProfileName = (profileId: string): string =>
-    profileId.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase());
-
-  const classifyProfile = (
-    stats: ReturnType<typeof calculateProfileStats>
-  ): 'high_g' | 'negative_g' | 'mixed' => {
-    if (stats.max_positive_g >= 5.5 && stats.max_negative_g <= -1.0) {
-      return 'mixed';
-    }
-    if (stats.max_negative_g <= -1.0) {
-      return 'negative_g';
-    }
-    return 'high_g';
-  };
-
-  const getProfileRiskLevel = (profile: AerobaticProfile): 'low' | 'medium' | 'high' => {
-    const stats = calculateProfileStats(profile.samples);
-    if (stats.max_positive_g > 6 || stats.max_negative_g < -2) return 'high';
-    if (stats.max_positive_g > 4 || stats.max_negative_g < -1) return 'medium';
-    return 'low';
-  };
-
-  const profileSummaries = useMemo(
-    () =>
-      profiles.map((profile) => {
-        const stats = calculateProfileStats(profile.samples);
-        return {
-          profile,
-          stats,
-          riskLevel: getProfileRiskLevel(profile),
-          category: classifyProfile(stats),
-          displayName: formatProfileName(profile.id),
-        };
-      }),
-    [profiles]
-  );
-
-  const filteredProfiles = useMemo(() => {
-    const normalizedQuery = searchQuery.trim().toLowerCase();
-    return profileSummaries.filter(({ profile, displayName, category }) => {
-      const matchesFilter = activeFilter === 'all' || category === activeFilter;
-      if (!matchesFilter) {
-        return false;
-      }
-      if (normalizedQuery.length === 0) {
-        return true;
-      }
-      return (
-        displayName.toLowerCase().includes(normalizedQuery) ||
-        profile.description.toLowerCase().includes(normalizedQuery)
-      );
-    });
-  }, [activeFilter, profileSummaries, searchQuery]);
-
-  const riskColors = {
-    low: 'bg-accent-500/20 text-accent-400 border-accent-500/30',
-    medium: 'bg-warning-500/20 text-warning-400 border-warning-500/30',
-    high: 'bg-danger-500/20 text-danger-400 border-danger-500/30',
-  };
-
-  const filterLabels = {
-    all: 'All',
-    high_g: '+G Focused',
-    negative_g: '-G Focused',
-    mixed: 'Mixed Profile',
-  } as const;
+  React.useEffect(() => {
+    if (isOpen) searchInputRef.current?.focus();
+  }, [isOpen]);
 
   return (
-    <div ref={dropdownRef} className={cn('relative', className)}>
-      {/* Trigger Button */}
+    <div ref={rootRef} className={cn('relative', className)} onKeyDown={handleKeyDown}>
       <button
-        onClick={() => setIsOpen(!isOpen)}
-        className={cn(
-          'w-full flex items-center justify-between gap-3 px-4 py-3 rounded-xl',
-          'bg-surface-800/80 border border-surface-700/50',
-          'hover:border-primary-500/50 hover:bg-surface-800',
-          'transition-all duration-200',
-          isOpen && 'border-primary-500/50 ring-2 ring-primary-500/20'
-        )}
+        ref={triggerRef}
+        type="button"
+        role="combobox"
+        aria-label={label}
+        aria-haspopup="listbox"
+        aria-controls={listId}
+        aria-expanded={isOpen}
+        aria-activedescendant={isOpen && activeIndex >= 0 ? `${listId}-${filteredProfiles[activeIndex]?.id}` : undefined}
+        onClick={() => { setIsOpen((open) => !open); setActiveIndex(-1); }}
+        className="flex min-w-0 w-full items-center justify-between gap-3 rounded-xl border border-surface-700/50 bg-surface-800/80 px-4 py-3 transition-colors hover:border-primary-500/50"
       >
-        <div className="flex items-center gap-3">
-          <div className="p-2 rounded-lg bg-primary-500/10">
-            <Plane className="w-5 h-5 text-primary-400" />
-          </div>
-          <div className="text-left">
-            <p className="font-medium text-white">
-              {selectedProfile 
-                ? formatProfileName(selectedProfileId)
-                : 'Select Profile'
-              }
-            </p>
-            <p className="text-xs text-surface-400 line-clamp-1">
-              {selectedProfile?.description || 'Choose an aerobatic maneuver'}
-            </p>
-          </div>
-        </div>
-        <ChevronDown
-          className={cn(
-            'w-5 h-5 text-surface-400 transition-transform duration-200',
-            isOpen && 'rotate-180'
-          )}
-        />
+        <span className="flex min-w-0 items-center gap-3"><span className="shrink-0 rounded-lg bg-primary-500/10 p-2"><Plane aria-hidden="true" className="h-5 w-5 text-primary-400" /></span>
+          <span className="min-w-0 text-left"><span className="block truncate font-medium text-white">{selectedProfile ? formatProfileName(selectedProfileId) : 'Select profile'}</span>
+            <span className="block line-clamp-1 text-xs text-surface-400">{selectedProfile?.description || 'Choose an aerobatic maneuver'}</span></span></span>
+        <ChevronDown aria-hidden="true" className={cn('h-5 w-5 text-surface-400 transition-transform', isOpen && 'rotate-180')} />
       </button>
-
-      {/* Dropdown Menu */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -10, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -10, scale: 0.95 }}
-            transition={{ duration: 0.15 }}
-            className={cn(
-              'absolute z-50 w-full mt-2 py-2',
-              'bg-surface-900/98 backdrop-blur-xl',
-              'border border-surface-700/50 rounded-xl',
-              'shadow-xl shadow-black/30',
-              'max-h-[400px] overflow-y-auto custom-scrollbar'
-            )}
-          >
-            <div className="px-3 pt-2 pb-3 border-b border-surface-700/40 sticky top-0 bg-surface-900/95 backdrop-blur-xl z-10">
-              <div className="relative">
-                <Search className="w-3.5 h-3.5 text-surface-500 absolute left-3 top-1/2 -translate-y-1/2" />
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(event) => setSearchQuery(event.target.value)}
-                  placeholder="Search maneuver..."
-                  className={cn(
-                    'w-full h-8 pl-9 pr-3 rounded-lg text-xs',
-                    'bg-surface-800/80 border border-surface-700/60',
-                    'text-surface-100 placeholder:text-surface-500',
-                    'focus:outline-none focus:ring-1 focus:ring-primary-500/60 focus:border-primary-500/40'
-                  )}
-                />
-              </div>
-              <div className="flex items-center gap-1.5 mt-2 flex-wrap">
-                {Object.entries(filterLabels).map(([filterId, label]) => (
-                  <button
-                    key={filterId}
-                    onClick={() =>
-                      setActiveFilter(filterId as 'all' | 'high_g' | 'negative_g' | 'mixed')
-                    }
-                    className={cn(
-                      'px-2.5 py-1 rounded-md text-[11px] border transition-colors',
-                      activeFilter === filterId
-                        ? 'bg-primary-500/20 text-primary-300 border-primary-500/35'
-                        : 'bg-surface-800/70 text-surface-400 border-surface-700/60 hover:text-surface-200'
-                    )}
-                  >
-                    {label}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {filteredProfiles.map(({ profile, stats, riskLevel, displayName }) => {
-              const isSelected = profile.id === selectedProfileId;
-
-              return (
-                <button
-                  key={profile.id}
-                  onClick={() => {
-                    onSelect(profile.id);
-                    setIsOpen(false);
-                  }}
-                  className={cn(
-                    'w-full px-4 py-3 text-left',
-                    'hover:bg-surface-800/80 transition-colors duration-150',
-                    isSelected && 'bg-primary-500/10 border-l-2 border-primary-500'
-                  )}
-                >
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="flex-1 min-w-0">
-                      <p className={cn(
-                        'font-medium',
-                        isSelected ? 'text-primary-400' : 'text-white'
-                      )}>
-                        {displayName}
-                      </p>
-                      <p className="text-xs text-surface-400 mt-0.5 line-clamp-2">
-                        {profile.description}
-                      </p>
-                      
-                      {/* Quick stats */}
-                      <div className="flex items-center gap-3 mt-2">
-                        <span className="flex items-center gap-1 text-xs text-surface-500">
-                          <Clock className="w-3 h-3" />
-                          {stats.total_duration_s.toFixed(1)}s
-                        </span>
-                        <span className="text-xs text-surface-500">
-                          Max: {stats.max_positive_g > 0 ? '+' : ''}{stats.max_positive_g.toFixed(1)}G
-                        </span>
-                        {stats.max_negative_g < 0 && (
-                          <span className="text-xs text-surface-500">
-                            Min: {stats.max_negative_g.toFixed(1)}G
-                          </span>
-                        )}
-                      </div>
-                    </div>
-
-                    {/* Risk Badge */}
-                    <div className={cn(
-                      'flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-medium border',
-                      riskColors[riskLevel]
-                    )}>
-                      {riskLevel === 'high' && <AlertTriangle className="w-3 h-3" />}
-                      {riskLevel.charAt(0).toUpperCase() + riskLevel.slice(1)}
-                    </div>
-                  </div>
-                </button>
-              );
-            })}
-
-            {filteredProfiles.length === 0 && (
-              <div className="px-4 py-6 text-center">
-                <p className="text-sm text-surface-400">No profiles match your filters.</p>
-                <p className="text-xs text-surface-500 mt-1">Try clearing search or selecting "All".</p>
-              </div>
-            )}
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {isOpen && <div className="absolute z-50 mt-2 max-h-[400px] w-full overflow-y-auto rounded-xl border border-surface-700/50 bg-surface-900 shadow-xl">
+        <div className="sticky top-0 z-10 border-b border-surface-700/40 bg-surface-900 px-3 py-3">
+          <label className="relative block"><span className="sr-only">Search maneuver profiles</span><Search aria-hidden="true" className="absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-surface-500" />
+            <input
+              ref={searchInputRef}
+              role="combobox"
+              aria-label="Search maneuver profiles"
+              aria-autocomplete="list"
+              aria-controls={listId}
+              aria-expanded="true"
+              aria-activedescendant={activeIndex >= 0 ? `${listId}-${filteredProfiles[activeIndex]?.id}` : undefined}
+              value={searchQuery}
+              onChange={(event) => { setSearchQuery(event.target.value); setActiveIndex(-1); }}
+              className="h-8 w-full rounded-lg border border-surface-700/60 bg-surface-800/80 pl-9 pr-3 text-xs text-surface-100"
+            /></label>
+        </div>
+        <ul id={listId} role="listbox" aria-label="Maneuver profiles" className="py-2">
+          {filteredProfiles.map((profile, index) => {
+            const stats = calculateProfileStats(profile.samples);
+            return <li ref={(node) => { optionRefs.current[index] = node; }} id={`${listId}-${profile.id}`} key={profile.id} role="option" aria-selected={profile.id === selectedProfileId} onMouseEnter={() => setActiveIndex(index)} onMouseDown={(event) => event.preventDefault()} onClick={() => choose(index)} className={cn('cursor-pointer px-4 py-3 text-left hover:bg-surface-800/80', index === activeIndex && 'bg-primary-500/10')}>
+              <span className="block font-medium text-white">{formatProfileName(profile.id)}</span><span className="mt-0.5 block text-xs text-surface-400">{profile.description}</span>
+              <span className="mt-2 flex gap-3 text-xs text-surface-500"><span className="flex items-center gap-1"><Clock aria-hidden="true" className="h-3 w-3" />{stats.total_duration_s.toFixed(1)}s</span><span>Peak load: {stats.max_positive_g > 0 ? '+' : ''}{stats.max_positive_g.toFixed(1)} G</span></span>
+            </li>;
+          })}
+        </ul>
+        {!filteredProfiles.length && <p role="status" className="px-4 py-6 text-center text-sm text-surface-400">No profiles match your search.</p>}
+      </div>}
     </div>
   );
 };

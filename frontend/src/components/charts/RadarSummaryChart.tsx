@@ -150,7 +150,10 @@ export const RadarSummaryChart: React.FC<RadarSummaryChartProps> = ({
     };
   }, [result, stats, title]);
 
-  return <BaseChart option={option} height={height} />;
+  const peakG = result.g_values.length ? Math.max(...result.g_values.map(Math.abs)) : 0;
+  const peakGeff = result.geff_values.length ? Math.max(...result.geff_values.map(Math.abs)) : 0;
+  const summary = `Risk profile: peak absolute G ${peakG.toFixed(1)}, peak effective G ${peakGeff.toFixed(1)}, positive G dose ${stats.positive_g_dose.toFixed(1)} G-seconds, RMS G ${stats.rms_g.toFixed(1)}.`;
+  return <BaseChart option={option} height={height} accessibleName={title} accessibleSummary={summary} />;
 };
 
 export default RadarSummaryChart;

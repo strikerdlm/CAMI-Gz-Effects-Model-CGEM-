@@ -4,60 +4,42 @@
  * Header with profile selector, status indicators, and quick actions.
  */
 
-import React from 'react';
-import { useLocation } from 'react-router-dom';
+import React, { type RefObject } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
-  Bell,
-  Search,
   Download,
   RefreshCw,
   HelpCircle,
+  Menu,
 } from 'lucide-react';
 import { cn } from '../../utils';
 import { useHealth, useVersion } from '../../services/cgemApi';
+import { routeForPath } from '../../app/routes';
+import { ManeuverSearch } from '../ui/ManeuverSearch';
+import { useResultActions } from '../ui/ResultActions';
+import { downloadExport } from '../../services/exportResult';
 
-const PAGE_TITLES: Record<string, { title: string; subtitle: string }> = {
-  '/': {
-    title: 'G-FORCE PROFILE OVERVIEW',
-    subtitle: 'Maneuver library · risk preview',
-  },
-  '/simulator': {
-    title: 'TACTICAL SIMULATOR',
-    subtitle: 'Attitude · G-trace · live conformal T-LOC',
-  },
-  '/prediction': {
-    title: 'CGEM PREDICTION',
-    subtitle: 'Conformal /predict on the trained surrogate',
-  },
-  '/dashboard': {
-    title: 'SCIENTIFIC DASHBOARD',
-    subtitle: 'Publication-quality CGEM time-series',
-  },
-  '/batch': {
-    title: 'BATCH ANALYSIS',
-    subtitle: 'Compare predictions across all maneuvers',
-  },
-  '/analysis': {
-    title: 'PHYSIOLOGICAL ANALYSIS',
-    subtitle: 'Sobol sensitivity · maneuver briefings',
-  },
-  '/settings': {
-    title: 'SETTINGS',
-    subtitle: 'API URL · default pilot config · display',
-  },
-  '/about': {
-    title: 'ABOUT',
-    subtitle: 'Project information and references',
-  },
-};
+interface TopBarProps {
+  onOpenNavigation: () => void;
+  navigationTriggerRef: RefObject<HTMLButtonElement | null>;
+  sidebarCollapsed: boolean;
+  reduceMotion: boolean | null;
+}
 
-export const TopBar: React.FC = () => {
+export const TopBar: React.FC<TopBarProps> = ({
+  onOpenNavigation,
+  navigationTriggerRef,
+  sidebarCollapsed,
+  reduceMotion,
+}) => {
   const location = useLocation();
-  const pageInfo = PAGE_TITLES[location.pathname] || {
-    title: 'G-EFFECTS TACTICAL DISPLAY',
-    subtitle: 'Aerospace safety management',
-  };
+  const navigate = useNavigate();
+  const pageInfo = routeForPath(location.pathname);
+  const [refreshing, setRefreshing] = React.useState(false);
+  const [refreshStatus, setRefreshStatus] = React.useState('');
+  const [exportStatus, setExportStatus] = React.useState('');
+  const { activeExport } = useResultActions();
 
   const health = useHealth();
   const version = useVersion();
@@ -76,25 +58,61 @@ export const TopBar: React.FC = () => {
     apiState === 'ok' ? 'API LINK' : apiState === 'down' ? 'NO LINK' : 'HANDSHAKE';
   const linkTextClass =
     apiState === 'ok' ? 'phosphor' : apiState === 'down' ? 'text-hud-red' : 'amber';
+  const isRefreshing = refreshing || health.isFetching || version.isFetching;
+
+  const refreshApiStatus = async () => {
+    if (isRefreshing) return;
+    setExportStatus('');
+    setRefreshing(true);
+    setRefreshStatus('Refreshing API status');
+    try {
+      await Promise.all([
+        health.refetch({ throwOnError: true }),
+        version.refetch({ throwOnError: true }),
+      ]);
+      setRefreshStatus('API status refreshed');
+    } catch {
+      setRefreshStatus('API status refresh failed');
+    } finally {
+      setRefreshing(false);
+    }
+  };
+  const exportCurrentResult = () => {
+    if (!activeExport) return;
+    setRefreshStatus('');
+    try { downloadExport(activeExport); setExportStatus(`Export complete: ${activeExport.filename}`); }
+    catch { setExportStatus('Export failed'); }
+  };
 
   return (
     <header
       className={cn(
-        'fixed top-0 right-0 z-30 h-16',
+        'shell-topbar fixed top-0 right-0 z-30 h-16',
+        sidebarCollapsed && 'shell-topbar-collapsed',
         'bg-hud-bg/85 backdrop-blur-xl',
         'border-b border-hud-line/70',
         'flex items-center justify-between px-6',
-        'transition-all duration-300'
+        'transition-[left] duration-300'
       )}
-      style={{ left: 'inherit' }}
     >
       {/* Left: Page Title */}
       <div className="flex items-center gap-4">
+        <button
+          ref={navigationTriggerRef}
+          type="button"
+          aria-label="Open navigation"
+          onClick={onOpenNavigation}
+          className="mobile-nav-trigger min-h-11 min-w-11 rounded-sm text-hud-ink-faint transition-colors hover:bg-hud-panel hover:text-hud-amber"
+        >
+          <Menu className="mx-auto h-5 w-5" aria-hidden="true" />
+        </button>
         <motion.div
           key={location.pathname}
-          initial={{ opacity: 0, x: -10 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.2 }}
+          data-title-transition
+          data-motion-mode={reduceMotion ? 'reduced' : 'animated'}
+          initial={reduceMotion ? false : { opacity: 0, x: -10 }}
+          animate={reduceMotion ? { opacity: 1 } : { opacity: 1, x: 0 }}
+          transition={reduceMotion ? undefined : { duration: 0.2 }}
         >
           <h1 className="font-condensed text-lg tracking-callsign uppercase text-hud-ink">
             {pageInfo.title}
@@ -107,24 +125,11 @@ export const TopBar: React.FC = () => {
 
       {/* Center: Search */}
       <div className="hidden md:flex items-center flex-1 max-w-md mx-8">
-        <div className="relative w-full">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-hud-ink-faint" />
-          <input
-            type="text"
-            placeholder="SEARCH MANEUVER · TAG · CATEGORY"
-            className={cn(
-              'w-full pl-10 pr-4 py-1.5 rounded-sm font-mono text-xs tracking-callsign',
-              'bg-hud-panel-2 border border-hud-line',
-              'text-hud-amber placeholder:text-hud-ink-faint placeholder:tracking-callsign',
-              'focus:outline-none focus:border-hud-amber',
-              'transition-all duration-200'
-            )}
-          />
-        </div>
+        <ManeuverSearch onNavigate={(path) => navigate(path)} />
       </div>
 
       {/* Right: Actions */}
-      <div className="flex items-center gap-3">
+      <div className="shell-topbar-actions flex items-center gap-3">
         {/* API status indicator */}
         <div className="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-sm bg-hud-panel border border-hud-line">
           <span className={cn('w-2 h-2 rounded-full', dotClass)} />
@@ -146,46 +151,29 @@ export const TopBar: React.FC = () => {
         {/* Action buttons */}
         <div className="flex items-center gap-1">
           <button
-            onClick={() => { void health.refetch(); void version.refetch(); }}
+            type="button"
+            onClick={() => { void refreshApiStatus(); }}
+            disabled={isRefreshing}
+            aria-label="Refresh API status"
             className={cn(
-              'p-2 rounded-sm transition-all duration-200',
+              'p-2 rounded-sm transition-colors duration-200',
               'text-hud-ink-faint hover:text-hud-amber hover:bg-hud-panel'
             )}
             title="Refresh API status"
           >
-            <RefreshCw className="w-4 h-4" />
+            <RefreshCw className={cn('w-4 h-4', isRefreshing && 'animate-spin')} aria-hidden="true" />
           </button>
-          <button
-            className={cn(
-              'p-2 rounded-sm transition-all duration-200',
-              'text-hud-ink-faint hover:text-hud-amber hover:bg-hud-panel'
-            )}
-            title="Export"
-          >
-            <Download className="w-4 h-4" />
-          </button>
-          <button
-            className={cn(
-              'p-2 rounded-sm transition-all duration-200',
-              'text-hud-ink-faint hover:text-hud-amber hover:bg-hud-panel'
-            )}
-            title="Notifications"
-          >
-            <Bell className="w-4 h-4" />
-          </button>
-          <button
-            className={cn(
-              'p-2 rounded-sm transition-all duration-200',
-              'text-hud-ink-faint hover:text-hud-amber hover:bg-hud-panel'
-            )}
-            title="Help"
-          >
-            <HelpCircle className="w-4 h-4" />
-          </button>
+          {activeExport && <button type="button" onClick={exportCurrentResult} aria-label="Export current result" className="shell-secondary-action p-2 rounded-sm transition-colors duration-200 text-hud-ink-faint hover:text-hud-amber hover:bg-hud-panel" title="Export current result">
+            <Download className="w-4 h-4" aria-hidden="true" />
+          </button>}
+          <a aria-label="Help" href={`/about${pageInfo.helpHash}`} className="shell-secondary-action p-2 rounded-sm transition-colors duration-200 text-hud-ink-faint hover:text-hud-amber hover:bg-hud-panel" title="Help">
+            <HelpCircle className="w-4 h-4" aria-hidden="true" />
+          </a>
         </div>
+        <span role="status" aria-live="polite" className="sr-only">{exportStatus || (isRefreshing ? 'Refreshing API status' : refreshStatus)}</span>
 
         {/* Callsign */}
-        <div className="pl-3 border-l border-hud-line">
+        <div className="shell-callsign pl-3 border-l border-hud-line">
           <div className="font-mono text-[11px] tracking-callsign text-hud-ink-faint leading-tight">
             <div className="amber">CGEM-1</div>
             <div>DLM · BOG</div>

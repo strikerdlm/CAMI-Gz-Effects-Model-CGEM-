@@ -5,7 +5,7 @@
  */
 
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useSearchParams } from 'react-router-dom';
 import {
   FileText,
   AlertTriangle,
@@ -23,6 +23,7 @@ import { MANEUVER_EXPLANATIONS } from '../utils/constants';
 import { calculateProfileStats } from '../utils/calculations';
 import { cn } from '../utils';
 import { TARGET_NAMES, type TargetName } from '../services/types';
+import { analysisUrlState, readManeuverParam, setSearchParam, type AnalysisView } from '../services/urlState';
 
 interface SectionHeaderProps {
   id: string;
@@ -42,6 +43,9 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({
   onToggle,
 }) => (
   <button
+    type="button"
+    aria-expanded={isExpanded}
+    aria-controls={`${id}-section`}
     onClick={() => onToggle(id)}
     className="w-full flex items-center justify-between p-4 hover:bg-surface-800/50 transition-colors"
   >
@@ -58,11 +62,23 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({
 );
 
 export const AnalysisPage: React.FC = () => {
-  const [selectedProfileId, setSelectedProfileId] = useState('high_g_turn');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const parsed = analysisUrlState.read(searchParams);
+  const selectedProfileId = readManeuverParam(searchParams);
+  const sobolTarget = parsed.value.target;
+  const analysisView = parsed.value.view;
+  const setSelectedProfileId = (maneuver: string) => setSearchParams(setSearchParam(searchParams, 'maneuver', maneuver, 'high_g_turn'));
+  const updateAnalysis = (patch: Partial<typeof parsed.value>) => {
+    const next = analysisUrlState.write({ ...parsed.value, ...patch });
+    const maneuver = searchParams.get('maneuver');
+    if (maneuver) next.set('maneuver', selectedProfileId);
+    setSearchParams(next, { replace: true });
+  };
+  const setSobolTarget = (target: TargetName) => updateAnalysis({ target });
+  const setAnalysisView = (view: AnalysisView) => updateAnalysis({ view });
   const [expandedSections, setExpandedSections] = useState<Set<string>>(
     new Set(['description', 'effects'])
   );
-  const [sobolTarget, setSobolTarget] = useState<TargetName>('time_to_gloc_s');
 
   const profile = AEROBATIC_PROFILES[selectedProfileId];
   const explanation = MANEUVER_EXPLANATIONS[selectedProfileId];
@@ -80,11 +96,12 @@ export const AnalysisPage: React.FC = () => {
 
   return (
     <div className="space-y-6">
+      {(parsed.invalid.length > 0 || (searchParams.has('maneuver') && searchParams.get('maneuver') !== selectedProfileId)) && (
+        <p role="status" className="sr-only">Unsupported analysis URL settings were replaced with safe defaults.</p>
+      )}
       {/* Header */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="glass rounded-2xl p-6"
+      <div
+        className="instrument-panel rounded-2xl p-6"
       >
         <h2 className="text-2xl font-bold text-white mb-2">
           Physiological Analysis
@@ -99,13 +116,16 @@ export const AnalysisPage: React.FC = () => {
           onSelect={setSelectedProfileId}
           className="max-w-xl"
         />
-      </motion.div>
+        <div className="mt-4 flex gap-2" aria-label="Analysis view">
+          {(['explanation', 'sensitivity'] as const).map((view) => (
+            <button key={view} type="button" aria-pressed={analysisView === view} onClick={() => setAnalysisView(view)} className="btn-secondary">{view}</button>
+          ))}
+        </div>
+      </div>
 
       {/* Global sensitivity (Phase-4 Sobol indices, served by /sensitivity) */}
-      <motion.div
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="glass rounded-2xl p-6"
+      {analysisView === 'sensitivity' && <div
+        className="instrument-panel rounded-2xl p-6"
       >
         <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
           <div>
@@ -123,9 +143,11 @@ export const AnalysisPage: React.FC = () => {
             </p>
           </div>
           <select
+            aria-label="Sensitivity target"
+            name="sensitivity-target"
             value={sobolTarget}
             onChange={(e) => setSobolTarget(e.target.value as TargetName)}
-            className="bg-surface-800/60 border border-surface-700 rounded-md px-3 py-2 text-sm text-surface-200"
+            className="min-h-11 bg-surface-800/60 border border-surface-700 rounded-md px-3 py-2 text-sm text-surface-200"
           >
             {TARGET_NAMES.map((t) => (
               <option key={t} value={t}>
@@ -135,18 +157,16 @@ export const AnalysisPage: React.FC = () => {
           </select>
         </div>
         <SensitivityChart target={sobolTarget} height={380} />
-      </motion.div>
+      </div>}
 
-      <div className="grid lg:grid-cols-3 gap-6">
+      {analysisView === 'explanation' && <div className="grid lg:grid-cols-3 gap-6">
         {/* Main Analysis */}
         <div className="lg:col-span-2 space-y-4">
           {explanation ? (
             <>
               {/* Description */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="glass rounded-2xl overflow-hidden"
+              <div
+                className="instrument-panel rounded-2xl overflow-hidden"
               >
                 <SectionHeader
                   id="description"
@@ -156,30 +176,23 @@ export const AnalysisPage: React.FC = () => {
                   isExpanded={expandedSections.has('description')}
                   onToggle={toggleSection}
                 />
-                <AnimatePresence>
-                  {expandedSections.has('description') && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      className="overflow-hidden"
-                    >
+                {expandedSections.has('description') && (
+                  <div
+                    id="description-section"
+                    className="overflow-hidden"
+                  >
                       <div className="px-6 pb-6">
                         <p className="text-surface-300 leading-relaxed">
                           {explanation.description}
                         </p>
                       </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </motion.div>
+                  </div>
+                )}
+              </div>
 
               {/* Physiological Effects */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
-                className="glass rounded-2xl overflow-hidden"
+              <div
+                className="instrument-panel rounded-2xl overflow-hidden"
               >
                 <SectionHeader
                   id="effects"
@@ -189,30 +202,23 @@ export const AnalysisPage: React.FC = () => {
                   isExpanded={expandedSections.has('effects')}
                   onToggle={toggleSection}
                 />
-                <AnimatePresence>
-                  {expandedSections.has('effects') && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      className="overflow-hidden"
-                    >
+                {expandedSections.has('effects') && (
+                  <div
+                    id="effects-section"
+                    className="overflow-hidden"
+                  >
                       <div className="px-6 pb-6">
                         <p className="text-surface-300 leading-relaxed">
                           {explanation.physiological_effects}
                         </p>
                       </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </motion.div>
+                  </div>
+                )}
+              </div>
 
               {/* Risk Factors */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-                className="glass rounded-2xl overflow-hidden"
+              <div
+                className="instrument-panel rounded-2xl overflow-hidden"
               >
                 <SectionHeader
                   id="risks"
@@ -222,14 +228,11 @@ export const AnalysisPage: React.FC = () => {
                   isExpanded={expandedSections.has('risks')}
                   onToggle={toggleSection}
                 />
-                <AnimatePresence>
-                  {expandedSections.has('risks') && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      className="overflow-hidden"
-                    >
+                {expandedSections.has('risks') && (
+                  <div
+                    id="risks-section"
+                    className="overflow-hidden"
+                  >
                       <div className="px-6 pb-6 space-y-2">
                         {explanation.risk_factors.map((risk, i) => (
                           <div
@@ -241,17 +244,13 @@ export const AnalysisPage: React.FC = () => {
                           </div>
                         ))}
                       </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </motion.div>
+                  </div>
+                )}
+              </div>
 
               {/* Mitigation Strategies */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
-                className="glass rounded-2xl overflow-hidden"
+              <div
+                className="instrument-panel rounded-2xl overflow-hidden"
               >
                 <SectionHeader
                   id="mitigation"
@@ -261,14 +260,11 @@ export const AnalysisPage: React.FC = () => {
                   isExpanded={expandedSections.has('mitigation')}
                   onToggle={toggleSection}
                 />
-                <AnimatePresence>
-                  {expandedSections.has('mitigation') && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      className="overflow-hidden"
-                    >
+                {expandedSections.has('mitigation') && (
+                  <div
+                    id="mitigation-section"
+                    className="overflow-hidden"
+                  >
                       <div className="px-6 pb-6 space-y-2">
                         {explanation.mitigation.map((strategy, i) => (
                           <div
@@ -280,13 +276,12 @@ export const AnalysisPage: React.FC = () => {
                           </div>
                         ))}
                       </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </motion.div>
+                  </div>
+                )}
+              </div>
             </>
           ) : (
-            <div className="glass rounded-2xl p-12 text-center">
+            <div className="instrument-panel rounded-2xl p-12 text-center">
               <FileText className="w-12 h-12 text-surface-600 mx-auto mb-4" />
               <h3 className="text-lg font-semibold text-white mb-2">
                 Analysis Not Available
@@ -302,10 +297,8 @@ export const AnalysisPage: React.FC = () => {
         <div className="space-y-4">
           {/* Quick Stats */}
           {stats && (
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              className="glass rounded-2xl p-5"
+            <div
+              className="instrument-panel rounded-2xl p-5"
             >
               <h3 className="text-lg font-semibold text-white mb-4">
                 Profile Statistics
@@ -336,15 +329,12 @@ export const AnalysisPage: React.FC = () => {
                   </span>
                 </div>
               </div>
-            </motion.div>
+            </div>
           )}
 
           {/* References */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.1 }}
-            className="glass rounded-2xl p-5"
+          <div
+            className="instrument-panel rounded-2xl p-5"
           >
             <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
               <BookOpen className="w-5 h-5 text-primary-400" />
@@ -400,9 +390,9 @@ export const AnalysisPage: React.FC = () => {
                 </div>
               </a>
             </div>
-          </motion.div>
+          </div>
         </div>
-      </div>
+      </div>}
     </div>
   );
 };

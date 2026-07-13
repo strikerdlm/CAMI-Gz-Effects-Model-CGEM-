@@ -7,7 +7,7 @@
  *   • Right: live telemetry, /predict-driven T-LOC + 95 % conformal bracket,
  *           OOD status, pilot config snapshot
  */
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import {
   MANEUVERS,
@@ -36,6 +36,10 @@ import type {
 } from '../services/types';
 import { pilotConfigFromPrefs } from '../services/pilotConfig';
 import { useUserPrefs } from '../state/useUserPrefs';
+import { readManeuverParam, setSearchParam } from '../services/urlState';
+import { EvidenceRail } from '../components/ui/EvidenceRail';
+import { useResultActions } from '../components/ui/ResultActions';
+import { buildPredictionJsonExport } from '../services/exportResult';
 
 const CATEGORY_LABELS: Record<ManeuverCategory, string> = {
   championship: 'CHAMPIONSHIP',
@@ -51,9 +55,12 @@ export const SimulatorPage: React.FC = () => {
   const health = useHealth();
   const apiAlive = health.data?.status === 'ok';
 
-  const [searchParams] = useSearchParams();
-  const initial = searchParams.get('id') ?? 'hammerhead';
-  const [selectedId, setSelectedId] = useState<string>(initial);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const selectedId = readManeuverParam(searchParams, 'hammerhead');
+  const invalidManeuver = searchParams.has('maneuver') && searchParams.get('maneuver') !== selectedId;
+  const setSelectedId = (id: string) => setSearchParams(
+    setSearchParam(searchParams, 'maneuver', id, 'hammerhead'),
+  );
 
   const maneuver = useMemo<Maneuver>(
     () => MANEUVERS.find((m) => m.id === selectedId) ?? MANEUVERS[0],
@@ -62,6 +69,14 @@ export const SimulatorPage: React.FC = () => {
 
   const [now, setNow] = useState<{ t: number; g: number }>({ t: 0, g: maneuver.samples[0]?.nz ?? 0 });
 
+  useEffect(() => {
+    setNow({ t: 0, g: maneuver.samples[0]?.nz ?? 0 });
+  }, [maneuver]);
+
+  const handleTimeChange = useCallback((t: number, g: number) => {
+    setNow((current) => current.t === t && current.g === g ? current : { t, g });
+  }, []);
+
   const attitude = useMemo(
     () => attitudeAtTime(maneuver, now.t),
     [maneuver, now.t],
@@ -69,12 +84,18 @@ export const SimulatorPage: React.FC = () => {
 
   // Fire one /predict per maneuver change.
   const predictMutation = usePredict();
+  const { registerExport } = useResultActions();
+  const predictionRequest = useMemo<PredictionRequest>(() => ({ pilot, maneuver: { maneuver: maneuver.id } }), [pilot, maneuver.id]);
   useEffect(() => {
     if (!apiAlive) return;
-    const req: PredictionRequest = { pilot, maneuver: { maneuver: maneuver.id } };
-    predictMutation.mutate(req);
+    predictMutation.mutate(predictionRequest);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [maneuver.id, apiAlive, pilot]);
+  }, [maneuver.id, apiAlive, pilot, predictionRequest]);
+
+  const exportSpec = useMemo(() => predictMutation.data && predictMutation.variables ? buildPredictionJsonExport({ response: predictMutation.data, request: predictMutation.variables, exportedAt: new Date(predictMutation.submittedAt || 0).toISOString() }) : null,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [predictMutation.data, predictMutation.submittedAt]);
+  useEffect(() => { const unregister = registerExport(exportSpec); return typeof unregister === 'function' ? unregister : undefined; }, [exportSpec, registerExport]);
 
   const targets = predictMutation.data?.targets ?? [];
   const glocPred: TargetPrediction | undefined = targets.find((t) => t.target === 'time_to_gloc_s');
@@ -92,6 +113,7 @@ export const SimulatorPage: React.FC = () => {
 
   return (
     <div className="grid grid-cols-1 xl:grid-cols-[260px_1fr_320px] gap-4 min-h-[calc(100vh-120px)]">
+      {invalidManeuver && <p role="status" className="sr-only">The requested maneuver was unavailable. Showing hammerhead.</p>}
       {/* Left rail — maneuver picker */}
       <Bezel
         label={`MANEUVER LIBRARY · ${MANEUVERS.length}`}
@@ -109,9 +131,10 @@ export const SimulatorPage: React.FC = () => {
                   return (
                     <li key={m.id}>
                       <button
+                        type="button"
                         onClick={() => setSelectedId(m.id)}
                         className={
-                          'w-full text-left px-2 py-1 rounded-sm font-mono text-xs flex justify-between items-center transition-colors ' +
+                          'w-full min-h-11 text-left px-2 py-1 rounded-sm font-mono text-xs flex justify-between items-center transition-colors ' +
                           (active
                             ? 'bg-hud-amber/15 text-hud-amber border border-hud-amber/40'
                             : 'border border-transparent text-hud-ink-dim hover:bg-hud-panel-2 hover:text-hud-ink')
@@ -189,13 +212,14 @@ export const SimulatorPage: React.FC = () => {
             maneuver={maneuver}
             conformal={conformal}
             height={300}
-            onTimeChange={(t, g) => setNow({ t, g })}
+            onTimeChange={handleTimeChange}
           />
         </Bezel>
       </div>
 
       {/* Right rail — live readouts + prediction */}
       <div className="flex flex-col gap-4">
+        {predictMutation.data && <EvidenceRail evidence={{ kind: 'surrogate', response: predictMutation.data }} />}
         <Bezel label="LIVE TELEMETRY" status="ok">
           <div className="space-y-3">
             <div className="flex items-center justify-between">

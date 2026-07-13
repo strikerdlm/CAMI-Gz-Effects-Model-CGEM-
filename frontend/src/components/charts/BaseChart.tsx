@@ -5,7 +5,7 @@
  * for scientific publications in aerospace medicine.
  */
 
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useId } from 'react';
 import * as echarts from 'echarts';
 import { cn } from '../../utils';
 import { ECHARTS_DARK_THEME } from '../../utils/constants';
@@ -16,6 +16,8 @@ export type ChartOption = Record<string, any>;
 
 export interface BaseChartProps {
   option: ChartOption;
+  accessibleName: string;
+  accessibleSummary: string;
   height?: number | string;
   className?: string;
   onChartReady?: (chart: echarts.ECharts) => void;
@@ -25,12 +27,15 @@ export interface BaseChartProps {
 
 export const BaseChart: React.FC<BaseChartProps> = ({
   option,
+  accessibleName,
+  accessibleSummary,
   height = 400,
   className,
   onChartReady,
   loading = false,
   notMerge = false,
 }) => {
+  const summaryId = useId();
   const chartRef = useRef<HTMLDivElement>(null);
   const chartInstance = useRef<echarts.ECharts | null>(null);
 
@@ -40,6 +45,10 @@ export const BaseChart: React.FC<BaseChartProps> = ({
     // Initialize chart
     chartInstance.current = echarts.init(chartRef.current, undefined, {
       renderer: 'canvas',
+    });
+    chartRef.current.querySelectorAll('canvas').forEach((canvas) => {
+      canvas.tabIndex = -1;
+      canvas.setAttribute('aria-hidden', 'true');
     });
 
     // Apply base theme
@@ -88,9 +97,14 @@ export const BaseChart: React.FC<BaseChartProps> = ({
   return (
     <div
       ref={chartRef}
+      role="img"
+      aria-label={accessibleName}
+      aria-describedby={summaryId}
       className={cn('echarts-container', className)}
       style={{ height: typeof height === 'number' ? `${height}px` : height }}
-    />
+    >
+      <span id={summaryId} className="sr-only">{accessibleSummary}</span>
+    </div>
   );
 };
 

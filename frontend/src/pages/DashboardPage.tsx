@@ -6,7 +6,7 @@
  */
 
 import React, { useEffect, useMemo, useState } from 'react';
-import { motion } from 'framer-motion';
+import { useSearchParams } from 'react-router-dom';
 import {
   LayoutGrid,
   Maximize2,
@@ -14,13 +14,14 @@ import {
   BarChart3,
   PieChart,
   Activity,
-  Download,
   Brain,
   Shield,
   Star,
 } from 'lucide-react';
 
 import { MetricCard, ProfileSelector, VariableInsightsPanel } from '../components/ui';
+import { EvidenceRail } from '../components/ui/EvidenceRail';
+import { useResultActions } from '../components/ui/ResultActions';
 import {
   ModelDynamicsChart,
   GForceLineChart,
@@ -34,7 +35,6 @@ import {
 import { MANEUVERS_BY_ID } from '../data/maneuvers';
 import { DEFAULT_COUNTERMEASURES } from '../utils/constants';
 import {
-  cgemApiBaseURL,
   useHealth,
   useRunCgem,
   useVersion,
@@ -47,9 +47,11 @@ import type { CGEMResult, Countermeasures } from '../types';
 import type { RunCGEMRequest, PilotConfigRequest } from '../services/types';
 import { pilotConfigFromPrefs, pilotConfigWithOverrides } from '../services/pilotConfig';
 import { useUserPrefs } from '../state/useUserPrefs';
+import { dashboardUrlState, type DashboardChart, type DashboardLayout, type DashboardPreset } from '../services/urlState';
+import { buildAuthoritativeJsonExport } from '../services/exportResult';
 
-type ViewMode = 'grid' | 'single';
-type ChartType = 'lines' | 'heatmap' | 'radar' | 'histogram' | 'durations' | 'flows';
+type ViewMode = DashboardLayout;
+type ChartType = DashboardChart;
 
 const CHART_OPTIONS: { id: ChartType; label: string; icon: React.ElementType }[] = [
   { id: 'lines', label: 'G-Force Lines', icon: LineChart },
@@ -61,7 +63,7 @@ const CHART_OPTIONS: { id: ChartType; label: string; icon: React.ElementType }[]
 ];
 
 interface PilotPreset {
-  id: string;
+  id: DashboardPreset;
   label: string;
   summary: string;
   whoProfile: number;
@@ -124,6 +126,7 @@ const PRESET_STYLES: Record<PilotPreset['tag'], string> = {
 };
 
 const ApiStatusBanner: React.FC = () => {
+  const prefs = useUserPrefs();
   const versionQuery = useVersion();
   const status = versionQuery.isLoading
     ? { label: 'connecting…', color: 'text-amber-400 border-amber-500/30' }
@@ -131,10 +134,10 @@ const ApiStatusBanner: React.FC = () => {
     ? { label: 'unreachable', color: 'text-rose-400 border-rose-500/30' }
     : { label: 'online', color: 'text-emerald-400 border-emerald-500/30' };
   return (
-    <div className={`glass-light rounded-xl p-3 text-xs border flex items-center justify-between gap-3 ${status.color}`}>
+    <div className={`instrument-panel rounded-xl p-3 text-xs border flex items-center justify-between gap-3 ${status.color}`}>
       <div className="text-surface-400">
         <span className="text-surface-500">CGEM API:</span>{' '}
-        <code className="text-surface-300">{cgemApiBaseURL}</code>{' '}
+        <code className="text-surface-300">{prefs.apiUrl}</code>{' '}
         <span className="text-surface-500">·</span>{' '}
         <span className={status.color.split(' ')[0]}>{status.label}</span>
         {versionQuery.data && (
@@ -161,10 +164,16 @@ const ApiStatusBanner: React.FC = () => {
 
 export const DashboardPage: React.FC = () => {
   const prefs = useUserPrefs();
-  const [selectedProfileId, setSelectedProfileId] = useState('high_g_turn');
-  const [viewMode, setViewMode] = useState<ViewMode>('grid');
-  const [selectedChart, setSelectedChart] = useState<ChartType>('lines');
-  const [selectedPresetId, setSelectedPresetId] = useState<string>(PILOT_PRESETS[0].id);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const urlState = dashboardUrlState.read(searchParams);
+  const { maneuver: selectedProfileId, layout: viewMode, chart: selectedChart, preset: selectedPresetId } = urlState.value;
+  const updateUrl = (patch: Partial<typeof urlState.value>, replace = false) => setSearchParams(
+    dashboardUrlState.write({ ...urlState.value, ...patch }), { replace },
+  );
+  const setSelectedProfileId = (maneuver: string) => updateUrl({ maneuver });
+  const setViewMode = (layout: ViewMode) => updateUrl({ layout }, true);
+  const setSelectedChart = (chart: ChartType) => updateUrl({ chart }, true);
+  const setSelectedPresetId = (preset: DashboardPreset) => updateUrl({ preset });
   const [focusedVariable, setFocusedVariable] = useState<ModelVariableKey>('geff');
 
   const profile = MANEUVERS_BY_ID[selectedProfileId];
@@ -188,32 +197,24 @@ export const DashboardPage: React.FC = () => {
   const health = useHealth();
   const apiAlive = health.data?.status === 'ok';
   const runCgem = useRunCgem();
+  const versionQuery = useVersion();
+  const { registerExport } = useResultActions();
+  const runRequest = useMemo<RunCGEMRequest>(() => {
+    const overrides: Partial<PilotConfigRequest> = {
+      who_profile: selectedPreset.whoProfile, dehydration_level: 0,
+      gsuit_max_psi: selectedPreset.countermeasureOverrides.gsuit_max_psi ?? DEFAULT_COUNTERMEASURES.gsuit_max_psi ?? 0,
+      gsuit_coverage_fraction: selectedPreset.countermeasureOverrides.gsuit_coverage_fraction ?? DEFAULT_COUNTERMEASURES.gsuit_coverage_fraction ?? 0.6,
+      agsm_effectiveness: selectedPreset.countermeasureOverrides.agsm_effectiveness ?? DEFAULT_COUNTERMEASURES.agsm_effectiveness ?? 0,
+      pbg_max_mmhg: selectedPreset.countermeasureOverrides.pbg_max_mmhg ?? 0,
+    };
+    return { maneuver: selectedProfileId, pilot: pilotConfigWithOverrides(pilotConfigFromPrefs(prefs), overrides) };
+  }, [prefs, selectedPreset, selectedProfileId]);
 
   useEffect(() => {
     if (!apiAlive || !profile) return;
-    const overrides: Partial<PilotConfigRequest> = {
-      who_profile: selectedPreset.whoProfile,
-      // Standard Fortran profiles override custom physiology fields.
-      dehydration_level: 0,
-      gsuit_max_psi:
-        selectedPreset.countermeasureOverrides.gsuit_max_psi ??
-        DEFAULT_COUNTERMEASURES.gsuit_max_psi ??
-        0,
-      gsuit_coverage_fraction:
-        selectedPreset.countermeasureOverrides.gsuit_coverage_fraction ??
-        DEFAULT_COUNTERMEASURES.gsuit_coverage_fraction ??
-        0.6,
-      agsm_effectiveness:
-        selectedPreset.countermeasureOverrides.agsm_effectiveness ??
-        DEFAULT_COUNTERMEASURES.agsm_effectiveness ??
-        0,
-      pbg_max_mmhg: selectedPreset.countermeasureOverrides.pbg_max_mmhg ?? 0,
-    };
-    const pilot = pilotConfigWithOverrides(pilotConfigFromPrefs(prefs), overrides);
-    const req: RunCGEMRequest = { maneuver: selectedProfileId, pilot };
-    runCgem.mutate(req);
+    runCgem.mutate(runRequest);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedProfileId, selectedPresetId, apiAlive, prefs]);
+  }, [selectedProfileId, selectedPresetId, apiAlive, prefs, runRequest]);
 
   const result = useMemo<CGEMResult | null>(() => {
     if (apiAlive && runCgem.data) {
@@ -230,6 +231,10 @@ export const DashboardPage: React.FC = () => {
     if (!result) return null;
     return computeStateDurations(result.times_s, result.g_values, result.geff_values);
   }, [result]);
+  const exportSpec = useMemo(() => runCgem.data && runCgem.variables ? buildAuthoritativeJsonExport({ run: runCgem.data, request: runCgem.variables, version: versionQuery.data, exportedAt: new Date(runCgem.submittedAt || 0).toISOString() }) : null,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [runCgem.data, runCgem.submittedAt, versionQuery.data]);
+  useEffect(() => { const unregister = registerExport(exportSpec); return typeof unregister === 'function' ? unregister : undefined; }, [exportSpec, registerExport]);
 
   if (!profile || !stats) {
     return (
@@ -260,7 +265,7 @@ export const DashboardPage: React.FC = () => {
         <p className="text-hud-red font-mono tracking-callsign">CGEM RESULTS UNAVAILABLE</p>
         <p className="text-surface-400 text-sm max-w-xl">
           No physiological result is shown while the authoritative API is offline.
-          Start <code>uvicorn cgem_ext.api.main:app</code> at {cgemApiBaseURL}.
+          Start <code>uvicorn cgem_ext.api.main:app</code> at {prefs.apiUrl}.
           This research interface is not an operational flight-safety system.
         </p>
       </div>
@@ -327,13 +332,13 @@ export const DashboardPage: React.FC = () => {
 
   return (
     <div className="space-y-6">
+      {urlState.invalid.length > 0 && <p role="status" className="sr-only">Unsupported dashboard URL settings were replaced with safe defaults.</p>}
+      <EvidenceRail evidence={{ kind: 'authoritative', run: runCgem.data!, version: versionQuery.data }} />
       <ApiStatusBanner />
 
       {/* Header */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="glass rounded-2xl p-6"
+      <div
+        className="instrument-panel rounded-2xl p-6"
       >
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           <div>
@@ -351,8 +356,10 @@ export const DashboardPage: React.FC = () => {
             <div className="flex items-center gap-1 p-1 bg-surface-800/80 rounded-lg">
               <button
                 onClick={() => setViewMode('grid')}
+                aria-pressed={viewMode === 'grid'}
+                aria-label="Grid view"
                 className={cn(
-                  'p-2 rounded-lg transition-all',
+                  'p-2 min-h-11 min-w-11 rounded-lg transition-colors',
                   viewMode === 'grid' 
                     ? 'bg-primary-500/20 text-primary-400' 
                     : 'text-surface-400 hover:text-white'
@@ -363,8 +370,10 @@ export const DashboardPage: React.FC = () => {
               </button>
               <button
                 onClick={() => setViewMode('single')}
+                aria-pressed={viewMode === 'single'}
+                aria-label="Single chart view"
                 className={cn(
-                  'p-2 rounded-lg transition-all',
+                  'p-2 min-h-11 min-w-11 rounded-lg transition-colors',
                   viewMode === 'single' 
                     ? 'bg-primary-500/20 text-primary-400' 
                     : 'text-surface-400 hover:text-white'
@@ -375,10 +384,6 @@ export const DashboardPage: React.FC = () => {
               </button>
             </div>
 
-            <button className="btn-secondary">
-              <Download className="w-4 h-4" />
-              Export All
-            </button>
           </div>
         </div>
 
@@ -397,13 +402,11 @@ export const DashboardPage: React.FC = () => {
             </div>
           </div>
         </div>
-      </motion.div>
+      </div>
 
       {/* Premium Preset Selection */}
-      <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="glass rounded-2xl p-5"
+      <div
+        className="instrument-panel rounded-2xl p-5"
       >
         <div className="flex items-center justify-between gap-3 mb-4">
           <div>
@@ -425,9 +428,11 @@ export const DashboardPage: React.FC = () => {
             return (
               <button
                 key={preset.id}
+                type="button"
+                aria-pressed={isSelected}
                 onClick={() => setSelectedPresetId(preset.id)}
                 className={cn(
-                  'text-left rounded-xl border p-3 transition-all duration-200',
+                  'min-h-11 text-left rounded-xl border p-3 transition-colors duration-200',
                   isSelected
                     ? PRESET_STYLES[preset.tag]
                     : 'border-surface-700/60 bg-surface-900/55 hover:border-surface-600 text-surface-300'
@@ -442,7 +447,7 @@ export const DashboardPage: React.FC = () => {
             );
           })}
         </div>
-      </motion.div>
+      </div>
 
       {/* Quick Metrics */}
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
@@ -489,10 +494,8 @@ export const DashboardPage: React.FC = () => {
 
       {/* Model Dynamics Studio */}
       <div className="grid xl:grid-cols-[minmax(0,1.75fr)_minmax(320px,1fr)] gap-6">
-        <motion.div
-          initial={{ opacity: 0, y: 18 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="chart-container premium-panel"
+        <div
+          className="chart-container instrument-panel"
         >
           <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
             <div className="chart-title mb-0">
@@ -513,34 +516,31 @@ export const DashboardPage: React.FC = () => {
             height={430}
             focusVariable={focusedVariable}
           />
-        </motion.div>
+        </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 18 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.05 }}
+        <div
         >
           <VariableInsightsPanel
             result={result}
             selectedVariable={focusedVariable}
             onSelect={setFocusedVariable}
           />
-        </motion.div>
+        </div>
       </div>
 
       {/* Chart Selection (Single View) */}
       {viewMode === 'single' && (
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
+        <div
           className="flex flex-wrap gap-2"
         >
           {CHART_OPTIONS.map((opt) => (
             <button
               key={opt.id}
+              type="button"
+              aria-pressed={selectedChart === opt.id}
               onClick={() => setSelectedChart(opt.id)}
               className={cn(
-                'flex items-center gap-2 px-4 py-2 rounded-lg transition-all',
+                'flex min-h-11 items-center gap-2 px-4 py-2 rounded-lg transition-colors',
                 selectedChart === opt.id
                   ? 'bg-primary-500/20 text-primary-400 border border-primary-500/30'
                   : 'bg-surface-800/60 text-surface-400 hover:text-white hover:bg-surface-800'
@@ -550,18 +550,15 @@ export const DashboardPage: React.FC = () => {
               {opt.label}
             </button>
           ))}
-        </motion.div>
+        </div>
       )}
 
       {/* Charts */}
       {viewMode === 'grid' ? (
         <div className="grid md:grid-cols-2 gap-6">
-          {CHART_OPTIONS.map((opt, index) => (
-            <motion.div
+          {CHART_OPTIONS.map((opt) => (
+            <div
               key={opt.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
               className="chart-container"
             >
               <div className="chart-title">
@@ -569,14 +566,12 @@ export const DashboardPage: React.FC = () => {
                 {opt.label}
               </div>
               {renderChart(opt.id, 320)}
-            </motion.div>
+            </div>
           ))}
         </div>
       ) : (
-        <motion.div
+        <div
           key={selectedChart}
-          initial={{ opacity: 0, scale: 0.98 }}
-          animate={{ opacity: 1, scale: 1 }}
           className="chart-container"
         >
           <div className="chart-title text-lg">
@@ -589,15 +584,12 @@ export const DashboardPage: React.FC = () => {
             {CHART_OPTIONS.find(o => o.id === selectedChart)?.label}
           </div>
           {renderChart(selectedChart, 550)}
-        </motion.div>
+        </div>
       )}
 
       {/* Citation Footer */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.5 }}
-        className="glass-light rounded-xl p-4"
+      <div
+        className="instrument-panel rounded-xl p-4"
       >
         <h4 className="text-sm font-semibold text-surface-300 mb-2">
           Suggested Citation
@@ -608,7 +600,7 @@ export const DashboardPage: React.FC = () => {
           computer modeling of Gz-induced effects (DOT/FAA/AM-23/6). Office of Aerospace Medicine, 
           FAA. DOI: https://doi.org/10.21949/1524446
         </p>
-      </motion.div>
+      </div>
     </div>
   );
 };

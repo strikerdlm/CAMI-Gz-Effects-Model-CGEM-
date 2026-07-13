@@ -25,11 +25,12 @@ import type {
   VersionResponse,
   TargetName,
 } from './types';
-import { readUserPrefs } from '../state/useUserPrefs';
+import { useUserPrefs } from '../state/useUserPrefs';
+import { queryKeys } from './queryKeys';
 
 // ── HTTP client ──────────────────────────────────────────────────────
-// Base URL is read per-request from the user prefs store so the
-// Settings page can switch backends without a reload.
+// Hooks capture the reactive preference URL and pass it explicitly so a
+// request cannot silently switch backend while it is in flight.
 
 export const cgemHttp = axios.create({
   timeout: 60_000,
@@ -39,88 +40,104 @@ export const cgemHttp = axios.create({
   },
 });
 
-cgemHttp.interceptors.request.use((cfg) => {
-  cfg.baseURL = readUserPrefs().apiUrl;
-  return cfg;
-});
-
 export type ApiError = AxiosError<{ detail?: string }>;
 
 // ── Raw client functions ─────────────────────────────────────────────
 
-export async function getHealth(): Promise<HealthResponse> {
-  const { data } = await cgemHttp.get<HealthResponse>('/healthz');
+export async function getHealth(apiBaseUrl: string): Promise<HealthResponse> {
+  const { data } = await cgemHttp.get<HealthResponse>('/healthz', { baseURL: apiBaseUrl });
   return data;
 }
 
-export async function getVersion(): Promise<VersionResponse> {
-  const { data } = await cgemHttp.get<VersionResponse>('/version');
+export async function getVersion(apiBaseUrl: string): Promise<VersionResponse> {
+  const { data } = await cgemHttp.get<VersionResponse>('/version', { baseURL: apiBaseUrl });
   return data;
 }
 
-export async function getSensitivity(target: TargetName): Promise<SensitivityResponse> {
-  const { data } = await cgemHttp.get<SensitivityResponse>(`/sensitivity/${target}`);
+export async function getSensitivity(
+  apiBaseUrl: string,
+  target: TargetName,
+): Promise<SensitivityResponse> {
+  const { data } = await cgemHttp.get<SensitivityResponse>(`/sensitivity/${target}`, {
+    baseURL: apiBaseUrl,
+  });
   return data;
 }
 
-export async function postPredict(req: PredictionRequest): Promise<PredictionResponse> {
-  const { data } = await cgemHttp.post<PredictionResponse>('/predict', req);
+export async function postPredict(
+  apiBaseUrl: string,
+  req: PredictionRequest,
+): Promise<PredictionResponse> {
+  const { data } = await cgemHttp.post<PredictionResponse>('/predict', req, { baseURL: apiBaseUrl });
   return data;
 }
 
-export async function postSweep(req: SweepRequest): Promise<SweepResponse> {
-  const { data } = await cgemHttp.post<SweepResponse>('/sweep', req);
+export async function postSweep(apiBaseUrl: string, req: SweepRequest): Promise<SweepResponse> {
+  const { data } = await cgemHttp.post<SweepResponse>('/sweep', req, { baseURL: apiBaseUrl });
   return data;
 }
 
-export async function postRunCgem(req: RunCGEMRequest): Promise<CGEMRunResponse> {
-  const { data } = await cgemHttp.post<CGEMRunResponse>('/run-cgem', req);
+export async function postRunCgem(apiBaseUrl: string, req: RunCGEMRequest): Promise<CGEMRunResponse> {
+  const { data } = await cgemHttp.post<CGEMRunResponse>('/run-cgem', req, { baseURL: apiBaseUrl });
   return data;
 }
 
 // ── React Query hooks ────────────────────────────────────────────────
 
 export function useHealth(): UseQueryResult<HealthResponse, ApiError> {
+  const { apiUrl } = useUserPrefs();
   return useQuery({
-    queryKey: ['health'],
-    queryFn: getHealth,
+    queryKey: queryKeys.health(apiUrl),
+    queryFn: () => getHealth(apiUrl),
     staleTime: 30_000,
   });
 }
 
 export function useVersion(): UseQueryResult<VersionResponse, ApiError> {
+  const { apiUrl } = useUserPrefs();
   return useQuery({
-    queryKey: ['version'],
-    queryFn: getVersion,
+    queryKey: queryKeys.version(apiUrl),
+    queryFn: () => getVersion(apiUrl),
   });
 }
 
 export function useSensitivity(
   target: TargetName | null,
 ): UseQueryResult<SensitivityResponse, ApiError> {
+  const { apiUrl } = useUserPrefs();
   return useQuery({
-    queryKey: ['sensitivity', target],
-    queryFn: () => getSensitivity(target as TargetName),
+    queryKey: queryKeys.sensitivity(apiUrl, target),
+    queryFn: () => getSensitivity(apiUrl, target as TargetName),
     enabled: target !== null,
   });
 }
 
 /** One-shot prediction. Returns a mutation so the caller controls when
- *  the request fires (matches the form-submission UX of PredictionPage). */
+ *  the request fires (matches the form-submission UX of PredictionPage).
+ *
+ * The API URL must remain part of every mutationKey. TanStack's
+ * MutationObserver synchronously resets when that key changes, detaching the
+ * old in-flight mutation before the new backend scope can render. An effect-
+ * based reset would leave a render/effect window in which stale data is visible.
+ */
 export function usePredict(): UseMutationResult<
   PredictionResponse,
   ApiError,
   PredictionRequest
 > {
+  const { apiUrl } = useUserPrefs();
   return useMutation({
-    mutationFn: postPredict,
+    mutationKey: queryKeys.predict(apiUrl),
+    mutationFn: (request) => postPredict(apiUrl, request),
     retry: false,
   });
 }
 
 export function useSweep(): UseMutationResult<SweepResponse, ApiError, SweepRequest> {
+  const { apiUrl } = useUserPrefs();
   return useMutation({
-    mutationFn: postSweep,
+    mutationKey: queryKeys.sweep(apiUrl),
+    mutationFn: (request) => postSweep(apiUrl, request),
     retry: false,
   });
 }
@@ -130,8 +147,10 @@ export function useRunCgem(): UseMutationResult<
   ApiError,
   RunCGEMRequest
 > {
+  const { apiUrl } = useUserPrefs();
   return useMutation({
-    mutationFn: postRunCgem,
+    mutationKey: queryKeys.run(apiUrl),
+    mutationFn: (request) => postRunCgem(apiUrl, request),
     retry: false,
   });
 }
@@ -146,8 +165,3 @@ export function apiErrorMessage(err: unknown): string {
   }
   return String(err);
 }
-
-/** Reactive accessor — reads the current prefs URL at call time.
- *  Kept as an exported constant string for legacy callers that just want
- *  to log the URL (DashboardPage.ApiStatusBanner uses this). */
-export const cgemApiBaseURL: string = readUserPrefs().apiUrl;

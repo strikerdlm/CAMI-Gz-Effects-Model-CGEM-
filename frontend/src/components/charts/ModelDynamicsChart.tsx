@@ -364,7 +364,9 @@ export const ModelDynamicsChart: React.FC<ModelDynamicsChartProps> = ({
     };
   }, [focusVariable, result, title]);
 
-  return <BaseChart option={option} height={height} />;
+  const duration = result.times_s.length ? Math.max(...result.times_s) - Math.min(...result.times_s) : 0;
+  const summary = `Model dynamics over ${duration.toFixed(1)} seconds for effective G, cerebral flow, compensation, blackout, and hydrostatic pressure.`;
+  return <BaseChart option={option} height={height} accessibleName={title} accessibleSummary={summary} />;
 };
 
 export default ModelDynamicsChart;

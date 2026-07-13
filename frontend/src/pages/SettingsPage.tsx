@@ -5,6 +5,7 @@
  * prefs at request time, no reload required).
  */
 import React, { useState } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import { Bezel, SegmentReadout } from '../components/hud';
 import {
   useUserPrefs,
@@ -28,20 +29,28 @@ const DEFAULTS_FIELDS: readonly DefaultsKey[] = [
 export const SettingsPage: React.FC = () => {
   const prefs = useUserPrefs();
   const [apiUrlDraft, setApiUrlDraft] = useState(prefs.apiUrl);
+  const [connectionAnnouncement, setConnectionAnnouncement] = useState('');
+  const queryClient = useQueryClient();
   const health = useHealth();
   const version = useVersion();
+
+  const changeApiUrl = (nextUrl: string): void => {
+    if (nextUrl === prefs.apiUrl) return;
+    const oldUrl = prefs.apiUrl;
+    queryClient.removeQueries({ queryKey: ['cgem', oldUrl] });
+    updateUserPrefs({ apiUrl: nextUrl });
+    setConnectionAnnouncement(`Connection context changed to ${nextUrl}`);
+  };
 
   const applyApiUrl = (): void => {
     const cleaned = apiUrlDraft.trim().replace(/\/$/, '');
     if (cleaned.length === 0) return;
-    updateUserPrefs({ apiUrl: cleaned });
-    health.refetch();
-    version.refetch();
+    changeApiUrl(cleaned);
   };
 
   const resetApiUrl = (): void => {
     setApiUrlDraft(DEFAULT_PREFS.apiUrl);
-    updateUserPrefs({ apiUrl: DEFAULT_PREFS.apiUrl });
+    changeApiUrl(DEFAULT_PREFS.apiUrl);
   };
 
   const updateDefault = (key: DefaultsKey, value: number): void => {
@@ -51,30 +60,35 @@ export const SettingsPage: React.FC = () => {
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      <p className="sr-only" role="status" aria-live="polite">
+        {connectionAnnouncement}
+      </p>
       <Bezel
         label="API CONNECTION"
         status={health.data?.status === 'ok' ? 'ok' : health.isError ? 'fail' : 'caution'}
       >
-        <label className="block font-mono text-[10px] text-hud-ink-faint tracking-callsign uppercase">
+        <label htmlFor="api-base-url" className="block font-mono text-[10px] text-hud-ink-faint tracking-callsign uppercase">
           Base URL
         </label>
-        <div className="flex gap-2 mt-1">
+        <div className="flex flex-col gap-2 mt-1 sm:flex-row">
           <input
+            id="api-base-url"
+            name="api-base-url"
             type="text"
             value={apiUrlDraft}
             onChange={(e) => setApiUrlDraft(e.target.value)}
             spellCheck={false}
-            className="flex-1 bg-hud-bg border border-hud-line text-hud-amber font-mono text-sm px-2 py-1 rounded-sm focus:outline-none focus:border-hud-amber"
+            className="min-h-11 min-w-0 flex-1 bg-hud-bg border border-hud-line text-hud-amber font-mono text-sm px-2 py-1 rounded-sm focus:outline-none focus:border-hud-amber"
           />
           <button
             onClick={applyApiUrl}
-            className="px-3 py-1 bg-hud-amber/10 border border-hud-amber/50 text-hud-amber hover:bg-hud-amber/20 rounded-sm font-mono text-xs tracking-callsign uppercase"
+            className="min-h-11 px-3 py-1 bg-hud-amber/10 border border-hud-amber/50 text-hud-amber hover:bg-hud-amber/20 rounded-sm font-mono text-xs tracking-callsign uppercase"
           >
             Apply
           </button>
           <button
             onClick={resetApiUrl}
-            className="px-3 py-1 bg-hud-panel border border-hud-line text-hud-ink-dim hover:text-hud-ink rounded-sm font-mono text-xs tracking-callsign uppercase"
+            className="min-h-11 px-3 py-1 bg-hud-panel border border-hud-line text-hud-ink-dim hover:text-hud-ink rounded-sm font-mono text-xs tracking-callsign uppercase"
           >
             Default
           </button>
@@ -123,7 +137,7 @@ export const SettingsPage: React.FC = () => {
                 max={k === 'who_profile' ? 6 : k === 'pbg_max_mmhg' ? 60 : k === 'gsuit_max_psi' ? 20 : 1}
                 value={prefs.defaults[k]}
                 onChange={(e) => updateDefault(k, Number(e.target.value))}
-                className="w-28 bg-hud-bg border border-hud-line text-hud-amber font-mono text-sm px-2 py-0.5 rounded-sm text-right tabular-nums focus:outline-none focus:border-hud-amber"
+                className="min-h-11 w-28 bg-hud-bg border border-hud-line text-hud-amber font-mono text-sm px-2 py-0.5 rounded-sm text-right tabular-nums focus:outline-none focus:border-hud-amber"
               />
             </div>
           ))}
@@ -133,58 +147,6 @@ export const SettingsPage: React.FC = () => {
           explicitly overrides them. For standard profiles 1–6, the Fortran core overrides
           custom physiology fields such as dehydration and G-tolerance multiplier.
         </p>
-      </Bezel>
-
-      <Bezel label="DISPLAY" status="idle">
-        <div className="space-y-3 font-mono text-xs">
-          <div>
-            <div className="text-hud-ink-faint tracking-callsign uppercase mb-1">
-              Phosphor primary
-            </div>
-            <div className="flex gap-2">
-              {(['amber', 'green'] as const).map((c) => (
-                <button
-                  key={c}
-                  onClick={() => updateUserPrefs({ phosphorColor: c })}
-                  className={
-                    'px-3 py-1 rounded-sm border tracking-callsign uppercase ' +
-                    (prefs.phosphorColor === c
-                      ? c === 'amber'
-                        ? 'bg-hud-amber/20 border-hud-amber text-hud-amber shadow-hud-glow-amber'
-                        : 'bg-hud-phosphor/20 border-hud-phosphor text-hud-phosphor shadow-hud-glow-green'
-                      : 'bg-hud-panel border-hud-line text-hud-ink-faint hover:text-hud-ink')
-                  }
-                >
-                  {c}
-                </button>
-              ))}
-            </div>
-            <p className="mt-1 text-hud-ink-faint text-[10px]">
-              Cosmetic preference recorded for future themes; current build pins the amber HUD.
-            </p>
-          </div>
-          <div>
-            <div className="text-hud-ink-faint tracking-callsign uppercase mb-1">
-              Acceleration units
-            </div>
-            <div className="flex gap-2">
-              {(['G', 'm_per_s2'] as const).map((u) => (
-                <button
-                  key={u}
-                  onClick={() => updateUserPrefs({ units: u })}
-                  className={
-                    'px-3 py-1 rounded-sm border tracking-callsign uppercase ' +
-                    (prefs.units === u
-                      ? 'bg-hud-phosphor/20 border-hud-phosphor text-hud-phosphor'
-                      : 'bg-hud-panel border-hud-line text-hud-ink-faint hover:text-hud-ink')
-                  }
-                >
-                  {u === 'G' ? '+Gz' : 'm/s²'}
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
       </Bezel>
 
       <Bezel label="ABOUT" status="ok">

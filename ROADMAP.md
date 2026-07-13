@@ -122,7 +122,24 @@ Polish (deferred to follow-up commits, do not block Phase 4–7):
 - [x] `BatchPage` rewired: `useSweep` over all 72 maneuvers in a single round-trip; sortable table; OOD-first sort; summary cards (total / in-envelope / OOD / high-G-LOC)
 - [x] `AnalysisPage`: appended a Sobol-sensitivity panel with target picker (5 targets); preserves the existing maneuver-explanation tree
 - [x] `DashboardPage`: API status banner showing `/version` (package version + binary SHA prefix + dataset seed)
-- [ ] `frontend/e2e/` Playwright golden-path test — deferred; the unit-test surface lives in the Python tests at `tests/test_api.py`
+- [x] `frontend/e2e/` mocked-API Playwright research-workflow suite at 390, 768, 1024, and 1440 px; live API behavior remains covered by `tests/test_api.py`
+
+### 2026 usable-research-instrument completion (frontend Phase 1)
+
+- [x] F1 responsive shell at 390, 768, 1024, and 1440 px.
+- [x] F6 consolidated low-reflection instrument-panel visual system.
+- [x] F7 semantic, keyboard, focus, reduced-motion, contrast, and chart accessibility.
+- [x] F8 typed URL state for maneuver, pilot, views, analysis target, and batch filters.
+- [x] F9 functional search, Help, refresh, and result export; Notifications remains absent.
+- [x] F10 deterministic OpenAPI-generated TypeScript with CI drift detection.
+- [ ] F11 publication-grade chart data-table and image export bundle.
+- [ ] F12 route/ECharts code splitting and initial-JavaScript budget.
+- [ ] F13 measured large-list virtualization or pagination.
+
+The browser gate uses complete mocked `/healthz`, `/version`, `/predict`,
+`/run-cgem`, `/sweep`, and `/sensitivity/*` responses and verifies the research
+workflow at all four breakpoints. Backend contract tests remain responsible for
+live Fortran execution.
 
 ### 2026 trust-contract stabilization (Phase 0 of the improvement plan)
 

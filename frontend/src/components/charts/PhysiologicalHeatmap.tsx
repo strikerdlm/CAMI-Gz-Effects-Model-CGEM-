@@ -149,7 +149,9 @@ export const PhysiologicalHeatmap: React.FC<PhysiologicalHeatmapProps> = ({
     };
   }, [result, title]);
 
-  return <BaseChart option={option} height={height} />;
+  const impaired = (flags: number[]) => flags.filter((flag) => flag > 0).length;
+  const summary = `Timeline with ${result.times_s.length} samples: consciousness impaired ${impaired(result.flags_n2)} samples; vision impaired ${impaired(result.flags_ne2)} samples; blackout ${impaired(result.flags_non2)} samples.`;
+  return <BaseChart option={option} height={height} accessibleName={title} accessibleSummary={summary} />;
 };
 
 export default PhysiologicalHeatmap;

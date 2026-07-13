@@ -139,7 +139,12 @@ export const GDistributionChart: React.FC<GDistributionChartProps> = ({
     };
   }, [gValues, title, bins]);
 
-  return <BaseChart option={option} height={height} />;
+  const min = gValues.length ? Math.min(...gValues) : 0;
+  const max = gValues.length ? Math.max(...gValues) : 0;
+  const summary = gValues.length
+    ? `G-force values range from ${min.toFixed(1)} to ${max.toFixed(1)} G across ${bins} bins.`
+    : 'No G-force distribution data available.';
+  return <BaseChart option={option} height={height} accessibleName={title} accessibleSummary={summary} />;
 };
 
 export default GDistributionChart;

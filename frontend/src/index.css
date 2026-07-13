@@ -2,6 +2,15 @@
 
 /* Custom CSS Variables */
 :root {
+  color-scheme: dark;
+  --shell-sidebar-wide: 260px;
+  --shell-sidebar-rail: 72px;
+  --shell-header: 64px;
+  --shell-graphite: #10171a;
+  --shell-amber: #ffb400;
+  --shell-cyan: #6fd3ff;
+  --shell-green: #4fe773;
+  --shell-red: #ff3b30;
   --color-primary-50: #f0f9ff;
   --color-primary-100: #e0f2fe;
   --color-primary-200: #bae6fd;
@@ -51,7 +60,59 @@
   --hud-red: #FF3B30;
   --hud-ink: #e8eaea;
   --hud-ink-dim: #8c9692;
-  --hud-ink-faint: #566066;
+  --hud-ink-faint: #aab4c3;
+}
+
+:focus-visible {
+  outline: 2px solid var(--hud-ice);
+  outline-offset: 3px;
+}
+
+.shell-sidebar { width: var(--shell-sidebar-wide); }
+.shell-sidebar-collapsed { width: var(--shell-sidebar-rail); }
+.shell-topbar { left: var(--shell-sidebar-wide); }
+.shell-topbar-collapsed { left: var(--shell-sidebar-rail); }
+.shell-main { margin-left: var(--shell-sidebar-wide); }
+.shell-main-collapsed { margin-left: var(--shell-sidebar-rail); }
+.mobile-nav-trigger,
+.mobile-nav-layer { display: none; }
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .shell-sidebar { width: var(--shell-sidebar-rail); }
+  .shell-sidebar > div:first-child > div:first-child,
+  .shell-sidebar nav span,
+  .shell-sidebar nav div > span,
+  .shell-sidebar > div:last-child p { display: none; }
+  .shell-sidebar nav a { justify-content: center; padding-inline: 0.5rem; }
+  .shell-topbar { left: var(--shell-sidebar-rail); }
+  .shell-main { margin-left: var(--shell-sidebar-rail); }
+}
+
+@media (max-width: 767px) {
+  .shell-sidebar { display: none; }
+  .shell-topbar { left: 0; padding-inline: 0.75rem; }
+  .shell-main, .shell-main-collapsed { margin-left: 0; }
+  .mobile-nav-trigger { display: inline-flex; align-items: center; justify-content: center; }
+  .mobile-nav-layer { display: block; }
+  .shell-callsign { display: none; }
+  .shell-topbar-actions { gap: 0.25rem; }
+  .shell-topbar > div:first-child { min-width: 0; gap: 0.5rem; }
+  .shell-topbar > div:first-child > div:last-child { min-width: 0; }
+  .shell-topbar > div:first-child h1 {
+    max-width: 6.5rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .shell-topbar > div:first-child p { display: none; }
+  .shell-topbar-actions button,
+  .shell-topbar-actions a {
+    display: inline-flex;
+    min-height: 2.75rem;
+    min-width: 2.75rem;
+    align-items: center;
+    justify-content: center;
+  }
 }
 
 /* Base Styles */
@@ -121,17 +182,13 @@ body {
 
 /* Metric cards */
 .metric-card {
-  background-color: rgba(15, 23, 42, 0.8);
-  backdrop-filter: blur(16px);
-  border: 1px solid rgba(51, 65, 85, 0.5);
   border-radius: 0.75rem;
   padding: 1rem;
-  transition: all 0.3s;
+  transition: border-color 0.2s, color 0.2s;
 }
 
 .metric-card:hover {
-  border-color: rgba(14, 165, 233, 0.3);
-  box-shadow: 0 0 15px -3px rgba(14, 165, 233, 0.3);
+  border-color: #526159;
 }
 
 .metric-value {
@@ -148,17 +205,16 @@ body {
 
 /* Chart container */
 .chart-container {
-  background-color: rgba(15, 23, 42, 0.8);
-  backdrop-filter: blur(16px);
-  border: 1px solid rgba(51, 65, 85, 0.5);
+  background-color: #151a19;
+  border: 1px solid #35403b;
   border-radius: 1rem;
   padding: 1rem;
   overflow: hidden;
-  transition: all 0.3s;
+  transition: border-color 0.2s, color 0.2s;
 }
 
 .chart-container:hover {
-  border-color: rgba(14, 165, 233, 0.2);
+  border-color: #526159;
 }
 
 .chart-title {
@@ -178,8 +234,9 @@ body {
   border: 1px solid rgba(51, 65, 85, 0.5);
   border-radius: 0.5rem;
   padding: 0.625rem 1rem;
+  min-height: 44px;
   color: var(--color-surface-100);
-  transition: all 0.2s;
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s;
 }
 
 .input-field::placeholder {
@@ -187,8 +244,6 @@ body {
 }
 
 .input-field:focus {
-  outline: none;
-  ring: 2px solid rgba(14, 165, 233, 0.5);
   border-color: var(--color-primary-500);
 }
 
@@ -198,6 +253,7 @@ body {
   border: 1px solid rgba(51, 65, 85, 0.5);
   border-radius: 0.5rem;
   padding: 0.625rem 2.5rem 0.625rem 1rem;
+  min-height: 44px;
   color: var(--color-surface-100);
   cursor: pointer;
   appearance: none;
@@ -205,11 +261,10 @@ body {
   background-position: right 0.75rem center;
   background-repeat: no-repeat;
   background-size: 1rem;
-  transition: all 0.2s;
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s;
 }
 
 .select-field:focus {
-  outline: none;
   border-color: var(--color-primary-500);
 }
 
@@ -220,17 +275,16 @@ body {
   justify-content: center;
   gap: 0.5rem;
   padding: 0.75rem 1.5rem;
+  min-height: 44px;
   border-radius: 0.75rem;
   background: linear-gradient(to right, var(--color-primary-600), var(--color-primary-500));
   color: white;
   font-weight: 600;
-  box-shadow: 0 10px 15px -3px rgba(14, 165, 233, 0.25);
-  transition: all 0.2s;
+  transition: background-color 0.2s, color 0.2s, transform 0.2s;
 }
 
 .btn-primary:hover {
   background: linear-gradient(to right, var(--color-primary-500), var(--color-primary-400));
-  box-shadow: 0 10px 15px -3px rgba(14, 165, 233, 0.4);
 }
 
 .btn-primary:active {
@@ -248,12 +302,13 @@ body {
   justify-content: center;
   gap: 0.5rem;
   padding: 0.75rem 1.5rem;
+  min-height: 44px;
   border-radius: 0.75rem;
   background-color: var(--color-surface-800);
   color: var(--color-surface-100);
   font-weight: 600;
   border: 1px solid var(--color-surface-700);
-  transition: all 0.2s;
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s;
 }
 
 .btn-secondary:hover {
@@ -300,8 +355,8 @@ input[type="range"] {
   -webkit-appearance: none;
   appearance: none;
   width: 100%;
-  height: 8px;
-  background: var(--color-surface-700);
+  min-height: 44px;
+  background: linear-gradient(var(--color-surface-700), var(--color-surface-700)) center / 100% 8px no-repeat;
   border-radius: 4px;
   outline: none;
 }
@@ -314,7 +369,6 @@ input[type="range"]::-webkit-slider-thumb {
   background: var(--color-primary-500);
   border-radius: 50%;
   cursor: pointer;
-  box-shadow: 0 2px 6px rgba(14, 165, 233, 0.4);
 }
 
 input[type="range"]::-moz-range-thumb {
@@ -324,7 +378,6 @@ input[type="range"]::-moz-range-thumb {
   border-radius: 50%;
   cursor: pointer;
   border: none;
-  box-shadow: 0 2px 6px rgba(14, 165, 233, 0.4);
 }
 
 /* Animation keyframes */
@@ -367,6 +420,28 @@ input[type="range"]::-moz-range-thumb {
    These coexist with the legacy .glass / .metric-card classes used by
    older pages until those pages are migrated.
    ─────────────────────────────────────────────────────────────────── */
+
+.instrument-panel {
+  background: #151a19;
+  border: 1px solid #35403b;
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 35%);
+  color-scheme: dark;
+}
+
+.instrument-panel:focus-within {
+  border-color: #8ea89c;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .instrument-panel,
+  .instrument-panel * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
 
 .bezel {
   background: linear-gradient(180deg, var(--hud-panel) 0%, var(--hud-panel-2) 100%);
@@ -445,6 +520,23 @@ input[type="range"]::-moz-range-thumb {
   );
   animation: scanline 8s linear infinite;
   z-index: 99;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .scanline-sweep,
+  .animate-pulse,
+  .animate-pulse-amber,
+  .metric-card,
+  .chart-container {
+    animation: none !important;
+    transform: none !important;
+  }
 }
 
 ::selection {
