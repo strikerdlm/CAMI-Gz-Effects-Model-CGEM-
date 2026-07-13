@@ -206,33 +206,84 @@ The full pre-submission self-audit is at [`docs/publication/peer_review_2026-05-
 
 ---
 
-## Quick Start
+## Run the Web Application
 
-```bash
-# 1. Create a virtual environment
-python -m venv .venv
-source .venv/bin/activate        # Windows: .venv\Scripts\activate
+The application has two processes: the Python API on port 8000 and the React frontend on port 5173. Keep both terminals open while using the app.
 
-# Linux: Fortran runtime required for the CGEM binary
-sudo apt-get install -y libgfortran5
+### Prerequisites
 
-# 2. Install with all extras
-pip install -e .[ml,api,dev]
+- Python 3.10–3.12.
+- Node.js 20.19+ or 22.13+ (Node 22 LTS is recommended) and npm.
+- Windows: the committed `cgem.exe` is used by the authoritative predictor.
+- Linux: install the Fortran runtime with `sudo apt-get install -y libgfortran5` so the committed `cgem` binary can run.
 
-# 3. Run the test suite (80 tests, ~4:16 on an 8-core CPU)
-pytest tests/ -v
+### Windows PowerShell — step by step
+
+1. Open PowerShell in the repository root and create the Python environment:
+
+```powershell
+cd path\to\CAMI-Gz-Effects-Model-CGEM-
+py -3.12 -m venv .venv
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+.\.venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip
+python -m pip install -e ".[ml,api,dev]"
 ```
 
-### FastAPI service
+If you already use a Conda environment, activate it instead of creating `.venv`, then run the two `python -m pip` commands above.
 
-The Phase-5 API service exposes the surrogate, OOD detector, conformal CIs, sensitivity rankings, and the authoritative Fortran subprocess behind seven endpoints. Lifespan startup trains all five surrogates + OOD + per-target Mondrian conformal layers (~30 s on first boot); each request afterwards is sub-millisecond per row.
+2. In the same terminal, start the API from the repository root:
+
+```powershell
+python -m uvicorn cgem_ext.api.main:app --host 127.0.0.1 --port 8000
+```
+
+The first start fits the OOD detector, five surrogates, and conformal layers. Do not open the predictor until Uvicorn prints:
+
+```text
+Application startup complete.
+```
+
+`Waiting for application startup` means the API is not ready yet. Verify it from another PowerShell window:
+
+```powershell
+Invoke-RestMethod http://127.0.0.1:8000/healthz
+# Expected: status = ok
+```
+
+For automatic code reload during development, append `--reload` to the Uvicorn command.
+
+3. Open a second PowerShell window, return to the repository, and start the frontend:
+
+```powershell
+cd path\to\CAMI-Gz-Effects-Model-CGEM-\frontend
+npm install
+npm run dev -- --host 127.0.0.1
+```
+
+4. Open [http://127.0.0.1:5173](http://127.0.0.1:5173). The CGEM API address shown in the UI should be `http://127.0.0.1:8000`.
+
+### Linux or macOS
+
+From the repository root:
 
 ```bash
-uvicorn cgem_ext.api.main:app --reload
-# → http://localhost:8000
-# → http://localhost:8000/docs    (Swagger UI)
-# → http://localhost:8000/openapi.json
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+python -m pip install -e ".[ml,api,dev]"
+python -m uvicorn cgem_ext.api.main:app --host 127.0.0.1 --port 8000
 ```
+
+In a second terminal, activate the environment, then run `cd frontend && npm install && npm run dev -- --host 127.0.0.1`. The authoritative Fortran call additionally requires a compatible `cgem` binary and runtime for the host OS.
+
+### API service
+
+The API exposes the surrogate, OOD detector, conformal CIs, sensitivity rankings, and authoritative Fortran subprocess behind seven endpoints.
+
+- API root: [http://127.0.0.1:8000](http://127.0.0.1:8000)
+- Interactive API documentation: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
+- OpenAPI document: [http://127.0.0.1:8000/openapi.json](http://127.0.0.1:8000/openapi.json)
 
 | Endpoint | Method | Purpose |
 |---|---|---|
@@ -258,8 +309,8 @@ docker run --rm -p 8000:8000 cgem-ext-api:0.1.0
 
 ### React + TypeScript frontend (Phase 6, wired to FastAPI)
 
-The frontend talks to the FastAPI service exclusively. Set
-`VITE_API_URL` if the backend isn't on the default `http://localhost:8000`.
+The frontend talks to the FastAPI service exclusively. The default is
+`http://127.0.0.1:8000`; set `VITE_API_URL` before `npm run dev` if the API is elsewhere.
 
 ```bash
 cd frontend
@@ -267,6 +318,16 @@ npm install
 npm run dev
 # → http://localhost:5173
 ```
+
+### If the UI says “API unreachable”
+
+1. Confirm the API terminal reached `Application startup complete.`
+2. Open [http://127.0.0.1:8000/healthz](http://127.0.0.1:8000/healthz) and confirm `{"status":"ok"}`.
+3. In the frontend **Settings** page, set the API base URL to `http://127.0.0.1:8000` or click **Default**.
+4. Make sure port 8000 is not occupied by a stale process: `Get-NetTCPConnection -LocalPort 8000 -State Listen` in PowerShell.
+5. Start Uvicorn with `python -m uvicorn ...` so it uses the same environment where the project dependencies were installed.
+
+The Sobol CSV is committed at `data/results/sensitivity/sobol_first_total.csv`, so the Global Sensitivity panel works as soon as the API is ready. To deliberately regenerate Sobol and Morris results, run `python -m scripts.run_sensitivity` from the repository root and restart the API afterward.
 
 What lights up:
 

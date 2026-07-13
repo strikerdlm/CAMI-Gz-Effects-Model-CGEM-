@@ -2,7 +2,7 @@
  * Typed axios client + React Query hooks for the FastAPI service.
  *
  * Base URL configurable via VITE_API_URL (default
- * http://localhost:8000). Each hook wraps a queryKey / mutationFn pair
+ * http://127.0.0.1:8000). Each hook wraps a queryKey / mutationFn pair
  * so cached responses remain consistent across pages.
  */
 
@@ -85,6 +85,7 @@ export function useHealth(): UseQueryResult<HealthResponse, ApiError> {
     queryKey: ['health'],
     queryFn: getHealth,
     staleTime: 30_000,
+    refetchInterval: (query) => (query.state.status === 'error' ? 5_000 : false),
   });
 }
 
@@ -92,6 +93,7 @@ export function useVersion(): UseQueryResult<VersionResponse, ApiError> {
   return useQuery({
     queryKey: ['version'],
     queryFn: getVersion,
+    refetchInterval: (query) => (query.state.status === 'error' ? 5_000 : false),
   });
 }
 
@@ -102,6 +104,7 @@ export function useSensitivity(
     queryKey: ['sensitivity', target],
     queryFn: () => getSensitivity(target as TargetName),
     enabled: target !== null,
+    retry: 2,
   });
 }
 

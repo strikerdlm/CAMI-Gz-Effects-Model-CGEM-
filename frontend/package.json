@@ -3,19 +3,22 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
+  "engines": {
+    "node": "^20.19.0 || ^22.13.0 || >=24.0.0"
+  },
   "description": "G-Effects Safety Dashboard - Aerospace physiology visualization and G-LOC prediction",
   "author": "Dr. Diego Malpica",
   "license": "MIT",
   "scripts": {
     "dev": "vite",
-    "prebuild": "cd .. && python3 scripts/export_maneuvers_json.py",
+    "prebuild": "cd .. && python scripts/export_maneuvers_json.py",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "test": "vitest",
     "test:run": "vitest run",
     "preview": "vite preview",
     "type-check": "tsc --noEmit",
-    "regen:maneuvers": "cd .. && python3 scripts/export_maneuvers_json.py"
+    "regen:maneuvers": "cd .. && python scripts/export_maneuvers_json.py"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.90.20",

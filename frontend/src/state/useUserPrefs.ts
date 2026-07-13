@@ -30,8 +30,14 @@ const ENV_URL: string | undefined = (() => {
   }
 })();
 
+const LEGACY_LOCAL_API_URL = 'http://localhost:8000';
+const LOCAL_API_URL = 'http://127.0.0.1:8000';
+
 export const DEFAULT_PREFS: UserPrefs = {
-  apiUrl: ENV_URL ?? 'http://localhost:8000',
+  // Uvicorn binds to IPv4 127.0.0.1 by default.  Using the exact address
+  // avoids Windows resolving localhost to ::1 while the API listens only on
+  // IPv4.
+  apiUrl: ENV_URL ?? LOCAL_API_URL,
   phosphorColor: 'amber',
   units: 'G',
   defaults: {
@@ -50,9 +56,14 @@ function readFromStorage(): UserPrefs {
     const raw = localStorage.getItem(PREFS_STORAGE_KEY);
     if (!raw) return DEFAULT_PREFS;
     const parsed = JSON.parse(raw) as Partial<UserPrefs>;
+    const apiUrl =
+      ENV_URL === undefined && parsed.apiUrl === LEGACY_LOCAL_API_URL
+        ? LOCAL_API_URL
+        : parsed.apiUrl;
     return {
       ...DEFAULT_PREFS,
       ...parsed,
+      apiUrl: apiUrl ?? DEFAULT_PREFS.apiUrl,
       defaults: { ...DEFAULT_PREFS.defaults, ...(parsed.defaults ?? {}) },
     };
   } catch {

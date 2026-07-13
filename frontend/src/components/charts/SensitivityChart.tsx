@@ -9,7 +9,8 @@
 import React from 'react';
 import ReactECharts from 'echarts-for-react';
 import { motion } from 'framer-motion';
-import { useSensitivity } from '../../services/cgemApi';
+import { apiErrorMessage, useSensitivity } from '../../services/cgemApi';
+import { useUserPrefs } from '../../state/useUserPrefs';
 import type { TargetName } from '../../services/types';
 
 interface SensitivityChartProps {
@@ -31,6 +32,7 @@ const FEATURE_LABELS: Record<string, string> = {
 
 export const SensitivityChart: React.FC<SensitivityChartProps> = ({ target, height = 360 }) => {
   const query = useSensitivity(target);
+  const prefs = useUserPrefs();
 
   if (query.isLoading) {
     return (
@@ -41,10 +43,25 @@ export const SensitivityChart: React.FC<SensitivityChartProps> = ({ target, heig
   }
   if (query.isError || !query.data) {
     return (
-      <div className="flex items-center justify-center text-rose-400 text-sm" style={{ height }}>
-        Sensitivity unavailable. Run{' '}
-        <code className="text-surface-300 mx-1">python -m scripts.run_sensitivity</code>{' '}
-        and restart the API.
+      <div
+        className="flex flex-col items-center justify-center gap-3 text-rose-400 text-sm text-center px-4"
+        style={{ height }}
+      >
+        <p className="font-medium">Sensitivity request failed for {target}.</p>
+        <p className="text-surface-400 max-w-xl">
+          {query.error ? apiErrorMessage(query.error) : 'No sensitivity data was returned.'}
+        </p>
+        <p className="text-xs text-surface-500">
+          API: <code className="text-surface-300">{prefs.apiUrl}</code>
+        </p>
+        <button
+          type="button"
+          onClick={() => void query.refetch()}
+          disabled={query.isFetching}
+          className="btn-secondary px-4 py-2"
+        >
+          {query.isFetching ? 'Retrying…' : 'Retry sensitivity'}
+        </button>
       </div>
     );
   }

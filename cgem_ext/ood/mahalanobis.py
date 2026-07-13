@@ -26,6 +26,7 @@ from dataclasses import dataclass
 
 import numpy as np
 import pandas as pd
+from scipy.linalg import qr
 from scipy.stats import chi2
 from sklearn.covariance import MinCovDet
 
@@ -89,6 +90,28 @@ class MahalanobisOOD:
                 f"only {keep} survived."
             )
         x = feats[keep].to_numpy(dtype=float)
+
+        # Covariance is computed on centered data.  The frozen feature space
+        # intentionally contains dependent encodings (the seven WHO one-hot
+        # columns sum to one, and countermeasure columns are coupled in the
+        # canonical dataset).  Passing that singular matrix to MinCovDet can
+        # make its C-step refinement effectively hang on some sklearn/LAPACK
+        # combinations.  Select a deterministic, well-conditioned basis with
+        # rank-revealing QR, then restore the original feature order for the
+        # persisted public ``effective_columns`` view.
+        centered = x - x.mean(axis=0, keepdims=True)
+        rank = int(np.linalg.matrix_rank(centered))
+        if rank < 2:
+            raise ValueError(
+                "Mahalanobis fit requires >= 2 linearly independent features; "
+                f"centered feature rank was {rank}."
+            )
+        if rank < x.shape[1]:
+            _q, _r, pivots = qr(centered, mode="economic", pivoting=True)
+            keep_indices = sorted(int(i) for i in pivots[:rank])
+            keep = [keep[i] for i in keep_indices]
+            x = feats[keep].to_numpy(dtype=float)
+
         mcd = MinCovDet(random_state=self.random_state)
         mcd.fit(x)
 

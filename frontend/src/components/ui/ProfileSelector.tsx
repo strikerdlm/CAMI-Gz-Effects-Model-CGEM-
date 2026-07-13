@@ -5,6 +5,7 @@
  */
 
 import React, { useMemo } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, Plane, AlertTriangle, Clock, Search } from 'lucide-react';
 import { cn } from '../../utils';
@@ -27,17 +28,65 @@ export const ProfileSelector: React.FC<ProfileSelectorProps> = ({
   const [searchQuery, setSearchQuery] = React.useState('');
   const [activeFilter, setActiveFilter] = React.useState<'all' | 'high_g' | 'negative_g' | 'mixed'>('all');
   const dropdownRef = React.useRef<HTMLDivElement>(null);
+  const menuRef = React.useRef<HTMLDivElement>(null);
+  const [menuStyle, setMenuStyle] = React.useState<React.CSSProperties>({});
+
+  const updateMenuPosition = React.useCallback(() => {
+    const trigger = dropdownRef.current;
+    if (!trigger) return;
+
+    const rect = trigger.getBoundingClientRect();
+    const gap = 8;
+    const viewportPadding = 12;
+    const spaceBelow = window.innerHeight - rect.bottom - viewportPadding;
+    const spaceAbove = rect.top - viewportPadding;
+    const openAbove = spaceBelow < 240 && spaceAbove > spaceBelow;
+    const availableHeight = openAbove ? spaceAbove : spaceBelow;
+
+    setMenuStyle({
+      left: rect.left,
+      width: rect.width,
+      maxHeight: Math.max(160, Math.min(400, availableHeight - gap)),
+      ...(openAbove
+        ? { bottom: window.innerHeight - rect.top + gap }
+        : { top: rect.bottom + gap }),
+    });
+  }, []);
 
   // Close dropdown when clicking outside
   React.useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      const target = event.target as Node;
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(target) &&
+        !menuRef.current?.contains(target)
+      ) {
         setIsOpen(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+
+  React.useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setIsOpen(false);
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  React.useLayoutEffect(() => {
+    if (!isOpen) return;
+    updateMenuPosition();
+    window.addEventListener('resize', updateMenuPosition);
+    window.addEventListener('scroll', updateMenuPosition, true);
+    return () => {
+      window.removeEventListener('resize', updateMenuPosition);
+      window.removeEventListener('scroll', updateMenuPosition, true);
+    };
+  }, [isOpen, updateMenuPosition]);
 
   const profiles = useMemo(() => Object.values(AEROBATIC_PROFILES), []);
   const selectedProfile = AEROBATIC_PROFILES[selectedProfileId];
@@ -113,7 +162,10 @@ export const ProfileSelector: React.FC<ProfileSelectorProps> = ({
     <div ref={dropdownRef} className={cn('relative', className)}>
       {/* Trigger Button */}
       <button
+        type="button"
         onClick={() => setIsOpen(!isOpen)}
+        aria-haspopup="listbox"
+        aria-expanded={isOpen}
         className={cn(
           'w-full flex items-center justify-between gap-3 px-4 py-3 rounded-xl',
           'bg-surface-800/80 border border-surface-700/50',
@@ -147,21 +199,25 @@ export const ProfileSelector: React.FC<ProfileSelectorProps> = ({
       </button>
 
       {/* Dropdown Menu */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -10, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -10, scale: 0.95 }}
-            transition={{ duration: 0.15 }}
-            className={cn(
-              'absolute z-50 w-full mt-2 py-2',
-              'bg-surface-900/98 backdrop-blur-xl',
-              'border border-surface-700/50 rounded-xl',
-              'shadow-xl shadow-black/30',
-              'max-h-[400px] overflow-y-auto custom-scrollbar'
-            )}
-          >
+      {typeof document !== 'undefined' && createPortal(
+        <AnimatePresence>
+          {isOpen && (
+            <motion.div
+              ref={menuRef}
+              role="listbox"
+              initial={{ opacity: 0, y: -10, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -10, scale: 0.95 }}
+              transition={{ duration: 0.15 }}
+              style={menuStyle}
+              className={cn(
+                'fixed z-[200] py-2',
+                'bg-surface-900/98 backdrop-blur-xl',
+                'border border-surface-700/50 rounded-xl',
+                'shadow-xl shadow-black/30',
+                'overflow-y-auto custom-scrollbar'
+              )}
+            >
             <div className="px-3 pt-2 pb-3 border-b border-surface-700/40 sticky top-0 bg-surface-900/95 backdrop-blur-xl z-10">
               <div className="relative">
                 <Search className="w-3.5 h-3.5 text-surface-500 absolute left-3 top-1/2 -translate-y-1/2" />
@@ -262,9 +318,11 @@ export const ProfileSelector: React.FC<ProfileSelectorProps> = ({
                 <p className="text-xs text-surface-500 mt-1">Try clearing search or selecting "All".</p>
               </div>
             )}
-          </motion.div>
-        )}
-      </AnimatePresence>
+            </motion.div>
+          )}
+        </AnimatePresence>,
+        document.body,
+      )}
     </div>
   );
 };

@@ -166,6 +166,27 @@ def test_mahalanobis_fit_and_threshold():
     assert mh.threshold_chi2 > 0
 
 
+def test_mahalanobis_drops_linearly_dependent_columns():
+    """The canonical mixed feature encoding is rank deficient after centering.
+
+    MinCovDet must receive a full-rank projection; otherwise some supported
+    sklearn/LAPACK combinations spend an unbounded amount of time refining a
+    singular covariance estimate during API startup.
+    """
+    from cgem_ext.ood import MahalanobisOOD
+    from cgem_ext.ood.features import extract_features
+
+    df = _fixture_df(n=200, seed=7)
+    feats = extract_features(df)
+    centered = feats.to_numpy() - feats.to_numpy().mean(axis=0, keepdims=True)
+    expected_rank = int(np.linalg.matrix_rank(centered))
+
+    mh = MahalanobisOOD().fit(df)
+
+    assert mh.fit_info.rank_effective == expected_rank
+    assert len(mh.effective_columns) == expected_rank
+
+
 def test_mahalanobis_score_shape_and_nonneg():
     from cgem_ext.ood import MahalanobisOOD
 
