@@ -1,0 +1,68 @@
+{
+  "search_date": "2026-08-21",
+  "purpose": "Reproducible evidence audit for the CGEM pilot centrifuge/fighter-aircraft physiology validation protocol",
+  "tools": [
+    {
+      "tool": "mcp__consensus__search",
+      "queries": [
+        "Polar H10 ECG RR validity exercise",
+        "high-G pilot cerebral oxygenation fNIRS",
+        "actigraphy sleep validation military pilots"
+      ],
+      "notes": "Initial rate-limited calls were rerun successfully; DOI/publisher links were retained in the protocol."
+    },
+    {
+      "tool": "mcp__tavily__tavily_search",
+      "queries": [
+        "ActiGraph wGT3X-BT user guide raw acceleration +/-8 g 30 100 Hz",
+        "Polar H10 SDK ECG 130 Hz RR recording"
+      ]
+    },
+    {
+      "tool": "mcp__firecrawl_mcp__firecrawl_search",
+      "queries": [
+        "ActiGraph wGT3X-BT technical specifications",
+        "Polar H10 developer SDK recording documentation"
+      ],
+      "scraped_urls": [
+        "https://actigraphy.com/products/actiwatch/wgt3x-bt",
+        "https://github.com/polarofficial/polar-ble-sdk"
+      ]
+    },
+    {
+      "tool": "mcp__paper_search__search_pubmed",
+      "queries": [
+        "Polar H10 validity ECG exercise",
+        "high Gz physiology pilot visual loss"
+      ]
+    },
+    {
+      "tool": "mcp__paper_search__get_crossref_paper_by_doi",
+      "status": "resolved",
+      "journal_doi_count": 15
+    },
+    {
+      "tool": "mcp__codex_apps__scite_search_literature",
+      "status": "screened",
+      "journal_doi_count": 15,
+      "editorial_notices_returned": 0
+    }
+  ],
+  "journal_dois": [
+    "10.3390/s22176536",
+    "10.1007/s00421-019-04142-5",
+    "10.1038/s41746-023-00802-1",
+    "10.5665/sleep.3142",
+    "10.3389/fnrgo.2024.1357905",
+    "10.1152/japplphysiol.01191.2006",
+    "10.1152/japplphysiol.00119.2019",
+    "10.1016/j.medengphy.2004.07.003",
+    "10.3357/AMHP.6319.2024",
+    "10.3390/ijerph17218061",
+    "10.2196/48812",
+    "10.1186/2046-7648-2-19",
+    "10.1113/JP273615",
+    "10.1136/bmj-2023-074821",
+    "10.1002/sim.9275"
+  ]
+}
