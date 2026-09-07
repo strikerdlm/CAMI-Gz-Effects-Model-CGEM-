@@ -1,0 +1,44 @@
+[
+  {
+    "scenario": "coordinated_turn",
+    "status": "complete",
+    "duration_s": 14.43,
+    "g_max": 3.9999999962511166,
+    "events": []
+  },
+  {
+    "scenario": "loop",
+    "status": "complete",
+    "duration_s": 25.85,
+    "g_max": 3.988101858360662,
+    "events": []
+  },
+  {
+    "scenario": "aileron_roll",
+    "status": "complete",
+    "duration_s": 13.05,
+    "g_max": 1.9989408894626608,
+    "events": []
+  },
+  {
+    "scenario": "immelmann",
+    "status": "complete",
+    "duration_s": 18.11,
+    "g_max": 3.906536320389038,
+    "events": []
+  },
+  {
+    "scenario": "split_s",
+    "status": "complete",
+    "duration_s": 17.43,
+    "g_max": 3.999999999946704,
+    "events": []
+  },
+  {
+    "scenario": "cuban_eight",
+    "status": "complete",
+    "duration_s": 37.92,
+    "g_max": 3.9768850645732945,
+    "events": []
+  }
+]

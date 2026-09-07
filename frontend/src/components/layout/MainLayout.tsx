@@ -6,7 +6,7 @@
  */
 
 import React, { useState } from 'react';
-import { Outlet, useLocation } from 'react-router-dom';
+import { Link, Outlet, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sidebar } from './Sidebar';
 import { TopBar } from './TopBar';
@@ -15,6 +15,8 @@ import { ScanlineOverlay } from '../hud';
 export const MainLayout: React.FC = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const location = useLocation();
+
+  if (location.pathname === '/simulator') return <div className="flight-app-shell"><nav className="flight-app-navigation" aria-label="Application navigation"><Link to="/" className="flight-app-brand">CGEM<span>G-EFFECTS MODEL</span></Link><div><Link to="/simulator" aria-current="page">Learning lab</Link><Link to="/dashboard">Scientific dashboard</Link><Link to="/settings">Settings</Link></div><span className="flight-app-credit">CIVIL AEROSPACE MEDICAL INSTITUTE</span></nav><Outlet /></div>;
 
   return (
     <div className="min-h-screen bg-hud-bg relative">
