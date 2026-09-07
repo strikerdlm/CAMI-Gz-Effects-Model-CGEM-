@@ -1,6 +1,39 @@
 {
   "components": {
     "schemas": {
+      "AircraftInfo": {
+        "properties": {
+          "g_limit": {
+            "title": "G Limit",
+            "type": "number"
+          },
+          "mass_kg": {
+            "title": "Mass Kg",
+            "type": "number"
+          },
+          "name": {
+            "default": "Extra 300L",
+            "title": "Name",
+            "type": "string"
+          },
+          "va_kias": {
+            "default": 158,
+            "title": "Va Kias",
+            "type": "number"
+          },
+          "vne_kias": {
+            "default": 220,
+            "title": "Vne Kias",
+            "type": "number"
+          }
+        },
+        "required": [
+          "mass_kg",
+          "g_limit"
+        ],
+        "title": "AircraftInfo",
+        "type": "object"
+      },
       "CGEMRunData": {
         "description": "Time-series payload \u2014 the per-column lists pulse-sim's bridge\nconsumes verbatim. Field aliases preserve the original column\nnames with units in parentheses (e.g. ``Time(s)``).",
         "properties": {
@@ -170,6 +203,317 @@
         "title": "CGEMRunResponse",
         "type": "object"
       },
+      "Controls": {
+        "properties": {
+          "aileron_deg": {
+            "title": "Aileron Deg",
+            "type": "number"
+          },
+          "elevator_deg": {
+            "title": "Elevator Deg",
+            "type": "number"
+          },
+          "rpm": {
+            "title": "Rpm",
+            "type": "number"
+          },
+          "rudder_deg": {
+            "title": "Rudder Deg",
+            "type": "number"
+          },
+          "throttle": {
+            "title": "Throttle",
+            "type": "number"
+          }
+        },
+        "required": [
+          "aileron_deg",
+          "elevator_deg",
+          "rudder_deg",
+          "throttle",
+          "rpm"
+        ],
+        "title": "Controls",
+        "type": "object"
+      },
+      "FlightEvent": {
+        "properties": {
+          "kind": {
+            "title": "Kind",
+            "type": "string"
+          },
+          "message": {
+            "title": "Message",
+            "type": "string"
+          },
+          "time_s": {
+            "title": "Time S",
+            "type": "number"
+          }
+        },
+        "required": [
+          "time_s",
+          "kind",
+          "message"
+        ],
+        "title": "FlightEvent",
+        "type": "object"
+      },
+      "FlightForces": {
+        "properties": {
+          "drag": {
+            "title": "Drag",
+            "type": "number"
+          },
+          "lift": {
+            "title": "Lift",
+            "type": "number"
+          },
+          "thrust": {
+            "title": "Thrust",
+            "type": "number"
+          },
+          "weight": {
+            "title": "Weight",
+            "type": "number"
+          }
+        },
+        "required": [
+          "lift",
+          "drag",
+          "thrust",
+          "weight"
+        ],
+        "title": "FlightForces",
+        "type": "object"
+      },
+      "FlightFrame": {
+        "properties": {
+          "alpha_deg": {
+            "title": "Alpha Deg",
+            "type": "number"
+          },
+          "altitude_ft": {
+            "title": "Altitude Ft",
+            "type": "number"
+          },
+          "controls": {
+            "$ref": "#/components/schemas/Controls"
+          },
+          "forces_n": {
+            "$ref": "#/components/schemas/FlightForces"
+          },
+          "gz": {
+            "title": "Gz",
+            "type": "number"
+          },
+          "heading_deg": {
+            "title": "Heading Deg",
+            "type": "number"
+          },
+          "ias_kts": {
+            "title": "Ias Kts",
+            "type": "number"
+          },
+          "phase": {
+            "title": "Phase",
+            "type": "string"
+          },
+          "pitch_deg": {
+            "title": "Pitch Deg",
+            "type": "number"
+          },
+          "position_m": {
+            "items": {
+              "type": "number"
+            },
+            "title": "Position M",
+            "type": "array"
+          },
+          "quaternion": {
+            "items": {
+              "type": "number"
+            },
+            "title": "Quaternion",
+            "type": "array"
+          },
+          "roll_deg": {
+            "title": "Roll Deg",
+            "type": "number"
+          },
+          "t_s": {
+            "title": "T S",
+            "type": "number"
+          },
+          "tas_kts": {
+            "title": "Tas Kts",
+            "type": "number"
+          },
+          "velocity_mps": {
+            "items": {
+              "type": "number"
+            },
+            "title": "Velocity Mps",
+            "type": "array"
+          },
+          "vertical_speed_fpm": {
+            "title": "Vertical Speed Fpm",
+            "type": "number"
+          }
+        },
+        "required": [
+          "t_s",
+          "position_m",
+          "velocity_mps",
+          "quaternion",
+          "ias_kts",
+          "tas_kts",
+          "altitude_ft",
+          "vertical_speed_fpm",
+          "heading_deg",
+          "pitch_deg",
+          "roll_deg",
+          "alpha_deg",
+          "gz",
+          "phase",
+          "controls",
+          "forces_n"
+        ],
+        "title": "FlightFrame",
+        "type": "object"
+      },
+      "FlightRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "altitude_ft": {
+            "default": 6000,
+            "exclusiveMinimum": 0.0,
+            "maximum": 16000.0,
+            "title": "Altitude Ft",
+            "type": "number"
+          },
+          "entry_ias_kts": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "maximum": 220.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Entry Ias Kts"
+          },
+          "intensity_g": {
+            "default": 4,
+            "maximum": 10.0,
+            "minimum": 2.0,
+            "title": "Intensity G",
+            "type": "number"
+          },
+          "loading": {
+            "default": "solo",
+            "enum": [
+              "solo",
+              "dual"
+            ],
+            "title": "Loading",
+            "type": "string"
+          },
+          "pilot": {
+            "$ref": "#/components/schemas/PilotConfigRequest"
+          },
+          "scenario": {
+            "enum": [
+              "coordinated_turn",
+              "loop",
+              "aileron_roll",
+              "immelmann",
+              "split_s",
+              "cuban_eight"
+            ],
+            "title": "Scenario",
+            "type": "string"
+          }
+        },
+        "required": [
+          "scenario"
+        ],
+        "title": "FlightRequest",
+        "type": "object"
+      },
+      "FlightResponse": {
+        "properties": {
+          "aircraft": {
+            "$ref": "#/components/schemas/AircraftInfo"
+          },
+          "duration_s": {
+            "title": "Duration S",
+            "type": "number"
+          },
+          "events": {
+            "items": {
+              "$ref": "#/components/schemas/FlightEvent"
+            },
+            "title": "Events",
+            "type": "array"
+          },
+          "frames": {
+            "items": {
+              "$ref": "#/components/schemas/FlightFrame"
+            },
+            "title": "Frames",
+            "type": "array"
+          },
+          "phases": {
+            "items": {
+              "$ref": "#/components/schemas/Phase"
+            },
+            "title": "Phases",
+            "type": "array"
+          },
+          "physiology": {
+            "$ref": "#/components/schemas/Physiology"
+          },
+          "provenance": {
+            "$ref": "#/components/schemas/Provenance"
+          },
+          "scenario": {
+            "enum": [
+              "coordinated_turn",
+              "loop",
+              "aileron_roll",
+              "immelmann",
+              "split_s",
+              "cuban_eight"
+            ],
+            "title": "Scenario",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "complete",
+              "stopped"
+            ],
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "scenario",
+          "duration_s",
+          "status",
+          "frames",
+          "phases",
+          "events",
+          "aircraft",
+          "provenance",
+          "physiology"
+        ],
+        "title": "FlightResponse",
+        "type": "object"
+      },
       "HTTPValidationError": {
         "properties": {
           "detail": {
@@ -261,6 +605,83 @@
           }
         },
         "title": "ManeuverDescriptors",
+        "type": "object"
+      },
+      "Phase": {
+        "properties": {
+          "description": {
+            "title": "Description",
+            "type": "string"
+          },
+          "end_s": {
+            "title": "End S",
+            "type": "number"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "start_s": {
+            "title": "Start S",
+            "type": "number"
+          }
+        },
+        "required": [
+          "name",
+          "start_s",
+          "end_s",
+          "description"
+        ],
+        "title": "Phase",
+        "type": "object"
+      },
+      "Physiology": {
+        "properties": {
+          "binary_sha256": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Binary Sha256"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason"
+          },
+          "result": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CGEMRunResponse"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "status": {
+            "enum": [
+              "available",
+              "unavailable"
+            ],
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "status"
+        ],
+        "title": "Physiology",
         "type": "object"
       },
       "PilotConfigRequest": {
@@ -430,6 +851,50 @@
           "calibration_scope"
         ],
         "title": "PredictionResponse",
+        "type": "object"
+      },
+      "Provenance": {
+        "properties": {
+          "assumptions": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Assumptions",
+            "type": "array"
+          },
+          "flight_model": {
+            "title": "Flight Model",
+            "type": "string"
+          },
+          "model_version": {
+            "title": "Model Version",
+            "type": "string"
+          },
+          "parameter_sha256": {
+            "title": "Parameter Sha256",
+            "type": "string"
+          },
+          "source_urls": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Source Urls",
+            "type": "array"
+          },
+          "trace_sha256": {
+            "title": "Trace Sha256",
+            "type": "string"
+          }
+        },
+        "required": [
+          "model_version",
+          "flight_model",
+          "source_urls",
+          "assumptions",
+          "parameter_sha256",
+          "trace_sha256"
+        ],
+        "title": "Provenance",
         "type": "object"
       },
       "RunCGEMRequest": {
@@ -867,6 +1332,48 @@
         "summary": "Sensitivity",
         "tags": [
           "analysis"
+        ]
+      }
+    },
+    "/simulate-flight": {
+      "post": {
+        "description": "Guided Extra 300L flight plus native axial CGEM physiology.\n\nSync route runs in FastAPI's thread pool, keeping the event loop responsive.\nInvalid initial conditions reject; native CGEM failure remains inspectable.",
+        "operationId": "simulate_flight_simulate_flight_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FlightRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FlightResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Simulate Flight",
+        "tags": [
+          "flight"
         ]
       }
     },

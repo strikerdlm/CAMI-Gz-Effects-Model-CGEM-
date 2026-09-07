@@ -11,14 +11,16 @@
   "license": "MIT",
   "scripts": {
     "dev": "vite",
-    "prebuild": "cd .. && python scripts/export_maneuvers_json.py",
+    "prebuild": "cd .. && python3 scripts/export_maneuvers_json.py",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "test": "vitest",
+    "test": "vitest run",
     "test:run": "vitest run",
     "preview": "vite preview",
-    "type-check": "tsc --noEmit",
-    "regen:maneuvers": "cd .. && python scripts/export_maneuvers_json.py"
+    "type-check": "tsc -b --pretty false",
+    "regen:maneuvers": "cd .. && python3 scripts/export_maneuvers_json.py",
+    "test:e2e": "playwright test",
+    "lint:flight": "eslint src/features/flight src/pages/SimulatorPage.tsx src/components/layout/MainLayout.tsx src/components/hud/GTracePlayer.tsx e2e playwright.config.ts vitest.config.ts"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.90.20",
@@ -32,7 +34,11 @@
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-router-dom": "^7.13.0",
-    "tailwind-merge": "^3.4.0"
+    "tailwind-merge": "^3.4.0",
+    "@fontsource/ibm-plex-mono": "^5.3.0",
+    "@fontsource/ibm-plex-sans": "^5.3.0",
+    "mediabunny": "^1.55.7",
+    "three": "^0.185.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
@@ -54,6 +60,9 @@
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.46.4",
     "vite": "^7.2.4",
-    "vitest": "^4.1.9"
+    "vitest": "^5.0.0",
+    "@playwright/test": "^1.63.0",
+    "@types/three": "^0.185.4",
+    "prettier": "^3.9.6"
   }
 }

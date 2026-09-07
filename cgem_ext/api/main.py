@@ -49,6 +49,7 @@ from cgem_ext.api.schemas import (
     VersionResponse,
 )
 from cgem_ext.api.state import AppState
+from cgem_ext.flight.schemas import FlightRequest, FlightResponse
 from cgem_ext.surrogate import TARGETS
 
 # ── Lifespan: build app state once on startup ────────────────────────
@@ -251,6 +252,26 @@ def _register_routes(app: FastAPI) -> None:
         state = _state(request)
         results = [_predict_one(state, r) for r in req.inputs]
         return SweepResponse(results=results)
+
+    @app.post("/simulate-flight", response_model=FlightResponse, tags=["flight"])
+    def simulate_flight(req: FlightRequest) -> FlightResponse:
+        """Guided Extra 300L flight plus native axial CGEM physiology.
+
+        Sync route runs in FastAPI's thread pool, keeping the event loop responsive.
+        Invalid initial conditions reject; native CGEM failure remains inspectable.
+        """
+        from cgem_ext.flight.adapter import run_trace
+        from cgem_ext.flight.simulator import simulate
+
+        try:
+            result = simulate(req)
+        except ValueError as exc:
+            raise HTTPException(status_code=422, detail=str(exc)) from exc
+        result.physiology = run_trace(
+            [frame.t_s for frame in result.frames],
+            [frame.gz for frame in result.frames], req.pilot, req.scenario,
+        )
+        return result
 
     @app.post("/run-cgem", response_model=CGEMRunResponse, tags=["inference"])
     async def run_cgem(req: RunCGEMRequest, request: Request) -> CGEMRunResponse:

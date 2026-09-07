@@ -23,7 +23,8 @@ See ``cgem_ext.api.schemas`` for the wire contract and
 ``cgem_ext.api.state`` for the lifespan-managed model store.
 """
 
-from cgem_ext.api.main import app, create_app
+from typing import TYPE_CHECKING, Any
+
 from cgem_ext.api.schemas import (
     CGEMRunResponse,
     PredictionRequest,
@@ -33,6 +34,19 @@ from cgem_ext.api.schemas import (
     SweepResponse,
 )
 from cgem_ext.api.state import AppState
+
+if TYPE_CHECKING:
+    from cgem_ext.api.main import app, create_app
+
+
+def __getattr__(name: str) -> Any:
+    """Keep app exports available without importing routes while schemas load."""
+    if name in {"app", "create_app"}:
+        from cgem_ext.api.main import app, create_app
+
+        return app if name == "app" else create_app
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
+
 
 __all__ = [
     "AppState",

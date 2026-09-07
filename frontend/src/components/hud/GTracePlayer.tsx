@@ -96,8 +96,6 @@ export const GTracePlayer: React.FC<GTracePlayerProps> = ({
     /* eslint-disable @typescript-eslint/no-explicit-any */
     const markLines: any[] = [
       { xAxis: t, lineStyle: { color: '#FFB400', width: 1.5, type: 'solid' }, label: { show: false } },
-      { yAxis: 5, lineStyle: { color: '#FF3B30', width: 0.5, type: 'dashed' }, label: { formatter: '5 G ALERT', color: '#FF3B30', fontFamily: 'IBM Plex Mono', fontSize: 9 } },
-      { yAxis: 9, lineStyle: { color: '#FF3B30', width: 0.5, type: 'dashed' }, label: { formatter: '9 G LIMIT', color: '#FF3B30', fontFamily: 'IBM Plex Mono', fontSize: 9 } },
       { yAxis: 0, lineStyle: { color: '#37474f', width: 0.5, type: 'solid' }, label: { show: false } },
     ];
     const markAreas: any[] = [];
@@ -165,7 +163,7 @@ export const GTracePlayer: React.FC<GTracePlayerProps> = ({
   return (
     <div className="flex flex-col gap-2">
       <ReactECharts option={option} style={{ height, width: '100%' }} notMerge={false} lazyUpdate />
-      <div className="flex items-center gap-3 text-xs font-mono">
+      <div className="flex flex-wrap items-center gap-3 text-xs font-mono">
         <button
           onClick={() => setPlaying((p) => !p)}
           className="px-3 py-1 bg-hud-amber/10 border border-hud-amber/50 text-hud-amber hover:bg-hud-amber/20 rounded-sm tracking-callsign uppercase"
@@ -196,12 +194,13 @@ export const GTracePlayer: React.FC<GTracePlayerProps> = ({
         </div>
         <input
           type="range"
+          aria-label="Trace playback time"
           min={0}
           max={Math.max(duration, 0.01)}
           step={0.05}
           value={t}
           onChange={(e) => { setT(Number(e.target.value)); setPlaying(false); }}
-          className="flex-1 accent-hud-amber"
+          className="flex-1 min-w-24 accent-hud-amber"
         />
         <span className="amber font-mono w-20 text-right tabular-nums">{t.toFixed(2)} s</span>
       </div>
