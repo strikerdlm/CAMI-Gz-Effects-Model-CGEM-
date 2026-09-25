@@ -804,6 +804,7 @@
   border-radius: 50%;
   transform: rotateX(45deg) rotateZ(-25deg);
 }
+.flight-scene-status,
 .flight-scene-error {
   position: absolute;
   top: 70px;
@@ -813,6 +814,10 @@
   background: #392626ed;
   color: #ffb9a8;
   border-radius: 5px;
+}
+.flight-scene-status {
+  background: #142b3bed;
+  color: #d6e6ee;
 }
 .flight-error,
 .flight-events {

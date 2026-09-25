@@ -4,7 +4,7 @@ A modern, publication-quality TypeScript frontend for aerospace physiology visua
 
 ## Features
 
-The [Extra 300L learning lab](FLIGHT_SIMULATOR.md) adds guided force-integrated maneuvers, reference-based Three.js aircraft and cockpit views, live TXi-style instruments, original-CGEM physiology, and silent 1080p MP4 export at `/simulator`.
+The [Extra 300L learning lab](FLIGHT_SIMULATOR.md) adds guided force-integrated maneuvers, imported Extra 300 aircraft and live cockpit views, live TXi-style instruments, original-CGEM physiology, and silent 1080p MP4 export at `/simulator`.
 
 - **Publication-Quality Visualizations**: Apache ECharts charts optimized for Q1 science journal publication standards
 - **Modern UI**: Glass-morphism dark theme with smooth Framer Motion animations

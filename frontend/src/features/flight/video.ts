@@ -94,6 +94,8 @@ export async function exportMp4(
   });
   let encoder: VideoEncoderClient | undefined;
   try {
+    await abortable(scene.ready, options.signal);
+    options.signal.throwIfAborted();
     encoder = new VideoEncoderClient(
       new Worker(new URL("./videoEncoder.worker.ts", import.meta.url), {
         type: "module",
