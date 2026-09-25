@@ -205,3 +205,146 @@ test("video interval validation and cancellation preserve the viewer", async ({
   await expect(page.locator(".flight-time strong")).toHaveText("0.00");
   await expect(page.locator(".flight-scene-error")).toHaveCount(0);
 });
+
+test("aircraft loading preserves a seek and recovers after an asset failure", async ({
+  page,
+}) => {
+  const errors: string[] = [];
+  page.on("pageerror", (error) => errors.push(error.message));
+  await mockFlight(page);
+  let release!: () => void;
+  const gate = new Promise<void>((resolve) => {
+    release = resolve;
+  });
+  await page.route("**/models/Extra-300-r03.glb", async (route) => {
+    await gate;
+    await route.continue();
+  });
+  await page.goto("/simulator");
+  await expect(page.locator(".flight-scene-status")).toBeVisible();
+  await page
+    .getByRole("slider", { name: "Lesson time", exact: true })
+    .press("End");
+  release();
+  await expect(page.locator("canvas.flight-scene")).toHaveAttribute(
+    "aria-busy",
+    "false",
+  );
+  await expect(page.locator(".flight-time strong")).toHaveText(
+    turn.duration_s.toFixed(2),
+  );
+  for (const name of ["Chase", "Cockpit", "Split", "Orbit"]) {
+    await page.getByRole("button", { name, exact: true }).click();
+    await expect(page.locator(".flight-scene-error")).toHaveCount(0);
+  }
+  await page.unroute("**/models/Extra-300-r03.glb");
+  await page.route("**/models/Extra-300-r03.glb", (route) =>
+    route.fulfill({ status: 503, body: "Unavailable" }),
+  );
+  await page.reload();
+  await expect(page.getByRole("alert")).toContainText(
+    "Extra 300 model could not load",
+  );
+  await page.unroute("**/models/Extra-300-r03.glb");
+  await page.reload();
+  await expect(page.locator("canvas.flight-scene")).toHaveAttribute(
+    "aria-busy",
+    "false",
+  );
+  await expect(page.locator(".flight-scene-error")).toHaveCount(0);
+  expect(errors).toEqual([]);
+});
+
+test("navigation during aircraft loading releases the retired view", async ({
+  page,
+}) => {
+  const errors: string[] = [];
+  page.on("pageerror", (error) => errors.push(error.message));
+  await mockFlight(page);
+  let release!: () => void;
+  const gate = new Promise<void>((resolve) => {
+    release = resolve;
+  });
+  let completed!: () => void;
+  const responseSent = new Promise<void>((resolve) => {
+    completed = resolve;
+  });
+  await page.route("**/models/Extra-300-r03.glb", async (route) => {
+    const response = await route.fetch();
+    await gate;
+    await route.fulfill({ response });
+    completed();
+  });
+  await page.goto("/simulator");
+  await expect(page.locator(".flight-scene-status")).toBeVisible();
+  await page
+    .getByRole("link", { name: "Open the full G-trace lesson library" })
+    .click();
+  await expect(page.locator("canvas.flight-scene")).toHaveCount(0);
+  release();
+  await responseSent;
+  await page.unroute("**/models/Extra-300-r03.glb");
+  await page.getByRole("link", { name: /Open Extra 300L simulation/ }).click();
+  await expect(page.locator("canvas.flight-scene")).toHaveAttribute(
+    "aria-busy",
+    "false",
+  );
+  await expect(page.locator(".flight-scene-error")).toHaveCount(0);
+  expect(errors).toEqual([]);
+});
+
+test("MP4 export waits for its aircraft and supports cancellation while loading", async ({
+  page,
+}) => {
+  await mockFlight(page);
+  await page.goto("/simulator");
+  await expect(page.locator("canvas.flight-scene")).toHaveAttribute(
+    "aria-busy",
+    "false",
+  );
+  await page.getByRole("button", { name: "Export video" }).click();
+  const dialog = page.getByRole("dialog");
+  await expect(
+    dialog.getByText("Checking H.264 encoding support…"),
+  ).toHaveCount(0, { timeout: 20_000 });
+  const render = dialog.getByRole("button", { name: "Render MP4" });
+  if (!(await render.isEnabled())) {
+    await expect(
+      dialog.getByText(/H.264 encoding at 1080p is unavailable/),
+    ).toBeVisible();
+    return;
+  }
+  await dialog.getByLabel("End · simulation seconds").fill("0.1");
+  let release!: () => void;
+  const gate = new Promise<void>((resolve) => {
+    release = resolve;
+  });
+  let completed!: () => void;
+  const responseSent = new Promise<void>((resolve) => {
+    completed = resolve;
+  });
+  await page.route("**/models/Extra-300-r03.glb", async (route) => {
+    await gate;
+    await route.continue();
+    completed();
+  });
+  const requested = page.waitForRequest("**/models/Extra-300-r03.glb");
+  await render.click();
+  await requested;
+  await expect(dialog.getByRole("progressbar")).toHaveAttribute("value", "0");
+  await dialog.getByRole("button", { name: "Cancel export" }).click();
+  await expect(
+    dialog.getByText("Export cancelled. The lesson is unchanged."),
+  ).toBeVisible();
+  release();
+  await responseSent;
+  await page.unroute("**/models/Extra-300-r03.glb");
+  const download = page.waitForEvent("download");
+  await render.click();
+  const video = await download;
+  expect(await video.failure()).toBeNull();
+  await expect(dialog.getByText(/Video ready/)).toBeVisible();
+  await dialog.getByRole("button", { name: "Close", exact: true }).click();
+  await expect(page.locator(".flight-time strong")).toHaveText("0.00");
+  await expect(page.locator(".flight-scene-error")).toHaveCount(0);
+});

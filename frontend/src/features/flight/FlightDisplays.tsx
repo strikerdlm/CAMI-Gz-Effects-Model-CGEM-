@@ -21,6 +21,7 @@ export function AircraftViewport({
   const scene = useRef<FlightScene | null>(null);
   const state = useRef({ time, options });
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     state.current = { time, options };
     scene.current?.render(time, options);
@@ -29,13 +30,31 @@ export function AircraftViewport({
     let cancelled = false;
     const node = canvas.current!;
     let observer: ResizeObserver | undefined;
+    setLoading(true);
+    setError("");
     void import("./scene")
       .then(({ FlightScene }) => {
         if (cancelled) return;
         try {
           setError("");
-          const renderer = new FlightScene(node, setError);
+          const renderer = new FlightScene(node, (message) => {
+            if (!cancelled) setError(message);
+          });
           scene.current = renderer;
+          void renderer.ready
+            .then(() => {
+              if (!cancelled) setLoading(false);
+            })
+            .catch((e: unknown) => {
+              if (!cancelled) {
+                setLoading(false);
+                setError(
+                  e instanceof Error
+                    ? e.message
+                    : "Could not load the aircraft model.",
+                );
+              }
+            });
           renderer.setSimulation(simulation);
           observer = new ResizeObserver(() => {
             renderer.resize(
@@ -53,16 +72,19 @@ export function AircraftViewport({
           );
           renderer.render(state.current.time, state.current.options);
         } catch (e) {
+          setLoading(false);
           setError(
             e instanceof Error ? e.message : "The 3D renderer could not start.",
           );
         }
       })
       .catch((e: unknown) => {
-        if (!cancelled)
+        if (!cancelled) {
+          setLoading(false);
           setError(
             e instanceof Error ? e.message : "Could not load the 3D renderer.",
           );
+        }
       });
     return () => {
       cancelled = true;
@@ -75,9 +97,15 @@ export function AircraftViewport({
     <>
       <canvas
         ref={canvas}
-        aria-label="Three-dimensional Extra 300L aircraft simulation"
+        aria-label="Three-dimensional Extra 300 aircraft simulation"
+        aria-busy={loading}
         className="flight-scene"
       />
+      {loading && !error && (
+        <div className="flight-scene-status" role="status">
+          Loading Extra 300 model…
+        </div>
+      )}
       {error && (
         <div className="flight-scene-error" role="alert">
           {error}

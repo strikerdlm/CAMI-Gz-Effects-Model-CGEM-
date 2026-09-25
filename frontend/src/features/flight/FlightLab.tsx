@@ -436,7 +436,7 @@ export default function FlightLab() {
               <div className="flight-world-top">
                 <span className="flight-view-label">
                   {options.view === "cockpit"
-                    ? "REAR COCKPIT"
+                    ? "COCKPIT"
                     : options.view === "split"
                       ? "EXTERIOR + COCKPIT"
                       : "EXTERNAL AIRCRAFT"}

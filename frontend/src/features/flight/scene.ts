@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { createAircraft } from "./aircraft";
+import { createAircraft, EXTRA300_COCKPIT } from "./aircraft";
 import { bodyToWorld, forceVectors, nedToWorld } from "./sceneMath";
 import { sampleFlight } from "./timeline";
 import { drawPfd } from "./instruments";
@@ -16,12 +16,13 @@ const FORCE_COLORS = {
   weight: 0xed86dd,
 };
 
-/** A single synchronous renderer shared by playback, seeking and video capture. */
+/** Synchronous frame rendering after ready, shared by playback, seeking and video. */
 export class FlightScene {
   private renderer: THREE.WebGLRenderer;
   private scene = new THREE.Scene();
   private camera = new THREE.PerspectiveCamera(40, 1, 0.04, 100000);
-  private aircraft = createAircraft();
+  private aircraft: ReturnType<typeof createAircraft>;
+  readonly ready: Promise<void>;
   private simulation: FlightSimulationResponse | null = null;
   private origin = new THREE.Vector3();
   private width = 1100;
@@ -41,6 +42,7 @@ export class FlightScene {
   private arrows = {} as Record<keyof typeof FORCE_COLORS, THREE.ArrowHelper>;
   private panelCanvas = document.createElement("canvas");
   private panelTexture: THREE.CanvasTexture;
+  private cockpitPanel = new THREE.Group();
   private panelContext: CanvasRenderingContext2D;
   private hudCanvas = document.createElement("canvas");
   private hudTexture: THREE.CanvasTexture;
@@ -51,7 +53,7 @@ export class FlightScene {
   private lastOptions: SceneOptions | null = null;
   private orbitYaw = 0.8;
   private orbitPitch = 0.32;
-  private orbitRadius = 14;
+  private orbitRadius = 16;
   private dragging: { x: number; y: number; id: number } | null = null;
   private disposed = false;
   private contextLost = false;
@@ -69,6 +71,12 @@ export class FlightScene {
       powerPreference: "high-performance",
       preserveDrawingBuffer: true,
     });
+    this.aircraft = createAircraft();
+    this.ready = this.aircraft.ready.then(() => {
+      if (!this.disposed && this.lastOptions)
+        this.render(this.lastTime, this.lastOptions);
+    });
+    void this.ready.catch(() => undefined);
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
     this.renderer.toneMappingExposure = 1.08;
@@ -138,7 +146,7 @@ export class FlightScene {
     this.textures.push(this.panelTexture);
     // Panel local basis: screen right = body right, screen up = body up.
     const panel = new THREE.Mesh(
-      new THREE.PlaneGeometry(0.34, 0.43),
+      new THREE.PlaneGeometry(0.22, 0.28),
       new THREE.MeshBasicMaterial({
         map: this.panelTexture,
         side: THREE.DoubleSide,
@@ -149,15 +157,16 @@ export class FlightScene {
     panel.quaternion.setFromRotationMatrix(
       new THREE.Matrix4().set(0, 0, -1, 0, 1, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 1),
     );
-    panel.position.set(-0.2, 0, -0.37);
-    this.aircraft.root.add(panel);
+    panel.position.fromArray(EXTRA300_COCKPIT.panel);
+    this.cockpitPanel.add(panel);
     const panelBack = new THREE.Mesh(
-      new THREE.BoxGeometry(0.04, 0.69, 0.52),
+      new THREE.BoxGeometry(0.04, 0.5, 0.3),
       new THREE.MeshStandardMaterial({ color: 0x151b21, roughness: 0.65 }),
     );
-    panelBack.position.set(-0.175, 0, -0.34);
-    panelBack.name = "rear-instrument-panel";
-    this.aircraft.root.add(panelBack);
+    panelBack.position.copy(panel.position).add(new THREE.Vector3(0.025, 0, 0));
+    panelBack.name = "instrument-panel-backing";
+    this.cockpitPanel.add(panelBack);
+    this.aircraft.root.add(this.cockpitPanel);
     this.hudCanvas.width = 1600;
     this.hudCanvas.height = 640;
     this.hudContext = this.hudCanvas.getContext("2d")!;
@@ -298,7 +307,7 @@ export class FlightScene {
     this.trail.geometry.setDrawRange(0, 0);
     this.orbitYaw = 0.8;
     this.orbitPitch = 0.32;
-    this.orbitRadius = 14;
+    this.orbitRadius = 16;
   }
   resize(
     width: number,
@@ -380,14 +389,21 @@ export class FlightScene {
       camera = this.camera;
     camera.aspect = width / this.height;
     camera.up.set(0, 1, 0);
+    this.cockpitPanel.visible = view === "cockpit";
     if (view === "cockpit") {
       camera.fov = 67;
       camera.position.copy(
-        new THREE.Vector3(-0.92, 0, -0.68).applyQuaternion(q).add(target),
+        new THREE.Vector3()
+          .fromArray(EXTRA300_COCKPIT.eye)
+          .applyQuaternion(q)
+          .add(target),
       );
       camera.up.set(0, 0, -1).applyQuaternion(q);
       camera.lookAt(
-        new THREE.Vector3(4, 0, 0.2).applyQuaternion(q).add(target),
+        new THREE.Vector3()
+          .fromArray(EXTRA300_COCKPIT.lookAt)
+          .applyQuaternion(q)
+          .add(target),
       );
       Object.values(this.arrows).forEach((a) => (a.visible = false));
     } else {
@@ -412,7 +428,7 @@ export class FlightScene {
         pitch = view === "orbit" ? this.orbitPitch : 0.24;
       // Heading follows the state; roll/pitch remain visible against the world horizon.
       const radius =
-        (view === "orbit" ? this.orbitRadius : 14) *
+        (view === "orbit" ? this.orbitRadius : 16) *
         Math.max(1, 1.25 / camera.aspect);
       camera.position
         .copy(target)
